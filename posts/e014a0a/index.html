@@ -1,0 +1,1266 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="办公工具-PPT, 编程,系统,旅游">
+    <meta name="description" content="一、PPT 总论1.1 排版解偶联​    在 LATEX 的讲解中，我意识到了可以将信息和排版解偶联，在PPT的学习中，我发觉似乎可以进一步解偶联，对于排版来说，可以解偶联成排版设计和排版实现两个部分，比如说对于以下这张slide
+
+​ ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>办公工具-PPT | 钟鼓楼</title>
+    <link rel="icon" type="image/png" href="/wall.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/wall.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">钟鼓楼</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/wall.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">钟鼓楼</div>
+        <div class="logo-desc">
+            
+            Can you hear me ?
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Welcome
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #546e7a;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/Thysrael" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Welcome" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/046.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">办公工具-PPT</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: scroll;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #546e7a;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #546e7a;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/S3%E5%81%87%E6%9C%9F/">
+                                <span class="chip bg-color">S3假期</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%8A%9E%E5%85%AC%E5%B7%A5%E5%85%B7/">
+                                <span class="chip bg-color">办公工具</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/">
+                                <span class="chip bg-color">工具总结</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%8A%9E%E5%85%AC%E5%B7%A5%E5%85%B7/" class="post-category">
+                                办公工具
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2022-02-09
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2022-02-13
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    2.7k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    9 Min
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="一、PPT-总论"><a href="#一、PPT-总论" class="headerlink" title="一、PPT 总论"></a>一、PPT 总论</h2><h3 id="1-1-排版解偶联"><a href="#1-1-排版解偶联" class="headerlink" title="1.1 排版解偶联"></a>1.1 排版解偶联</h3><p>​    在 LATEX 的讲解中，我意识到了可以将<strong>信息</strong>和<strong>排版</strong>解偶联，在PPT的学习中，我发觉似乎可以进一步解偶联，对于排版来说，可以解偶联成<strong>排版设计</strong>和<strong>排版实现</strong>两个部分，比如说对于以下这张slide</p>
+<p><img src="/posts/e014a0a/image-20220210112013792.png" alt="image-20220210112013792"></p>
+<p>​    <strong>排版设计</strong>指的是选用大背景，背景图片要采用发布会图片（然后具体到某一章特定的图片），标题底下要有一个衬板，衬板的颜色要选择主题色，也就是橙色，衬板要有一个比较好的透明度，衬板要选择平行四边形，因此字体应应该选择斜体，然后主标题应该加粗，右上角要采用 AMD 的图标。这些称为排版设计。</p>
+<p>​    <strong>排版实现</strong>指的是要把上面的设计<strong>需求</strong>实现所需要的技术，可以是用PPT，也可以用latex，用 PPT 有很多种方法，比如说这个四边形，我可以用矩形然后调整角度实现，也可以直接用四边形工具，里面的标题，我可以直接打在四边形的形状里，也可以放一个文本框，然后里面打字。AMD的图标，我可以截图以后抠图，也可以从图标官网上下载。这些具体的实现方法就被称为<strong>排版实现</strong>。</p>
+<p>​    为什么要将这两个部分解偶联呢，是因为这两个部分其实对能力的要求是不同的。对于<strong>排版设计</strong>而言，更多的要求体现在美学素养和排版积累上面；对于<strong>排版实现</strong>而言，更多的体现在PPT工具的流畅使用和对素材的检索能力上面。如果把制作PPT看成浑然一体的一个东西，很容易陷入“太复杂了，选择太多了，我不行”的困境，而将其分开来看，则可以逐个击破，达到提高PPT水平的目的。</p>
+<h3 id="1-2-PPT-中的信息"><a href="#1-2-PPT-中的信息" class="headerlink" title="1.2 PPT 中的信息"></a>1.2 PPT 中的信息</h3><p>​    PPT 与论文的信息是不同的，其<strong>本质区别</strong>在于，论文中呈现了作者想要表达的全部的信息，而 PPT 只有作者想要表达的部分信息，另一部分信息需要通过作者的<strong>讲演</strong>来进行传递。所以对于呈现在 PPT 上的信息，我觉得只有两种（稍微不严谨，下一段修正），一种是<strong>提纲</strong>，即文本内容的提纲，表现为<strong>无序列表</strong>的形式；另一种是图表，用来<strong>直观</strong>的提供信息，图表包括：图标、图片、表格、概念图、衬板等设计元素。</p>
+<p>​    此外，PPT 与 论文还有一个重要区别是论文是<strong>静态</strong>的，而 PPT 是动态的，这就要求 PPT 可以有时间序列上的设计（即哲学思想：人不可能踏入相同的河流）。比较直观的是动画的设计，其次还有一些<strong>强调</strong>设计，比如说下面的示例：</p>
+<p><img src="/posts/e014a0a/image-20220210173409474.png" alt="image-20220210173409474"></p>
+<p><img src="/posts/e014a0a/image-20220210173444749.png" alt="image-20220210173444749"></p>
+<p>​    这两张幻灯片的相似度即高，可以说当进行幻灯片切换的时候，让人又一种橘色光标由 HHC 移位到 ROCm 上的感觉，这就是动态的感觉。</p>
+<p>​    这只是动态的一种巧妙利用，我因为也是刚刚入门，所以只是粗浅的记录一下小小的心得，以后有机会再补充。</p>
+<h3 id="1-3-PPT-的提高"><a href="#1-3-PPT-的提高" class="headerlink" title="1.3 PPT 的提高"></a>1.3 PPT 的提高</h3><p>​    PPT 的排版设计跟所有的艺术创作一样，技术的高低跟记忆的数量有很大关系，面对一个题目，能不能迅速反应出相应的解决办法，是衡量水平的最重要评判标准。于此同时，排版设计有充满了固定性，只要稍微积累一些<strong>套路</strong>，就可以制作出工业级的PPT，可以说学习的周期和门槛并不高。</p>
+<p>​    PPT 的排版实现其实也不难，只是市面上的教程多为<strong>奇技淫巧</strong>，比如说用形状画一个蒙娜丽莎之类的在实践中完全不会用到的东西，或者是极其炫酷的动画，我反正觉得没啥用。实现应该看重的是<strong>效率</strong>，那么其实是操作的快捷键和母版的设计占大头，这个东西，当越精越好。</p>
+<hr>
+<h2 id="二、PPT-结构"><a href="#二、PPT-结构" class="headerlink" title="二、PPT 结构"></a>二、PPT 结构</h2><p>如果只是工作型PPT的话，那么可以将一个PPT的不同slide进行如下分类：</p>
+<ul>
+<li>封面页</li>
+<li>目录页</li>
+<li>过渡页</li>
+<li>正文页</li>
+<li>结尾页</li>
+</ul>
+<p>而每一种类型会分别对应特定的文字内容和排版设计，这个部分其实就是<strong>套路</strong>的积攒。</p>
+<h3 id="2-1-封面页"><a href="#2-1-封面页" class="headerlink" title="2.1 封面页"></a>2.1 封面页</h3><p><strong>全图型</strong>的封面是心头好啊，包括的元素是</p>
+<ul>
+<li>一张高清的背景图</li>
+<li>一个半透明的，主体颜色的衬布（衬布要是还有边缘的衬线就更好了）</li>
+<li>一个标题</li>
+</ul>
+<p><img src="/posts/e014a0a/image-20220210112013792.png" alt="image-20220210112013792"></p>
+<p><strong>半图型</strong>感觉会跟目录页冲突，</p>
+<p><img src="/posts/e014a0a/image-20220210193713202.png" alt="image-20220210193713202"></p>
+<p>​    要是找不到图，那么可以用大色块来充数，注意后面的图案，其实是<strong>图标放大</strong>的效果，可以说是非常牛逼了，商务感一下子就出来了。</p>
+<p><img src="/posts/e014a0a/image-20220210193858916.png" alt="image-20220210193858916"></p>
+<p>​    <strong>图片墙</strong>也是一种好方法，其实不用垫一层蒙版，直接选择中间部分敲标题也不是不行</p>
+<p><img src="/posts/e014a0a/v2-38a246c40727b3e3d1a32361ea56f30b_r.jpg" alt="preview"></p>
+<h3 id="2-2-目录页"><a href="#2-2-目录页" class="headerlink" title="2.2 目录页"></a>2.2 目录页</h3><p>首先明晰目录中有哪些元素</p>
+<p><img src="/posts/e014a0a/v2-b740f34ff80cfadb338169ba46a665c3_r.jpg" alt="preview"></p>
+<p>我们的设计其实就是围绕这三个元素进行的。</p>
+<p>最简单的是<strong>半图型</strong>，包括：</p>
+<ul>
+<li>半个高清图</li>
+<li>一个主题颜色的衬板</li>
+<li>一些分割线，用于使目录挺拔</li>
+<li>不同小节前的图标（这个图标其实可以按时后面的内容形式）</li>
+<li>节标题</li>
+</ul>
+<p><img src="/posts/e014a0a/image-20220210194401515.png" alt="image-20220210194401515"></p>
+<p>​    当然这种形式的目录所包含的信息会比较少，而且冲击力就很弱，而且太依赖图片。</p>
+<p>​    四图型对信息的包含度会更高，而且更牛逼，而且可以兼有更多的信息。</p>
+<p><img src="/posts/e014a0a/v2-a0fc26fafcfe9e3aac1b4deb7686d137_r.jpg" alt="preview"></p>
+<p>​    <strong>奇异型</strong>属于是骚出天际</p>
+<p><img src="/posts/e014a0a/image-20220210195003354.png" alt="image-20220210195003354"></p>
+<p>​    如果啥图都没有的话，那么就一定要利用好图标和色块，这样才能让整个目录页显得有条理：（这个slide没有<strong>线</strong>的元素，加上会更好），这张还为了提高逼格，用了大写英文。</p>
+<p><img src="/posts/e014a0a/v2-0bf9a01d9f8ff5995998661e218ae693_r.jpg" alt="preview"></p>
+<h3 id="2-3-过渡页"><a href="#2-3-过渡页" class="headerlink" title="2.3 过渡页"></a>2.3 过渡页</h3><p>​    这是我自己想到的，用来将演讲的结构划分的更加彻底（我不太喜欢顶部进度条的形式），所以只想出了一种设计，其实就是封面设计的退化版，这章里面用到了六边形衬布，并且把目录序号移到背景中，防止对题目造成干扰</p>
+<p><img src="/posts/e014a0a/image-20220210201206220.png" alt="image-20220210201206220"></p>
+<p>​    上面这种虽然很帅，但是蕴含的信息太少了，如果PPT的体积比较庞大的话，除了每节的标题以外，还有属于每一节的小标题，其实都可以在过渡页上显示，比如：</p>
+<p><img src="/posts/e014a0a/image-20220213151938090.png" alt="image-20220213151938090"></p>
+<p>​    这样处理的话，小标题信息也可以得到处理。甚至可以用“强调”的方式说明比较重要的小标题。</p>
+<h3 id="2-4-正文页"><a href="#2-4-正文页" class="headerlink" title="2.4 正文页"></a>2.4 正文页</h3><p>​    正文页比较关键的配置是“<strong>进度提示符</strong>”，比如说底下这个slide左上角提示这张slide属于“计算单元”这一节中的“CU结构”这一部分。</p>
+<p>​    此外，正文页中因为信息会比较多，所以跟要求大量的信息能够层次分明的显示，必须有所<strong>强调</strong>，强调的方法比较常见的：</p>
+<ul>
+<li>单独把强调内容放到一个色块中</li>
+<li>用主体色强调内容</li>
+<li>用加粗或者斜体强调</li>
+<li>用不同字体强调</li>
+</ul>
+<p><img src="/posts/e014a0a/image-20220210201413251.png" alt="image-20220210201413251"></p>
+<p>​    上面这个slide采用的是高清图加半透明蒙版的设置，我觉得还行。    </p>
+<p>​    如果是大段的文本信息，那么显然适合简单的无序列表的SmartArt就没法用来摆烂了，所以可以下图方法进行处理，简约整齐：</p>
+<p><img src="/posts/e014a0a/image-20220213152314031.png" alt="image-20220213152314031"></p>
+<p>​    或者再花哨一些：</p>
+<p><img src="/posts/e014a0a/image-20220213152352771.png" alt="image-20220213152352771"></p>
+<h3 id="2-5-结尾页"><a href="#2-5-结尾页" class="headerlink" title="2.5 结尾页"></a>2.5 结尾页</h3><p>​    我个人觉得，如果是科研PPT，那么全篇没有图是一个很正常的现象，那么如果不骚一下实在难受，所以想到可以在结尾的时候骚一下。</p>
+<p><img src="/posts/e014a0a/image-20220213152941685.png" alt="image-20220213152941685"></p>
+<p>​    高清图加半透明蒙版，骚一下很开行。</p>
+<hr>
+<h2 id="三、PPT-技术"><a href="#三、PPT-技术" class="headerlink" title="三、PPT 技术"></a>三、PPT 技术</h2><h3 id="3-1-快捷键"><a href="#3-1-快捷键" class="headerlink" title="3.1 快捷键"></a>3.1 快捷键</h3><ul>
+<li><code>Ctrl + G</code> 合并形状，<code>Ctrl + Shift + G</code> 解除合并形状。</li>
+<li><code>Ctrl + 鼠标点击</code> 拖拽多重复制。</li>
+</ul>
+<h3 id="3-2-资源网站"><a href="#3-2-资源网站" class="headerlink" title="3.2 资源网站"></a>3.2 资源网站</h3><ul>
+<li>灵感：www.zcool.com.cn</li>
+<li>图标：<a target="_blank" rel="noopener external nofollow noreferrer" href="http://iconfont.cn">http://iconfont.cn</a> （其实PPT内置的图标搜索功能还行）</li>
+<li>高清图片搜索：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://pixabay.com/">https://pixabay.com/</a></li>
+<li>普通图片搜索：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://cn.bing.com/images/trending?form=Z9LH（**过滤器功能强大**）">https://cn.bing.com/images/trending?form=Z9LH（**过滤器功能强大**）</a></li>
+<li>配色：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.materialpalette.com/colors">https://www.materialpalette.com/colors</a></li>
+<li>模板：<a target="_blank" rel="noopener external nofollow noreferrer" href="http://www.yanj.cn/">http://www.yanj.cn/</a></li>
+</ul>
+<p>​    有了资源网站还不够，还必须要<strong>学会搜索素材</strong>，比如说如果直接搜GPU，并不会跳出很多好东西，但是如果搜芯片，图片会更多，但是科技感不够，那么如果搜《黑客帝国》，那么就很容易解决问题了。如果搜索的东西是比较抽象的，比如“努力”，那么不如<strong>联想</strong>到其他具象的事务中，比如马拉松，但是要是我，我就搜《爆裂鼓手》。</p>
+<h3 id="3-3-使用母版"><a href="#3-3-使用母版" class="headerlink" title="3.3 使用母版"></a>3.3 使用母版</h3><p>​    母版其实就是网上说的模板的<strong>原理</strong>，这是一种特殊的视图，这样打开</p>
+<p><img src="/posts/e014a0a/image-20220210204947802.png" alt="image-20220210204947802"></p>
+<p>​    打开以后就会发现类似于PPT的slide，其实就是<strong>样式</strong>的概念，如下</p>
+<p><img src="/posts/e014a0a/image-20220210205057410.png" alt="image-20220210205057410"></p>
+<p>​    有两种插入操作，一种是插入母版（就是直接插入一整套样式），一种是插入版式，就是插入一个类型（比如封面，目录页啥的）。然后当回到普通模式之后，可以用一下操作调用设置好的版式：</p>
+<p><img src="/posts/e014a0a/image-20220210205355751.png" alt="image-20220210205355751"></p>
+<p>​    需要注意的是，版式的内容在正常模式下是没有办法修改的，除非使用<strong>占位符</strong>。</p>
+<h3 id="3-4-SmartArt"><a href="#3-4-SmartArt" class="headerlink" title="3.4 SmartArt"></a>3.4 SmartArt</h3><p>​    只能所SmartArt的应用很神奇，我并没有完全掌握，只能说这样可以用：</p>
+<p><img src="/posts/e014a0a/image-20220210210318208.png" alt="image-20220210210318208"></p>
+<p>​    对于修改SmartArt中的内容，可以采用这种方式：</p>
+<p><img src="/posts/e014a0a/image-20220213153113375.png" alt="image-20220213153113375"></p>
+<p>​    点击左侧的箭头，可以在弹出的侧栏修改内容。</p>
+<hr>
+<h2 id="四、排版思想"><a href="#四、排版思想" class="headerlink" title="四、排版思想"></a>四、排版思想</h2><h3 id="4-1-重章叠句"><a href="#4-1-重章叠句" class="headerlink" title="4.1 重章叠句"></a>4.1 重章叠句</h3><p>​    具体的原理已经在 1.2 节举例的时候介绍过了，就不在此赘述了。</p>
+<h3 id="4-2-配色"><a href="#4-2-配色" class="headerlink" title="4.2 配色"></a>4.2 配色</h3><p>​    首先科普一下颜色的知识，颜色有三个维度：<strong>色相，明度，灰度</strong>，色相就是用三原色不同比例调出来的颜色，明度是往颜色里面混黑色或者白色，灰度是往颜色里面混灰色。</p>
+<p>​    然后关于不同颜色的关系，大概就是这样：</p>
+<p><img src="/posts/e014a0a/image-20220210210718030.png" alt="image-20220210210718030"></p>
+<p>​    同一个PPT，最好不出现多于5中颜色，而且最好确定一个主题色。</p>
+<h3 id="4-3-字体选择"><a href="#4-3-字体选择" class="headerlink" title="4.3 字体选择"></a>4.3 字体选择</h3><p>​    一般所有的字都用黑体，黑体中我偏爱微软雅黑。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Thysrael</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://thysrael.github.io/posts/e014a0a/">https://thysrael.github.io/posts/e014a0a/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Thysrael</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/S3%E5%81%87%E6%9C%9F/">
+                                    <span class="chip bg-color">S3假期</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%8A%9E%E5%85%AC%E5%B7%A5%E5%85%B7/">
+                                    <span class="chip bg-color">办公工具</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/">
+                                    <span class="chip bg-color">工具总结</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/posts/3a4ac657/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/039.jpg" class="responsive-img" alt="数学建模-美赛论文结构">
+                        
+                        <span class="card-title">数学建模-美赛论文结构</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" class="post-category">
+                                    数学建模
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/S3%E5%81%87%E6%9C%9F/">
+                        <span class="chip bg-color">S3假期</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/">
+                        <span class="chip bg-color">数学建模</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/posts/ed48217/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/015.jpg" class="responsive-img" alt="算法设计-单调队列">
+                        
+                        <span class="card-title">算法设计-单调队列</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                    算法设计
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                        <span class="chip bg-color">知识总结</span>
+                    </a>
+                    
+                    <a href="/tags/S3%E5%81%87%E6%9C%9F/">
+                        <span class="chip bg-color">S3假期</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/">
+                        <span class="chip bg-color">算法设计</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('5'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2022</span>
+            
+            <a href="/about" target="_blank">Thysrael</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" rel="external nofollow noreferrer" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" rel="external nofollow noreferrer" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">384.4k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "12";
+                        var startDate = "18";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'en';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2470583476@qq.com" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

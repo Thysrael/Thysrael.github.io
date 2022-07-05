@@ -1,0 +1,1252 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="离散数学-图论, 编程,系统,旅游">
+    <meta name="description" content="​    有些东西可能是离散数学这门学科的通病。相比于高数或者线代，有一定在物理上的应用场景，而且其精神，比如说无穷，比如说代数系统，很容易被理解，而且很容易为我所用。离散这门学科没有一个中心，没有一个明确的思想（也可能是我没有发现），没有">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>离散数学-图论 | 钟鼓楼</title>
+    <link rel="icon" type="image/png" href="/wall.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/wall.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">钟鼓楼</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/wall.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">钟鼓楼</div>
+        <div class="logo-desc">
+            
+            Can you hear me ?
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Welcome
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #546e7a;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/Thysrael" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Welcome" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/025.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">离散数学-图论</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: scroll;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #546e7a;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #546e7a;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                                <span class="chip bg-color">知识总结</span>
+                            </a>
+                        
+                            <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                                <span class="chip bg-color">S3复习</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/">
+                                <span class="chip bg-color">离散数学</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" class="post-category">
+                                离散数学
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2021-12-29
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2022-01-16
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    4.1k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    14 Min
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>​    有些东西可能是离散数学这门学科的通病。相比于高数或者线代，有一定在物理上的应用场景，而且其精神，比如说无穷，比如说代数系统，很容易被理解，而且很容易为我所用。离散这门学科没有一个中心，没有一个明确的思想（也可能是我没有发现），没有具体的应用场景（可能在算法里有用吧），学科的体系感也不强（可能是我接触的比较浅的缘故）。正因为如此，图论才如此难学，而且我参考了三本书，有的时候三本书对于同一个定义都具有不同的诠释，这更使我觉得，我<strong>没有搞清楚离散到底在研究什么？</strong>这个核心问题，许多困难与辨析，都是因为诸多“表象”，而通过表象洞彻本质，才能从万变中发现永恒。而这些都是我没有做到的，所以我写下了这篇文章，希望可以边写，边领悟其中的真意。</p>
+<blockquote>
+<p><strong>图的最本质内容是一种二元关系</strong>。</p>
+<p>为了直观形象地理解图的结构和性质，总是用图形来表示一个图。</p>
+</blockquote>
+<p>​    这句话是否说明，“图并不本质”，我们去对一个客观事物建模的时候，不应该先用他是不是一个图来考量，而是应该用他是不是一个二元关系来考量。这或许是一个很好的点。</p>
+<p>​    图作为一个数学概念，其可以用来描述的客观事物一定是不胜枚举的。但是仅仅用图去描述现实中的地图、人际关系网，是不是有点形而下学了。如果用图俩描述流程图，或者解题图，会不会别有一番天地。突然想到，马尔可夫链也可以看做是图的一个应用，每一个随机过程，对应一个路径。</p>
+<p>​    王兵山三元组图一生黑！！！<br><span id="more"></span></p>
+<h2 id="一、描述图"><a href="#一、描述图" class="headerlink" title="一、描述图"></a>一、描述图</h2><h3 id="1-1-图的组成"><a href="#1-1-图的组成" class="headerlink" title="1.1 图的组成"></a>1.1 图的组成</h3><p>​    这里存在两种说法，一种是认为图是一个由节点和边组成的<strong>二元组</strong> $(V,E)$，对于无向图来说，边是一个含有两个顶点的集合，而对于有向图来说，边是一个含有两个节点的序偶。这种说法比较符合我们的直观认知，但是有一个缺陷，就是对于<strong>平行边</strong>，也就是起点和终点相同的边，这种描述就很难区分这种情况。所以有了王兵山<strong>三元组</strong>定义，也就是 $(V,E,\Psi)$ ，包括节点，边，和映射关系，这种映射关系并不要求双射，所以可以把不同的边映射到相同的起点和终点的集合或者序偶中。</p>
+<h3 id="1-2-关系的描述"><a href="#1-2-关系的描述" class="headerlink" title="1.2 关系的描述"></a>1.2 关系的描述</h3><p>​    <strong>关联</strong>：描述的是顶点和边的关系，顶点是边的终点或者起点，那么这个边和这个点就是关联的。</p>
+<p>​    <strong>邻接</strong>：描述的是顶点和顶点，边和边之间的关系。如果点与点之间通过边连接，那么这两个点就是邻接的。如果边与边通过顶点连接，那么这两个边就是邻接的。</p>
+<p>​    <strong>度</strong>：用来衡量顶点的关系的多少的一个量，在有向图中，又分为出度和入度。为什么要引入这么一个度量呢，是因为这个度量比较弱，我们知道度，但是还不知道这个图具体什么样子，但是同时又比较强，因为图就那么几种，知道了度的信息，就可以发现一些规律了。宽松的说，<strong>各个节点度越高的图，边数越多</strong>。如果反应到图的矩阵表示法，度其实是对矩阵的行或者列的元素的求和。</p>
+<h3 id="1-3-特殊的节点、边、图"><a href="#1-3-特殊的节点、边、图" class="headerlink" title="1.3 特殊的节点、边、图"></a>1.3 特殊的节点、边、图</h3><h4 id="1-3-1-特殊的点"><a href="#1-3-1-特殊的点" class="headerlink" title="1.3.1 特殊的点"></a>1.3.1 特殊的点</h4><p>​    <strong>孤立点</strong>：度为0的节点被称为孤立点。</p>
+<p>​    <strong>端点</strong>：度为1的节点被称为端点。</p>
+<h4 id="1-3-2-特殊的边"><a href="#1-3-2-特殊的边" class="headerlink" title="1.3.2 特殊的边"></a>1.3.2 特殊的边</h4><p>​    <strong>自圈</strong>：如果边的起点和终点都相同，那么就称这条边为自圈。</p>
+<p>​    <strong>平行边</strong>：如果两条边的起点相同，而且终点相同，那么就称这两条边为平行边。</p>
+<h4 id="1-3-3-特殊的图"><a href="#1-3-3-特殊的图" class="headerlink" title="1.3.3 特殊的图"></a>1.3.3 特殊的图</h4><p>​    <strong>简单图</strong>：如果一个图既无自圈，又无平行边，那么就称这个图为简单图。简单图其实是一个很好的条件，他使得鸽巢原理，反证法等一系列证明方法得以应用。可以说，我们后面大部分的篇幅，都讨论的是<strong>简单图</strong>的性质。这也使得三元组的定义形式，显得那么的冗余。</p>
+<p>​    <strong>零图</strong>：节点都是<strong>孤立点</strong>的图称为零图。零图可以有很多个节点，但是每个节点之间都没有边（即“零边图”）。</p>
+<p>​    <strong>平凡图</strong>：只有一个节点的图被称为平凡图，这个具体应用的时候常以<strong>非平凡图</strong>的形式在题目描述中出现，主要是为了排除这种特殊的情况。</p>
+<p>​    <strong>d 度正则图</strong>：所有节点的度均为 d 的图被称为 d 度正则图。</p>
+<p>​    <strong>完全图</strong>：如果有 n 个节点的图是 n - 1 度的正则图，那么就称这个图为完全图，记为 $K_n$ ，如果是完全有向图，那么就是出度和入度均为 n - 1。</p>
+<h3 id="1-4-图同构"><a href="#1-4-图同构" class="headerlink" title="1.4 图同构"></a>1.4 图同构</h3><p>​    具有 n 个节点的图称为 n 阶图。</p>
+<p>​    图同构的概念就很好理解，所以就不说了，关键是有一个直观认识，就是其实当 n 较小的时候，同构图的种类挺少的。</p>
+<p>​    此外，如果是同构的图，那么其矩阵表示经过行列变化，是可以化成一个相同的矩阵的。</p>
+<h3 id="1-5-子图"><a href="#1-5-子图" class="headerlink" title="1.5 子图"></a>1.5 子图</h3><h4 id="1-5-1-子图和真子图"><a href="#1-5-1-子图和真子图" class="headerlink" title="1.5.1 子图和真子图"></a>1.5.1 子图和真子图</h4><p>​    我们引入子图的概念乍一看上去是为了研究<strong>局部图</strong>，可是局部图是很有讲究的，因为图里面既包括点，有包括边，那么到底谁是局部，我认为，我们研究的对象其实是<strong>边</strong>，或者说，是<strong>以边为主体</strong>开展研究的。这种感觉很玄妙，我难以说明白。</p>
+<p>​    <strong>真子图</strong>的要求是只限制边的，边必须是母图的真子集。而并没有对点做出任何要求。</p>
+<h4 id="1-5-2-生成子图"><a href="#1-5-2-生成子图" class="headerlink" title="1.5.2 生成子图"></a>1.5.2 生成子图</h4><p>​    生成子图要求顶点集必须与母图的顶点集相等，然后其他并无要求。也就是说，我们将母图删去任意条边，或者不删除边，都可以得到生成子图。可以看出，生成子图描述的是去掉一些联系后，之后的个体的状况。生成子图的连通性会变差或者不变。</p>
+<h4 id="1-5-3-导出子图"><a href="#1-5-3-导出子图" class="headerlink" title="1.5.3 导出子图"></a>1.5.3 导出子图</h4><p>​    导出子图更像是一种基于原图<strong>构造新图</strong>的方式。一共有两种构造方式，一个是基于点集。我们选择母图的点集的一个子集，所以与这个子集相关联的边都会被放到这个新图中。另一个是基于边集，我们选择边集的一个真子集，然后所有与这个边集相关联的点，都会被放到这个新图中。</p>
+<p>​    我虽然觉得<strong>生成子图</strong>和<strong>导出子图</strong>很有用处，但是实际是，在后面的证明题中，他们并没有发挥任何作用，可能再以后的应用中他们会比较起作用吧。</p>
+<h3 id="1-6-图的运算"><a href="#1-6-图的运算" class="headerlink" title="1.6 图的运算"></a>1.6 图的运算</h3><p>​    这其实对应另一种构造图的方式。</p>
+<h4 id="1-6-1-图的可运算性"><a href="#1-6-1-图的可运算性" class="headerlink" title="1.6.1 图的可运算性"></a>1.6.1 图的可运算性</h4><p>这个的定义挺有意思的：</p>
+<script type="math/tex; mode=display">
+\forall e \in E\cap E^\prime,st\quad \Psi(e) = \Psi^\prime(e)</script><p>​    满足上面这个条件就称为可运算，这个条件看着唬人，如果是二元组，那么所有的图都是具有可运算性的，但是因为三元组每个边都是由标号的，所以必须要保证映射关系的相等才可以。</p>
+<h4 id="1-6-2-不相交"><a href="#1-6-2-不相交" class="headerlink" title="1.6.2 不相交"></a>1.6.2 不相交</h4><p>​    如果有 $E\cap E^\prime = V\cap V^\prime = \emptyset$。那么就说这两个图是<strong>不相交</strong>的，但是需要强调的是，即使是不相交的，依然是可以运算的。</p>
+<p>​    如果有 $E\cap E^\prime = \emptyset$。那么就说这两个图是<strong>边不相交</strong>的，从后面的补图的概念我们就可以看出，图和他的补图就是<strong>边不相交的</strong>，而不是<strong>不相交</strong>的。</p>
+<h4 id="1-6-3-运算"><a href="#1-6-3-运算" class="headerlink" title="1.6.3 运算"></a>1.6.3 运算</h4><p>​    我觉得重要的只有<strong>环和</strong>和<strong>补图</strong>，具体的可以参照教材上的定义。</p>
+<h3 id="1-7-图的矩阵表示"><a href="#1-7-图的矩阵表示" class="headerlink" title="1.7 图的矩阵表示"></a>1.7 图的矩阵表示</h3><h4 id="1-7-1-邻接矩阵"><a href="#1-7-1-邻接矩阵" class="headerlink" title="1.7.1 邻接矩阵"></a>1.7.1 邻接矩阵</h4><p>​    <strong>邻接</strong>这个词就是说的是点与点的关系，所以如果两个点之间有 n 条边，那么对应的矩阵元素就是 n 。后面还有一个用矩阵的 n 次幂表示路径长度为 n 的路径有几条的公式，都挺好理解的，就不赘述了。</p>
+<h4 id="1-7-2-路径矩阵"><a href="#1-7-2-路径矩阵" class="headerlink" title="1.7.2 路径矩阵"></a>1.7.2 路径矩阵</h4><p>​    这个名字就很不直观，他还有另一个名字叫做<strong>可达性矩阵</strong>，其实就是一个bool值矩阵，如果两个节点之间是可达的，那么对应矩阵元素就置 1，否则就置 0。都是很直观的。唯一一个需要留意的，就是我们可以用邻接矩阵来计算路径矩阵，公式如下</p>
+<script type="math/tex; mode=display">
+P = \sum^{n-1}_{i = 1}X^{i}</script><p>​    这个利用了阶为 n 的图中，基本路径的长度最大为 n - 1的性质。</p>
+<h4 id="1-7-3-关联矩阵"><a href="#1-7-3-关联矩阵" class="headerlink" title="1.7.3 关联矩阵"></a>1.7.3 关联矩阵</h4><p>​    <strong>关联</strong>说的就是点与边的关系，关联矩阵的行对应着顶点，列对应着边。当其为有向图的时候，元素可以取1，-1,  0。当其为无向图的时候，元素可以取0,1。</p>
+<p>​    还有一点就是关联矩阵可以包括图的全部信息，而另外两个矩阵并没有这种能力。</p>
+<hr>
+<h2 id="二、连通性"><a href="#二、连通性" class="headerlink" title="二、连通性"></a>二、连通性</h2><p>图的最基本性质之一就是它是否连通。</p>
+<h3 id="2-1-路径"><a href="#2-1-路径" class="headerlink" title="2.1 路径"></a>2.1 路径</h3><p>这个部分写的很糟糕，各个教材并没有一个统一的概念名词，导致出现了各种混淆的情况，我学的很不好。</p>
+<h4 id="2-1-1-简单路径和基本路径"><a href="#2-1-1-简单路径和基本路径" class="headerlink" title="2.1.1 简单路径和基本路径"></a>2.1.1 简单路径和基本路径</h4><p>​    简单路径是指边不重复的路径，而基本路径是指点不重复的路径，基本路径是更强的条件，可以推导出简单路径。我一直怀疑简单路径这个定义存在的必要，它并没有任何应用。</p>
+<p>​    基本回路是有长度限制的，他的最大值是 n - 1。</p>
+<h4 id="2-1-2-回路"><a href="#2-1-2-回路" class="headerlink" title="2.1.2 回路"></a>2.1.2 回路</h4><p>​    如果一条路径的起点和终点相同，那么他就是一条回路，也叫做<strong>闭路径</strong>。让人生气的是，王兵山的书上，对于回路的定义居然是连通的2度正则图，十分的不直观。</p>
+<h4 id="2-1-3-完备性"><a href="#2-1-3-完备性" class="headerlink" title="2.1.3 完备性"></a>2.1.3 完备性</h4><p>​    如果一条路径，其中包含了所有的顶点，那么就称它具有<strong>完备性</strong>。需要注意的是，一个<strong>完备的回路</strong>，并不一定是一个欧拉回路，因为它不一定遍历了所有的边，也不一定是一个哈密顿回路，因为他可能遍历了一个点很多遍，比如那种花朵一样的图。但是一个欧拉回路或者是一个哈密顿回路一定是一个完备回路。</p>
+<h4 id="2-1-4-半路径"><a href="#2-1-4-半路径" class="headerlink" title="2.1.4 半路径"></a>2.1.4 半路径</h4><p>​    如果在一个边的序列中，每个边和序列中下一个边相邻，但是方向不一定一致，那么就称这样的序列为半路径（严格的定义我不想说了，三元组定义太恶心了）。</p>
+<h3 id="2-2-无向图分支"><a href="#2-2-无向图分支" class="headerlink" title="2.2 无向图分支"></a>2.2 无向图分支</h3><p>​    分支就是<strong>极大连通子图</strong>。这里的<strong>极大</strong>容易让人产生歧义，尤其是王兵山的书，过分强调了唯一性。但是其实任何一个不连通的图中最少有两个分支。</p>
+<h3 id="2-3-有向图分支"><a href="#2-3-有向图分支" class="headerlink" title="2.3 有向图分支"></a>2.3 有向图分支</h3><h4 id="2-3-1-强连通分支"><a href="#2-3-1-强连通分支" class="headerlink" title="2.3.1 强连通分支"></a>2.3.1 强连通分支</h4><p>如果对于每一对顶点 $u,v$ ，都可以由 $u$ 到 $v$ ，并且由 $v$ 到 $u$ 。那么，就称这个图是强连通的。</p>
+<p>有向图有一条完备回路，当且仅当它是强联通的。</p>
+<h4 id="2-3-2-有向连通分支"><a href="#2-3-2-有向连通分支" class="headerlink" title="2.3.2 有向连通分支"></a>2.3.2 有向连通分支</h4><p>如果对于每一对顶点 $u,v$ ，都可以由 $u$ 到 $v$ ，或者由 $v$ 到 $u$ 。那么，就称这个图是有向连通的。</p>
+<p>有向图有一条完备通路，当且仅当它是有向连通的。</p>
+<p><img src="/posts/95e7adb6/image-20220107214433063.png" alt="image-20220107214433063"></p>
+<h4 id="2-3-3-弱连通分支"><a href="#2-3-3-弱连通分支" class="headerlink" title="2.3.3 弱连通分支"></a>2.3.3 弱连通分支</h4><p>当有向图的基础图是连通的，那么这个图就是弱连通的。</p>
+<p>有向图有一条完备的半通路，当且仅当它是弱联通的。</p>
+<p><img src="/posts/95e7adb6/image-20220107214413075.png" alt="image-20220107214413075"></p>
+<p>结合出度用到了鸽笼原理</p>
+<p><img src="/posts/95e7adb6/image-20220107214858440.png" alt="image-20220107214858440"></p>
+<hr>
+<h2 id="三、穿程问题"><a href="#三、穿程问题" class="headerlink" title="三、穿程问题"></a>三、穿程问题</h2><p>连通性不关注是怎样连通的，只关注是否连通，这是其与穿程问题最明显的区别，穿程问题对于过程的要求较高。如果以解题来举例，那么连通性回答的是可不可解的问题，而穿程问题回答的是怎样求解的问题。</p>
+<h3 id="3-1-欧拉图"><a href="#3-1-欧拉图" class="headerlink" title="3.1 欧拉图"></a>3.1 欧拉图</h3><p>​    如果每个节点都是偶节点，那么这个图就是欧拉图。注意，这里并没有强调连通性的问题，所以有可能一个欧拉图没有欧拉回路。</p>
+<p>​    如果一个连通图图只有两个奇节点，那么这个图存在一个欧拉路径。</p>
+<p>​    设G是非平凡的连通无向图，G是欧拉图当且仅当G是若干个边不相交的回路之并</p>
+<p>​    G是非平凡的弱连通有向图，G是欧拉有向图，当且仅当G是若干个边不相交的有向回路之并。</p>
+<h3 id="3-2-哈密顿图"><a href="#3-2-哈密顿图" class="headerlink" title="3.2 哈密顿图"></a>3.2 哈密顿图</h3><h4 id="3-2-1-充分条件"><a href="#3-2-1-充分条件" class="headerlink" title="3.2.1 充分条件"></a>3.2.1 充分条件</h4><h5 id="3-2-1-1-基础图为完全图的有向图"><a href="#3-2-1-1-基础图为完全图的有向图" class="headerlink" title="3.2.1.1 基础图为完全图的有向图"></a>3.2.1.1 基础图为完全图的有向图</h5><p>​    基础图为完全图的有向图必有哈密顿回路</p>
+<p><img src="/posts/95e7adb6/image-20211231171022101.png" alt="image-20211231171022101"></p>
+<h5 id="3-2-1-2-欧尔定理"><a href="#3-2-1-2-欧尔定理" class="headerlink" title="3.2.1.2 欧尔定理"></a>3.2.1.2 欧尔定理</h5><p>​    如果 $G$ 是一个有 $n$ 个顶点的简单图，其中 $n\geq3$ ，并且对 $G$ 中每一对不相邻的顶点 $u,v$ 来说，都有 $d(u)+d(v) \geq n$ 。那么 $G$ 有哈密顿回路。</p>
+<p><img src="/posts/95e7adb6/image-20211231171311191.png" alt="image-20211231171311191"></p>
+<h5 id="3-2-1-3-狄拉克定理"><a href="#3-2-1-3-狄拉克定理" class="headerlink" title="3.2.1.3 狄拉克定理"></a>3.2.1.3 狄拉克定理</h5><p>​        如果 $G$ 是一个有 $n$ 个顶点的简单图，其中 $n\geq3$ ，并且每个顶点的度都至少为 $n/2$ 。那么 $G$ 有哈密顿回路。狄拉克定理可以用欧尔定理推导。</p>
+<h4 id="3-2-2-必要条件"><a href="#3-2-2-必要条件" class="headerlink" title="3.2.2 必要条件"></a>3.2.2 必要条件</h4><h5 id="3-2-2-1-黑白点着色法"><a href="#3-2-2-1-黑白点着色法" class="headerlink" title="3.2.2.1 黑白点着色法"></a>3.2.2.1 黑白点着色法</h5><p>​    黑白两种颜色给图中的点着色，使相邻点的色不同。只有当图中黑白点的个数相等或者相差为1的时候，才说明可能存在哈密顿回路。  </p>
+<h5 id="3-2-2-2-去边法"><a href="#3-2-2-2-去边法" class="headerlink" title="3.2.2.2 去边法"></a>3.2.2.2 去边法</h5><p>​    考虑哈密顿回路 $C$， 图中每个结点都恰有两条和它关联的边在 $C$ 上。 因此，可以通过对每个结点去掉“多余的边” 得到。如果不能用这种方法得到，说明一定不存在哈密顿回路。      </p>
+<h4 id="3-2-3-旅行商问题"><a href="#3-2-3-旅行商问题" class="headerlink" title="3.2.3 旅行商问题"></a>3.2.3 旅行商问题</h4><p>​    其实就是求解<strong>完全图</strong>中总权值最小的哈密顿回路。而完全图中的哈密顿回路有 $(n-1)!$ 条，所以时间复杂度过高，所以是一个NP问题。</p>
+<p>​    <strong>中国邮递员问题</strong>说的应该是在一个连通图中，寻找一个<strong>权值最小的欧拉回路</strong>，这道题被中国数学家解决了。</p>
+<hr>
+<h2 id="四、树"><a href="#四、树" class="headerlink" title="四、树"></a>四、树</h2><p>​    树之所以重要，是因为它具有非常简单的结构，又具有许多重要的性质。而且大量的图论问题和实际问题最后都可以归结为对树的研究。</p>
+<h3 id="4-1-生成树"><a href="#4-1-生成树" class="headerlink" title="4.1 生成树"></a>4.1 生成树</h3><h4 id="4-1-1-最小生成树"><a href="#4-1-1-最小生成树" class="headerlink" title="4.1.1 最小生成树"></a>4.1.1 最小生成树</h4><h4 id="4-1-2-圈"><a href="#4-1-2-圈" class="headerlink" title="4.1.2 圈"></a>4.1.2 圈</h4><p>圈的概念是紧密与生成树联系在一起的。</p>
+<h3 id="4-2-有向树与有序树"><a href="#4-2-有向树与有序树" class="headerlink" title="4.2 有向树与有序树"></a>4.2 有向树与有序树</h3><h4 id="4-2-1-有向树"><a href="#4-2-1-有向树" class="headerlink" title="4.2.1 有向树"></a>4.2.1 有向树</h4><h4 id="4-2-2-有序树"><a href="#4-2-2-有序树" class="headerlink" title="4.2.2 有序树"></a>4.2.2 有序树</h4><p>关于<strong>有序树</strong>和<strong>定位有序树</strong>的区别，这张图片给出了很好的解释</p>
+<p><img src="/posts/95e7adb6/image-20211231174139749.png" alt="image-20211231174139749"></p>
+<h3 id="4-3-二叉树"><a href="#4-3-二叉树" class="headerlink" title="4.3 二叉树"></a>4.3 二叉树</h3><h4 id="4-3-1-n-元有向树"><a href="#4-3-1-n-元有向树" class="headerlink" title="4.3.1 n 元有向树"></a>4.3.1 n 元有向树</h4><p>​    出度最大为n。</p>
+<h4 id="4-3-2-完全-n-元有向树"><a href="#4-3-2-完全-n-元有向树" class="headerlink" title="4.3.2 完全 n 元有向树"></a>4.3.2 完全 n 元有向树</h4><p>​    出度要么是n，要么是0。完全 n 元有向树又称<strong>二叉树</strong>。</p>
+<h4 id="4-3-3-最优二叉树"><a href="#4-3-3-最优二叉树" class="headerlink" title="4.3.3 最优二叉树"></a>4.3.3 最优二叉树</h4><p>​    Huffman编码。</p>
+<h4 id="4-3-4-前缀编码"><a href="#4-3-4-前缀编码" class="headerlink" title="4.3.4 前缀编码"></a>4.3.4 前缀编码</h4><p>​    左0右1.</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Thysrael</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://thysrael.github.io/posts/95e7adb6/">https://thysrael.github.io/posts/95e7adb6/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Thysrael</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                                    <span class="chip bg-color">知识总结</span>
+                                </a>
+                            
+                                <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                                    <span class="chip bg-color">S3复习</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/">
+                                    <span class="chip bg-color">离散数学</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/posts/b7316cb8/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/041.jpg" class="responsive-img" alt="基物实验-误差与不确定度">
+                        
+                        <span class="card-title">基物实验-误差与不确定度</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ​    对物理现象、状态或者过程中各种物理量的准确测量是实验物理学中的核心任务。
+​    误差是反映测量结果好坏的最直接判据。
+​    因为误差的存在，客观本身就是一种理想。
+​    这个部分真的应该是在做基物实验之前就开始看，而不
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%9F%BA%E7%89%A9%E5%AE%9E%E9%AA%8C/" class="post-category">
+                                    基物实验
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                        <span class="chip bg-color">知识总结</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%9F%BA%E7%89%A9%E5%AE%9E%E9%AA%8C/">
+                        <span class="chip bg-color">基物实验</span>
+                    </a>
+                    
+                    <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">S3复习</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/posts/b89e4347/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/031.jpg" class="responsive-img" alt="概率统计-相与命运">
+                        
+                        <span class="card-title">概率统计-相与命运</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ​    我们引入条件概率，最重要的原因是因为在客观世界中，有的时候我们获得不了普通概率，只能获得条件概率。
+​    条件概率就是限定了条件，然后再讨论在固定的条件下，某件事情发生的概率。
+​    在引入了条件概率之后，我们才有了独立性
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" class="post-category">
+                                    概率统计
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                        <span class="chip bg-color">知识总结</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/">
+                        <span class="chip bg-color">直观理解</span>
+                    </a>
+                    
+                    <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">S3复习</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/">
+                        <span class="chip bg-color">概率统计</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('5'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2022</span>
+            
+            <a href="/about" target="_blank">Thysrael</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" rel="external nofollow noreferrer" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" rel="external nofollow noreferrer" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">384.4k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "12";
+                        var startDate = "18";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'en';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2470583476@qq.com" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

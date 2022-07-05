@@ -1,0 +1,1286 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="大学物理-振动与波, 编程,系统,旅游">
+    <meta name="description" content="​    这章的组织其实是一个失误，因为在教材或者真的逻辑体系下，振动和波都是应该分为两个章节来讲的，但是因为这是我在授课期间匆忙之中完成的总结，所以将两个部分合到了一起，但是其实两章有明显的不同。
+​    在振动这一章，我们的逻辑是简单">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>大学物理-振动与波 | 钟鼓楼</title>
+    <link rel="icon" type="image/png" href="/wall.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/wall.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">钟鼓楼</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/wall.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">钟鼓楼</div>
+        <div class="logo-desc">
+            
+            Can you hear me ?
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Welcome
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #546e7a;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/Thysrael" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Welcome" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/029.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">大学物理-振动与波</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: scroll;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #546e7a;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #546e7a;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                                <span class="chip bg-color">知识总结</span>
+                            </a>
+                        
+                            <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                                <span class="chip bg-color">S3复习</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/">
+                                <span class="chip bg-color">大学物理</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" class="post-category">
+                                大学物理
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2021-12-22
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2022-01-16
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    3.8k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    14 Min
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>​    这章的组织其实是一个失误，因为在教材或者真的逻辑体系下，振动和波都是应该分为两个章节来讲的，但是因为这是我在授课期间匆忙之中完成的总结，所以将两个部分合到了一起，但是其实两章有明显的不同。</p>
+<p>​    在振动这一章，我们的逻辑是简单的，复杂的是计算，拥有了微分方程等工具的我们，不仅可以可以考虑谐振动这种简单的情况，还可以考虑阻尼振动，受迫振动，合成振动，二维振动多种形式。</p>
+<p>​    在波这一章，计算是简单的，最难的只是和差化积公式，但是有一大堆新的概念需要理解，比如驻波，波的强度，波的能量，半波损失，惠更斯原理。这些新引入的概念为后面的波动光学打下来基础。    </p>
+<p>​    矢量作图法是一个很好的方法。</p>
+<span id="more"></span>
+<h2 id="一、谐振动"><a href="#一、谐振动" class="headerlink" title="一、谐振动"></a>一、谐振动</h2><h3 id="1-1-公式"><a href="#1-1-公式" class="headerlink" title="1.1 公式"></a>1.1 公式</h3><script type="math/tex; mode=display">
+\omega = \sqrt{\frac km}\\
+x = A\cos(\omega t + \phi_0)</script><p>​    可以看到在最原始的式子里，角频率的求解是直接从牛顿第二定理中推出的，求解一个二次微分方程，因为特征方程仅有虚根，所以解呈现三角函数的形式。</p>
+<p>​    直观的看，当质量比较小，弹性系数比较大的时候，角频率是会变大的，也就是说，质量小、弹性系数高的振子振动的更快，这也与直观认识相符合。</p>
+<p>​    但是这个式子里面还有振幅和初相没有求解，我们给定位移和速度，其实只可以列式子，还是没有办法求出的，书上的公式如下，是给错了</p>
+<script type="math/tex; mode=display">
+A = \sqrt{x_0^2 + \frac{v_0^2}{\omega x_0}}\\
+\phi_0 = \arctan(-\frac{v_0}{\omega x_0})</script><p>​    主要是初相不确定，正确的应该写成</p>
+<script type="math/tex; mode=display">
+\phi_0 = \arctan(-\frac{v_0}{\omega x_0}) + k\pi</script><p>​    这是因为初相的范围区间是 $2\pi$，这里我约定初相的范围是 $(-\pi,\pi]$ ，所以初相仅凭借两个已知量存在多解的情况（如果范围是 $\pi$ ，那么就完全不存在这个问题，这个是反三角函数的局限性）。如果想要确定这个式子，还需要知道速度的方向（也就是要知道<strong>速度向量</strong>和<strong>位移向量</strong>，就可以求解振动方程）。</p>
+<p>​    如果想要得到速度与时间的关系，或者是加速度与时间的关系，直接对时间求导即可，需要注意的是<strong>速度幅值</strong>和<strong>加速度幅值</strong>的概念，即最大速度和最大加速度，有</p>
+<script type="math/tex; mode=display">
+v_m = \omega A, \quad a_m = \omega^2A</script><h3 id="1-2-谐振动的能量"><a href="#1-2-谐振动的能量" class="headerlink" title="1.2 谐振动的能量"></a>1.2 谐振动的能量</h3><script type="math/tex; mode=display">
+E_k = \frac 12 m v^2 = \frac 12 m \omega^2 A^2\sin^2(\omega t + \phi_0)\\
+E_p = \frac 12 k x^2 = \frac 12 k A^2 \cos^2(\omega t + \phi_0)\\
+E = E_k + E_p = \frac 12 k A^2</script><p>​    可以看到推导还是很简单的，比较直观的是尽管动能和势能都是三角变化（可以降幂，周期缩小一倍）。但是总能量不变，这是因为自由振动是遵循<strong>能量守恒</strong>的。</p>
+<h3 id="1-3-矢量作图法"><a href="#1-3-矢量作图法" class="headerlink" title="1.3 矢量作图法"></a>1.3 矢量作图法</h3><p>​    之所以说矢量作图法很好，我觉得其优点有两点，第一个一张图，就可以表示振动几乎所有的信息，举个例子，有图</p>
+<p><img src="/posts/b1f455da/image-20211207185451326.png" alt="image-20211207185451326"></p>
+<p>对于以下信息：</p>
+<ul>
+<li>位移大小，即向量在x轴的投影</li>
+<li>位移方向，即向量在x轴投影的正负</li>
+<li>速度大小，虽然不能直接读出，但是可以知道向量终点到x轴的距离为 $h = \frac v\omega$ ，所以距离越大，速度越大</li>
+<li>速度方向，规定振动矢量图一般沿逆时针旋转，那么位移变化的方向就是速度的方向</li>
+<li>相位，即向量与x轴的夹角，这里规定相位的取值范围是 $(-\pi,\pi]$</li>
+<li>能量：投影越大，势能越大，相应的动能越小。也可以直接看向量终点到x轴的距离</li>
+</ul>
+<p>​    矢量作图还有一个优势在于处理多振动合成的时候，十分简洁，在后面介绍。</p>
+<h3 id="1-4-常见的谐振动"><a href="#1-4-常见的谐振动" class="headerlink" title="1.4 常见的谐振动"></a>1.4 常见的谐振动</h3><h4 id="1-4-1-单摆"><a href="#1-4-1-单摆" class="headerlink" title="1.4.1 单摆"></a>1.4.1 单摆</h4><script type="math/tex; mode=display">
+T = 2\pi \sqrt{\frac lg}</script><p>​    可以看到，还是挺直观的，单摆的绳子越长，周期就越长。</p>
+<p>​    除了<strong>单摆</strong>和<strong>弹簧</strong>以外，还有一种常见的单摆是<strong>船的竖直振动模型</strong>。<strong>浮力</strong>作为回复力，方程也很好列。</p>
+<script type="math/tex; mode=display">
+T = 2\pi\sqrt\frac{m}{\rho S g}</script><p>​    其中 $\rho$ 是水的密度，$S$ 是船的平均水平截面积。</p>
+<h4 id="1-4-2-复摆"><a href="#1-4-2-复摆" class="headerlink" title="1.4.2 复摆"></a>1.4.2 复摆</h4><p>​    一个可以绕固定轴摆动的刚体称为<strong>复摆</strong>，也叫做物理摆。其中 $h$ 是重心到转轴的距离，$J$ 是转动惯量。</p>
+<script type="math/tex; mode=display">
+T = 2\pi \sqrt{\frac{J}{mgh}}</script><p>​    这个公式也用到了 $\theta = \sin\theta$ 的近似，但是要说全部自己推，在考场上难度我觉得有一点大，只是记下了。</p>
+<script type="math/tex; mode=display">
+\frac{d^2\theta}{dt^2} = \frac{mgh}{J}\theta = -\omega^2\theta</script><p>​    第一个式子表明，复摆的周期完全取决于振动系统本身的性质。由复摆的公式知，如果测出摆的质量，重心到转轴的距离，以及摆的周期，就可以求得此物体的转动惯量，如果数学方法计算存在困难，可以用振动方法来测定转动惯量。</p>
+<h3 id="1-5-振动的合成"><a href="#1-5-振动的合成" class="headerlink" title="1.5 振动的合成"></a>1.5 振动的合成</h3><h4 id="1-5-1-两个振动同频率合成"><a href="#1-5-1-两个振动同频率合成" class="headerlink" title="1.5.1 两个振动同频率合成"></a>1.5.1 两个振动同频率合成</h4><script type="math/tex; mode=display">
+A = \sqrt{A_1^2 + A_2^2 + 2A_1A_2\cos(\phi_{02} - \phi_{01})}\\
+\tan \phi_0 = \frac{A_1 \sin\phi_{01} + A_2 \sin \phi_{02}}{A_1 \cos\phi_{01} + A_2 \cos\phi_{02}}</script><p>​    虽然这两个式子看着都很复杂，其实利用矢量图作图都很好获得，第一个是利用余弦定理，第二个就更摆烂，是利用坐标化，求斜率的方法获得的。</p>
+<p><img src="/posts/b1f455da/image-20211207192805189.png" alt="image-20211207192805189"></p>
+<h4 id="1-5-2-多个振动同频率合成"><a href="#1-5-2-多个振动同频率合成" class="headerlink" title="1.5.2 多个振动同频率合成"></a>1.5.2 多个振动同频率合成</h4><p>​    处理方法还是利用矢量法，这里仅记一下结论。对于同一个方向上N个同频率的谐振动，它们的振幅a相等，初相分别为 $0, \phi_0, 2\phi_0, 3\phi_0, \cdots$，它们的合振动，有振幅和初相分别为</p>
+<script type="math/tex; mode=display">
+A = a \frac{\sin\frac{N\phi_0}{2}}{\sin\frac{\phi_0}{2}} \\
+\phi_0^\prime = \frac{N - 1}{2}\phi_0</script><h4 id="1-5-3-两个不同频率的谐振动合成，拍"><a href="#1-5-3-两个不同频率的谐振动合成，拍" class="headerlink" title="1.5.3 两个不同频率的谐振动合成，拍"></a>1.5.3 两个不同频率的谐振动合成，拍</h4><script type="math/tex; mode=display">
+x = 2 A \cos(\frac{\omega_2 - \omega_1}{2}t)\cos(\frac{\omega_2 + \omega_1}{2}t + \phi_0)</script><p>​    这个是利用和差化积公式求得的，可以看道，振幅是在不断变化的，振幅变化的频率称为<strong>拍频</strong></p>
+<script type="math/tex; mode=display">
+\tau = \frac{2\pi}{|\omega_2 - \omega_1|}\\
+\nu^\prime = \nu_2 - \nu_1</script><p>​    $\nu$ 也是频率的符号，念做nu。</p>
+<hr>
+<h2 id="二、-阻尼振动和受迫振动"><a href="#二、-阻尼振动和受迫振动" class="headerlink" title="二、 阻尼振动和受迫振动"></a>二、 阻尼振动和受迫振动</h2><h3 id="2-1-阻尼振动"><a href="#2-1-阻尼振动" class="headerlink" title="2.1 阻尼振动"></a>2.1 阻尼振动</h3><script type="math/tex; mode=display">
+f = -\gamma v\\
+\delta = \frac{\gamma}{2m}\\
+x = A_0 e^{-\delta t} \cos(\sqrt{\omega_0^2 - \delta^2}t + \phi_0^\prime)</script><p>​    $\gamma$  是阻力系数，$\delta$ 是阻尼系数，可以看到，阻尼系数还与质量有关，这也很好理解，毕竟惯性大的，阻尼系数会小。</p>
+<p>​    当满足 $\delta = \omega_0$ 的时候，称此时的阻尼系数为<strong>临界阻尼</strong>，在过阻尼和减幅振动状态，振动从运动到静止都需要较长的时间（过阻尼时，可能因为阻尼过大，阻碍运动了），临界阻尼回到平衡位置所需要的时间是最短的。</p>
+<h3 id="2-2-受迫振动与共振"><a href="#2-2-受迫振动与共振" class="headerlink" title="2.2 受迫振动与共振"></a>2.2 受迫振动与共振</h3><p>​    受迫振动的公式</p>
+<script type="math/tex; mode=display">
+x = A_0 e^{-\delta t} \cos(\sqrt{\omega_0^2 - \delta^2}t + \phi_0^\prime) + A cos(\omega_d t + \phi)\\
+A = \frac{F_0}{m \sqrt{(\omega_0^2 - \omega_d^2) + 4 \delta^2\omega_d^2}}\\
+\tan \phi_0 = -\frac{2\delta\omega_d}{\omega_0^2 - \omega_d^2}</script><p>​    求解起来也不是太难，前半部分与阻尼振动相同，是因为阻尼振动属于齐次通解，后面是特解。</p>
+<p>​    对于A的考察很重要，因为主要研究的是共振，<strong>位移共振</strong>和<strong>速度共振</strong>都需要靠这个式子获得（只对分母求导，可以很轻松获得第一个式子）</p>
+<script type="math/tex; mode=display">
+\omega_1 = \sqrt{\omega_0^2 - 2\delta^2}\\
+\omega_2 = \omega_0</script><hr>
+<h2 id="三、波"><a href="#三、波" class="headerlink" title="三、波"></a>三、波</h2><h3 id="3-1-波的产生与传播"><a href="#3-1-波的产生与传播" class="headerlink" title="3.1 波的产生与传播"></a>3.1 波的产生与传播</h3><h4 id="3-1-1-波的几何描述"><a href="#3-1-1-波的几何描述" class="headerlink" title="3.1.1 波的几何描述"></a>3.1.1 波的几何描述</h4><p>​    常把某一时刻振动相位相同的点连成的面称为波振面，波的传播方向称为波线。波线总是与波振面垂直。</p>
+<p><img src="/posts/b1f455da/image-20211207203040114.png" alt="image-20211207203040114"></p>
+<h4 id="3-1-2-波速"><a href="#3-1-2-波速" class="headerlink" title="3.1.2 波速"></a>3.1.2 波速</h4><p>​    机械波的波速仅决定于介质的弹性和惯性。当弹性越大，惯性越小的时候，波速越快，也就是说，波速就是介质的函数，所以在同一个介质的时候，波速是不会发生变化的。所以当频率提高的时候，波长会减小，波长是最后的因变量。</p>
+<p>​    此外，在不同介质传播的时候，频率是不会发生改变的。波长会发生改变，这是因为介质不同，波速不用，进而才总成了波长不同。</p>
+<h3 id="3-2-波动方程"><a href="#3-2-波动方程" class="headerlink" title="3.2 波动方程"></a>3.2 波动方程</h3><p>​    我们在这里仅考虑波沿x轴正方向传播的情况：</p>
+<script type="math/tex; mode=display">
+y = A \cos{[}2\pi(\frac tT - \frac x\lambda) + \phi_0]</script><p>​    之所以写成这样，是因为周期和波长都是比较好观测的量。</p>
+<p>​    另外说一下</p>
+<script type="math/tex; mode=display">
+\frac{2\pi}{\lambda}</script><p>​    这个量被称为<strong>空间角频率</strong>，在习题中应用很多，将它乘上位移，就是相位变化的一部分（位移部分，还有一部分由时间引起）。</p>
+<h3 id="3-3-波的能量与强度"><a href="#3-3-波的能量与强度" class="headerlink" title="3.3 波的能量与强度"></a>3.3 波的能量与强度</h3><p>对于平面简谐波，其<strong>线元</strong>的动能是</p>
+<script type="math/tex; mode=display">
+\Delta E_k = \frac{1}{2}\Delta x \rho_l \omega^2A^2\sin^2[\omega(t - \frac xu) + \phi_0]</script><p>其线元的势能是</p>
+<script type="math/tex; mode=display">
+\Delta E_k = \frac{1}{2}\Delta x \rho_l \omega^2A^2\sin^2[\omega(t - \frac xu) + \phi_0]</script><p>​    可以看出线元的动能和势能的时间关系式是相同的，两者不仅同向，而且大小相等。当动能达到最大的时候，线元位于最高点，此处的波形<strong>较缓</strong>，所以势能最小。</p>
+<p>介质中单位体积的波动能量，称为波的<strong>能量密度</strong></p>
+<script type="math/tex; mode=display">
+w = \rho \omega^2A^2\sin^2[\omega(t - \frac xu) + \phi_0]</script><p>​    其中 $\rho$ 是体密度。可以看到，能量是会随着时间和空间而变化。同时，能量密度与角频率和振幅都有关系。</p>
+<p>能量密度的平均值，即<strong>平均能量密度</strong>：</p>
+<script type="math/tex; mode=display">
+\bar{\omega} = \frac 12 \rho \omega^2  A^2</script><p>通过与波动传播方向垂直的单位面积的平均动能，称为<strong>平均能流密度</strong>，又称<strong>波的强度</strong>：</p>
+<script type="math/tex; mode=display">
+I = \bar{\omega} u = \frac 12 \rho u \omega^2 A^2</script><p>波的强度应该在后面还会出现很多次。$u$ 是波速</p>
+<h3 id="3-4-波的叠加，干涉，驻波"><a href="#3-4-波的叠加，干涉，驻波" class="headerlink" title="3.4 波的叠加，干涉，驻波"></a>3.4 波的叠加，干涉，驻波</h3><h4 id="3-4-1-波的叠加"><a href="#3-4-1-波的叠加" class="headerlink" title="3.4.1 波的叠加"></a>3.4.1 波的叠加</h4><p>​    分析方法类似于振动的叠加，同样适用矢量图进行合成处理，在波的各种叠加状态中，合振幅最大的点和合振幅最小的点颇受关注。</p>
+<p>​    对于合振幅最大的点，有</p>
+<script type="math/tex; mode=display">
+\Delta\phi = \phi_{02} - \phi_{01} - 2\pi\frac{\delta}{\lambda} = 2k\pi</script><p>​    在这个式子中，$\delta$ 是波程差，也就是说，当相位差为 $2\pi$ 的整数倍的时候，振幅达到最大，同时，如果从波的强度分析，可以看到此时波的强度达到最大，是之前的四倍（如果发生干涉的波原来强度相同）。</p>
+<script type="math/tex; mode=display">
+\delta = k\lambda</script><p>​    同时，我们还会有上面这个式子，这个式子是当两列波初相相等的情况，那么对角度的计算，可以转化为对波程差，也就是距离的计算。而波初相相等这个条件还是十分常见的，这是因为大多研究的就是光学问题，而产生相干光的方法是<strong>分波振面法</strong>，两个相干光来自同一波振面，所以相位差是相同的。    </p>
+<p>对于合振幅最小的点，有</p>
+<script type="math/tex; mode=display">
+\Delta\phi = \phi_{02} - \phi_{01} - 2\pi\frac{\delta}{\lambda} = 2k\pi +\pi</script><p>此时波的强度为0，同样，如果有初相相等的条件，可以获得</p>
+<script type="math/tex; mode=display">
+\delta = (k + \frac 12)\lambda</script><h4 id="3-4-2-驻波"><a href="#3-4-2-驻波" class="headerlink" title="3.4.2 驻波"></a>3.4.2 驻波</h4><p>​    驻波的产生条件是<strong>振幅相同的相干波，在同一直线上，沿相反方向传播时所产生的叠加结果</strong>被称为驻波。</p>
+<p>​    合成波的各质元都以相同的频率但不同的振幅做振动，其中有些质元总是不动的，被称为波节，具有最大振幅的质元，被称为波腹。</p>
+<p>​    这种合成波中各质元一各自确定的不同振幅在各自平衡位置附近振动，且没有振动状态或相位传播的波叫做驻波。</p>
+<p>​    介质在振动过程中，驻波的动能和势能不断地转换，在转换的过程中，能量不断地由波腹附近转移到波节附近，再由波节附近转移到波腹附近。</p>
+<p>​    关于驻波和行波到底区别是什么？我想了很久，都没有想明白，但是我现在觉得，只是观察到的现象不同，或者数学表达形式不同，有驻波有这样的形式</p>
+<script type="math/tex; mode=display">
+y = (2A\cos\frac{2\pi}{\lambda}x)\cos\frac{2\pi}{T}t</script><p>​    这个式子很有意思，可以看到，驻波的振幅变成了原振幅的二倍，第一个函数的参数是<strong>空间角频率</strong>，第二个函数的参数是<strong>角频率</strong>，都是很具有美感的。    </p>
+<p>比较直观的就是<strong>振幅是位移的函数</strong>。</p>
+<blockquote>
+<p>驻波（standing wave）就是行波在前进过程中受到了阻挡，产生了反射，然后反射波和入射波叠加导致的。入射波和反射波频率相同，振幅相同，当然它们的相位存在区别，不然就是相同波，而不是相干波了。驻波因为叠加的缘故，在某些点处形成波节（nodes），振幅一直是零。还有某些点形成波腹（antinodes), 其振幅绝对值一直是最大。驻波的能量无法定向传播。就像你看到水波在行波状态可以把东西（比如树叶）向前移动，但在驻波状态就只能把东西在原地上下振动。这是因为东西在原地的动能和势能相互转换，但不存在向前的能量。</p>
+<p>驻波是由行波在行进过程中受到阻挡而产生的，这种现象发生的非常频繁。大部分情况下我们都拒绝这种现象，比如电路里如果匹配不好就会产生反射从而形成驻波，白白造成了传输能量的损失。但有时我们也会应用它，比如谐振腔体，就是通过驻波来增大特定频率的振幅。</p>
+</blockquote>
+<h4 id="3-4-3-半波损失"><a href="#3-4-3-半波损失" class="headerlink" title="3.4.3 半波损失"></a>3.4.3 半波损失</h4><p>​    当波从波疏介质传播到波密介质而字分界面处发生反射的时候，反射点出现波节（出现波节的要求是入射波和反射波时刻相位相反），发生了<strong>半波损失</strong>。当波从波密介质传播到波疏介质时，入射波和反射波在反射点相位相同，反射点出现波腹（出现波腹的要求是入射波和反射波时刻相位相同）</p>
+<h3 id="3-5-多普勒效应"><a href="#3-5-多普勒效应" class="headerlink" title="3.5 多普勒效应"></a>3.5 多普勒效应</h3><p>​    关于这个式子，其实要解释的不多（因为最后还是记公式，而且还挺好记的），只需要知道， $u$ 是<strong>波速</strong>，$v_R$ 是接受者向发出者移动的速率， $v_S$ 是接受者向发出者移动的速率。</p>
+<script type="math/tex; mode=display">
+\nu_R = \frac{u + v_R}{u - v_S}\nu_s</script>
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Thysrael</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://thysrael.github.io/posts/b1f455da/">https://thysrael.github.io/posts/b1f455da/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Thysrael</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                                    <span class="chip bg-color">知识总结</span>
+                                </a>
+                            
+                                <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                                    <span class="chip bg-color">S3复习</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/">
+                                    <span class="chip bg-color">大学物理</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/posts/21c8b304/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/048.jpg" class="responsive-img" alt="大学物理-波动光学">
+                        
+                        <span class="card-title">大学物理-波动光学</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ​    这一章最让我困惑的原因是因为我的几何光学的知识存在欠缺，这个部分是不在授课中出现的，但是确实后面波动光学用到了凸透镜的知识，但是我缺少，就造成了很多的疑问。
+​    另一个比较让人分不清的点，是其实衍射现象的观察实际上利用的是波
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" class="post-category">
+                                    大学物理
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                        <span class="chip bg-color">知识总结</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/">
+                        <span class="chip bg-color">直观理解</span>
+                    </a>
+                    
+                    <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">S3复习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/">
+                        <span class="chip bg-color">大学物理</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/posts/16daf930/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/016.jpg" class="responsive-img" alt="大学物理-热力学">
+                        
+                        <span class="card-title">大学物理-热力学</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ​    热力学仅从能量观念出发，研究热力学系统状态变化中热功转换（两种过程能量）的关系与条件。
+热力学定律的意义
+
+第零定律：热平衡定律，定义了温度的概念。
+第一定律：包括热现象在内的能量守恒与转化（转化的思想容易被忽视）定律，指明了热力
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" class="post-category">
+                                    大学物理
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                        <span class="chip bg-color">知识总结</span>
+                    </a>
+                    
+                    <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">S3复习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/">
+                        <span class="chip bg-color">大学物理</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('5'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2022</span>
+            
+            <a href="/about" target="_blank">Thysrael</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" rel="external nofollow noreferrer" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" rel="external nofollow noreferrer" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">384.4k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "12";
+                        var startDate = "18";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'en';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2470583476@qq.com" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

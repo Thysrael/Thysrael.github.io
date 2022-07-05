@@ -1,0 +1,1359 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="数学分析-数学分析基本功, 编程,系统,旅游">
+    <meta name="description" content="这篇文章里是有关数学分析中多个基本功的总结。
+其中大量的知识在大物，数学建模，数学竞赛中使用。
+
+基本功一、求和1.1 总论​    求和的地位跟极限类似，是数学分析中的基础操作，因为利用求和，可以沟通柯西收敛原理，又是级数的预处理步骤，所">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>数学分析-数学分析基本功 | 钟鼓楼</title>
+    <link rel="icon" type="image/png" href="/wall.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/wall.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">钟鼓楼</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/wall.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">钟鼓楼</div>
+        <div class="logo-desc">
+            
+            Can you hear me ?
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Welcome
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #546e7a;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/Thysrael" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Welcome" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/017.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">数学分析-数学分析基本功</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: scroll;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #546e7a;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #546e7a;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/S2%E5%A4%8D%E4%B9%A0/">
+                                <span class="chip bg-color">S2复习</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/">
+                                <span class="chip bg-color">数学分析</span>
+                            </a>
+                        
+                            <a href="/tags/S1%E5%A4%8D%E4%B9%A0/">
+                                <span class="chip bg-color">S1复习</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/" class="post-category">
+                                数学分析
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2021-12-23
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2022-01-20
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    818
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    3 Min
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>这篇文章里是有关数学分析中多个基本功的总结。</p>
+<p>其中大量的知识在大物，数学建模，数学竞赛中使用。</p>
+<span id="more"></span>
+<h1 id="基本功"><a href="#基本功" class="headerlink" title="基本功"></a>基本功</h1><h2 id="一、求和"><a href="#一、求和" class="headerlink" title="一、求和"></a>一、求和</h2><h3 id="1-1-总论"><a href="#1-1-总论" class="headerlink" title="1.1 总论"></a>1.1 总论</h3><p>​    <strong>求和</strong>的地位跟<strong>极限</strong>类似，是数学分析中的<strong>基础操作</strong>，因为利用求和，可以沟通<strong>柯西收敛原理</strong>，又是<strong>级数</strong>的<strong>预处理步骤</strong>，所以总结求和的方法就显得尤为重要了。</p>
+<h3 id="1-2-利用幂级数进行求和"><a href="#1-2-利用幂级数进行求和" class="headerlink" title="1.2 利用幂级数进行求和"></a>1.2 利用幂级数进行求和</h3><p>​    这个的特征一般是<strong>阶乘</strong>，$n(n+1)$ ，$2^n$ 这种结构。</p>
+<script type="math/tex; mode=display">
+\sum_{n=1}^{\infty}(-1)^n\frac{n(n+1)}{2^n}</script><p>​    这个没有办法用<strong>数项级数求和</strong>的办法求和，所以是用<strong>转化成函数项级数求和</strong>的方法进行计算的。可以将式子看成</p>
+<script type="math/tex; mode=display">
+S(x)=\sum_{n=1}^{\infty}(-1)^n\frac{n(n+1)}{2^n}x^n</script><p>​    很明显，往上积分两次就可以得到<strong>等比数列求和</strong>，然后往下求导就可以了。</p>
+<p>​    在这里列一下比较常见的<strong>泰勒级数</strong></p>
+<h4 id="1-2-1-阶乘类"><a href="#1-2-1-阶乘类" class="headerlink" title="1.2.1 阶乘类"></a>1.2.1 阶乘类</h4><script type="math/tex; mode=display">
+e^x=1+x+\frac{1}{2!}x^2+\dots+\frac{1}{n!}x^n+\dots</script><script type="math/tex; mode=display">
+\sin x=x-\frac{1}{3!}x^3+\frac{1}{5!}x^5+\dots+(-1)^{n-1}\frac{1}{(2n-1)!}x^{2n-1}+\dots</script><script type="math/tex; mode=display">
+\cos x=1-\frac{1}{2!}x^2+\frac{1}{4!}x^4+\dots+(-1)^{n}\frac{1}{2n!}x^{2n}+\dots</script><h4 id="1-2-2-等比级数类"><a href="#1-2-2-等比级数类" class="headerlink" title="1.2.2 等比级数类"></a>1.2.2 等比级数类</h4><script type="math/tex; mode=display">
+\frac{1}{1-x}=1+x+x^2+\dots+x^n+\dots</script><script type="math/tex; mode=display">
+\frac{1}{1+x}=1-x+x^2+\dots+(-x)^n+\dots</script><script type="math/tex; mode=display">
+\frac{1}{1-x^2}=1+x^2+x^4+\dots+x^{2n}+\dots</script><h4 id="1-2-3-等差特征类"><a href="#1-2-3-等差特征类" class="headerlink" title="1.2.3 等差特征类"></a>1.2.3 等差特征类</h4><script type="math/tex; mode=display">
+ln(1+x)=x-\frac{x^2}{2}+\frac{x^3}{3}+\dots+(-1)^n\frac{x^n}{n}+\dots</script><script type="math/tex; mode=display">
+\arctan x=x-\frac{x^3}{3}+\frac{x^5}{5}+\dots+(-1)^n\frac{x^{2n-1}}{2n-1}+\dots</script><p>​    可以看到<strong>等差特征</strong>求导就可以得到<strong>等比特征</strong>，这也正是依靠幂级数的分析性质（积分微分）来获得这些级数的。</p>
+<h4 id="1-2-4-双阶乘特征类"><a href="#1-2-4-双阶乘特征类" class="headerlink" title="1.2.4 双阶乘特征类"></a>1.2.4 双阶乘特征类</h4><script type="math/tex; mode=display">
+\sqrt{1+x}=1+\frac{1}{2}x-\frac{1}{8}x^2+\dots+(-1)^{n-1}\frac{(2n-3)!!}{(2n)!!}x^n+\dots</script><script type="math/tex; mode=display">
+\frac{1}{\sqrt{1+x}}=1-\frac{1}{2}x+\frac{3}{8}x^2+\dots+(-1)^{n}\frac{(2n-1)!!}{(2n)!!}x^n+\dots</script><script type="math/tex; mode=display">
+\frac{1}{\sqrt{1-x^2}}=1+\frac{1}{2}x^2+\frac{3}{8}x^4+\dots+\frac{(2n-1)!!}{(2n)!!}x^{2n}+\dots</script><script type="math/tex; mode=display">
+\arcsin x=x+\frac{1}{6}x^3+\frac{3}{40}x^5+\dots+\frac{(2n-1)!!}{(2n)!!}\frac{1}{2n+1}x^{2n+1}+\dots</script><p>​    可以看到这一组基本上就对求和没啥帮助了，双阶乘的特征不易观察，但是这一组都是由<strong>幂函数</strong>展开得来的，录于此也是为了全面。</p>
+<h3 id="1-3-裂项求和"><a href="#1-3-裂项求和" class="headerlink" title="1.3 裂项求和"></a>1.3 裂项求和</h3><h4 id="1-3-1-反正切函数裂项"><a href="#1-3-1-反正切函数裂项" class="headerlink" title="1.3.1 反正切函数裂项"></a>1.3.1 反正切函数裂项</h4><script type="math/tex; mode=display">
+\arctan (\frac{x-y}{1+xy})=\arctan x-\arctan y</script><p>​    有了这个公式就可以完成完成如下裂项</p>
+<script type="math/tex; mode=display">
+\arctan (\frac{1}{2n^2})=\arctan \frac{1}{2n-1}-\arctan \frac{1}{2n+1}</script><h4 id="1-3-2-积化和差裂项"><a href="#1-3-2-积化和差裂项" class="headerlink" title="1.3.2 积化和差裂项"></a>1.3.2 积化和差裂项</h4><p>​    对于求和 $\sum\sin nx$ ，可以进行如下处理</p>
+<script type="math/tex; mode=display">
+\sum_{k=1}^\infty \sin kx\\
+=\frac{1}{\sin \frac{x}{2}}\sum_{k=1}^\infty\sin \frac{x}{2}\sin kx\\
+=\frac{1}{2\sin \frac{x}{2}}\sum_{k=1}^\infty \cos (kx-\frac{x}{2})-\cos (kx+\frac{x}{2})\\
+<=\frac{1}{\sin \frac{x}{2}}</script><p>​    对于 $\sum\cos nx$ 也有相同结论。除了处理这种简单的求和，还可以处理一些复杂的结构，如：</p>
+<script type="math/tex; mode=display">
+S_n=\sum_{n=1}^{\infty}q^n\cos nx\\
+2qcosxS_n=\sum_{k=1}^{\infty}q^{k+1}[\cos (k+1)x+\cos(k-1)x]</script><p>然后再进行化简，其实后面的方法是<strong>构造一个关于 $S_n$ 方程</strong> ，就是高中时<strong>求等差与等比相乘</strong>数列的算法，现在因为有了更好的<strong>级数</strong>工具后，使用频次减少。</p>
+<h3 id="1-4-利用积分的定义求和"><a href="#1-4-利用积分的定义求和" class="headerlink" title="1.4 利用积分的定义求和"></a>1.4 利用积分的定义求和</h3><h3 id="1-5-柯西求和"><a href="#1-5-柯西求和" class="headerlink" title="1.5 柯西求和"></a>1.5 柯西求和</h3><p>​    柯西求和的条件更为宽松，在这里可以探讨一下<strong>什么结构是不好求和的</strong>？我认为是三角函数，尤其是三角函数内还有其他结构的时候，但是由三角函数组成的结构往往又是<strong>收敛</strong>的，所以用<strong>柯西收敛原理</strong>直接放缩成1就显得很容易。<strong>柯西求和</strong>还有一个特点是对分母的关注远大于分子，可以在下面的例子中看出。</p>
+<script type="math/tex; mode=display">
+|S_{3n+p}-S_{3n}|=|S_{6n}-S_{3n}|\\
+=\frac{1}{3n+1}+\frac{1}{3n+2}-\frac{1}{3n+3}\dots+\frac{1}{6n-2}+\frac{1}{6n-1}-\frac{1}{6n}\\
+>\frac{1}{3n+3}+\frac{1}{3n+3}-\frac{1}{3n+3}\dots+\frac{1}{6n}+\frac{1}{6n}-\frac{1}{6n}\\
+>\frac{1}{3}(\frac{1}{2n}+\dots+\frac{1}{2n})=\frac{1}{6}>\varepsilon_0</script><script type="math/tex; mode=display">
+\lvert\frac{\sin(n+1)!}{(n+1)!}+\frac{\sin(n+2)!}{(n+2)!}+\dots+\frac{\sin(n+p)!}{(n+p)!}\rvert\\
+<=\frac{1}{(n+1)!}+\frac{1}{(n+2)!}+\dots+\frac{1}{(n+p)!}\\
+<=\frac{1}{n(n+1)}+\frac{1}{(n+1)(n+2)}+\dots+\frac{1}{(n+p-1)(n+p)}\\
+<\frac{1}{n}<\varepsilon</script><hr>
+<h2 id="二、求极限"><a href="#二、求极限" class="headerlink" title="二、求极限"></a>二、求极限</h2><h3 id="2-1-估算次数"><a href="#2-1-估算次数" class="headerlink" title="2.1 估算次数"></a>2.1 估算次数</h3><h4 id="2-1-1-双阶乘比值"><a href="#2-1-1-双阶乘比值" class="headerlink" title="2.1.1 双阶乘比值"></a>2.1.1 双阶乘比值</h4><script type="math/tex; mode=display">
+\frac{1}{2\sqrt {n}}<\frac{(2n-1)!!}{(2n)!!}<\frac{1}{\sqrt {2n}}</script><p>证明如下：</p>
+<script type="math/tex; mode=display">
+\frac{(2n-1)!!}{(2n)!!}=\frac{\sqrt1*\sqrt1*\sqrt3*\sqrt3*\sqrt5\dots \sqrt{2n-1}*\sqrt{2n-1}}{2*4*6\dots*2n}\\
+=1*\frac{\sqrt3}{2}*\frac{\sqrt{15}}{4}\dots*\frac{\sqrt{(2n-3)(2n-1)}}{2n-2}*\frac{\sqrt{2n-1}}{2n}\\
+<\frac{\sqrt{2n-1}}{2n}<\frac{1}{\sqrt{2n}}</script><h4 id="2-2-2-阶乘"><a href="#2-2-2-阶乘" class="headerlink" title="2.2.2 阶乘"></a>2.2.2 阶乘</h4><p>​    由Stirling公式知：</p>
+<script type="math/tex; mode=display">
+n!\sim \sqrt{2\pi n}(\frac{n}{e})^n</script><h4 id="2-2-3-复杂分式"><a href="#2-2-3-复杂分式" class="headerlink" title="2.2.3 复杂分式"></a>2.2.3 复杂分式</h4><script type="math/tex; mode=display">
+\frac{1}{\sqrt n+(-1)^n}</script><p>要注意到分式其实就是-1次方，所以是可以用<strong>泰勒公式</strong>进行化解的，有</p>
+<script type="math/tex; mode=display">
+\frac{1}{\sqrt n+(-1)^n}=\frac{1}{\sqrt n}\frac{1}{1+\frac{(-1)^n}{\sqrt n}}=
+\frac{1}{\sqrt n}[1-\frac{(-1)^n}{\sqrt n}+o(\frac{1}{n})]\sim \frac{1}{n}</script><h4 id="2-3-4-三角函数周期"><a href="#2-3-4-三角函数周期" class="headerlink" title="2.3.4 三角函数周期"></a>2.3.4 三角函数周期</h4><p>​    我们可以利用三角函数的周期性使他<strong>吸收或排除</strong>一个 $(-1)^n$ 结构，不仅可以用于求阶次，还可以用于化简。</p>
+<p>​    这个是<strong>求阶次</strong>：</p>
+<script type="math/tex; mode=display">
+\sin (\pi\sqrt {n^2+1})=(-1)^{n+1}\sin(n\pi-\pi\sqrt{n^2+1})=(-1)^{n+1}\sin\frac{\pi}{n+\sqrt {n^2+1}}\sim \frac{1}{n}</script><p>​    这个是<strong>化简</strong>，这样就可以采用Dirichlet判别法了：</p>
+<script type="math/tex; mode=display">
+\sum(-1)^n\frac{\cos 2n}{2n}=\sum\frac{\cos(2n+n\pi)}{2n}</script><h3 id="2-2-1-infty-型极限"><a href="#2-2-1-infty-型极限" class="headerlink" title="2.2 $1^{\infty}$ 型极限"></a>2.2 $1^{\infty}$ 型极限</h3><p>​    我们要客观的评价这件事，就是确实利用 $1^{\infty}$ 型极限可以看出很多难求的极限，比如</p>
+<script type="math/tex; mode=display">
+(\frac{2n^2+n+1}{2n^2+5n+4})^{\frac{n+1}{2}}</script><p>但是这种处理的本质是<strong>等价无穷小</strong>代换，如果再遇到比如需要明确知道阶数的题目，这个方法容易使人产生惰性，如</p>
+<script type="math/tex; mode=display">
+e-(1+\frac{1}{n})^n</script><p>他的阶数是 $\frac{1}{n}$ 是通过泰勒展开获得的，但是容易让人麻爪。</p>
+<hr>
+<h2 id="三、微分方程"><a href="#三、微分方程" class="headerlink" title="三、微分方程"></a>三、微分方程</h2><h3 id="3-1-变量分离方程与齐次方程"><a href="#3-1-变量分离方程与齐次方程" class="headerlink" title="3.1 变量分离方程与齐次方程"></a>3.1 变量分离方程与齐次方程</h3><p>​    满足如下结构被称为<strong>变量分离方程</strong></p>
+<script type="math/tex; mode=display">
+\frac{dy}{dx}=\frac{f(x)}{g(y)}</script><p>​    而满足如下结构被称为<strong>齐次方程</strong></p>
+<script type="math/tex; mode=display">
+\frac{dy}{dx}=f(\frac{x}{y})</script><p>​    可以看到，<strong>齐次方程</strong>是<strong>换元法</strong>结合<strong>变量分离</strong>得出的技术，这两种方法基本上是人的计算范围内的方法。</p>
+<h3 id="3-2-一阶线性微分方程与伯努利方程"><a href="#3-2-一阶线性微分方程与伯努利方程" class="headerlink" title="3.2 一阶线性微分方程与伯努利方程"></a>3.2 一阶线性微分方程与伯努利方程</h3><p>​    形如这种结构的方程被称为<strong>一阶线性微分方程</strong></p>
+<script type="math/tex; mode=display">
+\frac{dy}{dx}+P(x)y=Q(x)</script><p>​    其解为：</p>
+<script type="math/tex; mode=display">
+y=Ce^{-\int P(x)dx}+e^{-\int P(x)dx}\int Q(x)e^{\int P(x)dx}dx</script><p>可以看出解呈现出<strong>一个特解加上齐次通解</strong>的结构。    </p>
+<p>而伯努利方程为</p>
+<script type="math/tex; mode=display">
+\frac{dy}{dx}+P(x)y=Q(x)y^n</script><p>​    也是可以通过<strong>换元法</strong>转化成<strong>一阶线性微分方程</strong>求解的。在处理<strong>非齐次方程式</strong>，用到了<strong>常数变异法</strong>，大概是不能为人所想到的。</p>
+<h3 id="3-3-二阶线性齐次微分方程"><a href="#3-3-二阶线性齐次微分方程" class="headerlink" title="3.3 二阶线性齐次微分方程"></a>3.3 二阶线性齐次微分方程</h3><p>​    形如这种结构的方程被称为<strong>二阶线性齐次微分方程</strong></p>
+<script type="math/tex; mode=display">
+y^{\prime\prime}+py^\prime+q=0</script><p>​    对于这种方程，首先要将其转为<strong>特征根方程</strong>，并解出 $x=r_1, r_2$</p>
+<script type="math/tex; mode=display">
+r^2+rx+q=0</script><p>​    然后据此进行分类讨论，一共有<strong>三种情况</strong></p>
+<ul>
+<li>$r_1, r_2$ 为两互异实根，则通解为</li>
+</ul>
+<script type="math/tex; mode=display">
+y=C_1e^{r_1 x}+C_2e^{r_2 x}</script><ul>
+<li><p>$ r_1, r_2$ 为两重根，则通解为</p>
+<script type="math/tex; mode=display">
+y=C_1e^{rx}+C_2xe^{rx}</script></li>
+<li><p>$ r_1, r_2$ 为两互异虚根 $r_1=\alpha+\beta i,r_2=\alpha-\beta i$，则通解为</p>
+<script type="math/tex; mode=display">
+y=e^{ax}(C_1\cos\beta+C_2\sin\beta)</script><p>其实关于互异的虚根，是可以用统一的方法处理的</p>
+<script type="math/tex; mode=display">
+e^{r_1 x} = e^{ax}(\cos \beta x +i\sin \beta x),\quad\quad e^{r_2 x} = e^{ax}(\cos \beta x -i\sin \beta x)</script><p>因为我们想要实函数，所以基础解系进行重新构造</p>
+<script type="math/tex; mode=display">
+y_1 = \frac12 (e^{r_1 x} + e^{r_2 x}) = e^{ax}\cos\beta x,\quad\quad
+y_2 = \frac12 i(e^{r_2 x} - e^{r_1 x}) = e^{ax} \sin\beta x</script><p>所以才有了最后的结构</p>
+<script type="math/tex; mode=display">
+y=e^{ax}(C_1\cos\beta+C_2\sin\beta)</script></li>
+</ul>
+<h3 id="3-4-二阶线性非齐次方程求解"><a href="#3-4-二阶线性非齐次方程求解" class="headerlink" title="3.4 二阶线性非齐次方程求解"></a>3.4 二阶线性非齐次方程求解</h3><p>​    依然是采取<strong>通解+特解</strong>的思路，求通解的方法在上一节已经介绍过了，这一节主要介绍<strong>求特解</strong>的方法。有两种情况</p>
+<h4 id="3-4-1-y-prime-prime-py-prime-q-P-m-x-e-ax-型"><a href="#3-4-1-y-prime-prime-py-prime-q-P-m-x-e-ax-型" class="headerlink" title="3.4.1 $y^{\prime\prime}+py^\prime+q=P_m(x)e^{ax}$ 型"></a>3.4.1 $y^{\prime\prime}+py^\prime+q=P_m(x)e^{ax}$ 型</h4><ul>
+<li>当a不是特征方程的根时，特解为</li>
+</ul>
+<script type="math/tex; mode=display">
+y=Q_m(x)e^{ax}</script><ul>
+<li><p>当a是特征方程的单根时，特解为</p>
+<script type="math/tex; mode=display">
+y=xQ_m(x)e^{ax}</script></li>
+<li><p>当a是特征方程的重根时，特解为</p>
+<script type="math/tex; mode=display">
+y=x^2Q_m(x)e^{ax}</script><h4 id="3-4-2-y-prime-prime-py-prime-q-P-m-x-e-ax-cos-beta-或-y-prime-prime-py-prime-q-P-m-x-e-ax-sin-beta-型"><a href="#3-4-2-y-prime-prime-py-prime-q-P-m-x-e-ax-cos-beta-或-y-prime-prime-py-prime-q-P-m-x-e-ax-sin-beta-型" class="headerlink" title="3.4.2 $y^{\prime\prime}+py^\prime+q=P_m(x)e^{ax}\cos\beta$  或 $y^{\prime\prime}+py^\prime+q=P_m(x)e^{ax}\sin\beta$型"></a>3.4.2 $y^{\prime\prime}+py^\prime+q=P_m(x)e^{ax}\cos\beta$  或 $y^{\prime\prime}+py^\prime+q=P_m(x)e^{ax}\sin\beta$型</h4></li>
+<li><p>当 $\alpha+\beta i$ 不是特征方程的根时</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+y=e^{ax}(C_1 Q_m(x)\sin\beta x+C_2R_m(x)\cos\beta x)</script><ul>
+<li>当 $\alpha+\beta i$ 是特征方程的根时<script type="math/tex; mode=display">
+y=xe^{ax}(C_1Q_m(x)\sin\beta x+C_2R(m)\cos\beta x)</script></li>
+</ul>
+<hr>
+<h2 id="四、积分"><a href="#四、积分" class="headerlink" title="四、积分"></a>四、积分</h2><h3 id="4-1-点火公式"><a href="#4-1-点火公式" class="headerlink" title="4.1 点火公式"></a>4.1 点火公式</h3><script type="math/tex; mode=display">
+I_n=\int_{0}^{\frac{\pi}{2}}\cos ^nxdx=\int_{0}^{\frac{\pi}{2}}\sin ^nxdx\\
+I_n=\frac{n-1}{n}I_{n-2}\\
+I_n=\begin{cases}\frac{(n-1)!!}{(n)!!}\frac{\pi}{2}\quad n偶\\\frac{(n-1)!!}{(n)!!}\quad n奇\end{cases}</script><h3 id="4-2-割函数积分"><a href="#4-2-割函数积分" class="headerlink" title="4.2 割函数积分"></a>4.2 割函数积分</h3><script type="math/tex; mode=display">
+\int\sec xdx=\int\frac{\cos x}{\cos^2x}dx=\int\frac{d\sin x}{\sin^2x-1}=\frac{1}{2}\ln|\frac{1+\sin x}{1-\sin x}|+C=\ln |\sec x+\tan x|+C</script><script type="math/tex; mode=display">
+\int\csc xdx=\ln |\csc x+\cot x|+C</script><h3 id="4-3-有理函数积分"><a href="#4-3-有理函数积分" class="headerlink" title="4.3 有理函数积分"></a>4.3 有理函数积分</h3><p>​    首先需要把<strong>有理多项式</strong>的积分，首先应该把它化为<strong>多项式</strong>和<strong>真分式</strong>的和，在把<strong>真分式</strong>分解成<strong>部分分式</strong>的形式，对于<strong>部分分式</strong>的四种<strong>基本类型</strong>，都是可以进行积分的。</p>
+<p>​    另外需要强调的是，这种<strong>预处理</strong>几乎是必须的，它并不像三角函数那样可以跳过，这是必须的。</p>
+<script type="math/tex; mode=display">
+\int\frac{1}{x-a}dx = ln|x-a|+C</script><script type="math/tex; mode=display">
+\int\frac{1}{(x-a)^n}dx = \frac{1}{1-n}(x-a)^{1-n}+C</script><script type="math/tex; mode=display">
+\int\frac{Mx+N}{x^2+px+q}dx 首先要对分子进行配方，转变成这种形式</script><script type="math/tex; mode=display">
+\int\frac{Mu+b}{u^2+a^2}du= \frac{M}{2}\int\frac{d(u^2+a^2)}{u^2+a^2}+b\int\frac{du}{u^2+a^2}=\frac{M}2ln(u^2+a^2)+\frac b aarctan\frac u a+C</script><p>​    可以看到，主要利用的是<strong>配方法</strong>和<strong>arctanx的微分</strong>，这种形式一定要熟悉。</p>
+<script type="math/tex; mode=display">
+\int\frac{Mx+N}{(x^2+px+q)^n}dx=\frac M2\int\frac{u^2+a^2}{(u^2+a^2)^n}+b\int\frac{du}{(u^2+a^2)^n}</script><p>​    现在难点就落在对最后一项的积分上了，这个是需要<strong>迭代</strong>才能积分出来的。较为复杂。有（<strong>这里真的很复杂，首先（1）中那个构造就很反人类，然后（2）中分部积分的时候，居然把分子拆开了，也是不太常见，所以一定要背过</strong>）</p>
+<script type="math/tex; mode=display">
+I_n=\int\frac{du}{(u^2+a^2)^n}=\frac 1 {a^2}\int\frac{u^2+a^2-u^2}{(u^2+a^2)^n}du\tag{1}=\frac{I_{n-1}}{a^2}+\frac{1}{a^2}\int\frac{-u^2}{(u^2+a^2)^n}du</script><p>​    所以问题的交点又变成了对最后一项的积分，采用<strong>分部积分</strong>有</p>
+<script type="math/tex; mode=display">
+\int\frac{u^2}{(u^2+a^2)^n}du=\frac12\int\frac{u}{(u^2+a^2)^n}d(u^2+a^2)=\frac{1}{2(1-n)}(\frac{u}{(u^2+a^2)^{n-1}}- I_{n-1})\tag2</script><h3 id="4-4-积分逻辑"><a href="#4-4-积分逻辑" class="headerlink" title="4.4 积分逻辑"></a>4.4 积分逻辑</h3><h4 id="4-4-1-微分的观察"><a href="#4-4-1-微分的观察" class="headerlink" title="4.4.1 微分的观察"></a>4.4.1 微分的观察</h4><p>​    积分的<strong>最基本</strong>逻辑一定是对微分的观察，下面罗列几个比较有用的</p>
+<script type="math/tex; mode=display">
+(\arctan x)^{\prime}=\frac{1}{x^2+1}，(\arccot x)^{\prime}=-\frac{1}{x^2+1}</script><p>​    这个结合<strong>配方法</strong>可以用来处理分子是<strong>有实数解二次项</strong>的式子。</p>
+<script type="math/tex; mode=display">
+(\arcsin x)^{\prime} = \frac{1}{\sqrt{1-x^2}},(\arccos x)^{\prime} = -\frac{1}{\sqrt{1-x^2}}</script><p>​    这个可以用于处理一部分的含根式的积分。</p>
+<script type="math/tex; mode=display">
+(\tan x)^{\prime}=\sec^2x,(\cot x)^\prime=-\csc^2x,(\sec x)^\prime=\tan x\sec x,(\csc x)^\prime=-\cot x\csc x</script><p>​    这四个主要是用于全部由三角函数组成积分项，因为化简的时候会所涉及积分变换。</p>
+<h4 id="4-4-2-分部积分"><a href="#4-4-2-分部积分" class="headerlink" title="4.4.2 分部积分"></a>4.4.2 分部积分</h4><p>​    对于分部积分，对<strong>部分求导</strong>和对<strong>部分积分</strong>所能达到的一种<strong>均衡</strong>。有些函数求导可以使其结构简单，有些函数积过分以后还是很好积分，下面分类讨论。</p>
+<p>​    适合求导的函数：x的多项式，求几次就没了，就可以处理其他结构了。lnx，求完就变成多项式了，而且他也<strong>没法积分</strong>（这也是考量的要点），与他相同的还有反三角函数，因为没有办法直接积分，相反求导起码可以变成<strong>多项式</strong>或者<strong>根式</strong>。三角函数，积几次就变成原来了，就可以构造循环了。</p>
+<p>​    适合积分的函数：$e^x$​​，积分完后还是本身。1，这个积分完以后就是x。$\sec^2x$ 这种，积分完是 $\tan x$ 然后再进行操作，比如</p>
+<script type="math/tex; mode=display">
+\int\sec^3xdx=\int\sec x\sec^2 xdx=\sec x\tan x-\int\sec x(\tan x)^2dx=\sec x\tan x-\int\sec^3 xdx+\int\sec xdx</script><h4 id="4-4-3-形式变换"><a href="#4-4-3-形式变换" class="headerlink" title="4.4.3 形式变换"></a>4.4.3 形式变换</h4><h3 id="4-5-根式函数积分"><a href="#4-5-根式函数积分" class="headerlink" title="4.5 根式函数积分"></a>4.5 根式函数积分</h3><h3 id="4-5-1-将根式换掉"><a href="#4-5-1-将根式换掉" class="headerlink" title="4.5.1 将根式换掉"></a>4.5.1 将根式换掉</h3><p>​    这个方法适合于含 $\sqrt{ax+b}$，$\sqrt{\frac{ax+b}{cx+d}}$。这种方法的本质是可以将 $t = f(x)$ 这个解出来，而且解还是一个比较容易处理的，如果解出来<strong>还是根式</strong>，那么还不如不换。</p>
+<h4 id="4-5-2-将根号下换掉"><a href="#4-5-2-将根号下换掉" class="headerlink" title="4.5.2 将根号下换掉"></a>4.5.2 将根号下换掉</h4><p>​    这个比较容易观察，如果是 $R(^n\sqrt x,^m\sqrt x)$的形式，那就令 $x=t^{mn}$ 即可。</p>
+<h4 id="4-5-3-利用三角函数换元"><a href="#4-5-3-利用三角函数换元" class="headerlink" title="4.5.3 利用三角函数换元"></a>4.5.3 利用三角函数换元</h4><p>​    因为我们有</p>
+<script type="math/tex; mode=display">
+1-\sin^2x=\cos^2x,\sec^2x-1=\tan^2x，\sec^2x=\tan^2x+1</script><p>​    这样的式子，所以可以说，只要是二次项，都可以用三角函数换掉。所以只要先<strong>配方</strong>，然后代换，就可以了。当然更快的直接用反函数。</p>
+<h3 id="4-6-特殊积分"><a href="#4-6-特殊积分" class="headerlink" title="4.6 特殊积分"></a>4.6 特殊积分</h3><h4 id="4-6-1-正态分布"><a href="#4-6-1-正态分布" class="headerlink" title="4.6.1 正态分布"></a>4.6.1 正态分布</h4><script type="math/tex; mode=display">
+I=\int e^{x^2}dx</script><script type="math/tex; mode=display">
+I^2=\int e^{-x^2}dx\cdot\int e^{-y^2}dy=\iint e^{-x^2-y^2}dxdy=-\int^{2\pi}_0d\theta\int^{+\infty}_0re^{-r^2}dr=\pi</script><script type="math/tex; mode=display">
+I=\sqrt \pi</script><h3 id="4-7-二重积分"><a href="#4-7-二重积分" class="headerlink" title="4.7 二重积分"></a>4.7 二重积分</h3><h4 id="4-7-1-将重积分转换为累次积分"><a href="#4-7-1-将重积分转换为累次积分" class="headerlink" title="4.7.1 将重积分转换为累次积分"></a>4.7.1 将重积分转换为累次积分</h4><p>​    只要是<strong>可积</strong>的，那么重积分就<strong>一定</strong>能转换成累次积分。也就是说，这是重积分必须进行的一步，然后还需要把积分区域分成x型区域，和y型区域。</p>
+<h4 id="4-7-2-对称性"><a href="#4-7-2-对称性" class="headerlink" title="4.7.2 对称性"></a>4.7.2 对称性</h4><h5 id="4-7-2-1-对称性"><a href="#4-7-2-1-对称性" class="headerlink" title="4.7.2.1 对称性"></a>4.7.2.1 对称性</h5><p>​    要求<strong>积分区域</strong>和<strong>被积函数</strong>都具有对称性。对于被积函数，如果有 $f(x,y,z)=f(-x,y,z)$ 或者 $f(x,y,z)+f(-x,y,z)=0$ 就认为具有<strong>对x具有对称性</strong>，对于<strong>积分区域</strong>，积分区域的表示方程或方程组有 $D(x,y,z)=D(-x,y,z)$ 就认为可以使用对x可以使用对称性解题了。</p>
+<h5 id="4-7-2-2-轮换对称性"><a href="#4-7-2-2-轮换对称性" class="headerlink" title="4.7.2.2 轮换对称性"></a>4.7.2.2 轮换对称性</h5><p>​    只要求<strong>积分区域具有对称性</strong>，这种对称性只的是如果在表示积分区域的方程中两个变量可以交换位置，那么可以构造出一些函数，里面对应的变量也可以交换位置，比如说</p>
+<script type="math/tex; mode=display">
+x^2+y^2<=1</script><p>​    那么就有</p>
+<script type="math/tex; mode=display">
+\int xdxdy=\int ydxdy\space\space\space\space\space\space\int x^2dxdy=\int y^2dxdy\space\space\space\space\space\space \int x^2ydxdy=\int xy^2dxdy</script><p>​    利用这个性质可以大幅化简一些复杂的多项式。</p>
+<p>​    这种对称性与上面的不同，上面的是对于一个变量具有对称性，比如对x有对称性，但是<strong>轮换对称性</strong>指的是两个不同的变元之间具有对称性，满足 $D(x,y,z)=D(y,x,z)$ 那么就可以在积分函数中进行 $f(x,y,z)=f(y,x,z)$​ 的代换，一般都是自己<strong>构造函数</strong>，可以消去某些量。</p>
+<h4 id="4-7-3-换元法"><a href="#4-7-3-换元法" class="headerlink" title="4.7.3 换元法"></a>4.7.3 换元法</h4><p>​    常用的是<strong>极坐标换元</strong>，但是还是有必要强调一下换元的通识，<strong>面积微元</strong>一旦被换掉，是需要乘一个<strong>雅克比矩阵</strong>的行列式的，这是很好理解的，因为代换的本质是<strong>代换面积微元</strong>，不同的面积微元的面积是不同的，一个行列式的值刚好可以弥补这种差距，要是细说，就是<strong>外积分</strong>了。</p>
+<p>​    但是需要强调的是，一旦进行了换元，我们的正负就得自己判断了，这点在<strong>积分杂谈</strong>中也有体现，为了计算的速度，牺牲了严谨性，这不是换元法带来的，而是从<strong>重积分转成累次积分</strong>就有的代价。正因如此，我们在积分前才要考虑对称性（这是必须要做的），因为只有这样，才方便我们判断积分的正负。</p>
+<p>​    对于积分的上下限，之前我一直没有弄懂，其实有一个很好的判断标准，就是<strong>极点与积分区域的关系</strong>（在p151）</p>
+<ul>
+<li>极点在积分区域外，则 $\theta$ 的限制是相切曲线的夹角，r 的上下限是两个函数</li>
+<li>极点在积分区域边界上，则 $\theta$ 的限制是相切曲线的夹角，r 的上限是一个函数，下限是0</li>
+<li>极点在积分区域内，则 $\theta$ 是 0 到 $2\pi$ ，r 的上限是一个函数，下限是0</li>
+</ul>
+<hr>
+<h2 id="五、证明方法"><a href="#五、证明方法" class="headerlink" title="五、证明方法"></a>五、证明方法</h2><h3 id="5-1-证明常值恒等式"><a href="#5-1-证明常值恒等式" class="headerlink" title="5.1 证明常值恒等式"></a>5.1 证明常值恒等式</h3><p>​    这种常值恒等式一般是通过求导后导数为零来进行证明的：</p>
+<p>​    当 $S(x)=\sum \frac{x^n}{n^2}$ ，求证</p>
+<script type="math/tex; mode=display">
+S(x)+S(1-x)+\ln x*\ln(1-x)=C</script><p>可知，这样的求导就可以了。</p>
+<h3 id="5-2-反证法"><a href="#5-2-反证法" class="headerlink" title="5.2 反证法"></a>5.2 反证法</h3><p>​    因为反证可以获得一个新的性质，所以用处比较多，比如若证明<strong>发散</strong>，正面证明的话只有<strong>必要条件</strong>和<strong>柯西</strong>两条路，但是如果先假设他<strong>收敛</strong>，那么很多<strong>收敛</strong>的性质就可以使用了。</p>
+<hr>
+<h2 id="六、其他知识"><a href="#六、其他知识" class="headerlink" title="六、其他知识"></a>六、其他知识</h2><h3 id="6-1-欧拉公式"><a href="#6-1-欧拉公式" class="headerlink" title="6.1 欧拉公式"></a>6.1 欧拉公式</h3><script type="math/tex; mode=display">
+e^{ix} = \cos x+i\cdot\sin x</script><p>​    证明可以用 $e^x,\sin x,\cos x$​的<strong>泰勒级数</strong>带入虚数单位即可。 </p>
+<p>​    这个公式是有极好的直观理解的，他可以看做是对复数的一种<strong>在复平面内实现的一种旋转</strong>，旋转的角度就是x</p>
+<p><img src="/posts/e09d69e5/v2-0473664b0e98458c2128f8e90623b3be_720w.jpg" alt="img"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Thysrael</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://thysrael.github.io/posts/e09d69e5/">https://thysrael.github.io/posts/e09d69e5/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Thysrael</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/S2%E5%A4%8D%E4%B9%A0/">
+                                    <span class="chip bg-color">S2复习</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/">
+                                    <span class="chip bg-color">数学分析</span>
+                                </a>
+                            
+                                <a href="/tags/S1%E5%A4%8D%E4%B9%A0/">
+                                    <span class="chip bg-color">S1复习</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/posts/e0f5c9e2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/042.jpg" class="responsive-img" alt="大学物理-波粒二象性">
+                        
+                        <span class="card-title">大学物理-波粒二象性</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            所有教材都是按照时间顺序介绍的，但是这样真的是认识量子力学的好方式吗？我觉得不一定，比如说介绍普朗克常量的时候，介绍了一大堆关于热辐射和黑体的概念，其实跟最关键的概念普朗克常量没有很明显的联系。再比如先介绍了波尔的原子模型，但是波尔做的很多
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" class="post-category">
+                                    大学物理
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                        <span class="chip bg-color">知识总结</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/">
+                        <span class="chip bg-color">直观理解</span>
+                    </a>
+                    
+                    <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">S3复习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/">
+                        <span class="chip bg-color">大学物理</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/posts/21c8b304/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/048.jpg" class="responsive-img" alt="大学物理-波动光学">
+                        
+                        <span class="card-title">大学物理-波动光学</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ​    这一章最让我困惑的原因是因为我的几何光学的知识存在欠缺，这个部分是不在授课中出现的，但是确实后面波动光学用到了凸透镜的知识，但是我缺少，就造成了很多的疑问。
+​    另一个比较让人分不清的点，是其实衍射现象的观察实际上利用的是波
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" class="post-category">
+                                    大学物理
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+                        <span class="chip bg-color">知识总结</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/">
+                        <span class="chip bg-color">直观理解</span>
+                    </a>
+                    
+                    <a href="/tags/S3%E5%A4%8D%E4%B9%A0/">
+                        <span class="chip bg-color">S3复习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/">
+                        <span class="chip bg-color">大学物理</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('5'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2021-2022</span>
+            
+            <a href="/about" target="_blank">Thysrael</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" rel="external nofollow noreferrer" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" rel="external nofollow noreferrer" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">384.4k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "12";
+                        var startDate = "18";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'en';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/Thysrael" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2470583476@qq.com" rel="external nofollow noreferrer" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
