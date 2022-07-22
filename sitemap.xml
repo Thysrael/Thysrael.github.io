@@ -4,7 +4,7 @@
   <url>
     <loc>https://thysrael.github.io/posts/5955f5d7/</loc>
     
-    <lastmod>2022-07-04</lastmod>
+    <lastmod>2022-07-22</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -949,13 +949,6 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/tags/S1%E8%AF%BE%E4%B8%8A/</loc>
-    <lastmod>2022-07-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://thysrael.github.io/tags/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/</loc>
     <lastmod>2022-07-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -964,6 +957,13 @@
   
   <url>
     <loc>https://thysrael.github.io/tags/25%E6%A0%BC/</loc>
+    <lastmod>2022-07-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://thysrael.github.io/tags/S1%E8%AF%BE%E4%B8%8A/</loc>
     <lastmod>2022-07-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

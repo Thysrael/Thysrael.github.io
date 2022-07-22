@@ -451,7 +451,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2022-07-04
+                    2022-07-22
                 </div>
                 
 
@@ -549,7 +549,7 @@
 <hr>
 <h2 id="二、Aarch64-汇编"><a href="#二、Aarch64-汇编" class="headerlink" title="二、Aarch64 汇编"></a>二、Aarch64 汇编</h2><h3 id="2-1-学习资料"><a href="#2-1-学习资料" class="headerlink" title="2.1 学习资料"></a>2.1 学习资料</h3><p>这里简要介绍一下。我们使用的是 armv8 的 A64 指令集（Aarch64 叫执行模式，总是就是一种 64 位的东西），是一种 64 位的指令集（armv8 还支持其他的模式，比如 32 位的 A32）。</p>
 <p>汇编学习官方提供的就是文档，但是众所周知，文档太难了。所以这里安利这本书，可以对于汇编还有异常处理体系有一个初步的了解。如下</p>
-<p><img src="https://img9.doubanio.com/view/subject/l/public/s34151565.jpg" alt="img"></p>
+<p><img src="/posts/5955f5d7/image-20220722173841563.png" alt="image-20220722173841563"></p>
 <h3 id="2-2-寄存器"><a href="#2-2-寄存器" class="headerlink" title="2.2 寄存器"></a>2.2 寄存器</h3><h4 id="2-2-1-通用寄存器"><a href="#2-2-1-通用寄存器" class="headerlink" title="2.2.1 通用寄存器"></a>2.2.1 通用寄存器</h4><h5 id="2-2-1-1-函数-ABI"><a href="#2-2-1-1-函数-ABI" class="headerlink" title="2.2.1.1 函数 ABI"></a>2.2.1.1 函数 ABI</h5><p>通用寄存器 x0 ~ x7 是传参寄存器，只要函数的参数少于等于 8 个，那么都会通过这些这些寄存器来传递，第一个参数会被写入 x0，第二个参数写入 x1，以此类推。</p>
 <p>同时，对于返回值，我们也是存储在 x0 中的，也就是说，x0 在函数中有两个作用，一个是传递第一个参数，一个是传递返回值。</p>
 <p>对于函数的返回地址会存在 x30 中，类似与 mips 中的 ra。</p>
