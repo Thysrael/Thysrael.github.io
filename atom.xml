@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-01-15T15:59:33.282Z</updated>
+  <updated>2024-01-25T17:13:05.228Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>吃喝玩乐-流浪贵阳</title>
+    <link href="https://thysrael.github.io/posts/cb973938/"/>
+    <id>https://thysrael.github.io/posts/cb973938/</id>
+    <published>2024-01-24T08:23:43.000Z</published>
+    <updated>2024-01-25T17:13:05.228Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;一、闲谈&quot;&gt;&lt;a href=&quot;#一、闲谈&quot; class=&quot;headerlink&quot; title=&quot;一、闲谈&quot;&gt;&lt;/a&gt;一、闲谈&lt;/h2&gt;&lt;p&gt;在我进入大学的新同学介绍会上，有个同学说她来自贵州，我想了想，贵州是广西的省会啊，原来是广西人啊！让我尝试为自己辩解一下，这种事情并不能全部怪我，贵州以“州”结尾，除了贵州以外，没有任何一个省份是以“州”结尾的，相反，“广州、潮州、雷州、惠州”都是以“州”结尾的城市。&lt;/p&gt;
+&lt;p&gt;我一个学过初中地理的人，居然还能把一个省份当成一个城市，多么愚蠢可乐的事情。在我的认知中，贵州是完全缺位的，我不是对它有一个好印象或者一个坏印象，我是完全没有印象。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/posts/cb973938/image-20240124195100752.png&quot; alt=&quot;image-20240124195100752&quot; style=&quot;zoom:80%;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;而实际上贵州是真实存在的，从某个我记不住名字的版块运动开始，随着喜马拉雅山破海而出，贵州就存在了。我在贵阳的博物馆里看到了保存完好的化石，看到了各个民族的文化，我看到的东西并不比我熟悉的东西少了分毫。这种真实的，冒着热气的，在我眼前的庞然大物，居然默许了一个仅有二十多年渺小灵长类的忽视。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="吃喝玩乐" scheme="https://thysrael.github.io/categories/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/"/>
+    
+    
+    <category term="吃喝玩乐" scheme="https://thysrael.github.io/tags/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/"/>
+    
+    <category term="流浪贵阳" scheme="https://thysrael.github.io/tags/%E6%B5%81%E6%B5%AA%E8%B4%B5%E9%98%B3/"/>
+    
+    <category term="S7假期" scheme="https://thysrael.github.io/tags/S7%E5%81%87%E6%9C%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>海边拾贝-Nephele</title>
@@ -651,34 +677,6 @@
     <category term="S5假期" scheme="https://thysrael.github.io/tags/S5%E5%81%87%E6%9C%9F/"/>
     
     <category term="算法设计" scheme="https://thysrael.github.io/tags/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>补充数学-内积</title>
-    <link href="https://thysrael.github.io/posts/31367c28/"/>
-    <id>https://thysrael.github.io/posts/31367c28/</id>
-    <published>2023-02-17T08:33:24.000Z</published>
-    <updated>2023-02-17T08:33:24.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;一、内积的形式&quot;&gt;&lt;a href=&quot;#一、内积的形式&quot; class=&quot;headerlink&quot; title=&quot;一、内积的形式&quot;&gt;&lt;/a&gt;一、内积的形式&lt;/h2&gt;&lt;p&gt;向量 $X$ 与向量 $Y$ 的内积为&lt;/p&gt;
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;
-X^TY&lt;/script&gt;&lt;p&gt;这个时候我们熟悉的转置（准确说是熟悉由陌生，因为转置的意义并不好理解）就出现了。&lt;/p&gt;
-&lt;p&gt;如果 $X, Y$ 仅仅是坐标，需要在基 $A$ 的作用下发挥作用，那么写出来的效果就更神奇了&lt;/p&gt;
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;
-(AX)^T(AY) = X^TA^TAY&lt;/script&gt;&lt;p&gt;也就是说，此时出现了我们最为熟悉的 $A^TA$ 结构。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="补充数学" scheme="https://thysrael.github.io/categories/%E8%A1%A5%E5%85%85%E6%95%B0%E5%AD%A6/"/>
-    
-    
-    <category term="直观理解" scheme="https://thysrael.github.io/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/"/>
-    
-    <category term="S5假期" scheme="https://thysrael.github.io/tags/S5%E5%81%87%E6%9C%9F/"/>
-    
-    <category term="补充数学" scheme="https://thysrael.github.io/tags/%E8%A1%A5%E5%85%85%E6%95%B0%E5%AD%A6/"/>
     
   </entry>
   
