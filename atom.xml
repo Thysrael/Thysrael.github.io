@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-01-26T12:52:11.767Z</updated>
+  <updated>2024-01-27T04:38:59.094Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -21,13 +21,16 @@
     <link href="https://thysrael.github.io/posts/cb973938/"/>
     <id>https://thysrael.github.io/posts/cb973938/</id>
     <published>2024-01-24T08:23:43.000Z</published>
-    <updated>2024-01-26T12:52:11.767Z</updated>
+    <updated>2024-01-27T04:38:59.094Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、闲谈&quot;&gt;&lt;a href=&quot;#一、闲谈&quot; class=&quot;headerlink&quot; title=&quot;一、闲谈&quot;&gt;&lt;/a&gt;一、闲谈&lt;/h2&gt;&lt;p&gt;在我进入大学的新同学介绍会上，有个同学说她来自贵州，我想了想，贵州是广西的省会啊，原来是广西人啊！让我尝试为自己辩解一下，这种事情并不能全部怪我，贵州以“州”结尾，除了贵州以外，没有任何一个省份是以“州”结尾的，相反，“广州、潮州、雷州、惠州”都是以“州”结尾的城市。&lt;/p&gt;
-&lt;p&gt;我一个学过初中地理的人，居然还能把一个省份当成一个城市，多么愚蠢可乐的事情。在我的认知中，贵州是完全缺位的，我不是对它有一个好印象或者一个坏印象，我是完全没有印象。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/posts/cb973938/image-20240124195100752.png&quot; alt=&quot;image-20240124195100752&quot; style=&quot;zoom:80%;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;而实际上贵州是真实存在的，从某个我记不住名字的版块运动开始，随着喜马拉雅山破海而出，贵州就存在了。我在贵阳的博物馆里看到了保存完好的化石，看到了各个民族的文化，我看到的东西并不比我熟悉的东西少了分毫。这种真实的，冒着热气的，在我眼前的庞然大物，居然默许了一个仅有二十多年渺小灵长类的忽视。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、闲谈&quot;&gt;&lt;a href=&quot;#一、闲谈&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -50,9 +53,13 @@
     <updated>2024-01-15T15:59:33.282Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot;&gt;&lt;a href=&quot;#Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot; class=&quot;headerlink&quot; title=&quot;Nephele：拓展虚拟环境为 Unikernel 提供 Clone 能力&quot;&gt;&lt;/a&gt;Nephele：拓展虚拟环境为 Unikernel 提供 Clone 能力&lt;/h1&gt;&lt;h2 id=&quot;一、概述&quot;&gt;&lt;a href=&quot;#一、概述&quot; class=&quot;headerlink&quot; title=&quot;一、概述&quot;&gt;&lt;/a&gt;一、概述&lt;/h2&gt;&lt;p&gt;项目开源地址：&lt;a href=&quot;https://github.com/nephele-vm&quot;&gt;https://github.com/nephele-vm&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/posts/ab21fab4/nephele.png&quot; alt=&quot;img&quot; style=&quot;zoom:35%;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;本文在 hypervisor 上为 unikernel 提供了 clone 能力。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot;&gt;&lt;a href=&quot;#Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot; class=&quot;headerlink&quot; title=&quot;Nephele：拓展虚拟环境为</summary>
+        
+      
     
     
     
@@ -75,12 +82,13 @@
     <updated>2024-01-08T04:35:58.662Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、编译原理&quot;&gt;&lt;a href=&quot;#一、编译原理&quot; class=&quot;headerlink&quot; title=&quot;一、编译原理&quot;&gt;&lt;/a&gt;一、编译原理&lt;/h2&gt;&lt;p&gt;在我一开始接触内联汇编的时候，我已经略懂编译的原理了，而这更让我困惑，比如说像这样的内联汇编：&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;asm&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;volatile&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;lw a0, 0(%0)&quot;&lt;/span&gt;
-    &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;r&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;addr&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;会改写寄存器 &lt;code&gt;a0&lt;/code&gt; 的值，那如果 &lt;code&gt;a0&lt;/code&gt; 原先就被程序中的某个变量占用了呢？那岂不是会造成原来那个变量所参与的行为发生错误？同时 &lt;code&gt;addr&lt;/code&gt; 需要被放到一个寄存器中（我们称之为 &lt;code&gt;rx&lt;/code&gt;），而 &lt;code&gt;rx&lt;/code&gt; 如果之前也被占用了呢？，为了把原来在内存中的变量搬运到 &lt;code&gt;rx&lt;/code&gt; 寄存器中，是不是也会&lt;/p&gt;
-&lt;p&gt;其实内联汇编并不是生硬地将 &lt;code&gt;lw a0, 0(rx)&lt;/code&gt; 直接插入到代码里，因为这样确实会因为上述的原因导致程序错误。在实际情况中，内联汇编在编译角度应该被理解成一个类似于函数调用的处理逻辑。也就是说，如果内联汇编中用到了 &lt;code&gt;a0&lt;/code&gt; ，那么在内联汇编前就会有一个机制保存 &lt;code&gt;a0&lt;/code&gt; ，而在内联汇编后则有一个机制恢复原本的 &lt;code&gt;a0&lt;/code&gt; 。也就是和“调用者保存寄存器”的逻辑是一样的。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、编译原理&quot;&gt;&lt;a href=&quot;#一、编译原理&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -103,10 +111,13 @@
     <updated>2024-01-03T14:32:19.233Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;这篇博客会从一个初学者的视角去积累一些科研中的常见“名词”，希望可以借此达到一个科普和入门的目的。&lt;/p&gt;
-&lt;p&gt;事实上我也没法以不是“非初学者”的视角去写，因为事实上我也刚知道这些东西不到一个上午。所以可能会有一些错误或者偏颇的地方，还望大家见谅。&lt;/p&gt;
-&lt;p&gt;此外因为我本人是做系统的，所以可能 AI 等方向我并不清楚，在下面的文章中也不会涉及。&lt;/p&gt;
-&lt;h2 id=&quot;二、实体&quot;&gt;&lt;a href=&quot;#二、实体&quot; class=&quot;headerlink&quot; title=&quot;二、实体&quot;&gt;&lt;/a&gt;二、实体&lt;/h2&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -158,23 +169,13 @@
     <updated>2023-12-30T13:11:11.792Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、循环依赖&quot;&gt;&lt;a href=&quot;#一、循环依赖&quot; class=&quot;headerlink&quot; title=&quot;一、循环依赖&quot;&gt;&lt;/a&gt;一、循环依赖&lt;/h2&gt;&lt;p&gt;在 C 和 CPP 这种有 &lt;code&gt;include&lt;/code&gt; 机制的语言中，当项目复杂时，很容易出现一种头文件相互包含的错误，如下所示：&lt;/p&gt;
-&lt;p&gt;在 &lt;code&gt;A.h&lt;/code&gt; 内容如下：&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;ifndef&lt;/span&gt; &lt;span class=&quot;token expression&quot;&gt;_A_H_&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;define&lt;/span&gt; &lt;span class=&quot;token macro-name&quot;&gt;_A_H_&lt;/span&gt;&lt;/span&gt;
-
-&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;B.h&quot;&lt;/span&gt;&lt;/span&gt;
-
-&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;A&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    B&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; pb&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;doSomethingA&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-        pb&lt;span class=&quot;token operator&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;endif&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// _A_H_&lt;/span&gt;&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;在 &lt;code&gt;B.h&lt;/code&gt; 内容如下：&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、循环依赖&quot;&gt;&lt;a href=&quot;#一、循环依赖&quot; class=&quot;headerlink&quot; title=&quot;一、循环依赖&quot;&gt;&lt;/a&gt;一、循环依赖&lt;/h2&gt;&lt;p&gt;在 C 和 CPP 这种有 &lt;code&gt;include&lt;/code&gt;</summary>
+        
+      
     
     
     
@@ -197,8 +198,13 @@
     <updated>2023-12-21T12:16:07.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、圆周率计算方法综述&quot;&gt;&lt;a href=&quot;#一、圆周率计算方法综述&quot; class=&quot;headerlink&quot; title=&quot;一、圆周率计算方法综述&quot;&gt;&lt;/a&gt;一、圆周率计算方法综述&lt;/h2&gt;&lt;h3 id=&quot;1-1-几何&quot;&gt;&lt;a href=&quot;#1-1-几何&quot; class=&quot;headerlink&quot; title=&quot;1.1 几何&quot;&gt;&lt;/a&gt;1.1 几何&lt;/h3&gt;&lt;h4 id=&quot;1-1-1-线弧近似法&quot;&gt;&lt;a href=&quot;#1-1-1-线弧近似法&quot; class=&quot;headerlink&quot; title=&quot;1.1.1 线弧近似法&quot;&gt;&lt;/a&gt;1.1.1 线弧近似法&lt;/h4&gt;&lt;p&gt;由古希腊数学家阿基米德提出，它采用多边形周长的方法来近似圆周长，以此求出圆周率。&lt;/p&gt;
-&lt;p&gt;对于圆的周长计算，有圆周长公式如下&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、圆周率计算方法综述&quot;&gt;&lt;a href=&quot;#一、圆周率计算方法综述&quot; class=&quot;headerlink&quot; title=&quot;一、圆周率计算方法综述&quot;&gt;&lt;/a&gt;一、圆周率计算方法综述&lt;/h2&gt;&lt;h3 id=&quot;1-1-几何&quot;&gt;&lt;a href=&quot;#1-1-几何&quot;</summary>
+        
+      
     
     
     
@@ -221,10 +227,14 @@
     <updated>2023-12-25T07:25:14.484Z</updated>
     
     
+      
+      
+        
+        
     <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;内存管理的本质是资源管理，也就是很多程序最为重要的功能。&lt;/p&gt;
-&lt;p&gt;但是不同于 Python 或者 Java 这样有着很好内存抽象和比较大条的内存管理方式（动不动就在堆上分配空间），C++ 在更加“荒蛮”的内存上进行更加精细化的甚至还很有 C 特色的内存管理（并非 C++ 希望如此，只不过脱胎于 C 必然受到 C 的影响），是一件非常难的事情。&lt;/p&gt;
-&lt;p&gt;所以 C++ 内存管理看上去总是呈现一种“似乎解决了一个根本不会在 Java 中发生的问题”的模式。&lt;/p&gt;
-&lt;h2 id=&quot;二、RAII&quot;&gt;&lt;a href=&quot;#二、RAII&quot; class=&quot;headerlink&quot; title=&quot;二、RAII&quot;&gt;&lt;/a&gt;二、RAII&lt;/h2&gt;</summary>
+&lt;p&gt;但是不同于 Python 或者 Java</summary>
+        
+      
     
     
     
@@ -247,13 +257,13 @@
     <updated>2023-12-26T05:26:26.847Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;我们常听一个说法“在语法上，C++ 是 C 的超集”，这句话的意思是说，C++ 继承并发展了 C 。这是十分有道理的事情，但是这个说法往往造成两个常见的误解：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;C++ 继承 C 最重要的东西就是 C 的语法&lt;/li&gt;
-&lt;li&gt;C++ 是完全兼容 C 的&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这两点其实并不正确。C++ 作为一门独立的语言，虽然起源于 C ，但是在设计思想上和 C 可以说是截然不同，但是又因为起源于 C ，在设计时又不可避免的带上了 C 的烙印，本文希望探讨一下 C++ 与 C 的继承和发展关系，故起名为“滥觞”。&lt;/p&gt;
-&lt;p&gt;这章可以看作是“CPP设计-寸步难行”的姊妹篇，这章介绍了 C 和 C++ 的不同，“寸步难行”介绍了 C 和 C++ 的相同之处。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;我们常听一个说法“在语法上，C++ 是 C 的超集”，这句话的意思是说，C++ 继承并发展了 C</summary>
+        
+      
     
     
     
@@ -276,12 +286,13 @@
     <updated>2023-09-30T10:48:08.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;很像数学&quot;&gt;&lt;a href=&quot;#很像数学&quot; class=&quot;headerlink&quot; title=&quot;很像数学&quot;&gt;&lt;/a&gt;很像数学&lt;/h2&gt;&lt;p&gt;lisp 真的很像数学，或许这就是 lisp 的特征。它像是一个从计算器程序变成的计算机一样有趣。而 C 则更像是一种由内存驱动变成的计算机。&lt;/p&gt;
-&lt;p&gt;另外一个很像数学的点就是，lisp 试图用最少的基本结构（可能是数据结构，也可能是过程结构）来描述最多的复杂结构，就像数学在用最少的公理来推导最多的定理一样。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;数学家会详细研究房子着火之后的救火步骤，当房子安然无恙时，他们则会将房子点燃，然后心安理得地救火。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;语言是什么&quot;&gt;&lt;a href=&quot;#语言是什么&quot; class=&quot;headerlink&quot; title=&quot;语言是什么&quot;&gt;&lt;/a&gt;语言是什么&lt;/h2&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;很像数学&quot;&gt;&lt;a href=&quot;#很像数学&quot; class=&quot;headerlink&quot; title=&quot;很像数学&quot;&gt;&lt;/a&gt;很像数学&lt;/h2&gt;&lt;p&gt;lisp 真的很像数学，或许这就是 lisp 的特征。它像是一个从计算器程序变成的计算机一样有趣。而 C</summary>
+        
+      
     
     
     
@@ -304,9 +315,13 @@
     <updated>2023-09-30T10:40:34.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、再次回顾启动流程&quot;&gt;&lt;a href=&quot;#一、再次回顾启动流程&quot; class=&quot;headerlink&quot; title=&quot;一、再次回顾启动流程&quot;&gt;&lt;/a&gt;一、再次回顾启动流程&lt;/h2&gt;&lt;h3 id=&quot;1-1-stage-1&quot;&gt;&lt;a href=&quot;#1-1-stage-1&quot; class=&quot;headerlink&quot; title=&quot;1.1 stage 1&quot;&gt;&lt;/a&gt;1.1 stage 1&lt;/h3&gt;&lt;p&gt;在学 OS 的时候我就已经写过一篇介绍启动流程的文章了，在我忙了一上午以后重新学了一遍，发现其实之前就已经学的十分详细了，属于是自己造自己的轮子了。不过再次回顾，尤其是结合了自己开发操作系统的经验，还是发现很多重点的，所以再来回顾一遍。&lt;/p&gt;
-&lt;p&gt;首先是关于启动最初，bios，MBR 和 grub 的区别&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;Linux-Systemd//boot.png&quot; alt&gt;&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、再次回顾启动流程&quot;&gt;&lt;a href=&quot;#一、再次回顾启动流程&quot; class=&quot;headerlink&quot; title=&quot;一、再次回顾启动流程&quot;&gt;&lt;/a&gt;一、再次回顾启动流程&lt;/h2&gt;&lt;h3 id=&quot;1-1-stage-1&quot;&gt;&lt;a</summary>
+        
+      
     
     
     
@@ -329,10 +344,13 @@
     <updated>2023-12-25T07:40:28.606Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;当我们提起 git 的时候，我们总说它是版本控制工具。但是版本控制工具到底是什么？我觉得是一种特化的数据库，我们根据版本号去查询对应的项目内容，这种特殊数据库用于进行代码管理。而对于 git，我愿意定义它为“分布式、并发、无锁数据库”。&lt;/p&gt;
-&lt;p&gt;Git 是 Linus 写出来的版本控制工具，其诞生的直接原因是原来为 Linux 进行版本控制的工具 BitKeeper 不再免费了。也就是说，git 的直接需求是 Linux 的版本控制，而 Linux 是世界上最复杂的开源项目之一，所以 git 的设计是较为彪悍的，它支持最为复杂的分布式并发开发，并且可以促进这种集市一般的开发文化。&lt;/p&gt;
-&lt;p&gt;正因为如此，我个人觉得 git 并不用户友好，它迫使每一个希望更好地利用 git 的用户，都需要去了解 git 的底层实现理解和 git 面临的现实需求。光是“指针分离”这一个常见的现象，如果希望合理的解释，那么就必须深入 git 的底层实现，在了解了指针引用，版本快照，追踪分支和版本快照等一系列实现知识后，还需要了解频繁切换分支，生成分支，并行开发，分布式开发等多个版本管理需求，才可以明白它为啥不把这种直接暴露底层实现的功能更好的封装一下。&lt;/p&gt;
-&lt;p&gt;总的来说，git 不够友好，不够简洁，并不是开发者的开发水平不行，而是其需求过于强了，所以不得不将工具设计得这么复杂。而如vscode 或者 IDEA 将 git 封装成更为易用的状态，但是这种方式往往限制了 git 的功能，其本质其实是限制了需求的强度。而一旦面对更高强度的需求，不得不承认 git 做得已经很“友好简洁”了。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;当我们提起 git</summary>
+        
+      
     
     
     
@@ -355,10 +373,13 @@
     <updated>2023-12-25T07:34:39.990Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;如何熟悉工具呢？我觉得最为重要的是理解工具被设计和使用时的理念或者概念或者抽象，只要理解了工具中蕴含的理念是什么，对于具体的操作，就可以抄文档了。&lt;/p&gt;
-&lt;p&gt;linux 下的常见命令行工具有什么特点呢？这些常见的，简单的命令行工具，本质是 GNU/Linux 生态的一部分，他们的很多概念，本质是 Linux Kernel 的概念的延续和拓展。&lt;/p&gt;
-&lt;p&gt;GNU/Linux 的伟大真的是难以形容啊。&lt;/p&gt;
-&lt;hr&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -381,9 +402,13 @@
     <updated>2024-01-15T04:10:35.335Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;REEF：为并行-DNN-推断设计的抢占调度&quot;&gt;&lt;a href=&quot;#REEF：为并行-DNN-推断设计的抢占调度&quot; class=&quot;headerlink&quot; title=&quot;REEF：为并行 DNN 推断设计的抢占调度&quot;&gt;&lt;/a&gt;REEF：为并行 DNN 推断设计的抢占调度&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://www.usenix.org/conference/osdi22/presentation/han&quot;&gt;论文链接&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/SJTU-IPADS/reef-artifacts&quot;&gt;源码链接&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;一、问题描述&quot;&gt;&lt;a href=&quot;#一、问题描述&quot; class=&quot;headerlink&quot; title=&quot;一、问题描述&quot;&gt;&lt;/a&gt;一、问题描述&lt;/h2&gt;&lt;h3 id=&quot;1-1-基本认识&quot;&gt;&lt;a href=&quot;#1-1-基本认识&quot; class=&quot;headerlink&quot; title=&quot;1.1 基本认识&quot;&gt;&lt;/a&gt;1.1 基本认识&lt;/h3&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;REEF：为并行-DNN-推断设计的抢占调度&quot;&gt;&lt;a href=&quot;#REEF：为并行-DNN-推断设计的抢占调度&quot; class=&quot;headerlink&quot; title=&quot;REEF：为并行 DNN 推断设计的抢占调度&quot;&gt;&lt;/a&gt;REEF：为并行 DNN</summary>
+        
+      
     
     
     
@@ -406,6 +431,10 @@
     <updated>2023-07-12T12:15:07.000Z</updated>
     
     
+      
+      
+        
+        
     <summary type="html">&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;portability 可移植性&lt;/p&gt;
 &lt;/li&gt;
@@ -413,81 +442,9 @@
 &lt;/li&gt;
 &lt;li&gt;modularity 模块化&lt;/li&gt;
 &lt;li&gt;monolithic 单片机，宏（内核）&lt;/li&gt;
-&lt;li&gt;bypass 绕过&lt;/li&gt;
-&lt;li&gt;non-trival 非平凡的，可观的&lt;/li&gt;
-&lt;li&gt;invocation 调用&lt;/li&gt;
-&lt;li&gt;compatible 兼容，backward compatible 向后兼容&lt;/li&gt;
-&lt;li&gt;capability 能力，权限&lt;/li&gt;
-&lt;li&gt;resurgent 复兴的，复苏的&lt;/li&gt;
-&lt;li&gt;heterogenous 异构&lt;/li&gt;
-&lt;li&gt;relay 继电器，转发，中转&lt;/li&gt;
-&lt;li&gt;semantics 语义学&lt;/li&gt;
-&lt;li&gt;underly 基本的，本质的&lt;/li&gt;
-&lt;li&gt;manipulate 操作&lt;/li&gt;
-&lt;li&gt;plane 飞机，层次，平面&lt;/li&gt;
-&lt;li&gt;respectively 独立地，各自地&lt;/li&gt;
-&lt;li&gt;dicated 精心设计的&lt;/li&gt;
-&lt;li&gt;tenant 租户&lt;/li&gt;
-&lt;li&gt;lease 租借，租用&lt;/li&gt;
-&lt;li&gt;commodity 商品，货物&lt;/li&gt;
-&lt;li&gt;adversary 对手&lt;/li&gt;
-&lt;li&gt;comprise 包括，构成&lt;/li&gt;
-&lt;li&gt;LOC，line of code 代码行数&lt;/li&gt;
-&lt;li&gt;cyber 计算机相关的&lt;/li&gt;
-&lt;li&gt;traverse 遍历&lt;/li&gt;
-&lt;li&gt;obstacle 障碍&lt;/li&gt;
-&lt;li&gt;order-of-magnitude 多个数量级&lt;/li&gt;
-&lt;li&gt;roundtrips 往返&lt;/li&gt;
-&lt;li&gt;retain 保留&lt;/li&gt;
-&lt;li&gt;leverage 使用，杠杆&lt;/li&gt;
-&lt;li&gt;indirection 间接&lt;/li&gt;
-&lt;li&gt;stale 陈旧的&lt;/li&gt;
-&lt;li&gt;fallback 倒退的&lt;/li&gt;
-&lt;li&gt;senarios 场景&lt;/li&gt;
-&lt;li&gt;enclave 飞地&lt;/li&gt;
-&lt;li&gt;scale 规模，可拓展性&lt;/li&gt;
-&lt;li&gt;encryption 加密&lt;/li&gt;
-&lt;li&gt;negligible 微不足道的&lt;/li&gt;
-&lt;li&gt;revisit 重温&lt;/li&gt;
-&lt;li&gt;feasibility 可行性&lt;/li&gt;
-&lt;li&gt;vesatile 灵活的，多样化的&lt;/li&gt;
-&lt;li&gt;best-effort 尽力而为的&lt;/li&gt;
-&lt;li&gt;preemption 抢占式&lt;/li&gt;
-&lt;li&gt;monopolize 垄断&lt;/li&gt;
-&lt;li&gt;utilization 利用率&lt;/li&gt;
-&lt;li&gt;idempotent 幂等的&lt;/li&gt;
-&lt;li&gt;devise 设计发明&lt;/li&gt;
-&lt;li&gt;paradigm 范例&lt;/li&gt;
-&lt;li&gt;stipulate 规定&lt;/li&gt;
-&lt;li&gt;effacy 功效&lt;/li&gt;
-&lt;li&gt;coarse-grained 粗粒度的&lt;/li&gt;
-&lt;li&gt;intuitive 直观的&lt;/li&gt;
-&lt;li&gt;proatively 积极主动的&lt;/li&gt;
-&lt;li&gt;indispensable 不可或缺的&lt;/li&gt;
-&lt;li&gt;polling 轮询&lt;/li&gt;
-&lt;li&gt;impose 强加于&lt;/li&gt;
-&lt;li&gt;indepth 深入的&lt;/li&gt;
-&lt;li&gt;reclaim 回收&lt;/li&gt;
-&lt;li&gt;remedy 弥补&lt;/li&gt;
-&lt;li&gt;retrofit 改造&lt;/li&gt;
-&lt;li&gt;incur 导致，招致&lt;/li&gt;
-&lt;li&gt;intercept 拦截&lt;/li&gt;
-&lt;li&gt;fusion 融合&lt;/li&gt;
-&lt;li&gt;substitution 替代品&lt;/li&gt;
-&lt;li&gt;heuristic 启发式&lt;/li&gt;
-&lt;li&gt;saturate 饱合&lt;/li&gt;
-&lt;li&gt;perception 观念，感知&lt;/li&gt;
-&lt;li&gt;amplify 扩大，增大&lt;/li&gt;
-&lt;li&gt;premise 前提&lt;/li&gt;
-&lt;li&gt;incoporation 合并，加入&lt;/li&gt;
-&lt;li&gt;tune 调整&lt;/li&gt;
-&lt;li&gt;contention 竞争&lt;/li&gt;
-&lt;li&gt;orthogonal 正交&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Virtualization, Security, Distributed, Parallelism&lt;/p&gt;
-&lt;p&gt;你为什么加入 IPADS？&lt;/p&gt;
-&lt;p&gt;当我还是大二的学生的时候，我就听学长说起过 IPADS，他将 IPADS 描绘得很好，所以我基本上当时就很好奇，之后也是关注了 IPADS 的知乎账号，所以对于 IPADS 的进展有很深的了解。从客观上来讲，我个人的科研兴趣是系统软件，这很符合 IPADS 的研究方向。从主观来讲，我希望我从事的工作不只是一份工作，更是一个艺术品，我希望我的作品精益求精，我觉得这种想法和 IPADS 的实验室文化是相通的。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;When&lt;/strong&gt; I was a sophomore in college, I heard my senior talk about IPADS, and he described IPADS very well, so I was basically very curious at that time, and &lt;strong&gt;after that&lt;/strong&gt;, I also followed the IPADS Zhihu account, so I have a very deep understanding of the progress of IPADS. &lt;strong&gt;Objectively&lt;/strong&gt;, my personal research interest is in system software, which fits well with the research direction of IPADS. &lt;strong&gt;Subjectively&lt;/strong&gt;, &lt;strong&gt;I hope that my work is not just a job, but also a work of art&lt;/strong&gt;, and I hope that my work will be perfect, which I think is in line with the lab culture of IPADS.&lt;/p&gt;</summary>
+&lt;li&gt;bypass</summary>
+        
+      
     
     
     
@@ -510,12 +467,13 @@
     <updated>2023-03-12T05:38:07.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;应当意识到，我没有办法依靠平时的积累写出一篇华美的文章。写作或者说表达是必须依靠模板。而“模板”的范围不应该只限于语法层面的“开头，中间段，结尾”。它应当还包括“语义”层面，比如说“意义应当从哪几个角度去答？需要引入事例还是单纯进行说理？”这样的模板。&lt;/p&gt;
-&lt;p&gt;还是要感慨一下，英语六级其实和英语能力不太沾边。哪怕是沾边，我也没有办法将其他的英语能力换成成绩。反而言之，即使我的六级成绩不好，但是真的遇到需要英语的场合，也应当坦然积极的准备，而不是自怨自艾，自我否定。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;你说这些，跟我有什么关系？&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -538,11 +496,13 @@
     <updated>2023-03-05T07:26:29.000Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;巴别塔——问答平台调研&quot;&gt;&lt;a href=&quot;#巴别塔——问答平台调研&quot; class=&quot;headerlink&quot; title=&quot;巴别塔——问答平台调研&quot;&gt;&lt;/a&gt;巴别塔——问答平台调研&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;任何失去的东西，都会以另一种形式归来。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;我选择的是第一个题目，我会调研 CSDN 问答区、StackOverflow、SegmentFault（思否）三款 IT 问答软件。&lt;/p&gt;
-&lt;h2 id=&quot;一、调研与评测&quot;&gt;&lt;a href=&quot;#一、调研与评测&quot; class=&quot;headerlink&quot; title=&quot;一、调研与评测&quot;&gt;&lt;/a&gt;一、调研与评测&lt;/h2&gt;&lt;h3 id=&quot;1-1-问答的意义&quot;&gt;&lt;a href=&quot;#1-1-问答的意义&quot; class=&quot;headerlink&quot; title=&quot;1.1 问答的意义&quot;&gt;&lt;/a&gt;1.1 问答的意义&lt;/h3&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;巴别塔——问答平台调研&quot;&gt;&lt;a href=&quot;#巴别塔——问答平台调研&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -565,14 +525,13 @@
     <updated>2023-02-26T07:33:11.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、CDQ-分治&quot;&gt;&lt;a href=&quot;#一、CDQ-分治&quot; class=&quot;headerlink&quot; title=&quot;一、CDQ 分治&quot;&gt;&lt;/a&gt;一、CDQ 分治&lt;/h2&gt;&lt;p&gt;因为时间的关系，我也不确定我理解的这个套路是否是所谓的 “CDQ 分治”，还是只是一种具有&lt;strong&gt;二维偏序&lt;/strong&gt;特征的模板。&lt;/p&gt;
-&lt;p&gt;在这种题目中，我们一般会对于一个二维结构体去排序，比如说&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Node&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; x&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; y&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;而且排序一般会发生两次，第一次是在开始前先对某个维度进行一遍排序，然后在分治过程中，利用归并排序的思想，在二分的过程中对于另一个维度再次进行排序。也就是如下模板&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、CDQ-分治&quot;&gt;&lt;a href=&quot;#一、CDQ-分治&quot; class=&quot;headerlink&quot; title=&quot;一、CDQ 分治&quot;&gt;&lt;/a&gt;一、CDQ 分治&lt;/h2&gt;&lt;p&gt;因为时间的关系，我也不确定我理解的这个套路是否是所谓的 “CDQ</summary>
+        
+      
     
     
     
@@ -595,51 +554,14 @@
     <updated>2023-02-19T10:26:29.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、BFS-模板&quot;&gt;&lt;a href=&quot;#一、BFS-模板&quot; class=&quot;headerlink&quot; title=&quot;一、BFS 模板&quot;&gt;&lt;/a&gt;一、BFS 模板&lt;/h2&gt;&lt;p&gt;如下所示&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;set&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Node&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; visited&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;token keyword&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;check&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;Node son&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;bfs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;Node start&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;token comment&quot;&gt;// init&lt;/span&gt;
-    queue&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Node&lt;span class=&quot;token operator&quot;&gt;&amp;gt;&lt;/span&gt; q&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    q&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;start&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    visited&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;start&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    
-    &lt;span class=&quot;token keyword&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;q&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-        Node front &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; q&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;front&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-     	q&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      
+      
         
-        &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;son &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; q&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;neigbour&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;token comment&quot;&gt;// prune&lt;/span&gt;
-            &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;check&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;son&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-             	q&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;son&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-                visited&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;son&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;token comment&quot;&gt;// son is the correct answer&lt;/span&gt;
-                &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;ac&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;son&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; son&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
-    &lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; ans &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;bfs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
-    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;其中有几部分需要一一强调，第一个是 &lt;code&gt;check()&lt;/code&gt; 函数用于进行减枝，只有经过 &lt;code&gt;check&lt;/code&gt; 的子节点会被加入队列。&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;bool check(Node son);&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;</summary>
+        
+    <summary type="html">&lt;h2 id=&quot;一、BFS-模板&quot;&gt;&lt;a href=&quot;#一、BFS-模板&quot; class=&quot;headerlink&quot; title=&quot;一、BFS 模板&quot;&gt;&lt;/a&gt;一、BFS 模板&lt;/h2&gt;&lt;p&gt;如下所示&lt;/p&gt;
+&lt;pre class=&quot;line-numbers</summary>
+        
+      
     
     
     
@@ -662,10 +584,13 @@
     <updated>2023-02-18T03:28:40.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、有序和单调&quot;&gt;&lt;a href=&quot;#一、有序和单调&quot; class=&quot;headerlink&quot; title=&quot;一、有序和单调&quot;&gt;&lt;/a&gt;一、有序和单调&lt;/h2&gt;&lt;p&gt;二分本质上是一种更加智能的搜索状态空间的方式，他需要状态空间的状态呈现一种“有序的一维数组”的形式，然后再进行搜索。所以一开始的排序是无法避免的。&lt;/p&gt;
-&lt;p&gt;因为二分的写法问题，所以应当怎样排序也是有一定讲究的，所以排序的时候就可以定义一定的比较方式。&lt;/p&gt;
-&lt;p&gt;如果更加细致的讨论的话，其实有序只是一个“小条件”，比如说很多枚举、搜索类的题目的状态空间也是有序的，但是我们却没有用二分法，这是因为其核心是，适用于二分法的题目，它的状态和解之间的关系是&lt;strong&gt;单调&lt;/strong&gt;的，如下所示&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/posts/420d3e64/image-20230219210940734.png&quot; alt=&quot;image-20230219210940734&quot;&gt;&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、有序和单调&quot;&gt;&lt;a href=&quot;#一、有序和单调&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
