@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-02-11T13:22:46.888Z</updated>
+  <updated>2024-02-11T13:47:41.964Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -17,11 +17,39 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>吃喝玩乐-字体演变</title>
+    <link href="https://thysrael.github.io/posts/f0b58a03/"/>
+    <id>https://thysrael.github.io/posts/f0b58a03/</id>
+    <published>2024-02-11T13:34:57.000Z</published>
+    <updated>2024-02-11T13:47:41.964Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;一、字体介绍&quot;&gt;&lt;a href=&quot;#一、字体介绍&quot; class=&quot;headerlink&quot; title=&quot;一、字体介绍&quot;&gt;&lt;/a&gt;一、字体介绍&lt;/h2&gt;&lt;h3 id=&quot;1-1-演变历史&quot;&gt;&lt;a href=&quot;#1-1-演变历史&quot; class=&quot;headerlink&quot; title=&quot;1.1 演变历史&quot;&gt;&lt;/a&gt;1.1 演变历史&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;最早的字体是“帝国大写体”（Imperial Capitals），也被称为“罗马大写体”，古罗马时期字体，用于在石碑上记录重大事件。&lt;/li&gt;
+&lt;li&gt;然后是“卡洛林小写体”（Carolingian Minuscule），这种字体在中世纪早期出现，这种字体字间距大，结构清晰简单，但是已经具有了一定的宗教色彩。&lt;/li&gt;
+&lt;li&gt;中世纪后期西欧出现了“哥特体”（Gothic），是卡洛林小写体的演化体，这种字体更加复杂和华丽，字间距小，笔画厚重而末端尖锐，具有强烈的宗教色彩。&lt;/li&gt;
+&lt;li&gt;“人文主义体”是“文艺复兴之父”彼特拉克提倡发明的字体，受启发于卡洛林小写体字间距大，方便阅读的特点，是文艺复兴早期的字体，风格比较圆润轻松，字轴比较倾斜。&lt;/li&gt;
+&lt;li&gt;“意大利斜体”受启发于“人文主义体”，这种字体更加自由畅快，同时由于斜体的特点，可以兼顾辨认和节省空间的特点，是当时印刷业的新宠。&lt;/li&gt;
+&lt;li&gt;“印刷罗马体”是活字印刷术发明后在意大利发明的，这种字体受启发于“人文主义体”和“帝国大写体”，这种字体字轴中正，笔画圆润，书写痕迹浅，成为了“人文主义体”的淘汰者。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/posts/f0b58a03/image-20240211214139291.png&quot; alt=&quot;image-20240211214139291&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;1-2-具体介绍&quot;&gt;&lt;a href=&quot;#1-2-具体介绍&quot; class=&quot;headerlink&quot; title=&quot;1.2 具体介绍&quot;&gt;&lt;/a&gt;1.2 具体介绍&lt;/h3&gt;</summary>
+    
+    
+    
+    
+    <category term="S7课上" scheme="https://thysrael.github.io/tags/S7%E8%AF%BE%E4%B8%8A/"/>
+    
+    <category term="吃喝玩乐" scheme="https://thysrael.github.io/tags/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/"/>
+    
+  </entry>
+  
+  <entry>
     <title>吃喝玩乐-穿粉红大衣的女郎</title>
     <link href="https://thysrael.github.io/posts/43a479d4/"/>
     <id>https://thysrael.github.io/posts/43a479d4/</id>
     <published>2024-02-11T13:02:34.000Z</published>
-    <updated>2024-02-11T13:22:46.888Z</updated>
+    <updated>2024-02-11T13:27:27.806Z</updated>
     
     
       
@@ -607,36 +635,6 @@
     <category term="S6课上" scheme="https://thysrael.github.io/tags/S6%E8%AF%BE%E4%B8%8A/"/>
     
     <category term="软件工程" scheme="https://thysrael.github.io/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>算法设计-分治</title>
-    <link href="https://thysrael.github.io/posts/428aca72/"/>
-    <id>https://thysrael.github.io/posts/428aca72/</id>
-    <published>2023-02-26T07:33:11.000Z</published>
-    <updated>2023-02-26T07:33:11.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;一、CDQ-分治&quot;&gt;&lt;a href=&quot;#一、CDQ-分治&quot; class=&quot;headerlink&quot; title=&quot;一、CDQ 分治&quot;&gt;&lt;/a&gt;一、CDQ 分治&lt;/h2&gt;&lt;p&gt;因为时间的关系，我也不确定我理解的这个套路是否是所谓的 “CDQ 分治”，还是只是一种具有&lt;strong&gt;二维偏序&lt;/strong&gt;特征的模板。&lt;/p&gt;
-&lt;p&gt;在这种题目中，我们一般会对于一个二维结构体去排序，比如说&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Node&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; x&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;token keyword&quot;&gt;int&lt;/span&gt; y&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;而且排序一般会发生两次，第一次是在开始前先对某个维度进行一遍排序，然后在分治过程中，利用归并排序的思想，在二分的过程中对于另一个维度再次进行排序。也就是如下模板&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="算法设计" scheme="https://thysrael.github.io/categories/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/"/>
-    
-    
-    <category term="知识总结" scheme="https://thysrael.github.io/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
-    
-    <category term="S5假期" scheme="https://thysrael.github.io/tags/S5%E5%81%87%E6%9C%9F/"/>
-    
-    <category term="算法设计" scheme="https://thysrael.github.io/tags/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/"/>
     
   </entry>
   
