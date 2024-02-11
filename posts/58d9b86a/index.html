@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/58d9b86a/box1-17076556721651.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/58d9b86a/box2-17076556936422.png">
 <meta property="article:published_time" content="2024-02-11T12:41:14.000Z">
-<meta property="article:modified_time" content="2024-02-11T12:48:20.534Z">
+<meta property="article:modified_time" content="2024-02-11T12:54:54.078Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="工具总结">
 <meta property="article:tag" content="科研可餍">
@@ -143,7 +143,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">162</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">163</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -240,7 +240,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-02-11 20:41:14 / Modified: 20:48:20" itemprop="dateCreated datePublished" datetime="2024-02-11T20:41:14+08:00">2024-02-11</time>
+              <time title="Created: 2024-02-11 20:41:14 / Modified: 20:54:54" itemprop="dateCreated datePublished" datetime="2024-02-11T20:41:14+08:00">2024-02-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,14 +265,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>9.4k</span>
+              <span>9.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>9 mins.</span>
+              <span>8 mins.</span>
             </span>
 
         </div>
@@ -440,27 +440,39 @@ hello            world<span aria-hidden="true" class="line-numbers-rows"><span><
   <span class="token comment">% ...</span>
 <span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">table</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><code>&lt;placement&gt;</code> 参数提供了一些符号用来表示浮动体允许排版的位置（也就是浮动体会出现在一个页面的哪些位置），如下表所示（默认是 <code>tbp</code> ，也就是一个浮动体可以出现在页面的顶部，底部和单独成页）：  </p>
-<p><br><table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">    <colgroup></colgroup></table></p>
-<p><br>        <br>&lt;/colgroup&gt;</p>
-<p><br>    </p>
-<p>位置参数</p>
-<p>含义<br>&lt;/tr&gt;<br>&lt;/thead&gt;</p>
-<p></p>
-<p></p>
-<p>h(here)</p>
-<p>当前位置(代码所处的上下文)<br>&lt;/tr&gt;</p>
-<p></p>
-<p>t(top)</p>
-<p>顶部<br>&lt;/tr&gt;</p>
-<p></p>
-<p>b(bottom)</p>
-<p>底部<br>&lt;/tr&gt;</p>
-<p></p>
-<p>p(page=13)</p>
-<p>单独成页<br>&lt;/tr&gt;</p>
-<p></p>
-<p>\!</p>
-<p>辅助参数，表示考虑位置的时候不需要考虑浮动体算法的诸多限制<br>&lt;/tr&gt;<br>&lt;/tbody&gt;<br>&lt;/table&gt;<br><code>*</code> 的作用是在多栏排版中的，这种特殊浮动体是 <strong>跨栏位</strong> 的,而且它们的 <code>h</code> 选项会失效,也就是不会出现在当前页。  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>位置参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h(here)</td>
+<td>当前位置(代码所处的上下文)</td>
+</tr>
+<tr>
+<td>t(top)</td>
+<td>顶部</td>
+</tr>
+<tr>
+<td>b(bottom)</td>
+<td>底部</td>
+</tr>
+<tr>
+<td>p(page=13)</td>
+<td>单独成页</td>
+</tr>
+<tr>
+<td>!</td>
+<td>辅助参数，表示考虑位置的时候不需要考虑浮动体算法的诸多限制</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>*</code> 的作用是在多栏排版中的，这种特殊浮动体是 <strong>跨栏位</strong> 的,而且它们的 <code>h</code> 选项会失效,也就是不会出现在当前页。  </p>
 <pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">{</span><span class="token keyword">figure*</span><span class="token punctuation">}</span><span class="token punctuation">[</span>tbp<span class="token punctuation">]</span>
   <span class="token comment">% ...</span>
 <span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">figure*</span><span class="token punctuation">}</span>
@@ -525,7 +537,10 @@ hello            world<span aria-hidden="true" class="line-numbers-rows"><span><
     <a href="/posts/cb973938/" rel="prev" title="吃喝玩乐-流浪贵阳">
       <i class="fa fa-chevron-left"></i> 吃喝玩乐-流浪贵阳
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/posts/43a479d4/" rel="next" title="吃喝玩乐-穿粉红大衣的女郎">
+      吃喝玩乐-穿粉红大衣的女郎 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -600,7 +615,7 @@ hello            world<span aria-hidden="true" class="line-numbers-rows"><span><
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">162</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
