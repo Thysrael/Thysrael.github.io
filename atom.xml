@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-02-11T13:47:41.964Z</updated>
+  <updated>2024-02-11T16:13:09.751Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -17,11 +17,40 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>硬件平台-ARM条件码</title>
+    <link href="https://thysrael.github.io/posts/1be60a6e/"/>
+    <id>https://thysrael.github.io/posts/1be60a6e/</id>
+    <published>2024-02-11T14:42:53.000Z</published>
+    <updated>2024-02-11T16:13:09.751Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、基础&quot;&gt;&lt;a href=&quot;#一、基础&quot; class=&quot;headerlink&quot; title=&quot;一、基础&quot;&gt;&lt;/a&gt;一、基础&lt;/h2&gt;&lt;p&gt;在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR</summary>
+        
+      
+    
+    
+    
+    <category term="硬件平台" scheme="https://thysrael.github.io/categories/%E7%A1%AC%E4%BB%B6%E5%B9%B3%E5%8F%B0/"/>
+    
+    
+    <category term="直观理解" scheme="https://thysrael.github.io/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/"/>
+    
+    <category term="S7课上" scheme="https://thysrael.github.io/tags/S7%E8%AF%BE%E4%B8%8A/"/>
+    
+    <category term="硬件平台" scheme="https://thysrael.github.io/tags/%E7%A1%AC%E4%BB%B6%E5%B9%B3%E5%8F%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>吃喝玩乐-字体演变</title>
     <link href="https://thysrael.github.io/posts/f0b58a03/"/>
     <id>https://thysrael.github.io/posts/f0b58a03/</id>
     <published>2024-02-11T13:34:57.000Z</published>
-    <updated>2024-02-11T13:47:41.964Z</updated>
+    <updated>2024-02-11T13:48:25.610Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、字体介绍&quot;&gt;&lt;a href=&quot;#一、字体介绍&quot; class=&quot;headerlink&quot; title=&quot;一、字体介绍&quot;&gt;&lt;/a&gt;一、字体介绍&lt;/h2&gt;&lt;h3 id=&quot;1-1-演变历史&quot;&gt;&lt;a href=&quot;#1-1-演变历史&quot; class=&quot;headerlink&quot; title=&quot;1.1 演变历史&quot;&gt;&lt;/a&gt;1.1 演变历史&lt;/h3&gt;&lt;ul&gt;
@@ -45,11 +74,11 @@
   </entry>
   
   <entry>
-    <title>吃喝玩乐-穿粉红大衣的女郎</title>
+    <title>吃喝玩乐-穿粉红大衣的少女</title>
     <link href="https://thysrael.github.io/posts/43a479d4/"/>
     <id>https://thysrael.github.io/posts/43a479d4/</id>
     <published>2024-02-11T13:02:34.000Z</published>
-    <updated>2024-02-11T13:27:27.806Z</updated>
+    <updated>2024-02-12T11:45:57.360Z</updated>
     
     
       
@@ -608,33 +637,6 @@
     <category term="English" scheme="https://thysrael.github.io/tags/English/"/>
     
     <category term="S6课上" scheme="https://thysrael.github.io/tags/S6%E8%AF%BE%E4%B8%8A/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>软件工程-巴别塔</title>
-    <link href="https://thysrael.github.io/posts/ee586b8/"/>
-    <id>https://thysrael.github.io/posts/ee586b8/</id>
-    <published>2023-03-05T07:26:29.000Z</published>
-    <updated>2023-03-05T07:26:29.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;巴别塔——问答平台调研&quot;&gt;&lt;a href=&quot;#巴别塔——问答平台调研&quot; class=&quot;headerlink&quot; title=&quot;巴别塔——问答平台调研&quot;&gt;&lt;/a&gt;巴别塔——问答平台调研&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;任何失去的东西，都会以另一种形式归来。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;我选择的是第一个题目，我会调研 CSDN 问答区、StackOverflow、SegmentFault（思否）三款 IT 问答软件。&lt;/p&gt;
-&lt;h2 id=&quot;一、调研与评测&quot;&gt;&lt;a href=&quot;#一、调研与评测&quot; class=&quot;headerlink&quot; title=&quot;一、调研与评测&quot;&gt;&lt;/a&gt;一、调研与评测&lt;/h2&gt;&lt;h3 id=&quot;1-1-问答的意义&quot;&gt;&lt;a href=&quot;#1-1-问答的意义&quot; class=&quot;headerlink&quot; title=&quot;1.1 问答的意义&quot;&gt;&lt;/a&gt;1.1 问答的意义&lt;/h3&gt;</summary>
-    
-    
-    
-    <category term="软件工程" scheme="https://thysrael.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
-    
-    
-    <category term="直观理解" scheme="https://thysrael.github.io/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/"/>
-    
-    <category term="S6课上" scheme="https://thysrael.github.io/tags/S6%E8%AF%BE%E4%B8%8A/"/>
-    
-    <category term="软件工程" scheme="https://thysrael.github.io/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
