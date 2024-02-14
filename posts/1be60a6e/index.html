@@ -23,20 +23,22 @@
     var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一、基础在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。">
+  <meta name="description" content="一、基础在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。 比如说如下指令，只有在 CPSR 中 Z 位为 1 的时候，addz 这条指令才有实际效果，这依赖于前一条指令 cmp 对 CPSR 的修改（ARM 同样可以指定是否修改 CPSR，这是通过在指令位中的 S 确定的）。 cmp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="硬件平台-ARM条件码">
 <meta property="og:url" content="https://thysrael.github.io/posts/1be60a6e/index.html">
 <meta property="og:site_name" content="钟鼓楼">
-<meta property="og:description" content="一、基础在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。">
+<meta property="og:description" content="一、基础在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。 比如说如下指令，只有在 CPSR 中 Z 位为 1 的时候，addz 这条指令才有实际效果，这依赖于前一条指令 cmp 对 CPSR 的修改（ARM 同样可以指定是否修改 CPSR，这是通过在指令位中的 S 确定的）。 cmp">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/1be60a6e/150003_5d64c652d9-屏幕截图-2022-05-22-165758.jpg">
 <meta property="article:published_time" content="2024-02-11T14:42:53.000Z">
-<meta property="article:modified_time" content="2024-02-11T16:13:09.751Z">
+<meta property="article:modified_time" content="2024-02-14T14:34:21.413Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="直观理解">
 <meta property="article:tag" content="S7课上">
 <meta property="article:tag" content="硬件平台">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/1be60a6e/150003_5d64c652d9-屏幕截图-2022-05-22-165758.jpg">
 
 <link rel="canonical" href="https://thysrael.github.io/posts/1be60a6e/">
 
@@ -243,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-12 00:13:09" itemprop="dateModified" datetime="2024-02-12T00:13:09+08:00">2024-02-12</time>
+                <time title="Modified: 2024-02-14 22:34:21" itemprop="dateModified" datetime="2024-02-14T22:34:21+08:00">2024-02-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,14 +270,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>77</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
+              <span>2 mins.</span>
             </span>
 
         </div>
@@ -288,6 +290,178 @@
 
       
         <h2 id="一、基础"><a href="#一、基础" class="headerlink" title="一、基础"></a>一、基础</h2><p>在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。</p>
+<p>比如说如下指令，只有在 CPSR 中 <code>Z</code> 位为 1 的时候，<code>addz</code> 这条指令才有实际效果，这依赖于前一条指令 <code>cmp</code> 对 CPSR 的修改（ARM 同样可以指定是否修改 CPSR，这是通过在指令位中的 <code>S</code> 确定的）。</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">cmp r4, r5
+addz r1, r2, r3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>MIPS 或者 RISCV 都有条件指令，不过这些条件指令一般是条件指令，这样可以实现编程思想中的分支结构。Arm 的特殊之处在于每条 32 位指令的高 4 位都是条件码，这就会导致每条指令都是条件指令。</p>
+<p><img src="/posts/1be60a6e/150003_5d64c652d9-屏幕截图-2022-05-22-165758.jpg" alt="屏幕截图 2022-05-22 165758.jpg"></p>
+<p>条件指令编码如下所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">序号</th>
+<th style="text-align:left">条件码  Cond</th>
+<th style="text-align:left">条件助记符</th>
+<th style="text-align:left">CPSR 中条件标志位 cpsr_f 的值</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">0000</td>
+<td style="text-align:left">EQ</td>
+<td style="text-align:left">Z=1</td>
+<td style="text-align:left">相等</td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">0001</td>
+<td style="text-align:left">NE</td>
+<td style="text-align:left">Z=0</td>
+<td style="text-align:left">不相等</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">0010</td>
+<td style="text-align:left">CS HS</td>
+<td style="text-align:left">C=1</td>
+<td style="text-align:left">无符号数大于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">0011</td>
+<td style="text-align:left">CC LO</td>
+<td style="text-align:left">C=0</td>
+<td style="text-align:left">无符号数小于</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">0100</td>
+<td style="text-align:left">MI</td>
+<td style="text-align:left">N=1</td>
+<td style="text-align:left">负数</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">0101</td>
+<td style="text-align:left">PL</td>
+<td style="text-align:left">N=0</td>
+<td style="text-align:left">正数或零</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">0110</td>
+<td style="text-align:left">VS</td>
+<td style="text-align:left">V=1</td>
+<td style="text-align:left">溢出</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">0111</td>
+<td style="text-align:left">VC</td>
+<td style="text-align:left">V=0</td>
+<td style="text-align:left">未溢出</td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left">1000</td>
+<td style="text-align:left">HI</td>
+<td style="text-align:left">C=1,Z=0</td>
+<td style="text-align:left">无符号数大于</td>
+</tr>
+<tr>
+<td style="text-align:left">9</td>
+<td style="text-align:left">1001</td>
+<td style="text-align:left">LS</td>
+<td style="text-align:left">C=0,Z=1</td>
+<td style="text-align:left">无符号数小于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">10</td>
+<td style="text-align:left">1010</td>
+<td style="text-align:left">GE</td>
+<td style="text-align:left">N=V</td>
+<td style="text-align:left">带符号数大于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">11</td>
+<td style="text-align:left">1011</td>
+<td style="text-align:left">LT</td>
+<td style="text-align:left">N!=V</td>
+<td style="text-align:left">带符号数小于</td>
+</tr>
+<tr>
+<td style="text-align:left">12</td>
+<td style="text-align:left">1100</td>
+<td style="text-align:left">GT</td>
+<td style="text-align:left">Z=0,N=V</td>
+<td style="text-align:left">带符号数大于</td>
+</tr>
+<tr>
+<td style="text-align:left">13</td>
+<td style="text-align:left">1101</td>
+<td style="text-align:left">LE</td>
+<td style="text-align:left">Z=1,N!=V</td>
+<td style="text-align:left">带符号数小于或等于</td>
+</tr>
+<tr>
+<td style="text-align:left">14</td>
+<td style="text-align:left">1110</td>
+<td style="text-align:left">AL</td>
+<td style="text-align:left">任何</td>
+<td style="text-align:left">忽略条件，即无条件执行</td>
+</tr>
+<tr>
+<td style="text-align:left">15</td>
+<td style="text-align:left">1111</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">任何</td>
+<td style="text-align:left">系统保留</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ARM 中这种独特的设计之前让我感觉非常奇怪，因为要消耗足足 4 位来进行条件编码，同时“指令有可能执行不成功”的概念非常困扰我，这让我觉得这是一种 CPU 资源的浪费，因为在运行无效指令的时候 CPU 在“空转”。</p>
+<p>当所有的指令都是条件指令的时候，那么分支结构的汇编实现就多了一种方法，举个例子，我们常用的 C 语言分支结构为</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token comment">// if-statement</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">else</span>
+<span class="token punctuation">{</span>
+	<span class="token comment">// else-statement</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果是普通汇编翻译（伪汇编，表意），那么是下面的样子，先利用一个 <code>cmp</code> 指令比较 <code>a, b</code> ，然后利用 <code>bne</code> 这个条件跳转指令来决定分支流向，如果不发生跳转，那么就会执行 <code>if1, if2, ...</code> ，而如果发生跳转，则会执行 <code>else1, else2, ...</code> 。</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">cmp r, a, b
+bne r, l1
+if1
+if2
+...
+b l2
+l1:
+else1
+else2
+...
+l2:<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>ARM 可以有另一种翻译方法，如下所示，同样利用 <code>cmp</code> 指令完成比较，但是不再有 <code>bne, b</code> 这样的跳转指令来构成分支流了，而是 <code>if1z, if2z, ..., else1nz, else2nz, ...</code> 这些指令均会被送给 CPU，但是只有一些指令会发挥实际作用，这依赖于 <code>cmp</code> 的结果。</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">cmp a, b
+if1z
+if2z
+...
+else1nz
+else2nz
+...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>arm 在提出这种翻译方式时，是希望编译器的开发者可以在一些部分采用第二种模式。</p>
+<hr>
+<h2 id="二、分析"><a href="#二、分析" class="headerlink" title="二、分析"></a>二、分析</h2><h3 id="2-1-指令条数"><a href="#2-1-指令条数" class="headerlink" title="2.1 指令条数"></a>2.1 指令条数</h3><p>乍一看第二种模式并不好，这是因为如果 <code>if-statement</code> 和 <code>else-statement</code> 都各翻译出 5 条汇编，那么第一种模式总共执行的指令数是 7 或者 8 条，而第二种模式则会翻译出 11 条指令，代价要远远高于第一种。</p>
+<p>不过如果 <code>if-statement</code> 和 <code>else-statement</code> 各翻译出 2 条汇编，那么第一种模式是 4 或 5 条，而第二种是 5 条，差距并没有这么大。也就是说，第二种模式更适用于 C 语言中的 <code>?</code> 三目运算符这种类似的<strong>短小的分支结构</strong>。</p>
+<h3 id="2-2-流水线层数"><a href="#2-2-流水线层数" class="headerlink" title="2.2 流水线层数"></a>2.2 流水线层数</h3><p>指令条数的优势并不明显，但是对于流水线来说非常有用，这是因为按照第一种模式，要等到 <code>r</code> 被计算出来才可以确定分支的流向，同时 <code>bne</code> 指令拿到 <code>r</code> 的时间也会后延，跳转指令后的指令如果不采用延迟槽技术，那么许多已经进入流水线的指令都会被注销，也就是说，虽然在简单的顺序模型下，第一种模式下的 CPU 不会执行“冗余”的指令，但是在流水线 CPU 中，依然是有可能执行</p>
+<p>而第二种模式，CPSR 的值可以比通用寄存器 <code>r</code> 更容易拿到，因为 CPSR 的约束更多，所以转发处理要更加简洁，CPU 可以更早知道比较的结果，那么就不会造成过多指令的浪费。而且减少分支更加方便 CPU 进行调度。</p>
+<h3 id="2-3-发射宽度"><a href="#2-3-发射宽度" class="headerlink" title="2.3 发射宽度"></a>2.3 发射宽度</h3><p>不过第二种模式并非非常适合流水线，比如说当 CPU 发射较为宽的时候（多发射乱序），条件码相当于指令会读写 CPSR 这个特殊的寄存器，那么就会导致指令间的依赖关系增加，进而增加串行化程度，也就是会导致第一种模式比第二种要更加占优势。</p>
+<h3 id="2-4-总结"><a href="#2-4-总结" class="headerlink" title="2.4 总结"></a>2.4 总结</h3><p>ARM 的条件码设计更加类似于 CISC 的设计思想，相比于 RISC 要更为复杂，复杂的指令不利于提高并行性，但是复杂的指令可以减少指令数，分支数。虽然这些优点对于多发射 CPU 并没有那么显著的改观，甚至是负优化。但是应当意识到，并不是所有的 CPU 的目的都是为了运算的极致高效，分支预测和多发射都是十分消耗硬件资源和能耗的设计，在 ARM 大展身手的嵌入式领域，条件码可以显著提高效率，并不是没有荒诞的设计。</p>
+<p>不过随着硬件水平的提高，条件码似乎也在退出历史舞台，比如说 ARM 自家的 A64 指令集或者 RISCV 这种年轻的指令集都没有采用条件码设计。</p>
 
     </div>
 
@@ -370,7 +544,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E7%A1%80"><span class="nav-text">一、基础</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E7%A1%80"><span class="nav-text">一、基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%86%E6%9E%90"><span class="nav-text">二、分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%8C%87%E4%BB%A4%E6%9D%A1%E6%95%B0"><span class="nav-text">2.1 指令条数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%B1%82%E6%95%B0"><span class="nav-text">2.2 流水线层数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%8F%91%E5%B0%84%E5%AE%BD%E5%BA%A6"><span class="nav-text">2.3 发射宽度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%80%BB%E7%BB%93"><span class="nav-text">2.4 总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -448,7 +622,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:33</span>
+    <span title="Reading time total">17:35</span>
 </div>
 
         

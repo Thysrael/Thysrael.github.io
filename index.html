@@ -239,7 +239,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-12 00:13:09" itemprop="dateModified" datetime="2024-02-12T00:13:09+08:00">2024-02-12</time>
+                <time title="Modified: 2024-02-14 22:34:21" itemprop="dateModified" datetime="2024-02-14T22:34:21+08:00">2024-02-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,14 +257,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>77</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
+              <span>2 mins.</span>
             </span>
 
         </div>
@@ -277,7 +277,18 @@
 
       
           <h2 id="一、基础"><a href="#一、基础" class="headerlink" title="一、基础"></a>一、基础</h2><p>在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。</p>
-
+<p>比如说如下指令，只有在 CPSR 中 <code>Z</code> 位为 1 的时候，<code>addz</code> 这条指令才有实际效果，这依赖于前一条指令 <code>cmp</code> 对 CPSR 的修改（ARM 同样可以指定是否修改 CPSR，这是通过在指令位中的 <code>S</code> 确定的）。</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">cmp r4, r5
+addz r1, r2, r3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>MIPS 或者 RISCV 都有条件指令，不过这些条件指令一般是条件指令，这样可以实现编程思想中的分支结构。Arm 的特殊之处在于每条 32 位指令的高 4 位都是条件码，这就会导致每条指令都是条件指令。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1be60a6e/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -891,7 +902,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:33</span>
+    <span title="Reading time total">17:35</span>
 </div>
 
         

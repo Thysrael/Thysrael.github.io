@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-02-11T16:13:09.751Z</updated>
+  <updated>2024-02-14T14:34:21.413Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -21,16 +21,14 @@
     <link href="https://thysrael.github.io/posts/1be60a6e/"/>
     <id>https://thysrael.github.io/posts/1be60a6e/</id>
     <published>2024-02-11T14:42:53.000Z</published>
-    <updated>2024-02-11T16:13:09.751Z</updated>
+    <updated>2024-02-14T14:34:21.413Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;一、基础&quot;&gt;&lt;a href=&quot;#一、基础&quot; class=&quot;headerlink&quot; title=&quot;一、基础&quot;&gt;&lt;/a&gt;一、基础&lt;/h2&gt;&lt;p&gt;在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR</summary>
-        
-      
+    <summary type="html">&lt;h2 id=&quot;一、基础&quot;&gt;&lt;a href=&quot;#一、基础&quot; class=&quot;headerlink&quot; title=&quot;一、基础&quot;&gt;&lt;/a&gt;一、基础&lt;/h2&gt;&lt;p&gt;在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。&lt;/p&gt;
+&lt;p&gt;比如说如下指令，只有在 CPSR 中 &lt;code&gt;Z&lt;/code&gt; 位为 1 的时候，&lt;code&gt;addz&lt;/code&gt; 这条指令才有实际效果，这依赖于前一条指令 &lt;code&gt;cmp&lt;/code&gt; 对 CPSR 的修改（ARM 同样可以指定是否修改 CPSR，这是通过在指令位中的 &lt;code&gt;S&lt;/code&gt; 确定的）。&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-assembly&quot; data-language=&quot;assembly&quot;&gt;&lt;code class=&quot;language-assembly&quot;&gt;cmp r4, r5
+addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;MIPS 或者 RISCV 都有条件指令，不过这些条件指令一般是条件指令，这样可以实现编程思想中的分支结构。Arm 的特殊之处在于每条 32 位指令的高 4 位都是条件码，这就会导致每条指令都是条件指令。&lt;/p&gt;</summary>
     
     
     
