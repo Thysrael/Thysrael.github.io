@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/19e22da2/image-20230920163008838.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/19e22da2/image-20230921090246054.png">
 <meta property="article:published_time" content="2023-09-30T09:46:56.000Z">
-<meta property="article:modified_time" content="2023-12-25T07:34:39.990Z">
+<meta property="article:modified_time" content="2024-03-02T09:29:02.300Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="S7课上">
@@ -246,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-12-25 15:34:39" itemprop="dateModified" datetime="2023-12-25T15:34:39+08:00">2023-12-25</time>
+                <time title="Modified: 2024-03-02 17:29:02" itemprop="dateModified" datetime="2024-03-02T17:29:02+08:00">2024-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,14 +271,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>17k</span>
+              <span>19k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>16 mins.</span>
+              <span>17 mins.</span>
             </span>
 
         </div>
@@ -298,21 +298,21 @@
 <p>压缩是很容易理解的事情，但是归档的意义就不是那么直观了，原本非常美好的目录树，为什么要归档成一个文件？我觉得其本质是这样的，目录树的实现是需要文件系统的支持的，我们平时在电脑上可以用资源管理器探索目录树，正是因为操作系统内具有文件系统解析器，可以将原本为一堆二进制的文件翻译成有条理的的目录树，但是很多地方是没有文件系统解析器的，比如说操作系统不支持特定的文件系统格式，比如说微信就没法在线浏览目录树，网络传输的时候应该是也字节流形式的，并没有办法维护树结构。归档就是将目录树结构和文件都安排到一个归档文件的过程，就避免了在不具有文件系统解析器的环境下浏览、修改、传输的不便。</p>
 <p>Linux 下常用的归档工具是 tar，原生的 tar 并不具备压缩功能。常用命令如下：</p>
 <p><strong>创建归档文件</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">tar</span> -cvf arch.tar t1.txt t2.txt t3.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">tar -cvf arch.tar t1.txt t2.txt t3.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其中 <code>-c</code> 表示 create，即创建一个压缩文件，<code>-v</code> 表示 verbose ，即显示 tar 的经过，<code>-f arch.tar</code> 表示指定归档文件的生成名称。<code>*.txt</code> 是被压缩的文件。</p>
 <p><strong>列出归档文件内容</strong></p>
 <p>归档文件中保存了一些文件系统信息（比如目录结构，文件的时间信息和权限信息等），我们可以在不提取归档文件的情况下，浏览这些信息，命令如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">tar</span> -tvf arch.tar<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">tar -tvf arch.tar<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其中 <code>-t</code> 表示 list，即列出归档文件的内容</p>
 <p><strong>提取（解压缩）归档文件</strong></p>
 <p>将归档文件提取到指定目录 <code>./extract</code> 下，命令如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">tar</span> -xvf arch.tar -C ./extract<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">tar -xvf arch.tar -C ./extract<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其中 <code>-x</code> 表示 extract，即提取文件，<code>-C</code> 指定提取路径，如果没有指定，那么就会提取到当前目录。</p>
 <p>可以看到这三条命令都是保证参数 <code>-vf</code> 不变的前提下，修改前面的参数来执行不同行为的。</p>
 <p>我们平时的逻辑是“归档 + 压缩”的，所以 tar 也提供了后续的方法，比如说如果使用 <code>gzip</code> 工具进行压缩，那么可以在参数中添加 <code>z</code> 来表示，相应的命令就变成了</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">tar</span> -zcvf arch.tar t1.txt t2.txt t3.txt <span class="token comment"># 打包并压缩文件		</span>
-<span class="token function">tar</span> -ztvf arch.tar	<span class="token comment"># 列出打包压缩文件里面的内容</span>
-<span class="token function">tar</span> -zxvf arch.tar -C ./extract <span class="token comment"># 解压缩</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">tar -zcvf arch.tar t1.txt t2.txt t3.txt # 打包并压缩文件		
+tar -ztvf arch.tar	# 列出打包压缩文件里面的内容
+tar -zxvf arch.tar -C ./extract # 解压缩<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>此外还有其他压缩器</p>
 <ul>
 <li><code>z</code>：gzip，即 GNU zip</li>
@@ -326,13 +326,13 @@
 <p>tty 是一个缩写，代表着 “teletypewriter”（电传打字机）的意思。在现代操作系统中，tty 是指<strong>终端设备</strong>，它是用户与操作系统进行交互的接口，允许用户输入命令并接收系统的输出。终端设备可以是物理终端，例如连接到计算机的终端机或终端仿真器，也可以是虚拟终端，例如在图形界面下运行的终端模拟器。</p>
 <p>会话领导者通常与一个终端设备（tty）相关联。它负责管理与该终端设备相关的会话过程。会话领导者接收终端的输入，将其传递给会话中的其他进程，并将这些进程的输出发送回终端设备。当会话领导者终止运行时，与该终端设备相关的会话也会终止。</p>
 <h3 id="3-2-ps"><a href="#3-2-ps" class="headerlink" title="3.2 ps"></a>3.2 ps</h3><p><code>ps</code> 可以列出系统正在运行的进程，我们在终端键入 <code>help</code> 命令，就可以理解 <code>ps</code> 的设计思路</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">~ <span class="token operator">&gt;</span> <span class="token function">ps</span> --help       
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">~ &gt; ps --help       
 
-用法： <span class="token function">ps</span> <span class="token punctuation">[</span>选项<span class="token punctuation">]</span>
+用法： ps [选项]
 
- Try <span class="token string">'ps --help &lt;simple|list|output|threads|misc|all&gt;'</span>
-  or <span class="token string">'ps --help &lt;s|l|o|t|m|a&gt;'</span>
- <span class="token keyword">for</span> additional <span class="token builtin class-name">help</span> text.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ Try 'ps --help &lt;simple|list|output|threads|misc|all&gt;'
+  or 'ps --help &lt;s|l|o|t|m|a&gt;'
+ for additional help text.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以看到 <code>ps</code> 的几个大功能，有：</p>
 <ul>
 <li><code>list</code>：将列出来的进程分组</li>
@@ -346,33 +346,33 @@
 <li><code>x</code>：列出所有的不在 tty 里的进程（不受 session leader 控制的），可能就是守护进程的意思。</li>
 </ul>
 <p>当这两个合在一起的时候，我们就可以看到运行在这个系统上的全部进程了。这也是我们最常用的命令的由来，多出来的 <code>u</code> 表示打印用户信息。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">ps</span> -aux<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ps -aux<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="3-3-kill"><a href="#3-3-kill" class="headerlink" title="3.3 kill"></a>3.3 kill</h3><p><code>kill</code> 用于向指定 <code>pid</code> 的进程发送 signal，一般都是如下形式，会杀死这个进程。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">kill</span> <span class="token punctuation">[</span>pid<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">kill [pid]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>也可以向这个进程发送其他的信号，信号的种类可用 <code>kill -l</code> 查询。指令形式如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">kill</span> -<span class="token punctuation">[</span>signal<span class="token punctuation">]</span> <span class="token punctuation">[</span>pid<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">kill -[signal] [pid]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="jobs"><a href="#jobs" class="headerlink" title="jobs"></a>jobs</h3><p><code>jobs</code> 用于查看后台进程。</p>
 <h3 id="3-4-htop"><a href="#3-4-htop" class="headerlink" title="3.4 htop"></a>3.4 htop</h3><p>神器中的神器，可以用于搜索、过滤、排序、分组进程，并且还可以杀死进程。</p>
 <hr>
 <h2 id="四、过滤器"><a href="#四、过滤器" class="headerlink" title="四、过滤器"></a>四、过滤器</h2><h3 id="4-1-xargs"><a href="#4-1-xargs" class="headerlink" title="4.1 xargs"></a>4.1 xargs</h3><p><code>xargs</code> 命令可以和管道配合的很好，它可以将管道的输入转换成命令的参数，大大拓展了原来命令的能力。比如说我想对当前文件夹下所有的条目执行 <code>ls</code> 命令，看上去应该是这样的</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">ls</span> <span class="token builtin class-name">.</span> <span class="token operator">|</span> <span class="token function">ls</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ls . | ls<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>但是这并不行，不是所有的命令都是 <code>less</code> ，可以接受管道的输出，像 <code>ls</code> 就不可以，它的输入只能是参数，我们可以用 <code>xargs</code> 实现我们的需求，具体如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">ls</span> <span class="token builtin class-name">.</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">ls</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ls . | xargs ls<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>当然这个需求比较简单，原因是 <code>ls</code> 是比较简单的命令，它的特性是对于其要处理的对象一视同仁，是没有角色区别的，考虑一下 <code>cp</code> 命令，如果将当前文件夹下的条目拷贝到 <code>~/desktop</code> 下，那么就会发现 <code>cp</code> 的命令格式是这样的 </p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">cp</span> <span class="token operator">&lt;</span>src<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>dst<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cp &lt;src&gt; &lt;dst&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>我们用 <code>xargs</code> 时，无法确定到底要传给 <code>&lt;src&gt;</code> 还是要传给 <code>&lt;dst&gt;</code>, 所以我们可以这样</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">ls</span> <span class="token builtin class-name">.</span> <span class="token operator">|</span> <span class="token function">xargs</span> -I <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token function">cp</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> ~/desktop/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ls . | xargs -I {} cp {} ~/desktop/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这里的 <code>-I {}</code> 表示了一个占位符，经过 <code>xargs</code> 处理的参数会对应到后面的 <code>cp {}</code> 中的 <code>{}</code> 中。</p>
 <p>此外有些命令对其处理的对象也有数量限制，比如说如下脚本</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash</span>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#!/bin/bash
 
-<span class="token builtin class-name">echo</span> <span class="token variable">$1</span> <span class="token variable">$2</span> <span class="token variable">$3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+echo $1 $2 $3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>这个脚本会打印前三个传递给脚本的参数，所以如果执行这个命令</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">echo</span> <span class="token string">"1 2 3 4 5 6"</span> <span class="token operator">|</span> <span class="token function">xargs</span> ./print.sh <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">echo "1 2 3 4 5 6" | xargs ./print.sh <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>那么执行结果只能是 <code>1 2 3</code>, 其后的 <code>4 5 6</code> 就被丢弃来。那么如果希望打印出来呢？那么其实可以使用 <code>-n</code> 参数，这个参数相当于 <code>xargs</code> 每次会限定传递给 <code>command</code> 的个数，如果输入的参数很多，那么 <code>xargs</code> 就会多次调用 <code>command</code>, 我们可以这样修改命令，就可以打印 6 个数字：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">echo</span> <span class="token string">"1 2 3 4 5 6"</span> <span class="token operator">|</span> <span class="token function">xargs</span> -n3 ./print.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">echo "1 2 3 4 5 6" | xargs -n3 ./print.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>此外，<code>xargs</code> 还需要区分“1 个”参数的概念，因为 <code>-n</code> 需要明确单位，那么需要明确分界符是什么。可以用 <code>-D</code> 来指定分界符，如下所示</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">echo</span> <span class="token string">"nameXnameXnameXname"</span> <span class="token operator">|</span> <span class="token function">xargs</span> -dX<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">echo "nameXnameXnameXname" | xargs -dX<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其输出为</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">name name name name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="4-2-grep"><a href="#4-2-grep" class="headerlink" title="4.2 grep"></a>4.2 grep</h3><h4 id="4-2-1-搜索"><a href="#4-2-1-搜索" class="headerlink" title="4.2.1 搜索"></a>4.2.1 搜索</h4><p><code>grep, sed, awk</code> 都是很好的数据整理工具，但是其实并不像很多工具书谣传的“awk 可以代替 sed, sed 可以代替 grep”，这 3 个工具由明显不同的侧重点，我希望能在下面解释清楚。</p>
@@ -419,8 +419,8 @@
 <p>相比于普世的编辑器，当一个编辑单元出现在多行上时，sed 的编辑能力就不太足够了，sed 适合处理编辑单元在行内的情况。</p>
 <h4 id="4-3-2-正则捕获"><a href="#4-3-2-正则捕获" class="headerlink" title="4.3.2 正则捕获"></a>4.3.2 正则捕获</h4><p>这里介绍一下正则捕获知识，之所以没在介绍 <code>grep</code> 介绍这个，是因为捕获是对于信息的提取，进而达到编辑的目的，而 grep 聚焦于搜索功能，即使捕获了一些信息，也不知道应用到哪里。</p>
 <p>所谓的捕获就是可以提取正则表达式的一部分中匹配到的字符串，用作后续的信息处理。我们用 <code>()</code> 来表示要捕获的部分（也被成为一个捕获组），比如说</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token string">"3.14"</span>
-<span class="token string">"\d+\.(\d+)"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">"3.14"
+"\d+\.(\d+)"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>可以用上面的表达式捕获有理数的小数部分，对于匹配的 <code>3.14</code> 而言，他就是小数部分 <code>14</code>。</p>
 <p>我们可以使用 <code>\1, \2, \3, ... ,\n</code> 来表示不同的捕获，比如说 <code>\1</code> 就对应第一组捕获，其中捕获的顺序是由正则表达式中 <code>(</code> 出现的顺序决定的。<code>\0</code> 被用作表示匹配好的整个串。</p>
 <p>当然捕获也衍生出多种变体：</p>
@@ -434,14 +434,14 @@
 </ul>
 <p>后面这几种在 linux cli 工具中的支持并不是很好，但是在 js 或者 python 中都有支持。</p>
 <h4 id="4-3-3-指令格式"><a href="#4-3-3-指令格式" class="headerlink" title="4.3.3 指令格式"></a>4.3.3 指令格式</h4><p>sed 的单指令格式如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">sed</span> <span class="token punctuation">[</span>sed-options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>sed-command<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sed [sed-options] &lt;sed-command&gt; &lt;file&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>sed 的多指令格式如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">sed</span> <span class="token punctuation">[</span>sed-options<span class="token punctuation">]</span> -e <span class="token operator">&lt;</span>sed-command<span class="token operator"><span class="token file-descriptor important">1</span>&gt;</span> -e <span class="token operator">&lt;</span>sed-command<span class="token operator"><span class="token file-descriptor important">2</span>&gt;</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sed [sed-options] -e &lt;sed-command1&gt; -e &lt;sed-command2&gt; &lt;file&gt;
 
-<span class="token function">sed</span> <span class="token punctuation">[</span>sed-options<span class="token punctuation">]</span> <span class="token string">'{
+sed [sed-options] '{
  &lt;sed-command1&gt;
  &lt;sed-command2&gt;
-}'</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+}' &lt;file&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>对于 <code>sed-options</code> ，他们主要有</p>
 <div class="table-container">
 <table>
@@ -468,7 +468,7 @@
 </table>
 </div>
 <p>对于 <code>sed-command</code>，他可以被分为两个部分，如下所示：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token string">"[地址选择] [sed 操作]"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">"[地址选择] [sed 操作]"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其中“地址选择”负责选择哪些行会被读入模式空间，而“sed 操作”则负责将读入模式空间的字符串进行操作。</p>
 <p>地址选择有如下方式：</p>
 <div class="table-container">
@@ -576,9 +576,9 @@
 </div>
 <p>可以看出通过这几种变量，我们可以很好的控制这个数据库。</p>
 <h4 id="4-4-2-指令结构"><a href="#4-4-2-指令结构" class="headerlink" title="4.4.2 指令结构"></a>4.4.2 指令结构</h4><p>awk 的指令结构如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">awk</span> <span class="token punctuation">[</span>awk-options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>awk-script-content<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">awk [awk-options] &lt;awk-script-content&gt; &lt;file&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这种是直接将脚本内容执行。下面这种则是执行一个 awk 脚本文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">awk</span> <span class="token punctuation">[</span>awk-options<span class="token punctuation">]</span> -f <span class="token operator">&lt;</span>awk-script-file<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">awk [awk-options] -f &lt;awk-script-file&gt; &lt;file&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>关于 <code>awk-options</code> ，其实只有 <code>-F</code> 比较重要，他可以指定 FS，比如说 <code>-F:</code> 就是将 <code>:</code> 作为字段分隔符。</p>
 <p> 其中 awk 脚本最完整的结构如下</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">BEGIN <span class="token punctuation">{</span>
@@ -594,17 +594,17 @@ END <span class="token punctuation">{</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其中 <code>BEGIN</code> 只会在 awk 开始的时候运行，一般进行初始化工作和 header 的打印；中间的部分（body）则会每一个 record 都运行，其中 record 只有符合 <code>record-condition-statement</code> 才会执行里面的部分；<code>END</code> 只会在处理都结束后才会运行，一般用于进行结果的处理和 footer 的打印。</p>
 <p><code>BEGIN, END</code> 都是可以省略的（<code>record-condition-statement</code> 和 body 其实也可以），所以 awk 也可以退化成这种形式</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">awk</span> <span class="token string">"/Jane/ {print <span class="token variable">$2</span>}"</span> numbers.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">awk "/Jane/ {print $2}" numbers.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这就是说找出匹配正则 <code>Jane</code> 的记录，然后打印第 2 个字段。这个结构就和 sed 很类似了，但是 sed 要实现这个功能，还需要实现一个带有捕获的正则表达式，这足以体现 awk 的优越性。</p>
 <p>对于 <code>record-condition-statement</code> 的语法，其实和 C 语言类似，只是少了括号和增加了对于正则的支持</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">NR <span class="token operator">&gt;=</span> <span class="token number">3</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">/</span>Jane<span class="token operator">/</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这个条件就表示了既要满足行号大于等于 3，且还要让 record 匹配 /Jane/ 的结果。</p>
 <p>此外 awk 还支持对于字段的正则匹配，他的写法如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token variable">$2</span> ~ /Jane/ <span class="token comment"># $2 可以匹配 Jane</span>
-<span class="token variable">$3</span> <span class="token operator">!</span>~ /Jane/ <span class="token comment"># $3 不可以匹配 Jane</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$2 ~ /Jane/ # $2 可以匹配 Jane
+$3 !~ /Jane/ # $3 不可以匹配 Jane<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>此外 awk 也支持字符串比较</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token variable">$4</span> <span class="token operator">==</span> <span class="token string">"Jane"</span>
-<span class="token variable">$5</span> <span class="token operator">!=</span> <span class="token string">"Jane"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$4 == "Jane"
+$5 != "Jane"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="4-4-3-其他语法"><a href="#4-4-3-其他语法" class="headerlink" title="4.4.3 其他语法"></a>4.4.3 其他语法</h4><p>awk 的变量也很有趣，它们处于一种“量子态”，既可以是数字，也可以是字符串，我个人感觉这是通过不同的运算符实现的。此外，awk 的变量是不需要提前声明的。</p>
 <p>当一个变量是数字时，其运算符都是和 C 一致的：</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">add <span class="token operator">=</span> $<span class="token number">4</span> <span class="token operator">+</span> $<span class="token number">5</span><span class="token punctuation">;</span> # add 是第 <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span> 两个字段的和
@@ -715,46 +715,46 @@ print string_a<span class="token punctuation">,</span> string_b<span class="toke
 </table>
 </div>
 <p>对于硬链接，命令如下：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">ln</span> <span class="token builtin class-name">source</span> <span class="token function">link</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ln source link<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>硬链接的实现实质是对于新生成的 <code>link</code> 链接，它和 <code>source</code> 对应同样的 inode，所以他俩的地位是等同的。这种等同性是硬链接的优点，我可以删除 <code>source</code> ，使用 <code>link</code> 时也不会出现任何问题。但是它的缺点是无法跨越文件系统（因为 inode 是文件系统的一部分），没有办法链接目录（这是因为 inode 组成了树结构，硬链接会导致文件系统中出现环，在递归遍历目录等操作时容易出现 bug）。</p>
 <p>另外有趣的是，常见的 <code>.</code> 和 <code>..</code> 都是采用硬链接实现的。</p>
 <p>对于软链接（符号链接），命令如下</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">ln</span> -s <span class="token builtin class-name">source</span> <span class="token function">link</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ln -s source link<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>软链接的实现实质是对于新生成的 <code>link</code> 链接，它本质是一个特殊文本文件，存储着 <code>source</code> 的路径，所以他俩在地位上就是不等同的。<code>link</code> 是依附于 <code>source</code> 的，很像是 win 系统上的“快捷方式”。它就可以链接目录，而且可以跨越文件系统。但是其缺点是依附于 <code>source</code>，如果 <code>source</code> 损坏，<code>link</code> 也就是失效了，同时要比硬链接占据的空间更大（软链接是创建一个文件，而硬链接是在工作目录中加一个 inode 映射）。</p>
 <h3 id="5-2-文件夹"><a href="#5-2-文件夹" class="headerlink" title="5.2 文件夹"></a>5.2 文件夹</h3><p>比较简单，主要是记住不加参数的 <code>mkdir</code> 只能一层层创建，比如如果想要创建 <code>./d1/d2/d3/</code> 结构，则需要</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mkdir</span> d1 
-<span class="token builtin class-name">cd</span> d1
-<span class="token function">mkdir</span> d2
-<span class="token builtin class-name">cd</span> d2
-<span class="token function">mkdir</span> d3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mkdir d1 
+cd d1
+mkdir d2
+cd d2
+mkdir d3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但是如果加上 <code>-p</code> 选项，就可以省略这个事情</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mdkir -p d1/d2/d3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="5-3-回收站"><a href="#5-3-回收站" class="headerlink" title="5.3 回收站"></a>5.3 回收站</h3><p>垃圾(trash)是由桌面管理器比如 GNOME、KDE 和 XFCE 等提供的一个特性。当通过文件管理器删除一个文件或目录的时候，该文件或目录将会成为垃圾(trash)，然后被移动到回收站中，回收站对应的目录是 <code>$HOME/.local/share/Trash</code>。</p>
 <p>回收站目录包含两个子目录：<code>files</code> 和 <code>info</code> 。<code>files</code> 目录存储实际被删除了的文件和目录，<code>info</code> 目录包含被删除了的文件和目录的信息，比如文件路径、删除日期和时间，每个文件单独存储。</p>
 <p><code>trash-cli</code> 是一个 cli 回收站工具，可以使用命令行的方式控制回收站，我们用它替换原本的 <code>rm</code>。<code>trash-cli</code> 是一组命令</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">trash 			<span class="token comment"># 将文件删除，移入回收站</span>
-trash-list 		<span class="token comment"># 列出回收站的文件</span>
-trash-restore	<span class="token comment"># 交互式恢复回收站文件</span>
-trash-rm		<span class="token comment"># 删除回收站文件</span>
-trash-empty	n	<span class="token comment"># 清空 n 天前的回收站文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">trash 			# 将文件删除，移入回收站
+trash-list 		# 列出回收站的文件
+trash-restore	# 交互式恢复回收站文件
+trash-rm		# 删除回收站文件
+trash-empty	n	# 清空 n 天前的回收站文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>然后我们在 <code>~/.zshrc</code> 中加入如下语句来替换原本的 <code>rm</code></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">alias</span> <span class="token assign-left variable">rm</span><span class="token operator">=</span><span class="token string">"trash"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">alias rm="trash"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>考虑到需要自动清空回收站，我们可以利用 <code>crontab</code> 设置自动清理（虽然 dolphin 其实有这个功能），使用</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">crontab</span> -e<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">crontab -e<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在交互控制台上输入一下命令表示每 7 天 0 时 0 分进行删除。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token number">0</span> <span class="token number">0</span> */7 * * /usr/bin/trash-empty -f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">0 0 */7 * * /usr/bin/trash-empty -f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="5-4-删除、移动、重命名"><a href="#5-4-删除、移动、重命名" class="headerlink" title="5.4 删除、移动、重命名"></a>5.4 删除、移动、重命名</h3><p>对于删除操作，十分简单，就是 <code>rm</code> 命令，<code>rm</code> 默认情况下不能删除文件夹，所以需要加上 <code>-r</code> 参数，此外，加上 <code>-f</code> 参数可以避免 <code>rm</code> 删除不存在的文件时，不会发生询问。</p>
 <p>移动和重命名都使用的是 <code>mv</code> 命令，在知晓了 linux 对于文件夹的实现后可以很清楚的理解，<code>mv</code> 是一个会修改目的文件夹文件内容的命令。<code>mv</code> 功能是非常强大的，它是可以直接移动文件夹的（被移动的文件夹里的所有文件也都会移动）。这与 <code>rm</code> 形成来鲜明对比，这是因为即使是移动文件夹，也只会修改目的文件夹这一个文件，而删除一个文件夹，则需要修改多个文件。</p>
 <p>此外就是需要了解 <code>mv</code> 的指令格式，它是源文件在前，而目的文件夹在后，如果目的不是一个已经存在文件夹，则这个指令兼具了移动和移动后重命名的功能，由如下示例：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mv</span> <span class="token operator">&lt;</span>src<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>dst<span class="token operator">&gt;</span> <span class="token comment"># mv 指令格式</span>
-<span class="token function">mv</span> src_file.txt ./exist_dst_dir/ <span class="token comment"># 将 src_file.txt 移动到已经存在的 ./exist_dst_dir/ 文件夹下</span>
-<span class="token function">mv</span> src_file.txt ./exist_dst_dir/rename_file.txt <span class="token comment"># 将 src_file.txt 移动到已经存在的 ./exist_dst_dir/ 文件夹下，并重命名为 rename_file.txt</span>
-<span class="token function">mv</span> src_dir/ ./exist_dst_dir/ <span class="token comment">#  将 src_dir 移动到已经存在的 ./exist_dst_dir/ 文件夹下，也就是形成 ./exist_dst_dir/src_dir/ 结构</span>
-<span class="token function">mv</span> src_file.txt rename_file.txt <span class="token comment"># 将 src_file 重命名为 rename_file</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mv &lt;src&gt; &lt;dst&gt; # mv 指令格式
+mv src_file.txt ./exist_dst_dir/ # 将 src_file.txt 移动到已经存在的 ./exist_dst_dir/ 文件夹下
+mv src_file.txt ./exist_dst_dir/rename_file.txt # 将 src_file.txt 移动到已经存在的 ./exist_dst_dir/ 文件夹下，并重命名为 rename_file.txt
+mv src_dir/ ./exist_dst_dir/ #  将 src_dir 移动到已经存在的 ./exist_dst_dir/ 文件夹下，也就是形成 ./exist_dst_dir/src_dir/ 结构
+mv src_file.txt rename_file.txt # 将 src_file 重命名为 rename_file<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>关于“src 在前，而 target 在后”其实是一个非常普遍的现象。比如说在编译的时候先写源文件，后写目标文件；在链接的时候，先写被链接的对象，再写链接本身；拷贝的时候，先写源，后写拷贝路径。</p>
 <p>唯一和这个经验有冲突的，其实是许多汇编语言，move 语句或者计算语句，都有将结果放在第一个运算符位置的现象。</p>
 <h3 id="5-5-查找"><a href="#5-5-查找" class="headerlink" title="5.5 查找"></a>5.5 查找</h3><p>查找文件可以使用 <code>find</code> 命令，他会在指定目录下递归查找满足要求的文件和文件夹。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">find</span> <span class="token operator">&lt;</span><span class="token number">0</span> 到 n 个指定路径<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>要求<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">find &lt;0 到 n 个指定路径&gt; &lt;要求&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>要求有如下格式</p>
 <div class="table-container">
 <table>
@@ -810,7 +810,7 @@ trash-empty	n	<span class="token comment"># 清空 n 天前的回收站文件</s
 <p>这个 response 一般都会返回一个 html 文件，但是其实仔细一想，当考虑到 url 这个概念后，给定 url 后，有可能从 server 中获得可能为任何文件类型的 response 。另外似乎还会附加一个 response code 。 </p>
 <p>User Agent 即用户代理，简称 UA，它使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言等。</p>
 <h3 id="6-2-curl"><a href="#6-2-curl" class="headerlink" title="6.2 curl"></a>6.2 curl</h3><p><code>curl</code> 是一个创建 web request 的命令行工具，它的全称是 <code>client url</code> 。顾名思义，他可以作为 client 获得一个特定 url 的资源，其格式为</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>url<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">curl [options] &lt;url&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其中比较有用的选项包括：</p>
 <ul>
 <li>储存响应体到文件：也就是将资源保存到本地的意思。<code>-o</code> 可以指定文件名，<code>-O</code> 直接使用 server 资源的名字。如果没有这两个参数，那么 curl 似乎只会将资源输出到 stdout 。</li>
@@ -825,12 +825,83 @@ trash-empty	n	<span class="token comment"># 清空 n 天前的回收站文件</s
 </ul>
 <p>总的来说，<code>curl</code> 是普世的，其需求是为了和 server API 进行作用，而 <code>wget</code> 是特化的，其需求就是为了下载文件。</p>
 <p><code>wget</code> 的格式为：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">wget</span> <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>url<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">wget [options] &lt;url&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <hr>
-<h2 id="七、root"><a href="#七、root" class="headerlink" title="七、root"></a>七、root</h2><h3 id="7-1-dev-和-sys-的区别"><a href="#7-1-dev-和-sys-的区别" class="headerlink" title="7.1 /dev 和 /sys 的区别"></a>7.1 <code>/dev</code> 和 <code>/sys</code> 的区别</h3><p><code>/dev</code> 是一个很著名的文件夹，因为它是 Unix “一切皆文件”设计哲学下的一个例子，这个文件夹下的文件都是“设备文件”，我们可以用操纵文件的 API 来控制我们的设备，但是在我之后的了解中，似乎 <code>/sys</code> 也有类似的效果，比如说可以用 <code>cat</code> 查看电池剩余电量，如下所示</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">cat</span> /sys/class/power_supply/BAT0/capacity<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="七、根文件系统"><a href="#七、根文件系统" class="headerlink" title="七、根文件系统"></a>七、根文件系统</h2><h3 id="7-1-dev-和-sys-的区别"><a href="#7-1-dev-和-sys-的区别" class="headerlink" title="7.1 /dev 和 /sys 的区别"></a>7.1 <code>/dev</code> 和 <code>/sys</code> 的区别</h3><p><code>/dev</code> 是一个很著名的文件夹，因为它是 Unix “一切皆文件”设计哲学下的一个例子，这个文件夹下的文件都是“设备文件”，我们可以用操纵文件的 API 来控制我们的设备，但是在我之后的了解中，似乎 <code>/sys</code> 也有类似的效果，比如说可以用 <code>cat</code> 查看电池剩余电量，如下所示</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cat /sys/class/power_supply/BAT0/capacity<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这样看上去似乎两者的功能冲突了。</p>
 <p>但其实并没有，<code>/sys</code> 提供的是设备包装后的信息，我们用操作文件的方式操作它们，可以看作是在调用各种设备的 API，而 <code>/dev</code> 则更加粗糙，是直接对设备进行操作。如果 Linux 是在没有历史背景的情况下设计的，<code>/dev/sda</code> 可能是 <code>/sys/block/sda/content</code> 。</p>
+<h3 id="7-2-bin-sbin-usr-local-的区别"><a href="#7-2-bin-sbin-usr-local-的区别" class="headerlink" title="7.2 bin, sbin, usr , local 的区别"></a>7.2 <code>bin</code>, <code>sbin</code>, <code>usr</code> , <code>local</code> 的区别</h3><p>在根文件系统中，有 <code>/bin/, /sbin/, /usr/bin/, /usr/sbin/, /usr/local/bin, /usr/local/sbin, ~/.local/bin</code> 等文件夹都可以存放二进制文件，那么他们的区别是什么？</p>
+<p>有如下几点区别：</p>
+<ul>
+<li>是否是 OS 必需的：必需的会放在根目录下，如 <code>/bin,/sbin</code> 而不必需的则在 <code>/usr</code> 下。</li>
+<li>可用的用户不同：只有根用户可以用的会放在 <code>/sbin, /usr/sbin</code> 而所有普通用户可以用的，则会放在 <code>/bin, /usr/bin</code> ，只有特定用户可用的会放在 <code>~/.local/bin</code> 。</li>
+<li>是否受到发行版包管理器控制：受控的放在 <code>/bin, /usr/bin</code> 中，不受控的放在 <code>usr/local, ~/.config/bin</code> 中。</li>
+</ul>
+<p>总结如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">目录</th>
+<th style="text-align:center">OS 必需</th>
+<th style="text-align:center">使用用户</th>
+<th style="text-align:center">包管理器控制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">/bin</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">所有普通用户</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center">/sbin</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">根用户</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center">/usr/bin</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">所有普通用户</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center">/usr/sbin</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">根用户</td>
+<td style="text-align:center">是</td>
+</tr>
+<tr>
+<td style="text-align:center">/usr/local/bin/</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">所有普通用户</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:center">/usr/local/sbin</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">根用户</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:center">~/.local/bin</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">特定普通用户</td>
+<td style="text-align:center">否</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在实践上，发行版自带的包，一部分会被安装 <code>/bin, /sbin/</code> ，当然也有一些会被安装到 <code>/usr/</code> 下，如果是通过包管理器安装的包，一般会安装到 <code>/usr/</code> 下，而如果是手动编译安装的包，则会安装在 <code>/usr/local</code> 下，因为并不受到包管理器控制。而 <code>~/.local/bin</code> 下可能会安装一些 <code>pip, npm</code> global 安装的脚本，当然也可能在别的地方。</p>
+<h3 id="bin-include-lib-share-的区别"><a href="#bin-include-lib-share-的区别" class="headerlink" title="bin, include, lib, share 的区别"></a><code>bin</code>, <code>include</code>, <code>lib</code>, <code>share</code> 的区别</h3><p>对于一个软件，它一般并不会在一个文件夹下老老实实呆着，它实际会分成多个部分，以 emacs 举例，执行如下命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">whereis</span> emacs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">emacs: /usr/bin/emacs /usr/lib/emacs /usr/share/emacs /usr/share/man/man1/emacs.1.gz /usr/share/info/emacs.info.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以看到一个 emacs 会分布在 <code>bin, lib, share, man, info</code> 多个文件夹内。其中可执行文件在 <code>bin</code> 下，库文件（常常是 <code>lib*.so</code> 的形式，不过 emacs 的 <code>lib</code> 里是一些我不知道的东西），数据文件在 <code>share</code> 下（emacs 是内置的包），<code>info</code> 和 <code>man</code> 下存着说明文件。此外 <code>include</code> 文件夹下存储着头文件，一般用于包含库文件的声明。</p>
+<p>一个软件并不会都有每一个部分，比如说 emacs 就没有 <code>include</code> 部分。</p>
+<p>这种组织形式虽然很好的贯彻了分类学，比如在开发中可以使用哪些库只需要去 <code>include</code> 中查看即可，但是对于软件的独立性，则形成了挑战，比如说我现在要卸载 emacs, 那么就要去 5 个地方卸载，非常不方便（虽然包管理器会帮助我），但是对于手动编译的包，则没有这种便利性了。这就是 <code>/opt</code> 存在的意义，在这个文件夹下的每个子文件夹代表一个软件，这样只要删除一个文件夹，就等价于卸载了一个文件，十分方便，这也是 <code>optional</code> 的含义，即可选的，尝试性质的。</p>
 <hr>
 <h2 id="八、remote"><a href="#八、remote" class="headerlink" title="八、remote"></a>八、remote</h2><h3 id="8-1-ssh"><a href="#8-1-ssh" class="headerlink" title="8.1 ssh"></a>8.1 ssh</h3><h3 id="8-2-tmux"><a href="#8-2-tmux" class="headerlink" title="8.2 tmux"></a>8.2 tmux</h3><p>tmux 除了对终端进行分屏以外，还具有维持对话的功能，这在不稳定的 ssh 连接中十分有作用，因为如果在终端内运行耗时很长的程序（比如说编译或者运行测试），那么一旦 ssh 中断，程序也会运行失败。</p>
 <p>tmux 可以解决这种问题，tmux 将我们和远端的通信包装成一个 session，tmux 会负责维护这个 session 的持续进行，并不会因为连接中断等原因停止。如果不幸中断，我们也可以重新进入这个 session，这个 session 之前的操作结果都会被保留。</p>
@@ -942,7 +1013,7 @@ tmux new-session -s <span class="token operator">&lt;</span>session-name<span cl
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BD%92%E6%A1%A3%E4%B8%8E%E5%8E%8B%E7%BC%A9"><span class="nav-text">二、归档与压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%BF%9B%E7%A8%8B"><span class="nav-text">三、进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%A6%82%E5%BF%B5"><span class="nav-text">3.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-ps"><span class="nav-text">3.2 ps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-kill"><span class="nav-text">3.3 kill</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jobs"><span class="nav-text">jobs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-htop"><span class="nav-text">3.4 htop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">四、过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-xargs"><span class="nav-text">4.1 xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-grep"><span class="nav-text">4.2 grep</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-%E6%90%9C%E7%B4%A2"><span class="nav-text">4.2.1 搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-%E6%AD%A3%E5%88%99"><span class="nav-text">4.2.2 正则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-sed"><span class="nav-text">4.3 sed</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-1-%E6%B5%81%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-text">4.3.1 流式编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-2-%E6%AD%A3%E5%88%99%E6%8D%95%E8%8E%B7"><span class="nav-text">4.3.2 正则捕获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-3-%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-text">4.3.3 指令格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-awk"><span class="nav-text">4.4 awk</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-1-%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="nav-text">4.4.1 内置变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-2-%E6%8C%87%E4%BB%A4%E7%BB%93%E6%9E%84"><span class="nav-text">4.4.2 指令结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-3-%E5%85%B6%E4%BB%96%E8%AF%AD%E6%B3%95"><span class="nav-text">4.4.3 其他语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-4-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="nav-text">4.4.4 格式化输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-5-GNU-%E5%B7%A5%E5%85%B7"><span class="nav-text">4.4.5 GNU 工具</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">五、文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E9%93%BE%E6%8E%A5"><span class="nav-text">5.1 链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-text">5.2 文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E5%9B%9E%E6%94%B6%E7%AB%99"><span class="nav-text">5.3 回收站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E5%88%A0%E9%99%A4%E3%80%81%E7%A7%BB%E5%8A%A8%E3%80%81%E9%87%8D%E5%91%BD%E5%90%8D"><span class="nav-text">5.4 删除、移动、重命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-%E6%9F%A5%E6%89%BE"><span class="nav-text">5.5 查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-text">5.6 文件信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E7%BD%91%E7%BB%9C"><span class="nav-text">六、网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-request-response-url-user-agent"><span class="nav-text">6.1 request, response, url, user agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-curl"><span class="nav-text">6.2 curl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-wget"><span class="nav-text">6.3 wget</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81root"><span class="nav-text">七、root</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-dev-%E5%92%8C-sys-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">7.1 &#x2F;dev 和 &#x2F;sys 的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81remote"><span class="nav-text">八、remote</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-ssh"><span class="nav-text">8.1 ssh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-tmux"><span class="nav-text">8.2 tmux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-bashrc"><span class="nav-text">8.3 bashrc</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BD%92%E6%A1%A3%E4%B8%8E%E5%8E%8B%E7%BC%A9"><span class="nav-text">二、归档与压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%BF%9B%E7%A8%8B"><span class="nav-text">三、进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%A6%82%E5%BF%B5"><span class="nav-text">3.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-ps"><span class="nav-text">3.2 ps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-kill"><span class="nav-text">3.3 kill</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jobs"><span class="nav-text">jobs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-htop"><span class="nav-text">3.4 htop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">四、过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-xargs"><span class="nav-text">4.1 xargs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-grep"><span class="nav-text">4.2 grep</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-%E6%90%9C%E7%B4%A2"><span class="nav-text">4.2.1 搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-%E6%AD%A3%E5%88%99"><span class="nav-text">4.2.2 正则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-sed"><span class="nav-text">4.3 sed</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-1-%E6%B5%81%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-text">4.3.1 流式编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-2-%E6%AD%A3%E5%88%99%E6%8D%95%E8%8E%B7"><span class="nav-text">4.3.2 正则捕获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-3-%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-text">4.3.3 指令格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-awk"><span class="nav-text">4.4 awk</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-1-%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="nav-text">4.4.1 内置变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-2-%E6%8C%87%E4%BB%A4%E7%BB%93%E6%9E%84"><span class="nav-text">4.4.2 指令结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-3-%E5%85%B6%E4%BB%96%E8%AF%AD%E6%B3%95"><span class="nav-text">4.4.3 其他语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-4-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="nav-text">4.4.4 格式化输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-5-GNU-%E5%B7%A5%E5%85%B7"><span class="nav-text">4.4.5 GNU 工具</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">五、文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E9%93%BE%E6%8E%A5"><span class="nav-text">5.1 链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-text">5.2 文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E5%9B%9E%E6%94%B6%E7%AB%99"><span class="nav-text">5.3 回收站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E5%88%A0%E9%99%A4%E3%80%81%E7%A7%BB%E5%8A%A8%E3%80%81%E9%87%8D%E5%91%BD%E5%90%8D"><span class="nav-text">5.4 删除、移动、重命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-%E6%9F%A5%E6%89%BE"><span class="nav-text">5.5 查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-text">5.6 文件信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E7%BD%91%E7%BB%9C"><span class="nav-text">六、网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-request-response-url-user-agent"><span class="nav-text">6.1 request, response, url, user agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-curl"><span class="nav-text">6.2 curl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-wget"><span class="nav-text">6.3 wget</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">七、根文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-dev-%E5%92%8C-sys-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">7.1 &#x2F;dev 和 &#x2F;sys 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-bin-sbin-usr-local-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">7.2 bin, sbin, usr , local 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bin-include-lib-share-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">bin, include, lib, share 的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81remote"><span class="nav-text">八、remote</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-ssh"><span class="nav-text">8.1 ssh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-tmux"><span class="nav-text">8.2 tmux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-bashrc"><span class="nav-text">8.3 bashrc</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1020,7 +1091,7 @@ tmux new-session -s <span class="token operator">&lt;</span>session-name<span cl
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:35</span>
+    <span title="Reading time total">17:41</span>
 </div>
 
         

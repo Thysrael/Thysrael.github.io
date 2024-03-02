@@ -230,27 +230,23 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
   </entry>
   
   <entry>
-    <title>硬件平台-ARM安全机制</title>
+    <title>硬件平台-ARM虚拟与安全</title>
     <link href="https://thysrael.github.io/posts/d2197181/"/>
     <id>https://thysrael.github.io/posts/d2197181/</id>
     <published>2023-12-30T13:15:11.000Z</published>
-    <updated>2024-01-06T03:38:39.830Z</updated>
+    <updated>2024-02-17T04:13:06.173Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;之所以要写这篇文章，不是因为只有 Arm 有硬件安全机制，而是因为只接触了 Arm</summary>
-        
-      
+    <summary type="html">&lt;h2 id=&quot;一、抽象层次&quot;&gt;&lt;a href=&quot;#一、抽象层次&quot; class=&quot;headerlink&quot; title=&quot;一、抽象层次&quot;&gt;&lt;/a&gt;一、抽象层次&lt;/h2&gt;&lt;h3 id=&quot;1-1-User-Program-与-Operating-System&quot;&gt;&lt;a href=&quot;#1-1-User-Program-与-Operating-System&quot; class=&quot;headerlink&quot; title=&quot;1.1 User Program 与 Operating System&quot;&gt;&lt;/a&gt;1.1 User Program 与 Operating System&lt;/h3&gt;&lt;p&gt;一开始的用户程序 User Program 都是裸机程序，他们直接运行在硬件上。这种方式的缺点在于，任何程序都需要思考与其他程序的“共存方式”，内存空间的是具象的，所以就要思考自己要利用多少的内存，利用哪个部分的内存；CPU 是具象的，所以就要思考自己何时会被调度，以怎样的形式被调度；所有的硬件资源都是具象的，所以要思考的事情数不胜数。&lt;/p&gt;
+&lt;p&gt;正因如此，操作系统 Operating System 提供了一层抽象，OS 将原本的硬件资源全部进行了抽象表达，具象的硬件资源被操作系统接管，不再提供给用户程序具象的硬件资源，而是提供给用户抽象的“系统调用”，系统调用是操作系统提供的一种硬件资源的封装形式，用户程序使用系统调用来完成使用硬件资源的功能。&lt;/p&gt;
+&lt;p&gt;抽象的硬件资源相比于具象的硬件资源，其好处在于抽象资源要更加简单，内存空间变成了虚拟内存空间，不再有“有限”或者“非独占”的困扰；外存变成了文件，不再有复杂的驱动或者定位问题；CPU 的调度被简化成了线程的调度，由 OS 进行统一管理，再也不用思考与其他进程共享 CPU 的问题，所有的硬件资源都被抽象的十分简单，使得开发者不再需要考虑与设计本身无关的问题。&lt;/p&gt;</summary>
     
     
     
     <category term="硬件平台" scheme="https://thysrael.github.io/categories/%E7%A1%AC%E4%BB%B6%E5%B9%B3%E5%8F%B0/"/>
     
     
-    <category term="知识总结" scheme="https://thysrael.github.io/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
+    <category term="直观理解" scheme="https://thysrael.github.io/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/"/>
     
     <category term="S7课上" scheme="https://thysrael.github.io/tags/S7%E8%AF%BE%E4%B8%8A/"/>
     
@@ -460,7 +456,7 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <link href="https://thysrael.github.io/posts/19e22da2/"/>
     <id>https://thysrael.github.io/posts/19e22da2/</id>
     <published>2023-09-30T09:46:56.000Z</published>
-    <updated>2023-12-25T07:34:39.990Z</updated>
+    <updated>2024-03-02T09:29:02.300Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;如何熟悉工具呢？我觉得最为重要的是理解工具被设计和使用时的理念或者概念或者抽象，只要理解了工具中蕴含的理念是什么，对于具体的操作，就可以抄文档了。&lt;/p&gt;

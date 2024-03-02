@@ -414,7 +414,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/posts/d2197181/" class="post-title-link" itemprop="url">硬件平台-ARM安全机制</a>
+            <a href="/posts/d2197181/" class="post-title-link" itemprop="url">硬件平台-ARM虚拟与安全</a>
         </h2>
 
         <div class="post-meta">
@@ -431,7 +431,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-01-06 11:38:39" itemprop="dateModified" datetime="2024-01-06T11:38:39+08:00">2024-01-06</time>
+                <time title="Modified: 2024-02-17 12:13:06" itemprop="dateModified" datetime="2024-02-17T12:13:06+08:00">2024-02-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -449,14 +449,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>93</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
+              <span>5 mins.</span>
             </span>
 
         </div>
@@ -468,9 +468,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>之所以要写这篇文章，不是因为只有 Arm 有硬件安全机制，而是因为只接触了 Arm 的安全机制，说起来很奇怪，我居然在本科阶段对于安全一无所知。</p>
-<p>可能这个标题起大了，我不确定能不能都聊完。</p>
-
+          <h2 id="一、抽象层次"><a href="#一、抽象层次" class="headerlink" title="一、抽象层次"></a>一、抽象层次</h2><h3 id="1-1-User-Program-与-Operating-System"><a href="#1-1-User-Program-与-Operating-System" class="headerlink" title="1.1 User Program 与 Operating System"></a>1.1 User Program 与 Operating System</h3><p>一开始的用户程序 User Program 都是裸机程序，他们直接运行在硬件上。这种方式的缺点在于，任何程序都需要思考与其他程序的“共存方式”，内存空间的是具象的，所以就要思考自己要利用多少的内存，利用哪个部分的内存；CPU 是具象的，所以就要思考自己何时会被调度，以怎样的形式被调度；所有的硬件资源都是具象的，所以要思考的事情数不胜数。</p>
+<p>正因如此，操作系统 Operating System 提供了一层抽象，OS 将原本的硬件资源全部进行了抽象表达，具象的硬件资源被操作系统接管，不再提供给用户程序具象的硬件资源，而是提供给用户抽象的“系统调用”，系统调用是操作系统提供的一种硬件资源的封装形式，用户程序使用系统调用来完成使用硬件资源的功能。</p>
+<p>抽象的硬件资源相比于具象的硬件资源，其好处在于抽象资源要更加简单，内存空间变成了虚拟内存空间，不再有“有限”或者“非独占”的困扰；外存变成了文件，不再有复杂的驱动或者定位问题；CPU 的调度被简化成了线程的调度，由 OS 进行统一管理，再也不用思考与其他进程共享 CPU 的问题，所有的硬件资源都被抽象的十分简单，使得开发者不再需要考虑与设计本身无关的问题。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/d2197181/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -916,7 +924,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:35</span>
+    <span title="Reading time total">17:41</span>
 </div>
 
         
