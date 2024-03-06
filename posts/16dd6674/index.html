@@ -31,9 +31,9 @@
 <meta property="og:description" content="一、再次回顾启动流程1.1 stage 1在学 OS 的时候我就已经写过一篇介绍启动流程的文章了，在我忙了一上午以后重新学了一遍，发现其实之前就已经学的十分详细了，属于是自己造自己的轮子了。不过再次回顾，尤其是结合了自己开发操作系统的经验，还是发现很多重点的，所以再来回顾一遍。 首先是关于启动最初，bios，MBR 和 grub 的区别">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://thysrael.github.io/posts/16dd6674/Linux-Systemd//boot.png">
-<meta property="og:image" content="https://thysrael.github.io/posts/16dd6674/Linux-Systemd//systemd.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/16dd6674/systemd.png">
 <meta property="article:published_time" content="2023-09-30T10:40:34.000Z">
-<meta property="article:modified_time" content="2024-03-06T13:01:32.519Z">
+<meta property="article:modified_time" content="2024-03-06T14:27:48.970Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="S7课上">
@@ -246,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-06 21:01:32" itemprop="dateModified" datetime="2024-03-06T21:01:32+08:00">2024-03-06</time>
+                <time title="Modified: 2024-03-06 22:27:48" itemprop="dateModified" datetime="2024-03-06T22:27:48+08:00">2024-03-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -292,48 +292,48 @@
       
         <h2 id="一、再次回顾启动流程"><a href="#一、再次回顾启动流程" class="headerlink" title="一、再次回顾启动流程"></a>一、再次回顾启动流程</h2><h3 id="1-1-stage-1"><a href="#1-1-stage-1" class="headerlink" title="1.1 stage 1"></a>1.1 stage 1</h3><p>在学 OS 的时候我就已经写过一篇介绍启动流程的文章了，在我忙了一上午以后重新学了一遍，发现其实之前就已经学的十分详细了，属于是自己造自己的轮子了。不过再次回顾，尤其是结合了自己开发操作系统的经验，还是发现很多重点的，所以再来回顾一遍。</p>
 <p>首先是关于启动最初，bios，MBR 和 grub 的区别</p>
-<p><img src="Linux-Systemd//boot.png" style="zoom:80%;"></p>
+<p><img src="./Linux-Systemd//boot.png" style="zoom:80%;"></p>
 <p>他仨除了有一个“引导和被引导”的关系，其实在逻辑上还可以区分的更好。</p>
 <p>BIOS 是在 ROM 中保存的，它的读取和执行时一种硬件行为，上电以后会自动读取，所以它是第一个，并不会被引导，只会引导别人。BIOS 可以选择不同的外存设备加载到内存进行启动，也就是选择不同的 MBR。BIOS 在逻辑上被称为固件，同类产品还有 UEFI。BIOS 执行的过程可能叫做 stage1。</p>
 <p>MBR 并不是一个程序，他是外存设备上的一个固定扇区，之所以把他拉出来，是因为它一般作为 GRUB 这样的 bootloader 的一个子模块，其主要原因是 MBR 比较小，没法放下整个 GRUB。</p>
 <h3 id="1-2-stage-2"><a href="#1-2-stage-2" class="headerlink" title="1.2 stage 2"></a>1.2 stage 2</h3><p>GRUB 是在外存中保存的，他的作用是选择不同的内核（当然还有别的功能）加载到内存，他的同类产品是 LILO。比较有意思的点是，他需要加载文件系统，但是加载能力有限（还没有被释放），所以他会加载一个 <code>initrmfs</code> 的虚拟文件系统来充数，是一个临时文件系统。当将控制权交给内核时，此时真正的根文件系统（也就是在外存上保存的那个东西）已经被加载好了。加载的内核在 <code>/boot/</code> 下。这个过程被叫做 stage2。</p>
 <p>boot loader 程序主要做两件事，一个是将内核加载到内存中，另一个是启动一个虚拟文件系统．内核文件是 <code>/boot/vmlinuz*</code> ，虚拟文件系统文件是 <code>/boot/initr*</code>。其实我们可以看一下这个文件系统长啥样子（纯属闲得无聊）：</p>
 <p>首先在桌面创建一个文件夹用于存放解压好的文件</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mkdir -p ~/desktop/initrd &amp;&amp; cd ~/desktop/initrd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mkdir</span> -p ~/desktop/initrd <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> ~/desktop/initrd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>然后将虚拟文件系统拷贝到这个目录</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sudo cp /boot/initramfs-5.15-x86_64.img .<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">sudo</span> <span class="token function">cp</span> /boot/initramfs-5.15-x86_64.img <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>通过 <code>file</code> 可知这个 <code>img</code> 的本质是 gzip 压缩文件，所以需要解压缩，解压缩前需要修改后缀名</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">mv ./initramfs-5.15-x86_64.img ./initramfs-5.15-x86_64.gz
-sudo gzip -d ./initramfs-5.15-x86_64.gz<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mv</span> ./initramfs-5.15-x86_64.img ./initramfs-5.15-x86_64.gz
+<span class="token function">sudo</span> <span class="token function">gzip</span> -d ./initramfs-5.15-x86_64.gz<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>然后发现 <code>initramfs-5.15-x86_64</code> 是 cpio 文件，继续用 cpio 提取</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sudo chmod 777 ./initramfs-5.15-x86_64
-cpio -idm &lt; ./initramfs-5.15-x86_64<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">sudo</span> <span class="token function">chmod</span> <span class="token number">777</span> ./initramfs-5.15-x86_64
+cpio -idm <span class="token operator">&lt;</span> ./initramfs-5.15-x86_64<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>解压完成，就可以看到一个简单的根目录文件系统。</p>
 <hr>
 <h2 id="二、启动后"><a href="#二、启动后" class="headerlink" title="二、启动后"></a>二、启动后</h2><p>之前的启动似乎一般侧重于介绍控制权是如何递交到操作系统上就结束了，但是实际上操作系统依然需要启动一些程序，然后才可以将控制权移交给用户。这些程序在 windows 中被称为“服务”（service），在 linux 中被称为“守护进程”（daemon）。</p>
 <p>systemd 就是一个管理这些守护进程的程序，提供对守护进程的管理，评测，日志等功能。之前还有 system V 发挥着和他类似的功能。</p>
 <p>systemd 的整体架构如下</p>
-<p><img src="Linux-Systemd//systemd.png" alt="img"></p>
+<p><img src="/posts/16dd6674/systemd.png" alt="img"></p>
 <hr>
 <h2 id="三、systemd"><a href="#三、systemd" class="headerlink" title="三、systemd"></a>三、systemd</h2><h3 id="3-1-用户接口"><a href="#3-1-用户接口" class="headerlink" title="3.1 用户接口"></a>3.1 用户接口</h3><p>为了方便管理，systemd 提供了一组用户命令来使用 systemd。</p>
 <p><strong>systemctl</strong></p>
 <p>主要用于 unit 管理和系统管理两个方面，关于 unit 管理的部分后面统一介绍，先介绍系统管理部分。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">sudo systemctl reboot 		# 重启
-sudo systemctl poweroff		# 关机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">sudo</span> systemctl <span class="token function">reboot</span> 		<span class="token comment"># 重启</span>
+<span class="token function">sudo</span> systemctl poweroff		<span class="token comment"># 关机</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>systemd-analyze</strong></p>
 <p>用于查看启动耗时。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">systemd-analyze  			# 查看启动耗时
-systemd-analyze blame		# 查看每个服务的启动耗时
-systemd-analyze critical-chain # 显示瀑布状的启动过程流
-systemd-analyze critical-chain atd.service # 显示指定服务的启动流<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">systemd-analyze  			<span class="token comment"># 查看启动耗时</span>
+systemd-analyze blame		<span class="token comment"># 查看每个服务的启动耗时</span>
+systemd-analyze critical-chain <span class="token comment"># 显示瀑布状的启动过程流</span>
+systemd-analyze critical-chain atd.service <span class="token comment"># 显示指定服务的启动流</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>hostnamectl</strong></p>
 <p>用于查看当前主机的信息。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">hostnamectl 	# 显示当前主机的信息
-sudo hostnamectl set-hostname &lt;name&gt; # 设置主机名<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">hostnamectl 	<span class="token comment"># 显示当前主机的信息</span>
+<span class="token function">sudo</span> hostnamectl set-hostname <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span> <span class="token comment"># 设置主机名</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>localectl</strong></p>
 <p>用于查看本地化设置</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">localectl 	# 查看本地化设置
-sudo localectl set-locale LANG=en_GB.utf8 # 设置本地化参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">localectl 	<span class="token comment"># 查看本地化设置</span>
+<span class="token function">sudo</span> localectl set-locale <span class="token assign-left variable"><span class="token environment constant">LANG</span></span><span class="token operator">=</span>en_GB.utf8 <span class="token comment"># 设置本地化参数</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="3-2-unit"><a href="#3-2-unit" class="headerlink" title="3.2 unit"></a>3.2 unit</h3><p>Systemd 可以管理所有系统资源。不同的资源统称为 Unit（单位）。Unit 一共分成12种。</p>
 <ul>
 <li>Service unit：系统服务</li>
@@ -350,62 +350,62 @@ sudo localectl set-locale LANG=en_GB.utf8 # 设置本地化参数<span aria-hidd
 <li>Timer Unit：定时器</li>
 </ul>
 <p><code>systemctl list-units</code> 命令可以查看当前系统的所有 Unit 。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"># 列出正在运行的 Unit
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 列出正在运行的 Unit</span>
 systemctl list-units
  
-# 列出所有Unit，包括没有找到配置文件的或者启动失败的
+<span class="token comment"># 列出所有Unit，包括没有找到配置文件的或者启动失败的</span>
 systemctl list-units --all
 
-# 列出所有没有运行的 Unit
-systemctl list-units --all --state=inactive
+<span class="token comment"># 列出所有没有运行的 Unit</span>
+systemctl list-units --all --state<span class="token operator">=</span>inactive
 
-# 列出所有加载失败的 Unit
+<span class="token comment"># 列出所有加载失败的 Unit</span>
 systemctl list-units --failed
 
-# 列出所有正在运行的、类型为 service 的 Unit
-systemctl list-units --type=service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment"># 列出所有正在运行的、类型为 service 的 Unit</span>
+systemctl list-units --type<span class="token operator">=</span>service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>systemctl status</code> 命令用于查看系统状态和单个 Unit 的状态。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"># 显示系统状态
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 显示系统状态</span>
 systemctl status
 
-# 显示单个 Unit 的状态
+<span class="token comment"># 显示单个 Unit 的状态</span>
 sysystemctl status bluetooth.service
 
-# 显示远程主机的某个 Unit 的状态
+<span class="token comment"># 显示远程主机的某个 Unit 的状态</span>
 systemctl -H root@rhel7.example.com status httpd.service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>最重要的其实是管理系统 Unit 状态</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"># 立即启动一个服务
-sudo systemctl start apache.service
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 立即启动一个服务</span>
+<span class="token function">sudo</span> systemctl start apache.service
 
-# 立即停止一个服务
-sudo systemctl stop apache.service
+<span class="token comment"># 立即停止一个服务</span>
+<span class="token function">sudo</span> systemctl stop apache.service
 
-# 重启一个服务
-sudo systemctl restart apache.service
+<span class="token comment"># 重启一个服务</span>
+<span class="token function">sudo</span> systemctl restart apache.service
 
-# 杀死一个服务的所有子进程
-sudo systemctl kill apache.service
+<span class="token comment"># 杀死一个服务的所有子进程</span>
+<span class="token function">sudo</span> systemctl <span class="token function">kill</span> apache.service
 
-# 激活开机启动
-sudo systemctl enable apache.service
+<span class="token comment"># 激活开机启动</span>
+<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> apache.service
 
-# 取消开机启动
-sudo systemctl disable apache.service
+<span class="token comment"># 取消开机启动</span>
+<span class="token function">sudo</span> systemctl disable apache.service
 
-# 重新加载一个服务的配置文件
-sudo systemctl reload apache.service
+<span class="token comment"># 重新加载一个服务的配置文件</span>
+<span class="token function">sudo</span> systemctl reload apache.service
 
-# 重载所有修改过的配置文件
-sudo systemctl daemon-reload
+<span class="token comment"># 重载所有修改过的配置文件</span>
+<span class="token function">sudo</span> systemctl daemon-reload
 
-# 显示某个 Unit 的所有底层参数
+<span class="token comment"># 显示某个 Unit 的所有底层参数</span>
 systemctl show httpd.service
 
-# 显示某个 Unit 的指定属性的值
+<span class="token comment"># 显示某个 Unit 的指定属性的值</span>
 systemctl show -p CPUShares httpd.service
 
-# 设置某个 Unit 的指定属性
-sudo systemctl set-property httpd.service CPUShares=500<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment"># 设置某个 Unit 的指定属性</span>
+<span class="token function">sudo</span> systemctl set-property httpd.service <span class="token assign-left variable">CPUShares</span><span class="token operator">=</span><span class="token number">500</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>每一个 Unit 都有一个配置文件，告诉 Systemd 怎么启动这个 Unit 。</p>
 <p>Systemd 默认从目录<code>/etc/systemd/system/</code>读取配置文件。但是，里面存放的大部分文件都是符号链接，指向目录<code>/usr/lib/systemd/system/</code>，真正的配置文件存放在那个目录。</p>
 <p><code>systemctl enable</code>命令用于在上面两个目录之间，建立符号链接关系。</p>
@@ -575,7 +575,7 @@ sudo systemctl set-property httpd.service CPUShares=500<span aria-hidden="true" 
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:43</span>
+    <span title="Reading time total">17:44</span>
 </div>
 
         
