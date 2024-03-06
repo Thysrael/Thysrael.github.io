@@ -405,12 +405,12 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <link href="https://thysrael.github.io/posts/16dd6674/"/>
     <id>https://thysrael.github.io/posts/16dd6674/</id>
     <published>2023-09-30T10:40:34.000Z</published>
-    <updated>2023-09-30T10:40:34.000Z</updated>
+    <updated>2024-03-06T13:01:32.519Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、再次回顾启动流程&quot;&gt;&lt;a href=&quot;#一、再次回顾启动流程&quot; class=&quot;headerlink&quot; title=&quot;一、再次回顾启动流程&quot;&gt;&lt;/a&gt;一、再次回顾启动流程&lt;/h2&gt;&lt;h3 id=&quot;1-1-stage-1&quot;&gt;&lt;a href=&quot;#1-1-stage-1&quot; class=&quot;headerlink&quot; title=&quot;1.1 stage 1&quot;&gt;&lt;/a&gt;1.1 stage 1&lt;/h3&gt;&lt;p&gt;在学 OS 的时候我就已经写过一篇介绍启动流程的文章了，在我忙了一上午以后重新学了一遍，发现其实之前就已经学的十分详细了，属于是自己造自己的轮子了。不过再次回顾，尤其是结合了自己开发操作系统的经验，还是发现很多重点的，所以再来回顾一遍。&lt;/p&gt;
 &lt;p&gt;首先是关于启动最初，bios，MBR 和 grub 的区别&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;Linux-Systemd//boot.png&quot; alt&gt;&lt;/p&gt;</summary>
+&lt;p&gt;&lt;img src=&quot;Linux-Systemd//boot.png&quot; style=&quot;zoom:80%;&quot;&gt;&lt;/p&gt;</summary>
     
     
     
