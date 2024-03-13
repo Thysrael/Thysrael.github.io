@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-02-14T14:34:21.413Z</updated>
+  <updated>2024-03-13T12:57:15.641Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -17,6 +17,35 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>硬件平台-主板与外设</title>
+    <link href="https://thysrael.github.io/posts/7ee767c0/"/>
+    <id>https://thysrael.github.io/posts/7ee767c0/</id>
+    <published>2024-03-12T08:04:18.000Z</published>
+    <updated>2024-03-13T12:57:15.641Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、主板&quot;&gt;&lt;a href=&quot;#一、主板&quot; class=&quot;headerlink&quot; title=&quot;一、主板&quot;&gt;&lt;/a&gt;一、主板&lt;/h2&gt;&lt;p&gt;虽然在《计算机组成》这么课上，我大部分时间都在和 CPU 搏斗，但是并不是说 CPU 就是硬件世界的唯一或者说</summary>
+        
+      
+    
+    
+    
+    <category term="硬件平台" scheme="https://thysrael.github.io/categories/%E7%A1%AC%E4%BB%B6%E5%B9%B3%E5%8F%B0/"/>
+    
+    
+    <category term="直观理解" scheme="https://thysrael.github.io/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/"/>
+    
+    <category term="硬件平台" scheme="https://thysrael.github.io/tags/%E7%A1%AC%E4%BB%B6%E5%B9%B3%E5%8F%B0/"/>
+    
+    <category term="S8课上" scheme="https://thysrael.github.io/tags/S8%E8%AF%BE%E4%B8%8A/"/>
+    
+  </entry>
+  
+  <entry>
     <title>硬件平台-ARM条件码</title>
     <link href="https://thysrael.github.io/posts/1be60a6e/"/>
     <id>https://thysrael.github.io/posts/1be60a6e/</id>
@@ -24,11 +53,13 @@
     <updated>2024-02-14T14:34:21.413Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、基础&quot;&gt;&lt;a href=&quot;#一、基础&quot; class=&quot;headerlink&quot; title=&quot;一、基础&quot;&gt;&lt;/a&gt;一、基础&lt;/h2&gt;&lt;p&gt;在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR 的条件码来确定这条指令是否真的具有执行效果。&lt;/p&gt;
-&lt;p&gt;比如说如下指令，只有在 CPSR 中 &lt;code&gt;Z&lt;/code&gt; 位为 1 的时候，&lt;code&gt;addz&lt;/code&gt; 这条指令才有实际效果，这依赖于前一条指令 &lt;code&gt;cmp&lt;/code&gt; 对 CPSR 的修改（ARM 同样可以指定是否修改 CPSR，这是通过在指令位中的 &lt;code&gt;S&lt;/code&gt; 确定的）。&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-assembly&quot; data-language=&quot;assembly&quot;&gt;&lt;code class=&quot;language-assembly&quot;&gt;cmp r4, r5
-addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;MIPS 或者 RISCV 都有条件指令，不过这些条件指令一般是条件指令，这样可以实现编程思想中的分支结构。Arm 的特殊之处在于每条 32 位指令的高 4 位都是条件码，这就会导致每条指令都是条件指令。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、基础&quot;&gt;&lt;a href=&quot;#一、基础&quot; class=&quot;headerlink&quot; title=&quot;一、基础&quot;&gt;&lt;/a&gt;一、基础&lt;/h2&gt;&lt;p&gt;在 Armv8 的 A32 架构或者 Armv7 及以前的指令集中，每条指令都可以“条件执行”，也就是根据 CPSR</summary>
+        
+      
     
     
     
@@ -51,16 +82,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-02-11T13:48:25.610Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、字体介绍&quot;&gt;&lt;a href=&quot;#一、字体介绍&quot; class=&quot;headerlink&quot; title=&quot;一、字体介绍&quot;&gt;&lt;/a&gt;一、字体介绍&lt;/h2&gt;&lt;h3 id=&quot;1-1-演变历史&quot;&gt;&lt;a href=&quot;#1-1-演变历史&quot; class=&quot;headerlink&quot; title=&quot;1.1 演变历史&quot;&gt;&lt;/a&gt;1.1 演变历史&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;最早的字体是“帝国大写体”（Imperial Capitals），也被称为“罗马大写体”，古罗马时期字体，用于在石碑上记录重大事件。&lt;/li&gt;
-&lt;li&gt;然后是“卡洛林小写体”（Carolingian Minuscule），这种字体在中世纪早期出现，这种字体字间距大，结构清晰简单，但是已经具有了一定的宗教色彩。&lt;/li&gt;
-&lt;li&gt;中世纪后期西欧出现了“哥特体”（Gothic），是卡洛林小写体的演化体，这种字体更加复杂和华丽，字间距小，笔画厚重而末端尖锐，具有强烈的宗教色彩。&lt;/li&gt;
-&lt;li&gt;“人文主义体”是“文艺复兴之父”彼特拉克提倡发明的字体，受启发于卡洛林小写体字间距大，方便阅读的特点，是文艺复兴早期的字体，风格比较圆润轻松，字轴比较倾斜。&lt;/li&gt;
-&lt;li&gt;“意大利斜体”受启发于“人文主义体”，这种字体更加自由畅快，同时由于斜体的特点，可以兼顾辨认和节省空间的特点，是当时印刷业的新宠。&lt;/li&gt;
-&lt;li&gt;“印刷罗马体”是活字印刷术发明后在意大利发明的，这种字体受启发于“人文主义体”和“帝国大写体”，这种字体字轴中正，笔画圆润，书写痕迹浅，成为了“人文主义体”的淘汰者。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;/posts/f0b58a03/image-20240211214139291.png&quot; alt=&quot;image-20240211214139291&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;1-2-具体介绍&quot;&gt;&lt;a href=&quot;#1-2-具体介绍&quot; class=&quot;headerlink&quot; title=&quot;1.2 具体介绍&quot;&gt;&lt;/a&gt;1.2 具体介绍&lt;/h3&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、字体介绍&quot;&gt;&lt;a href=&quot;#一、字体介绍&quot; class=&quot;headerlink&quot; title=&quot;一、字体介绍&quot;&gt;&lt;/a&gt;一、字体介绍&lt;/h2&gt;&lt;h3 id=&quot;1-1-演变历史&quot;&gt;&lt;a href=&quot;#1-1-演变历史&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -107,9 +135,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-02-11T12:54:54.078Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、起始概念&quot;&gt;&lt;a href=&quot;#一、起始概念&quot; class=&quot;headerlink&quot; title=&quot;一、起始概念&quot;&gt;&lt;/a&gt;一、起始概念&lt;/h2&gt;&lt;h3 id=&quot;1-1-排版&quot;&gt;&lt;a href=&quot;#1-1-排版&quot; class=&quot;headerlink&quot; title=&quot;1.1 排版&quot;&gt;&lt;/a&gt;1.1 排版&lt;/h3&gt;&lt;p&gt;应当明确，排版问题并不会因为 LaTex “内容和格式分离”的设计宗旨而消失，实际上，LaTex 就是在解决“排版问题”，它就是一个排版工具，只不过在解决思路上采用了“内容和格式分离”的思想，让用户尽可能不被繁琐的排版细节所困扰。  &lt;/p&gt;
-&lt;p&gt;而当我们抛开 LaTex 的拐杖去直面排版问题时，会发现它比我们想象得都要复杂、繁琐和无聊。  &lt;/p&gt;
-&lt;p&gt;比如说常见的“断字与断行”问题，在不考虑断字的情况下，一个占据近一行宽度的字很容易造成这之前的一行较为稀疏，比如下面的这种情况，左侧为较为失败的断行算法，而右侧为较为成功的：  &lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、起始概念&quot;&gt;&lt;a href=&quot;#一、起始概念&quot; class=&quot;headerlink&quot; title=&quot;一、起始概念&quot;&gt;&lt;/a&gt;一、起始概念&lt;/h2&gt;&lt;h3 id=&quot;1-1-排版&quot;&gt;&lt;a href=&quot;#1-1-排版&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -132,10 +164,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-01-27T09:40:11.190Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、闲谈&quot;&gt;&lt;a href=&quot;#一、闲谈&quot; class=&quot;headerlink&quot; title=&quot;一、闲谈&quot;&gt;&lt;/a&gt;一、闲谈&lt;/h2&gt;&lt;p&gt;在我进入大学的新同学介绍会上，有个同学说她来自贵州，我想了想，贵州是广西的省会啊，原来是广西人啊！让我尝试为自己辩解一下，这种事情并不能全部怪我，贵州以“州”结尾，除了贵州以外，没有任何一个省份是以“州”结尾的，相反，“广州、潮州、雷州、惠州”都是以“州”结尾的城市。&lt;/p&gt;
-&lt;p&gt;我一个学过初中地理的人，居然还能把一个省份当成一个城市，多么愚蠢可乐的事情。在我的认知中，贵州是完全缺位的，我不是对它有一个好印象或者一个坏印象，我是完全没有印象。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/posts/cb973938/image-20240124195100752.png&quot; alt=&quot;image-20240124195100752&quot; style=&quot;zoom:80%;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;而实际上贵州是真实存在的，从某个我记不住名字的版块运动开始，随着喜马拉雅山破海而出，贵州就存在了。我在贵阳的博物馆里看到了保存完好的化石，看到了各个民族的文化，我看到的东西并不比我熟悉的东西少了分毫。这种真实的，冒着热气的，在我眼前的庞然大物，居然默许了一个仅有二十多年渺小灵长类的忽视。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、闲谈&quot;&gt;&lt;a href=&quot;#一、闲谈&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -158,9 +193,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-01-15T15:59:33.282Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot;&gt;&lt;a href=&quot;#Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot; class=&quot;headerlink&quot; title=&quot;Nephele：拓展虚拟环境为 Unikernel 提供 Clone 能力&quot;&gt;&lt;/a&gt;Nephele：拓展虚拟环境为 Unikernel 提供 Clone 能力&lt;/h1&gt;&lt;h2 id=&quot;一、概述&quot;&gt;&lt;a href=&quot;#一、概述&quot; class=&quot;headerlink&quot; title=&quot;一、概述&quot;&gt;&lt;/a&gt;一、概述&lt;/h2&gt;&lt;p&gt;项目开源地址：&lt;a href=&quot;https://github.com/nephele-vm&quot;&gt;https://github.com/nephele-vm&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/posts/ab21fab4/nephele.png&quot; alt=&quot;img&quot; style=&quot;zoom:35%;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;本文在 hypervisor 上为 unikernel 提供了 clone 能力。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot;&gt;&lt;a href=&quot;#Nephele：拓展虚拟环境为-Unikernel-提供-Clone-能力&quot; class=&quot;headerlink&quot; title=&quot;Nephele：拓展虚拟环境为</summary>
+        
+      
     
     
     
@@ -183,12 +222,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-01-08T04:35:58.662Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、编译原理&quot;&gt;&lt;a href=&quot;#一、编译原理&quot; class=&quot;headerlink&quot; title=&quot;一、编译原理&quot;&gt;&lt;/a&gt;一、编译原理&lt;/h2&gt;&lt;p&gt;在我一开始接触内联汇编的时候，我已经略懂编译的原理了，而这更让我困惑，比如说像这样的内联汇编：&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;asm&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;volatile&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;lw a0, 0(%0)&quot;&lt;/span&gt;
-    &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;r&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;addr&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;会改写寄存器 &lt;code&gt;a0&lt;/code&gt; 的值，那如果 &lt;code&gt;a0&lt;/code&gt; 原先就被程序中的某个变量占用了呢？那岂不是会造成原来那个变量所参与的行为发生错误？同时 &lt;code&gt;addr&lt;/code&gt; 需要被放到一个寄存器中（我们称之为 &lt;code&gt;rx&lt;/code&gt;），而 &lt;code&gt;rx&lt;/code&gt; 如果之前也被占用了呢？，为了把原来在内存中的变量搬运到 &lt;code&gt;rx&lt;/code&gt; 寄存器中，是不是也会&lt;/p&gt;
-&lt;p&gt;其实内联汇编并不是生硬地将 &lt;code&gt;lw a0, 0(rx)&lt;/code&gt; 直接插入到代码里，因为这样确实会因为上述的原因导致程序错误。在实际情况中，内联汇编在编译角度应该被理解成一个类似于函数调用的处理逻辑。也就是说，如果内联汇编中用到了 &lt;code&gt;a0&lt;/code&gt; ，那么在内联汇编前就会有一个机制保存 &lt;code&gt;a0&lt;/code&gt; ，而在内联汇编后则有一个机制恢复原本的 &lt;code&gt;a0&lt;/code&gt; 。也就是和“调用者保存寄存器”的逻辑是一样的。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、编译原理&quot;&gt;&lt;a href=&quot;#一、编译原理&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -211,10 +251,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-01-03T14:32:19.233Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;这篇博客会从一个初学者的视角去积累一些科研中的常见“名词”，希望可以借此达到一个科普和入门的目的。&lt;/p&gt;
-&lt;p&gt;事实上我也没法以不是“非初学者”的视角去写，因为事实上我也刚知道这些东西不到一个上午。所以可能会有一些错误或者偏颇的地方，还望大家见谅。&lt;/p&gt;
-&lt;p&gt;此外因为我本人是做系统的，所以可能 AI 等方向我并不清楚，在下面的文章中也不会涉及。&lt;/p&gt;
-&lt;h2 id=&quot;二、实体&quot;&gt;&lt;a href=&quot;#二、实体&quot; class=&quot;headerlink&quot; title=&quot;二、实体&quot;&gt;&lt;/a&gt;二、实体&lt;/h2&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -237,9 +280,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-02-17T04:13:06.173Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、抽象层次&quot;&gt;&lt;a href=&quot;#一、抽象层次&quot; class=&quot;headerlink&quot; title=&quot;一、抽象层次&quot;&gt;&lt;/a&gt;一、抽象层次&lt;/h2&gt;&lt;h3 id=&quot;1-1-User-Program-与-Operating-System&quot;&gt;&lt;a href=&quot;#1-1-User-Program-与-Operating-System&quot; class=&quot;headerlink&quot; title=&quot;1.1 User Program 与 Operating System&quot;&gt;&lt;/a&gt;1.1 User Program 与 Operating System&lt;/h3&gt;&lt;p&gt;一开始的用户程序 User Program 都是裸机程序，他们直接运行在硬件上。这种方式的缺点在于，任何程序都需要思考与其他程序的“共存方式”，内存空间的是具象的，所以就要思考自己要利用多少的内存，利用哪个部分的内存；CPU 是具象的，所以就要思考自己何时会被调度，以怎样的形式被调度；所有的硬件资源都是具象的，所以要思考的事情数不胜数。&lt;/p&gt;
-&lt;p&gt;正因如此，操作系统 Operating System 提供了一层抽象，OS 将原本的硬件资源全部进行了抽象表达，具象的硬件资源被操作系统接管，不再提供给用户程序具象的硬件资源，而是提供给用户抽象的“系统调用”，系统调用是操作系统提供的一种硬件资源的封装形式，用户程序使用系统调用来完成使用硬件资源的功能。&lt;/p&gt;
-&lt;p&gt;抽象的硬件资源相比于具象的硬件资源，其好处在于抽象资源要更加简单，内存空间变成了虚拟内存空间，不再有“有限”或者“非独占”的困扰；外存变成了文件，不再有复杂的驱动或者定位问题；CPU 的调度被简化成了线程的调度，由 OS 进行统一管理，再也不用思考与其他进程共享 CPU 的问题，所有的硬件资源都被抽象的十分简单，使得开发者不再需要考虑与设计本身无关的问题。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、抽象层次&quot;&gt;&lt;a href=&quot;#一、抽象层次&quot; class=&quot;headerlink&quot; title=&quot;一、抽象层次&quot;&gt;&lt;/a&gt;一、抽象层次&lt;/h2&gt;&lt;h3 id=&quot;1-1-User-Program-与-Operating-System&quot;&gt;&lt;a</summary>
+        
+      
     
     
     
@@ -262,23 +309,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2023-12-30T13:11:11.792Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、循环依赖&quot;&gt;&lt;a href=&quot;#一、循环依赖&quot; class=&quot;headerlink&quot; title=&quot;一、循环依赖&quot;&gt;&lt;/a&gt;一、循环依赖&lt;/h2&gt;&lt;p&gt;在 C 和 CPP 这种有 &lt;code&gt;include&lt;/code&gt; 机制的语言中，当项目复杂时，很容易出现一种头文件相互包含的错误，如下所示：&lt;/p&gt;
-&lt;p&gt;在 &lt;code&gt;A.h&lt;/code&gt; 内容如下：&lt;/p&gt;
-&lt;pre class=&quot;line-numbers language-cpp&quot; data-language=&quot;cpp&quot;&gt;&lt;code class=&quot;language-cpp&quot;&gt;&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;ifndef&lt;/span&gt; &lt;span class=&quot;token expression&quot;&gt;_A_H_&lt;/span&gt;&lt;/span&gt;
-&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;define&lt;/span&gt; &lt;span class=&quot;token macro-name&quot;&gt;_A_H_&lt;/span&gt;&lt;/span&gt;
-
-&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;B.h&quot;&lt;/span&gt;&lt;/span&gt;
-
-&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;A&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    B&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt; pb&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;doSomethingA&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-        pb&lt;span class=&quot;token operator&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;method&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;token macro property&quot;&gt;&lt;span class=&quot;token directive-hash&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;token directive keyword&quot;&gt;endif&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// _A_H_&lt;/span&gt;&lt;/span&gt;&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-rows&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;在 &lt;code&gt;B.h&lt;/code&gt; 内容如下：&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、循环依赖&quot;&gt;&lt;a href=&quot;#一、循环依赖&quot; class=&quot;headerlink&quot; title=&quot;一、循环依赖&quot;&gt;&lt;/a&gt;一、循环依赖&lt;/h2&gt;&lt;p&gt;在 C 和 CPP 这种有 &lt;code&gt;include&lt;/code&gt;</summary>
+        
+      
     
     
     
@@ -301,8 +338,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2023-12-21T12:16:07.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、圆周率计算方法综述&quot;&gt;&lt;a href=&quot;#一、圆周率计算方法综述&quot; class=&quot;headerlink&quot; title=&quot;一、圆周率计算方法综述&quot;&gt;&lt;/a&gt;一、圆周率计算方法综述&lt;/h2&gt;&lt;h3 id=&quot;1-1-几何&quot;&gt;&lt;a href=&quot;#1-1-几何&quot; class=&quot;headerlink&quot; title=&quot;1.1 几何&quot;&gt;&lt;/a&gt;1.1 几何&lt;/h3&gt;&lt;h4 id=&quot;1-1-1-线弧近似法&quot;&gt;&lt;a href=&quot;#1-1-1-线弧近似法&quot; class=&quot;headerlink&quot; title=&quot;1.1.1 线弧近似法&quot;&gt;&lt;/a&gt;1.1.1 线弧近似法&lt;/h4&gt;&lt;p&gt;由古希腊数学家阿基米德提出，它采用多边形周长的方法来近似圆周长，以此求出圆周率。&lt;/p&gt;
-&lt;p&gt;对于圆的周长计算，有圆周长公式如下&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、圆周率计算方法综述&quot;&gt;&lt;a href=&quot;#一、圆周率计算方法综述&quot; class=&quot;headerlink&quot; title=&quot;一、圆周率计算方法综述&quot;&gt;&lt;/a&gt;一、圆周率计算方法综述&lt;/h2&gt;&lt;h3 id=&quot;1-1-几何&quot;&gt;&lt;a href=&quot;#1-1-几何&quot;</summary>
+        
+      
     
     
     
@@ -325,10 +367,14 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2023-12-25T07:25:14.484Z</updated>
     
     
+      
+      
+        
+        
     <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;内存管理的本质是资源管理，也就是很多程序最为重要的功能。&lt;/p&gt;
-&lt;p&gt;但是不同于 Python 或者 Java 这样有着很好内存抽象和比较大条的内存管理方式（动不动就在堆上分配空间），C++ 在更加“荒蛮”的内存上进行更加精细化的甚至还很有 C 特色的内存管理（并非 C++ 希望如此，只不过脱胎于 C 必然受到 C 的影响），是一件非常难的事情。&lt;/p&gt;
-&lt;p&gt;所以 C++ 内存管理看上去总是呈现一种“似乎解决了一个根本不会在 Java 中发生的问题”的模式。&lt;/p&gt;
-&lt;h2 id=&quot;二、RAII&quot;&gt;&lt;a href=&quot;#二、RAII&quot; class=&quot;headerlink&quot; title=&quot;二、RAII&quot;&gt;&lt;/a&gt;二、RAII&lt;/h2&gt;</summary>
+&lt;p&gt;但是不同于 Python 或者 Java</summary>
+        
+      
     
     
     
@@ -351,13 +397,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2023-12-26T05:26:26.847Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;我们常听一个说法“在语法上，C++ 是 C 的超集”，这句话的意思是说，C++ 继承并发展了 C 。这是十分有道理的事情，但是这个说法往往造成两个常见的误解：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;C++ 继承 C 最重要的东西就是 C 的语法&lt;/li&gt;
-&lt;li&gt;C++ 是完全兼容 C 的&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这两点其实并不正确。C++ 作为一门独立的语言，虽然起源于 C ，但是在设计思想上和 C 可以说是截然不同，但是又因为起源于 C ，在设计时又不可避免的带上了 C 的烙印，本文希望探讨一下 C++ 与 C 的继承和发展关系，故起名为“滥觞”。&lt;/p&gt;
-&lt;p&gt;这章可以看作是“CPP设计-寸步难行”的姊妹篇，这章介绍了 C 和 C++ 的不同，“寸步难行”介绍了 C 和 C++ 的相同之处。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;我们常听一个说法“在语法上，C++ 是 C 的超集”，这句话的意思是说，C++ 继承并发展了 C</summary>
+        
+      
     
     
     
@@ -380,12 +426,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2023-09-30T10:48:08.000Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;很像数学&quot;&gt;&lt;a href=&quot;#很像数学&quot; class=&quot;headerlink&quot; title=&quot;很像数学&quot;&gt;&lt;/a&gt;很像数学&lt;/h2&gt;&lt;p&gt;lisp 真的很像数学，或许这就是 lisp 的特征。它像是一个从计算器程序变成的计算机一样有趣。而 C 则更像是一种由内存驱动变成的计算机。&lt;/p&gt;
-&lt;p&gt;另外一个很像数学的点就是，lisp 试图用最少的基本结构（可能是数据结构，也可能是过程结构）来描述最多的复杂结构，就像数学在用最少的公理来推导最多的定理一样。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;数学家会详细研究房子着火之后的救火步骤，当房子安然无恙时，他们则会将房子点燃，然后心安理得地救火。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;语言是什么&quot;&gt;&lt;a href=&quot;#语言是什么&quot; class=&quot;headerlink&quot; title=&quot;语言是什么&quot;&gt;&lt;/a&gt;语言是什么&lt;/h2&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;很像数学&quot;&gt;&lt;a href=&quot;#很像数学&quot; class=&quot;headerlink&quot; title=&quot;很像数学&quot;&gt;&lt;/a&gt;很像数学&lt;/h2&gt;&lt;p&gt;lisp 真的很像数学，或许这就是 lisp 的特征。它像是一个从计算器程序变成的计算机一样有趣。而 C</summary>
+        
+      
     
     
     
@@ -408,9 +455,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-03-09T01:35:46.064Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、再次回顾启动流程&quot;&gt;&lt;a href=&quot;#一、再次回顾启动流程&quot; class=&quot;headerlink&quot; title=&quot;一、再次回顾启动流程&quot;&gt;&lt;/a&gt;一、再次回顾启动流程&lt;/h2&gt;&lt;h3 id=&quot;1-1-stage-1&quot;&gt;&lt;a href=&quot;#1-1-stage-1&quot; class=&quot;headerlink&quot; title=&quot;1.1 stage 1&quot;&gt;&lt;/a&gt;1.1 stage 1&lt;/h3&gt;&lt;p&gt;在学 OS 的时候我就已经写过一篇介绍启动流程的文章了，在我忙了一上午以后重新学了一遍，发现其实之前就已经学的十分详细了，属于是自己造自己的轮子了。不过再次回顾，尤其是结合了自己开发操作系统的经验，还是发现很多重点的，所以再来回顾一遍。&lt;/p&gt;
-&lt;p&gt;首先是关于启动最初，bios，MBR 和 grub 的区别&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/posts/16dd6674/boot.png&quot; style=&quot;zoom:80%;&quot;&gt;&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、再次回顾启动流程&quot;&gt;&lt;a href=&quot;#一、再次回顾启动流程&quot; class=&quot;headerlink&quot; title=&quot;一、再次回顾启动流程&quot;&gt;&lt;/a&gt;一、再次回顾启动流程&lt;/h2&gt;&lt;h3 id=&quot;1-1-stage-1&quot;&gt;&lt;a</summary>
+        
+      
     
     
     
@@ -433,10 +484,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2023-12-25T07:40:28.606Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;当我们提起 git 的时候，我们总说它是版本控制工具。但是版本控制工具到底是什么？我觉得是一种特化的数据库，我们根据版本号去查询对应的项目内容，这种特殊数据库用于进行代码管理。而对于 git，我愿意定义它为“分布式、并发、无锁数据库”。&lt;/p&gt;
-&lt;p&gt;Git 是 Linus 写出来的版本控制工具，其诞生的直接原因是原来为 Linux 进行版本控制的工具 BitKeeper 不再免费了。也就是说，git 的直接需求是 Linux 的版本控制，而 Linux 是世界上最复杂的开源项目之一，所以 git 的设计是较为彪悍的，它支持最为复杂的分布式并发开发，并且可以促进这种集市一般的开发文化。&lt;/p&gt;
-&lt;p&gt;正因为如此，我个人觉得 git 并不用户友好，它迫使每一个希望更好地利用 git 的用户，都需要去了解 git 的底层实现理解和 git 面临的现实需求。光是“指针分离”这一个常见的现象，如果希望合理的解释，那么就必须深入 git 的底层实现，在了解了指针引用，版本快照，追踪分支和版本快照等一系列实现知识后，还需要了解频繁切换分支，生成分支，并行开发，分布式开发等多个版本管理需求，才可以明白它为啥不把这种直接暴露底层实现的功能更好的封装一下。&lt;/p&gt;
-&lt;p&gt;总的来说，git 不够友好，不够简洁，并不是开发者的开发水平不行，而是其需求过于强了，所以不得不将工具设计得这么复杂。而如vscode 或者 IDEA 将 git 封装成更为易用的状态，但是这种方式往往限制了 git 的功能，其本质其实是限制了需求的强度。而一旦面对更高强度的需求，不得不承认 git 做得已经很“友好简洁”了。&lt;/p&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;当我们提起 git</summary>
+        
+      
     
     
     
@@ -459,10 +513,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-03-06T14:39:35.363Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;如何熟悉工具呢？我觉得最为重要的是理解工具被设计和使用时的理念或者概念或者抽象，只要理解了工具中蕴含的理念是什么，对于具体的操作，就可以抄文档了。&lt;/p&gt;
-&lt;p&gt;linux 下的常见命令行工具有什么特点呢？这些常见的，简单的命令行工具，本质是 GNU/Linux 生态的一部分，他们的很多概念，本质是 Linux Kernel 的概念的延续和拓展。&lt;/p&gt;
-&lt;p&gt;GNU/Linux 的伟大真的是难以形容啊。&lt;/p&gt;
-&lt;hr&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot;</summary>
+        
+      
     
     
     
@@ -485,9 +542,13 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2024-01-15T04:10:35.335Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;REEF：为并行-DNN-推断设计的抢占调度&quot;&gt;&lt;a href=&quot;#REEF：为并行-DNN-推断设计的抢占调度&quot; class=&quot;headerlink&quot; title=&quot;REEF：为并行 DNN 推断设计的抢占调度&quot;&gt;&lt;/a&gt;REEF：为并行 DNN 推断设计的抢占调度&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://www.usenix.org/conference/osdi22/presentation/han&quot;&gt;论文链接&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/SJTU-IPADS/reef-artifacts&quot;&gt;源码链接&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;一、问题描述&quot;&gt;&lt;a href=&quot;#一、问题描述&quot; class=&quot;headerlink&quot; title=&quot;一、问题描述&quot;&gt;&lt;/a&gt;一、问题描述&lt;/h2&gt;&lt;h3 id=&quot;1-1-基本认识&quot;&gt;&lt;a href=&quot;#1-1-基本认识&quot; class=&quot;headerlink&quot; title=&quot;1.1 基本认识&quot;&gt;&lt;/a&gt;1.1 基本认识&lt;/h3&gt;</summary>
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;REEF：为并行-DNN-推断设计的抢占调度&quot;&gt;&lt;a href=&quot;#REEF：为并行-DNN-推断设计的抢占调度&quot; class=&quot;headerlink&quot; title=&quot;REEF：为并行 DNN 推断设计的抢占调度&quot;&gt;&lt;/a&gt;REEF：为并行 DNN</summary>
+        
+      
     
     
     
@@ -510,6 +571,10 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <updated>2023-07-12T12:15:07.000Z</updated>
     
     
+      
+      
+        
+        
     <summary type="html">&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;portability 可移植性&lt;/p&gt;
 &lt;/li&gt;
@@ -517,81 +582,9 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
 &lt;/li&gt;
 &lt;li&gt;modularity 模块化&lt;/li&gt;
 &lt;li&gt;monolithic 单片机，宏（内核）&lt;/li&gt;
-&lt;li&gt;bypass 绕过&lt;/li&gt;
-&lt;li&gt;non-trival 非平凡的，可观的&lt;/li&gt;
-&lt;li&gt;invocation 调用&lt;/li&gt;
-&lt;li&gt;compatible 兼容，backward compatible 向后兼容&lt;/li&gt;
-&lt;li&gt;capability 能力，权限&lt;/li&gt;
-&lt;li&gt;resurgent 复兴的，复苏的&lt;/li&gt;
-&lt;li&gt;heterogenous 异构&lt;/li&gt;
-&lt;li&gt;relay 继电器，转发，中转&lt;/li&gt;
-&lt;li&gt;semantics 语义学&lt;/li&gt;
-&lt;li&gt;underly 基本的，本质的&lt;/li&gt;
-&lt;li&gt;manipulate 操作&lt;/li&gt;
-&lt;li&gt;plane 飞机，层次，平面&lt;/li&gt;
-&lt;li&gt;respectively 独立地，各自地&lt;/li&gt;
-&lt;li&gt;dicated 精心设计的&lt;/li&gt;
-&lt;li&gt;tenant 租户&lt;/li&gt;
-&lt;li&gt;lease 租借，租用&lt;/li&gt;
-&lt;li&gt;commodity 商品，货物&lt;/li&gt;
-&lt;li&gt;adversary 对手&lt;/li&gt;
-&lt;li&gt;comprise 包括，构成&lt;/li&gt;
-&lt;li&gt;LOC，line of code 代码行数&lt;/li&gt;
-&lt;li&gt;cyber 计算机相关的&lt;/li&gt;
-&lt;li&gt;traverse 遍历&lt;/li&gt;
-&lt;li&gt;obstacle 障碍&lt;/li&gt;
-&lt;li&gt;order-of-magnitude 多个数量级&lt;/li&gt;
-&lt;li&gt;roundtrips 往返&lt;/li&gt;
-&lt;li&gt;retain 保留&lt;/li&gt;
-&lt;li&gt;leverage 使用，杠杆&lt;/li&gt;
-&lt;li&gt;indirection 间接&lt;/li&gt;
-&lt;li&gt;stale 陈旧的&lt;/li&gt;
-&lt;li&gt;fallback 倒退的&lt;/li&gt;
-&lt;li&gt;senarios 场景&lt;/li&gt;
-&lt;li&gt;enclave 飞地&lt;/li&gt;
-&lt;li&gt;scale 规模，可拓展性&lt;/li&gt;
-&lt;li&gt;encryption 加密&lt;/li&gt;
-&lt;li&gt;negligible 微不足道的&lt;/li&gt;
-&lt;li&gt;revisit 重温&lt;/li&gt;
-&lt;li&gt;feasibility 可行性&lt;/li&gt;
-&lt;li&gt;vesatile 灵活的，多样化的&lt;/li&gt;
-&lt;li&gt;best-effort 尽力而为的&lt;/li&gt;
-&lt;li&gt;preemption 抢占式&lt;/li&gt;
-&lt;li&gt;monopolize 垄断&lt;/li&gt;
-&lt;li&gt;utilization 利用率&lt;/li&gt;
-&lt;li&gt;idempotent 幂等的&lt;/li&gt;
-&lt;li&gt;devise 设计发明&lt;/li&gt;
-&lt;li&gt;paradigm 范例&lt;/li&gt;
-&lt;li&gt;stipulate 规定&lt;/li&gt;
-&lt;li&gt;effacy 功效&lt;/li&gt;
-&lt;li&gt;coarse-grained 粗粒度的&lt;/li&gt;
-&lt;li&gt;intuitive 直观的&lt;/li&gt;
-&lt;li&gt;proatively 积极主动的&lt;/li&gt;
-&lt;li&gt;indispensable 不可或缺的&lt;/li&gt;
-&lt;li&gt;polling 轮询&lt;/li&gt;
-&lt;li&gt;impose 强加于&lt;/li&gt;
-&lt;li&gt;indepth 深入的&lt;/li&gt;
-&lt;li&gt;reclaim 回收&lt;/li&gt;
-&lt;li&gt;remedy 弥补&lt;/li&gt;
-&lt;li&gt;retrofit 改造&lt;/li&gt;
-&lt;li&gt;incur 导致，招致&lt;/li&gt;
-&lt;li&gt;intercept 拦截&lt;/li&gt;
-&lt;li&gt;fusion 融合&lt;/li&gt;
-&lt;li&gt;substitution 替代品&lt;/li&gt;
-&lt;li&gt;heuristic 启发式&lt;/li&gt;
-&lt;li&gt;saturate 饱合&lt;/li&gt;
-&lt;li&gt;perception 观念，感知&lt;/li&gt;
-&lt;li&gt;amplify 扩大，增大&lt;/li&gt;
-&lt;li&gt;premise 前提&lt;/li&gt;
-&lt;li&gt;incoporation 合并，加入&lt;/li&gt;
-&lt;li&gt;tune 调整&lt;/li&gt;
-&lt;li&gt;contention 竞争&lt;/li&gt;
-&lt;li&gt;orthogonal 正交&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Virtualization, Security, Distributed, Parallelism&lt;/p&gt;
-&lt;p&gt;你为什么加入 IPADS？&lt;/p&gt;
-&lt;p&gt;当我还是大二的学生的时候，我就听学长说起过 IPADS，他将 IPADS 描绘得很好，所以我基本上当时就很好奇，之后也是关注了 IPADS 的知乎账号，所以对于 IPADS 的进展有很深的了解。从客观上来讲，我个人的科研兴趣是系统软件，这很符合 IPADS 的研究方向。从主观来讲，我希望我从事的工作不只是一份工作，更是一个艺术品，我希望我的作品精益求精，我觉得这种想法和 IPADS 的实验室文化是相通的。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;When&lt;/strong&gt; I was a sophomore in college, I heard my senior talk about IPADS, and he described IPADS very well, so I was basically very curious at that time, and &lt;strong&gt;after that&lt;/strong&gt;, I also followed the IPADS Zhihu account, so I have a very deep understanding of the progress of IPADS. &lt;strong&gt;Objectively&lt;/strong&gt;, my personal research interest is in system software, which fits well with the research direction of IPADS. &lt;strong&gt;Subjectively&lt;/strong&gt;, &lt;strong&gt;I hope that my work is not just a job, but also a work of art&lt;/strong&gt;, and I hope that my work will be perfect, which I think is in line with the lab culture of IPADS.&lt;/p&gt;</summary>
+&lt;li&gt;bypass</summary>
+        
+      
     
     
     
@@ -603,34 +596,6 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <category term="操作系统" scheme="https://thysrael.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     <category term="S6假期" scheme="https://thysrael.github.io/tags/S6%E5%81%87%E6%9C%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>English-写作</title>
-    <link href="https://thysrael.github.io/posts/115692fe/"/>
-    <id>https://thysrael.github.io/posts/115692fe/</id>
-    <published>2023-03-12T05:38:07.000Z</published>
-    <updated>2023-03-12T05:38:07.000Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;一、总论&quot;&gt;&lt;a href=&quot;#一、总论&quot; class=&quot;headerlink&quot; title=&quot;一、总论&quot;&gt;&lt;/a&gt;一、总论&lt;/h2&gt;&lt;p&gt;应当意识到，我没有办法依靠平时的积累写出一篇华美的文章。写作或者说表达是必须依靠模板。而“模板”的范围不应该只限于语法层面的“开头，中间段，结尾”。它应当还包括“语义”层面，比如说“意义应当从哪几个角度去答？需要引入事例还是单纯进行说理？”这样的模板。&lt;/p&gt;
-&lt;p&gt;还是要感慨一下，英语六级其实和英语能力不太沾边。哪怕是沾边，我也没有办法将其他的英语能力换成成绩。反而言之，即使我的六级成绩不好，但是真的遇到需要英语的场合，也应当坦然积极的准备，而不是自怨自艾，自我否定。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;你说这些，跟我有什么关系？&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;</summary>
-    
-    
-    
-    <category term="English" scheme="https://thysrael.github.io/categories/English/"/>
-    
-    
-    <category term="知识总结" scheme="https://thysrael.github.io/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
-    
-    <category term="English" scheme="https://thysrael.github.io/tags/English/"/>
-    
-    <category term="S6课上" scheme="https://thysrael.github.io/tags/S6%E8%AF%BE%E4%B8%8A/"/>
     
   </entry>
   
