@@ -731,7 +731,7 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/posts/null/</loc>
+    <loc>https://thysrael.github.io/posts/infinity/</loc>
     
     <lastmod>2022-06-11</lastmod>
     
@@ -812,7 +812,7 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/posts/null/</loc>
+    <loc>https://thysrael.github.io/posts/infinity/</loc>
     
     <lastmod>2022-04-28</lastmod>
     
@@ -1487,7 +1487,7 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/posts/null/</loc>
+    <loc>https://thysrael.github.io/posts/infinity/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -1720,6 +1720,20 @@
   </url>
   
   <url>
+    <loc>https://thysrael.github.io/tags/%E6%B5%81%E6%B5%AA%E8%B4%B5%E9%98%B3/</loc>
+    <lastmod>2024-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://thysrael.github.io/tags/S7%E5%81%87%E6%9C%9F/</loc>
+    <lastmod>2024-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://thysrael.github.io/tags/%E6%B5%81%E6%B5%AA%E9%95%BF%E5%AE%89/</loc>
     <lastmod>2024-03-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -1839,6 +1853,13 @@
   </url>
   
   <url>
+    <loc>https://thysrael.github.io/tags/S8%E8%AF%BE%E4%B8%8A/</loc>
+    <lastmod>2024-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://thysrael.github.io/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/</loc>
     <lastmod>2024-03-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -1896,27 +1917,6 @@
   
   <url>
     <loc>https://thysrael.github.io/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</loc>
-    <lastmod>2024-03-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://thysrael.github.io/tags/%E6%B5%81%E6%B5%AA%E8%B4%B5%E9%98%B3/</loc>
-    <lastmod>2024-03-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://thysrael.github.io/tags/S7%E5%81%87%E6%9C%9F/</loc>
-    <lastmod>2024-03-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://thysrael.github.io/tags/S8%E8%AF%BE%E4%B8%8A/</loc>
     <lastmod>2024-03-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

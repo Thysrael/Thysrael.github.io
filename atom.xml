@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-03-13T12:57:47.584Z</updated>
+  <updated>2024-03-13T13:05:02.221Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://thysrael.github.io/posts/7ee767c0/"/>
     <id>https://thysrael.github.io/posts/7ee767c0/</id>
     <published>2024-03-12T08:04:18.000Z</published>
-    <updated>2024-03-13T12:57:47.584Z</updated>
+    <updated>2024-03-13T13:05:02.221Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、主板&quot;&gt;&lt;a href=&quot;#一、主板&quot; class=&quot;headerlink&quot; title=&quot;一、主板&quot;&gt;&lt;/a&gt;一、主板&lt;/h2&gt;&lt;p&gt;虽然在《计算机组成》这么课上，我大部分时间都在和 CPU 搏斗，但是并不是说 CPU 就是硬件世界的唯一或者说 Boss，主板上的其他元器件并不是 nobody。非常遗憾我最近才意识到这点。&lt;/p&gt;
@@ -144,9 +144,9 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     
     <category term="工具总结" scheme="https://thysrael.github.io/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/"/>
     
-    <category term="科研可餍" scheme="https://thysrael.github.io/tags/%E7%A7%91%E7%A0%94%E5%8F%AF%E9%A4%8D/"/>
-    
     <category term="S7假期" scheme="https://thysrael.github.io/tags/S7%E5%81%87%E6%9C%9F/"/>
+    
+    <category term="科研可餍" scheme="https://thysrael.github.io/tags/%E7%A7%91%E7%A0%94%E5%8F%AF%E9%A4%8D/"/>
     
   </entry>
   
