@@ -6,7 +6,7 @@
   <link href="https://thysrael.github.io/atom.xml" rel="self"/>
   
   <link href="https://thysrael.github.io/"/>
-  <updated>2024-03-14T02:24:28.846Z</updated>
+  <updated>2024-03-14T04:26:21.808Z</updated>
   <id>https://thysrael.github.io/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>语言高阶-转义字符</title>
+    <link href="https://thysrael.github.io/posts/680ca445/"/>
+    <id>https://thysrael.github.io/posts/680ca445/</id>
+    <published>2024-03-14T02:42:33.000Z</published>
+    <updated>2024-03-14T04:26:21.808Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;一、可打印字符&quot;&gt;&lt;a href=&quot;#一、可打印字符&quot; class=&quot;headerlink&quot; title=&quot;一、可打印字符&quot;&gt;&lt;/a&gt;一、可打印字符&lt;/h2&gt;&lt;p&gt;转义字符的意思是，原本这个字符表达一个意思，而经过转义后，就会表达另一个意思。原本的意思没有什么特别之处（比如说必须是一个普通字符，一个通配符，一个格式控制符），表达出来的另一个意思也同样没有什么特别之处。&lt;/p&gt;
+&lt;p&gt;那么为什么要存在转义字符？我们可以用另一个字符来表达更多的意思，而不是让一个已经有一个意思的字符，经过转义后来表达另一个意思。但是可悲的是，这并不是现实的，现实是，我们仅有数量不多的可打印字符，而我们却希望表达更多的意思（这点在正则中尤其明显）。事实就是，每一个可打印字符都有了自己的含义，我们所能做到的，就只是复用他们。&lt;/p&gt;
+&lt;p&gt;上面的说法有些绝对，却是有方法可以缓解这种方式，比如用 Java 中数字编码转义字符，如 &lt;code&gt;\uF890&lt;/code&gt; 这种，可以避免复用的尴尬，不过这样又有些不直观，毕竟谁都喜欢写 &lt;code&gt;\n&lt;/code&gt; 而不是 &lt;code&gt;\10&lt;/code&gt; 。&lt;/p&gt;
+&lt;h2 id=&quot;二、分类&quot;&gt;&lt;a href=&quot;#二、分类&quot; class=&quot;headerlink&quot; title=&quot;二、分类&quot;&gt;&lt;/a&gt;二、分类&lt;/h2&gt;</summary>
+    
+    
+    
+    <category term="语言高阶" scheme="https://thysrael.github.io/categories/%E8%AF%AD%E8%A8%80%E9%AB%98%E9%98%B6/"/>
+    
+    
+    <category term="直观理解" scheme="https://thysrael.github.io/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/"/>
+    
+    <category term="S8课上" scheme="https://thysrael.github.io/tags/S8%E8%AF%BE%E4%B8%8A/"/>
+    
+    <category term="语言高阶" scheme="https://thysrael.github.io/tags/%E8%AF%AD%E8%A8%80%E9%AB%98%E9%98%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>计算机组成-寄存器保存</title>
     <link href="https://thysrael.github.io/posts/a39a732f/"/>
     <id>https://thysrael.github.io/posts/a39a732f/</id>
     <published>2024-03-13T13:23:05.000Z</published>
-    <updated>2024-03-14T02:24:28.846Z</updated>
+    <updated>2024-03-14T02:25:42.223Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;一、糟糕的名字&quot;&gt;&lt;a href=&quot;#一、糟糕的名字&quot; class=&quot;headerlink&quot; title=&quot;一、糟糕的名字&quot;&gt;&lt;/a&gt;一、糟糕的名字&lt;/h2&gt;&lt;p&gt;函数被调用的过程中会使用寄存器，这就可能给函数的调用者造成困扰，原本在调用前的寄存器可能会被调用的函数污染。如果希望寄存器不被污染，可以将寄存器保存在栈上，在调用结束后再将栈上的值重新拷贝回对应的寄存器。&lt;/p&gt;
@@ -526,31 +552,6 @@ addz r1, r2, r3&lt;span aria-hidden=&quot;true&quot; class=&quot;line-numbers-ro
     <category term="S7课上" scheme="https://thysrael.github.io/tags/S7%E8%AF%BE%E4%B8%8A/"/>
     
     <category term="Linux" scheme="https://thysrael.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>海边拾贝-REEF</title>
-    <link href="https://thysrael.github.io/posts/c3ddc0cf/"/>
-    <id>https://thysrael.github.io/posts/c3ddc0cf/</id>
-    <published>2023-07-14T10:10:47.000Z</published>
-    <updated>2024-01-15T04:10:35.335Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;REEF：为并行-DNN-推断设计的抢占调度&quot;&gt;&lt;a href=&quot;#REEF：为并行-DNN-推断设计的抢占调度&quot; class=&quot;headerlink&quot; title=&quot;REEF：为并行 DNN 推断设计的抢占调度&quot;&gt;&lt;/a&gt;REEF：为并行 DNN 推断设计的抢占调度&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://www.usenix.org/conference/osdi22/presentation/han&quot;&gt;论文链接&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/SJTU-IPADS/reef-artifacts&quot;&gt;源码链接&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;一、问题描述&quot;&gt;&lt;a href=&quot;#一、问题描述&quot; class=&quot;headerlink&quot; title=&quot;一、问题描述&quot;&gt;&lt;/a&gt;一、问题描述&lt;/h2&gt;&lt;h3 id=&quot;1-1-基本认识&quot;&gt;&lt;a href=&quot;#1-1-基本认识&quot; class=&quot;headerlink&quot; title=&quot;1.1 基本认识&quot;&gt;&lt;/a&gt;1.1 基本认识&lt;/h3&gt;</summary>
-    
-    
-    
-    <category term="海边拾贝" scheme="https://thysrael.github.io/categories/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/"/>
-    
-    
-    <category term="知识总结" scheme="https://thysrael.github.io/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
-    
-    <category term="S6假期" scheme="https://thysrael.github.io/tags/S6%E5%81%87%E6%9C%9F/"/>
-    
-    <category term="海边拾贝" scheme="https://thysrael.github.io/tags/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/"/>
     
   </entry>
   
