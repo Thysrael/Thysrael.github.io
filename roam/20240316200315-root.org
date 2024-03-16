@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       1d40ec33-ad1b-4bfe-b857-85251724ec43
+:END:
+#+title: root
+
+这是一切的起点。
+
+#+begin_quote
+Can you hear me? 
+
+Call me /root/!
+#+end_quote
+
+- Git 实用技巧：[[id:a211d19f-1479-4a3d-8dc5-151f677204f3][git trick]]
+- Org-Roam Test：[[id:185e116e-8184-40cd-a7a1-ae593a861dd1][roam-test]]
+
+#+DOWNLOADED: screenshot @ 2024-03-16 20:05:18
+[[file:img/2024-03-16_20-05-18_screenshot.png]]
+
+
+

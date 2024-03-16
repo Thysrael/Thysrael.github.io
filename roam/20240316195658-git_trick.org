@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       a211d19f-1479-4a3d-8dc5-151f677204f3
+:END:
+#+title: git trick
+
+这里记录了一些 ~git~ 的实践技巧。
+
+- 大文件存储：[[id:ef7802bf-d859-48ac-bb66-31162350f441][git lfs]]
