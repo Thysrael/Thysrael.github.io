@@ -34,8 +34,13 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/6c683641/2024-03-19_16-11.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency1.drawio.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency2.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency3.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/image-20240319223411641-17108588532272.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency4.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/v2-e9d42741df9e3e37d9322c8fcb686747_720w.webp">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency5.png">
 <meta property="article:published_time" content="2024-03-19T02:14:56.000Z">
-<meta property="article:modified_time" content="2024-03-19T12:07:00.265Z">
+<meta property="article:modified_time" content="2024-03-19T15:28:04.465Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="S8课上">
@@ -87,9 +92,9 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -247,7 +252,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-03-19 10:14:56 / Modified: 20:07:00" itemprop="dateCreated datePublished" datetime="2024-03-19T10:14:56+08:00">2024-03-19</time>
+              <time title="Created: 2024-03-19 10:14:56 / Modified: 23:28:04" itemprop="dateCreated datePublished" datetime="2024-03-19T10:14:56+08:00">2024-03-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,14 +277,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.1k</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
+              <span>4 mins.</span>
             </span>
 
         </div>
@@ -320,8 +325,36 @@
 <p><img src="/posts/6c683641/consistency1.drawio.png" alt=""></p>
 <p>这个模型由于过于理想，所以在硬件层面并没有对应的实现。不过这个模型我个人觉得非常接近软件编程的中的内存一致性模型，只要有了这个模型，我们就可以基于此构造软件所，保证软件线程的协同工作。</p>
 <p>另外需要强调的是，这个模型虽然很理想了，但是看上去也很无序，比如所有核心可以随机交替运行，这一次的运行结果是 $A1 \rightarrow A2 \rightarrow B1 \rightarrow A3 \rightarrow B2 \rightarrow B3$ ，下一次的结果也可能是 $A1 \rightarrow B1 \rightarrow A2 \rightarrow B2 \rightarrow A3 \rightarrow B3$ 。并不能能说这种无序性是一种“不一致性”的体验</p>
-<h3 id="3-2-序列一致性"><a href="#3-2-序列一致性" class="headerlink" title="3.2 序列一致性"></a>3.2 序列一致性</h3><p>序列一致性（sequence memory）相比于严格一致性较为宽松，相比于严格一致性，它不再要求“所有操作立刻可见”的特性，这就不需要全局时钟和通知机制了。其他要求和严格一致性相同，示意图如下：</p>
+<h3 id="3-2-序列一致性"><a href="#3-2-序列一致性" class="headerlink" title="3.2 序列一致性"></a>3.2 序列一致性</h3><p>序列一致性（sequence memory，SC）相比于严格一致性较为宽松，相比于严格一致性，它不再要求“所有操作立刻可见”的特性，这就不需要全局时钟和通知机制了。其他要求和严格一致性相同，示意图如下：</p>
 <p><img src="/posts/6c683641/consistency2.png" alt=""></p>
+<p>“不再要求所有操作立刻全局可见”意味着不存在全局时钟，那么就会发生上图所描述的行为。明明实际上 $B1$ 先于 $A2$ ，但是在全局视角下，$A2$ 是先于 $B1$ 的。</p>
+<p>这种模型在现实中有一个很好的对照，那就是 Git，最终云端的提交记录历史中，并不是在本地的提交时间靠前，在云端的提交历史中就靠前，可能有的本地提交在时间上较晚，但是和云端同步较早，这样再最终的提交历史中就是比较靠前的。</p>
+<p>虽然放松了限制，但是这种模型依然是“过于理想”了，所以在现实的硬件中并没有这样的实现。这两种模型都被成为严格模型，基本上只出现在理论分析中。</p>
+<p>我们在分析中一般只讨论序列一致性，严格一致性都比较少提及，这是因为序列一致性相比于严格一致性，基本上只有优点而没有缺点，缺少全局时钟导致的核心间无序交织现象，在严格一致性中同样存在，严格一致性在内存模型中变得没有讨论的必要，但是这并不意味着在其他背景下二者没有分别。</p>
+<hr>
+<h2 id="四、宽松模型"><a href="#四、宽松模型" class="headerlink" title="四、宽松模型"></a>四、宽松模型</h2><h3 id="4-1-宽松"><a href="#4-1-宽松" class="headerlink" title="4.1 宽松"></a>4.1 宽松</h3><p>模型的宽松指的是有序性再度减少，这样的好处在于当有序性减少时，并行程度就会提高，性能就会提升，但是就需要软件编程人员更加耗费心力的编程。</p>
+<p>其实在严格模型中核心间已经是无序的了，如果更加无序，那么就是核心内的顺序发生更改，如图所示：</p>
+<p><img src="/posts/6c683641/consistency3.png" alt=""></p>
+<p>但是这其实有些反直觉了，因为我们都知道一个核心即使是乱序的，但是在提交的时候也要顺序提交，为什么这里却可以乱序呢？这是因为这里并不是提交而是访存，即使是顺序提交的，但是在访存的时候却可以是乱序的。</p>
+<p>而事实上，访存的时候真的是乱序的。因为在处理器内部，为了提高并行度，在 cache 之上增设了一层 store buffer 的结构，用于缓存 store 指令（也就是内存 write 指令），store buffer 作为一个 buffer，会在合适的时机将其中的指令应用到内存系统中，对于对同一地址的多次写操作可以合并，对于内存读操作可以查找，而且还不阻塞处理器流水线，是非常有用的结构，如下所示：</p>
+<p><img src="/posts/6c683641/image-20240319223411641-17108588532272.png" alt="image-20240319223411641"></p>
+<p>但是这就导致了内存读写指令的乱序问题，对内存的读写指令开始变得乱序，一共有 4 种乱序形式（为了表达的方便，我们用 $X \rightarrow Y$ 来表示应该先 $X$ 后 $Y$）：</p>
+<ul>
+<li>乱序 $Write \rightarrow Read$：也就是原本应该先写后读，现在读指令提前了。</li>
+<li>乱序 $Write \rightarrow Write$</li>
+<li>乱序 $Read \rightarrow Write$</li>
+<li>乱序 $Read \rightarrow Read$</li>
+</ul>
+<p>再次强调，这里说的乱序指的是单个核心内的乱序，或者说是，在一个观察者视角，看一个核心向外发出的读写请求的顺序和原本程序员视角下的顺序不一致的情况，并不涉及多个核心。</p>
+<h3 id="4-2-TSO-模型"><a href="#4-2-TSO-模型" class="headerlink" title="4.2 TSO 模型"></a>4.2 TSO 模型</h3><p>完全存储定序模型（Total Store Order）指的是仅可以进行  $Write \rightarrow Read$ 乱序，这种乱序基本上已经是最为严格的宽松模型了，但是依然会出现违反直觉的现象，如下所示：</p>
+<p><img src="/posts/6c683641/consistency4.png" alt=""></p>
+<p>如果按照 SC 模型，那么 <code>data1, data2</code> 都会被读出一到二个会为 <code>NEW</code>，但是如果是 TCO 模型，那么很容易发生两个 <code>data</code> 都被读出 <code>INIT</code> 的情况。</p>
+<h3 id="4-3-PSO-模型"><a href="#4-3-PSO-模型" class="headerlink" title="4.3 PSO 模型"></a>4.3 PSO 模型</h3><p>部分存储定序模型（Partial Store Order）指的是可以进行 $Write \rightarrow Read$ 和 $Write \rightarrow Write$ 乱序。如果进一步放松，会得到其他模型。</p>
+<h3 id="4-4-屏障指令"><a href="#4-4-屏障指令" class="headerlink" title="4.4 屏障指令"></a>4.4 屏障指令</h3><p>宽松模型会导致编程难度极具增加，不过其实也不是那么危险，我们保证不发生数据竞争，并不需要在编程的时候时时刻刻注意，我们只需要在一些关键部位小心即可，如下所示，只要在进入和退出临界区的时候注意一下，基本上我们就可以享受宽松模型带来的高效率了。</p>
+<p><img src="/posts/6c683641/v2-e9d42741df9e3e37d9322c8fcb686747_720w.webp" alt="img"></p>
+<p>不过临界区的多线程协作怎么实现呢？硬件其实提供了一种指令来避免乱序行为，也就是“屏蔽指令”。它就像是不可逾越的屏障，后面的read/write 绝不允许越过屏障指令前执行。当然面前的 read/write 也不能越界到它的后面执行。但是屏蔽指令前面的 read/write 操作怎么乱序就管不着了，同样屏蔽指令后面的 read/write 操作也管不着。</p>
+<p><img src="/posts/6c683641/consistency5.png" alt=""></p>
+<p>需要注意，屏蔽指令是针对核心内的乱序，并不是核心外的乱序，它的作用更像是将一个宽松模型重新限制回严格模型，但是对于严格模型如何协作其实是没有帮助的。</p>
 
     </div>
 
@@ -404,7 +437,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">一、一致性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%86%85%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-text">二、内存一致性模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%9E%8B"><span class="nav-text">三、严格模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%B8%A5%E6%A0%BC%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">3.1 严格一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%BA%8F%E5%88%97%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">3.2 序列一致性</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">一、一致性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%86%85%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-text">二、内存一致性模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%9E%8B"><span class="nav-text">三、严格模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%B8%A5%E6%A0%BC%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">3.1 严格一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%BA%8F%E5%88%97%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">3.2 序列一致性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%AE%BD%E6%9D%BE%E6%A8%A1%E5%9E%8B"><span class="nav-text">四、宽松模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%AE%BD%E6%9D%BE"><span class="nav-text">4.1 宽松</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-TSO-%E6%A8%A1%E5%9E%8B"><span class="nav-text">4.2 TSO 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-PSO-%E6%A8%A1%E5%9E%8B"><span class="nav-text">4.3 PSO 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E5%B1%8F%E9%9A%9C%E6%8C%87%E4%BB%A4"><span class="nav-text">4.4 屏障指令</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -490,7 +523,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:55</span>
+    <span title="Reading time total">17:56</span>
 </div>
 
         
