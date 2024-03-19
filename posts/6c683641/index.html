@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/6c683641/v2-e9d42741df9e3e37d9322c8fcb686747_720w.webp">
 <meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency5.png">
 <meta property="article:published_time" content="2024-03-19T02:14:56.000Z">
-<meta property="article:modified_time" content="2024-03-19T15:28:04.465Z">
+<meta property="article:modified_time" content="2024-03-19T15:49:24.947Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="S8课上">
@@ -252,7 +252,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-03-19 10:14:56 / Modified: 23:28:04" itemprop="dateCreated datePublished" datetime="2024-03-19T10:14:56+08:00">2024-03-19</time>
+              <time title="Created: 2024-03-19 10:14:56 / Modified: 23:49:24" itemprop="dateCreated datePublished" datetime="2024-03-19T10:14:56+08:00">2024-03-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.9k</span>
+              <span>4.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -355,6 +355,13 @@
 <p>不过临界区的多线程协作怎么实现呢？硬件其实提供了一种指令来避免乱序行为，也就是“屏蔽指令”。它就像是不可逾越的屏障，后面的read/write 绝不允许越过屏障指令前执行。当然面前的 read/write 也不能越界到它的后面执行。但是屏蔽指令前面的 read/write 操作怎么乱序就管不着了，同样屏蔽指令后面的 read/write 操作也管不着。</p>
 <p><img src="/posts/6c683641/consistency5.png" alt=""></p>
 <p>需要注意，屏蔽指令是针对核心内的乱序，并不是核心外的乱序，它的作用更像是将一个宽松模型重新限制回严格模型，但是对于严格模型如何协作其实是没有帮助的。</p>
+<p>此外，屏障指令也可以被理解成同步指令，所谓的同步，就是让每个核心的看到的共享内存都变得一致（事实上是不一定的，这是因为每个核心都有私有缓存，可能有些写操作还没有作用到内存）。至于为什么屏障有这个能力，这是因为屏障要求所有在屏障指令前的指令都必须在屏障指令前发生作用，这使的屏障指令可以起到强制更新的作用。</p>
+<p>我们用 Java 来举个例子（JVM 怎么不能算是一种硬件架构呢？）：</p>
+<p>如果一个变量由 <code>volatile</code> 修饰，Java 内存模型（JMM）将在对这个变量的写操作后插入一个写屏障指令（同步到共享内存），在读操作前插入一个读屏障指令。这意味着如果你对一个 <code>volatile</code> 变量进行写操作，你必须知道：</p>
+<ol>
+<li>一旦你完成写入，任何访问这个字段的线程将会得到最新的值。</li>
+<li>在你写入前，会保证所有之前发生的事已经发生，并且任何更新过的数据值也是可见的，因为内存屏障会把之前的写入值都刷新到缓存。</li>
+</ol>
 
     </div>
 
@@ -523,7 +530,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:56</span>
+    <span title="Reading time total">17:57</span>
 </div>
 
         
