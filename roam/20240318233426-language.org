@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       69d4cd84-7669-4ceb-86df-b21456cc7128
+:END:
+#+title: Language
+
+- [[id:df9b542e-b415-4544-9bc3-a660368efef7][Yaml]]

@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       95203d2b-355a-42ff-9f2f-70909c5132d2
+:END:
+#+title: 工作环境
+
+- 编辑器：[[id:7ba3aeb8-f711-4fc8-aac6-5ef4fb647011][Emacs]]
+- 截屏软件：flameshot
+- 录屏软件：peek

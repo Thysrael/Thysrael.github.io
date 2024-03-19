@@ -1,7 +1,7 @@
 :PROPERTIES:
 :ID:       ef7802bf-d859-48ac-bb66-31162350f441
 :END:
-#+title: git lfs
+#+title: Git LFS
 
 因为 git 的原理问题，每当二进制文件发生修改的时候，都会导致一份完整的二进制文件被存入 ~.git~ 当中，修改的次数多了， ~.git~ 就会变得极其庞大，进而导致 ~clone~ 的速度变慢，如下所示：
 

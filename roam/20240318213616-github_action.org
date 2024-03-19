@@ -1,0 +1,80 @@
+:PROPERTIES:
+:ID:       fb77b5a2-7654-42b7-824c-74e0ffe000b8
+:END:
+#+title: Github Action
+
+Github Action 是 Github 平台提供的开发自动化工具，它可以监听项目的诸多事件，并触发预先设置好的自动化流程，完成构建、测试和部署等任务。理解 Github Action 的核心在于理解它的概念。
+
+Github Action 的[[https://docs.github.com/en/actions][文档]]写得非常好，可以随时查阅。
+
+* Workflow
+Workflow 是一种可配置的自动化流程，也就是最大的概念。它可以在 ~.github/workflows/~ 中加入 [[id:df9b542e-b415-4544-9bc3-a660368efef7][Yaml]] 格式文件进行配置。每一个 ~yaml~ 文件对应一个 workflow 。一个 workflow 对应一组 events 和一组 jobs ，在 events 发生时，就会执行所有的 jobs 。
+
+* Event
+event 用 ~on~ 关键字定义，比如说在 ~main~ 分支被 ~push~ 或者 ~pull_request~ 时，可以表示为：
+
+#+begin_src yaml
+  on:
+    push:
+      branches:
+        - main
+    pull_request:
+#+end_src
+
+* Job
+Job 是一组在同一环境下执行的一组步骤 ~step~ ，用关键字 ~jobs~ 指定 ~job~ ，一般只有一个，比如说一个叫 ~main~ 的 ~job~ ：
+
+#+begin_src yaml
+  jobs:
+    main:
+#+end_src
+
+所谓的 *同一环境* ，具有很多配置选项，比如说执行所在的虚拟机，也被称为 ~runner~ ，用关键字 ~runs-on~ 进行配置，如 ~main job~ 使用 ~ubuntu~ ：
+
+#+begin_src yaml
+  main:
+    runs-on: ubuntu-latest
+#+end_src 
+
+也包括权限配置，用 ~permisssions~ 进行配置
+
+#+begin_src yaml
+  permissions:
+    id-token: write
+    pages: write
+#+end_src
+
+还有一些其他配置没有列出。
+
+不同 job 之间默认是没有依赖关系的，是并行运行的。
+
+* Step
+Step 是具体的步骤，一共有两种类型，一种是利用已有的 action ，另一种是执行 shell 脚本。每个 ~step~ 都有一个 ~name~ 属性来指定名字。
+
+其实还有一些其他参数，比如说 ~working-directory~ 来指定该 step 的工作目录。 ~if~ 用于指定该 step 运行的条件。
+
+action 用 ~use~ 关键字描述，其后跟 ~user/action_name@branch~ 格式的已有 action 。 ~with~ 用来指定 action 的参数，如下所示：
+
+#+begin_src yaml
+  - name: Generate org-roam-ui page
+    uses: ikoamu/org-roam-ui-hosting@main
+    with:
+      org-roam-db-filename: org-roam.db
+      deploy-to-pages: true
+      site-title: Prime Radiant
+#+end_src
+
+shell script 用 ~run~ 关键字指定，如下所示：
+
+#+begin_src yaml
+  - name: Copy org/img to ui/public/
+    working-directory: action
+    run: |
+      if [ -d "../orgs/${{ inputs.org-roam-directory }}/img" ]; then
+        cp -r ../orgs/${{ inputs.org-roam-directory }}/img ../ui/public
+      fi
+    shell: bash
+#+end_src
+
+* 自定义 action  
+这个部分我不太熟，我知道 action 的本质是一个 repostory 。里面有一个 ~action.yml~ 文件定义 workflow 。

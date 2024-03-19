@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       faa09ef8-bc14-4f41-a501-0cc81318b884
+:END:
+#+title: 方法论
+
+* 知识管理
+- 如何记笔记：[[id:880b2c98-b3a3-40c2-baa9-bbd0ad9e1a92][笔记方法论]]

@@ -1,21 +1,24 @@
 :PROPERTIES:
 :ID:       1d40ec33-ad1b-4bfe-b857-85251724ec43
 :END:
-#+title: root
+#+title: ROOT
 
 这是一切的起点。
 
 #+begin_quote
 Can you hear me? 
 
-Call me /Root/!
+Call me /ROOT/!
 #+end_quote
 
-- Git 实用技巧：[[id:a211d19f-1479-4a3d-8dc5-151f677204f3][git trick]]
-- Org-Roam Test：[[id:185e116e-8184-40cd-a7a1-ae593a861dd1][roam-test]]
+- Git: [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]]
+- Org-Roam Test：[[id:185e116e-8184-40cd-a7a1-ae593a861dd1][Roam-Test]]
+- DearAJ：[[id:fe4fc452-1f5d-40de-9feb-77e1f6ada152][Dear AJ]]
+- Emacs: [[id:7ba3aeb8-f711-4fc8-aac6-5ef4fb647011][Emacs]] 
+- Unix: [[id:2b0578d1-ed79-4fd4-838c-672dcc151b6e][Unix]]
+- 方法论：[[id:faa09ef8-bc14-4f41-a501-0cc81318b884][方法论]]
+- 编程语言：[[id:69d4cd84-7669-4ceb-86df-b21456cc7128][Language]]
+
 
 #+DOWNLOADED: screenshot @ 2024-03-16 20:05:18
 [[file:img/2024-03-16_20-05-18_screenshot.png]]
-
-
-

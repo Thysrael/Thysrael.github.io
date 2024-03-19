@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       2b0578d1-ed79-4fd4-838c-672dcc151b6e
+:END:
+#+title: Unix
+
+- 提供机制而不提供策略：[[id:b169b4e7-0291-483c-a3ea-92376e1bf052][Mechanism or Policy]]
+

@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       04dd9094-4e40-47b8-b7c4-034a2328c99a
+:END:
+#+title: Shell 快捷键
+
+Shell 的快捷键风格和 [[id:7ba3aeb8-f711-4fc8-aac6-5ef4fb647011][Emacs]] 键位类似。
+
+- ~C-f, M-f, C-b, M-b, C-a, C-e~ ：移动光标
+- ~C-n, C-p~ ：下/上一条命令， ~zsh~ 中可以用 ~M-n, M-p~ 进行更加匹配的查询
+- ~C-r~ ：历史搜索，可以用 ~C-r~ 进行多个候选者的遍历。
+- ~C-u, C-l~ ：清空当前行/屏幕
+

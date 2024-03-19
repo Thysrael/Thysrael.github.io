@@ -1,7 +1,9 @@
 :PROPERTIES:
 :ID:       185e116e-8184-40cd-a7a1-ae593a861dd1
+:ROAM_ALIASES: "render test"
 :END:
-#+title: roam-test
+#+title: Roam-Test
+#+filetags: :deprecated:
 
 This is ~org-roam-ui~ rendering test.
 

@@ -78,9 +78,9 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">168</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">169</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,95 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c03aaf56/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.jpg">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/c03aaf56/" class="post-title-link" itemprop="url">数学分析-函数项级数和函数列</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 17:02:16" itemprop="dateCreated datePublished" datetime="2022-01-16T17:02:16+08:00">2022-01-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数学分析</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、函数列和函数项级数的收敛性质"><a href="#一、函数列和函数项级数的收敛性质" class="headerlink" title="一、函数列和函数项级数的收敛性质"></a>一、函数列和函数项级数的收敛性质</h2><h3 id="1-1-函数列和函数项级数的定义"><a href="#1-1-函数列和函数项级数的定义" class="headerlink" title="1.1 函数列和函数项级数的定义"></a>1.1 函数列和函数项级数的定义</h3><p><strong>函数列</strong>指的是 $\{S_n(x)\}$ 这样的序列，等价于<strong>数列</strong>，而<strong>函数项级数</strong>指的是将函数列$\{u_n(x)\}$进行累加得到的 $\sum u_n(x)$ ，等价于<strong>数项级数</strong>。虽然我们一般都有等式 $S_n(x)=\sum^n u_k(x)$，讨论<strong>收敛性</strong>，或者是<strong>收敛后的分析性质</strong>时，描述的东西本质上是一样的，但是在<strong>处理方法</strong>上大有区别。比如说对于<strong>函数列</strong>的<strong>一致收敛</strong>，我们一般用 $\beta$ 上界判别法，或者用<strong>柯西收敛原理</strong>。对于<strong>函数项级数</strong>的<strong>一致收敛</strong>，我们一般用<strong>Dirichlet判别法</strong>或者<strong>Abel判别法</strong>或者<strong>柯西收敛原理</strong>进行判定，如果判定不了，还可以对函数项级数进行<strong>求和转化成函数列</strong>（这点尤为重要）。所以区分<strong>函数列</strong>和<strong>函数项级数</strong>是很有必要的。</p>
+<h3 id="1-2-逐点收敛"><a href="#1-2-逐点收敛" class="headerlink" title="1.2 逐点收敛"></a>1.2 逐点收敛</h3><p>应该意识到最重要的事情：<strong>逐点收敛是数的收敛，一致收敛是函数的收敛</strong>。但是即使这么说也要强调，<strong>收敛</strong>、<strong>绝对收敛</strong>、<strong>条件收敛</strong>描述的都是<strong>数项级数</strong>，也就是说描述的是<strong>逐点收敛</strong>，而不是<strong>一致收敛</strong>。再详细的说，<strong>收敛</strong>就是<strong>逐点收敛</strong>，千万不能产生概念辨析上的困难。要想学好这一章，最重要的就是区分<strong>这些概念的辖域</strong>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/c03aaf56/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -686,104 +775,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/67348790/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.jpg">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/67348790/" class="post-title-link" itemprop="url">大学物理-近代物理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-01-16 16:24:33" itemprop="dateCreated datePublished" datetime="2022-01-16T16:24:33+08:00">2022-01-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大学物理</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.4k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>1 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、质能关系"><a href="#一、质能关系" class="headerlink" title="一、质能关系"></a>一、质能关系</h2><p>当物体以一定速度运动时，其质量会增大（如果质量是一个常量的话，在恒力作用下很容易就超光速了）。有公式</p>
-<script type="math/tex; mode=display">
-m=\frac{m_0}{\sqrt{1-\beta^2}}</script><p>物体对应的<strong>总能量</strong>，又称<strong>相对论能量</strong>，有如下公式，可以看出能量是质量的函数，质量是速度的函数，那么解题的时候应该一步步求解</p>
-<script type="math/tex; mode=display">
-E=mc^2</script><p>物体的动能可以表示为</p>
-<script type="math/tex; mode=display">
-E_k=mc^2-m_0c^2</script><p>其他的动能表达式失效了。只能用这个算。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/67348790/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -851,7 +846,7 @@ E_k=mc^2-m_0c^2</script><p>其他的动能表达式失效了。只能用这个�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-count">169</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -869,6 +864,14 @@ E_k=mc^2-m_0c^2</script><p>其他的动能表达式失效了。只能用这个�
       </div>
   </nav>
 </div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
@@ -913,7 +916,7 @@ E_k=mc^2-m_0c^2</script><p>其他的动能表达式失效了。只能用这个�
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">17:53</span>
+    <span title="Reading time total">17:55</span>
 </div>
 
         
