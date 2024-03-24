@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       e424f62d-8e62-4e91-86b3-0ca2f615ab4c
+:END:
+#+title: Story
+#+filetags: :root:
+
+没有历史会丧失直觉，没有故事会丧失勇气。
+
+- [[id:24923169-4364-43ff-b526-3fba04a02c02][CISC vs RISC]]
+- [[id:3c978bf4-33e1-4b4a-81ac-88e2f8c94ea7][MIPS vs ARM]]
+- [[id:39e72b21-b578-4365-a435-1482f3ee7df7][ARM Startup]]

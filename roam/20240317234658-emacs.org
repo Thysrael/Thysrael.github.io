@@ -3,3 +3,4 @@
 :END:
 #+title: Emacs
 
+- [[id:55fd0686-7924-41a8-9d55-b81ee523da83][Emacs MiniConfig]]

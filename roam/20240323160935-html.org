@@ -1,0 +1,30 @@
+:PROPERTIES:
+:ID:       dd7d49d7-2e39-4d2f-b360-3bf105e95dd0
+:END:
+#+title: HTML
+
+* 语法
+** 标签 Tag
+标签以 ~<~ 开头，以 ~>~ 结尾。标签名字是大小写敏感，不能包括 ~!"#$%&'()*+,/;<=>?@[\]^`{|}~~ ，也不能有空格符， 不能以 ~-~ 或 ~.~ 或数字开始。可分为 3 种：
+
+- 起始标签 start-tag：如 ~<section>~
+- 结束标签 end-tag：如 ~</section>~
+- 空白标签 empty-element tag：如 ~<line-break />~
+
+** 元素 Element
+HTML 文档是一棵 DOM 树，其中的每一个节点被称为一个元素（Element）。举个例子
+
+#+begin_src html
+  <h1>Hello, world!</h1>
+#+end_src
+
+其中标签内部的正文被称为 ~content~ ，在标签间的内容可以包含其他元素（称为子元素）。
+
+** 属性 Attribute
+属性是一种在起始标签或空白标签中的标记结构，由键值对组成。例如：
+
+#+begin_src html
+  <img src="madonna.jpg" alt="Madonna" />
+#+end_src
+
+每个元素中，一个属性最多出现一次，一个属性只能有一个值。

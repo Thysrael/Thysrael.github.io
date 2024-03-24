@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       f5f82be3-433a-4737-afd5-ed3da74d615f
+:END:
+#+title: DEC
+
+美国首家电脑公司，后来被[[id:139849a5-a2d1-484f-a7b3-e0c3ea2666f3][惠普]]收购。

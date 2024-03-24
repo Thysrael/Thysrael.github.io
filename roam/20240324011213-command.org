@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       736fd7c9-ec8f-47d8-a387-d4dabcb81eb1
+:END:
+#+title: Command
+#+filetags: :root:
+
+这里会记录一些常用的命令行工具：
+
+- [[id:7706f289-883c-4f7e-bfa5-8e2badce1e65][Du]]
+- [[id:92ac4159-22d6-4305-b7bc-842e8b8c71a1][Df]]
+- [[id:50ec1dbf-1bf4-4234-8887-b4813a65095a][Man]]
+- [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]]
+- [[id:8ab7941b-754f-425c-95f7-77e45f8acacb][Less]]
+- [[id:074dc125-7f79-49de-b685-dd71657e7129][Docker]]

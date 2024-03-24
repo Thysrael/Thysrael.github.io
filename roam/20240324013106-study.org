@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       a9f007fa-a472-403b-b628-627eea16d3b6
+:END:
+#+title: Study
+#+filetags: :root:
+
+这里是有关学习的东西：
+
+- [[id:69d4cd84-7669-4ceb-86df-b21456cc7128][Language]]
+- [[id:cba7c63a-21aa-4875-835e-888813182ff2][OS]]

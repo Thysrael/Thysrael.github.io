@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       cba7c63a-21aa-4875-835e-888813182ff2
+:END:
+#+title: OS
+#+filetags: :root:
+
+- [[id:03abe92f-02d1-4dfb-addc-5ba89fc354be][Linux]]
+- [[id:2b0578d1-ed79-4fd4-838c-672dcc151b6e][Unix]]

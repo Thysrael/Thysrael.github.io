@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       92ac4159-22d6-4305-b7bc-842e8b8c71a1
+:END:
+#+title: Df
+
+~df~ (Disk Free) 命令用于查看磁盘分区的空间及使用和剩余的空间信息。
+
+我们一般加上 ~-h~ 或者 ~-H~ 选项来获得更加可读的大小信息（分别是以 1024 和 1000 为单位转换的）。
+
+执行效果如下：
+
+#+begin_src shell
+  df -H
+  文件系统        大小  已用  可用 已用% 挂载点
+  dev             8.4G     0  8.4G    0% /dev
+  run             8.4G  2.1M  8.4G    1% /run
+  /dev/nvme0n1p2  984G  248G  686G   27% /
+  tmpfs           8.4G  327M  8.1G    4% /dev/shm
+  tmpfs           8.4G  151M  8.2G    2% /tmp
+  /dev/nvme1n1p5  202G   49G  154G   24% /run/media/thysrael/E
+  /dev/nvme1n1p4  202G  138G   65G   69% /run/media/thysrael/D
+  /dev/nvme0n1p1  314M  324k  314M    1% /boot/efi
+  tmpfs           1.7G  132k  1.7G    1% /run/user/1000
+#+end_src 

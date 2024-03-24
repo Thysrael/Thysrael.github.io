@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       a64a206b-3db3-4401-bce3-54ed5bc5ab2b
+:END:
+#+title: Work
+#+filetags: :root:
+
+这里记录着工具性的东西，无关学习。
+
+- 个人工作环境：[[id:95203d2b-355a-42ff-9f2f-70909c5132d2][工作环境]] 
+- 最小配置，方便迁移：[[id:53a31b1e-c691-43e5-8ed7-aba2874d1af4][Mini Config]] 
+- 常用的命令行工具：[[id:736fd7c9-ec8f-47d8-a387-d4dabcb81eb1][Command]]

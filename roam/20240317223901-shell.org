@@ -4,3 +4,4 @@
 #+title: Shell
 
 - [[id:04dd9094-4e40-47b8-b7c4-034a2328c99a][Shell 快捷键]]
+- [[id:08de66b7-c626-4b88-ad6b-0782eb84301a][Shell 最小配置]] 

@@ -2,6 +2,7 @@
 :ID:       fe4fc452-1f5d-40de-9feb-77e1f6ada152
 :END:
 #+title: Dear AJ
+#+filetags: :root:
 
 - [[id:f943fdd5-9bc3-4728-9a71-97d69e4cfdc9][Kuromi and Melody]]
 - [[id:f2c972df-634b-48ee-a979-11c3227ce493][200days]]

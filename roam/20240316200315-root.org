@@ -2,8 +2,9 @@
 :ID:       1d40ec33-ad1b-4bfe-b857-85251724ec43
 :END:
 #+title: ROOT
+#+filetags: :root:
 
-这是一切的起点。
+这是一切的起点。虽然卡片笔记会构成一个网状结构，但是我依然希望存在一个根节点，通过它可以方便的访问所有节点。换句话说，我要维护这张网上的树形结构。
 
 #+begin_quote
 Can you hear me? 
@@ -11,14 +12,12 @@ Can you hear me?
 Call me /ROOT/!
 #+end_quote
 
-- Git: [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]]
-- Org-Roam Test：[[id:185e116e-8184-40cd-a7a1-ae593a861dd1][Roam-Test]]
-- DearAJ：[[id:fe4fc452-1f5d-40de-9feb-77e1f6ada152][Dear AJ]]
-- Emacs: [[id:7ba3aeb8-f711-4fc8-aac6-5ef4fb647011][Emacs]] 
-- Unix: [[id:2b0578d1-ed79-4fd4-838c-672dcc151b6e][Unix]]
-- 方法论：[[id:faa09ef8-bc14-4f41-a501-0cc81318b884][方法论]]
-- 编程语言：[[id:69d4cd84-7669-4ceb-86df-b21456cc7128][Language]]
-
+- [[id:faa09ef8-bc14-4f41-a501-0cc81318b884][方法论]]
+- [[id:e424f62d-8e62-4e91-86b3-0ca2f615ab4c][Story]]
+- [[id:a64a206b-3db3-4401-bce3-54ed5bc5ab2b][Work]]
+- [[id:a9f007fa-a472-403b-b628-627eea16d3b6][Study]]
+- [[id:2446ba47-29b0-48d3-9e12-685bea4679d5][Project]]
+- [[id:fe4fc452-1f5d-40de-9feb-77e1f6ada152][Dear AJ]]
 
 #+DOWNLOADED: screenshot @ 2024-03-16 20:05:18
 [[file:img/2024-03-16_20-05-18_screenshot.png]]

@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       39e72b21-b578-4365-a435-1482f3ee7df7
+:END:
+#+title: ARM Startup
+
+如同 [[id:47b2dbfe-695d-4af4-91e3-d9cd7220f379][Intel]] 并不是以 CPU 起家，而是从存储器跨足到 IC 设计，至今成为 [[id:e016355e-c94d-4611-92ba-d99bba8eba53][x86]] 处理器的龙头。[[id:63b68951-3324-4803-ad2f-60548fa999ef][ARM]] 也是一样，这家公司最开始是做街头游戏机的：
+
+#+DOWNLOADED: screenshot @ 2024-03-23 22:30:50
+[[file:img/2024-03-23_22-30-50_screenshot.png]]
+
+1978 年，由物理学家 Hermann Hauser 和工程师 Chris Curry 一同在英国剑桥成立了一间公司，公司名称直接取作Cambridge Processor Unit（CPU），主要从事提供当地电子仪器设备的业务。1979 年，公司营运渐上轨道，便改名为 Acron Computer 有限公司。
+
+#+DOWNLOADED: screenshot @ 2024-03-23 22:56:49
+[[file:img/2024-03-23_22-56-49_screenshot.png]]
+
+随着时间流逝，Acorn 希望更迭自己的硬件，找 [[id:47b2dbfe-695d-4af4-91e3-d9cd7220f379][Intel]] 要 80286 的设计资料等信息，但是 Intel 拒绝了它们，所以 Acorn 公司一气之下转而开发自己的 CPU ，恰逢 80 代初 RISC 登上历史舞台，Acorn 公司开发了 Acorn RISC Machine ，而后更名 Advanced RISC Machine ，也就是我们熟悉的 ARM 。 

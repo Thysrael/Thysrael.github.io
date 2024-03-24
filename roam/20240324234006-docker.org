@@ -1,0 +1,65 @@
+:PROPERTIES:
+:ID:       074dc125-7f79-49de-b685-dd71657e7129
+:END:
+#+title: Docker
+
+* 镜像
+镜像由一个很有趣的特点就是它是假的，所有的镜像都是需要“变成真的”才能发挥作用。在某种意义上说，镜像的两个特质都被“镜像”这个翻译表示得很好：
+
+- 镜中的像是现实中物体的反映，和本体“一模一样”，镜像是某种计算机结构的反映，和这种结构“一模一样”。
+- 镜中的像是虚假的，是无法发挥和本体一样的作用的，镜像同样是假的，想要利用镜像就必须想办法将其转换成真的。
+
+文件系统就是状态机啊！它记录计算机的运行状态。
+
+* 命令
+基本上所有的操作实体都可以用名字和 ID 两种方式指代。
+
+** Image
+罗列镜像
+
+#+begin_src shell
+  docker images
+#+end_src
+
+删除镜像
+
+#+begin_src shell
+  docker rmi <image id>
+#+end_src
+
+导出/导入镜像
+
+#+begin_src shell
+  docker save <image id> -o <name>.tar
+  docker image load -i <name>.tar
+#+end_src
+
+** Container
+执行命令/进入容器
+
+#+begin_src shell
+    docker exec -it <container id> /bin/bash
+    docker exec -it <container id> bash -c "cd /gem5 && exec bash"
+#+end_src
+
+状态转换
+
+#+begin_src shell
+  docker stop <Container ID>  
+  docker start <Container ID>  
+  docker kill <Container ID>  
+  docker restart <Container ID>
+#+end_src
+
+拷贝
+
+#+begin_src shell
+  docker cp <Container ID> <path1> <path2>
+#+end_src
+
+导入/导出
+
+#+begin_src shell
+  docker export <Container ID> -o <name>.tar
+  docker import <name>.tar - <Container Name>
+#+end_src

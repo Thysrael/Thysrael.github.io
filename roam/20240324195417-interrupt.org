@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       c4a730af-1bf7-48c4-839e-510cad9c26a1
+:END:
+#+title: Interrupt
+
+* 为什么由硬件关中断？

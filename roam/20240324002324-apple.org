@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       28de76a8-415d-458c-a22e-aebac7d3372f
+:END:
+#+title: Apple
+

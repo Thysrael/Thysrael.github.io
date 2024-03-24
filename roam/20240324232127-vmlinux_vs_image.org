@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       b8457aba-78d5-48cc-bb0e-d8272dc3cc85
+:END:
+#+title: vmlinux vs Image
+
+如下图所示：
+
+#+DOWNLOADED: screenshot @ 2024-03-24 23:21:36
+[[file:img/2024-03-24_23-21-36_screenshot.png]]
+
+- vmlinux 是编译器的结果，是一个 ELF 文件
+- Image 是 vmlinux 经过 Objcopy 处理的结果，移除了 ELF 的的符号表等信息，是一个二进制文件
+- zImage 是 Image 使用 gzip 压缩后的结果，一般作为 u-boot 的引导文件
+- uImage 增加了文件头，适用于老版的 u-boot
+
+#+DOWNLOADED: screenshot @ 2024-03-24 23:24:57
+[[file:img/2024-03-24_23-24-57_screenshot.png]]
+

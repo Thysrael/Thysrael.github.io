@@ -162,6 +162,11 @@
   alias gp="git push"
   alias gcl="git clone"
   alias gl="git log --graph --pretty=oneline"
+
+  # tar
+  alias targz="tar -zcvf"
+  alias tarlgz="tar -ztvf"
+  alias tarugz="tar -zxvf"
 #+end_src
 
 * Colorful Man
