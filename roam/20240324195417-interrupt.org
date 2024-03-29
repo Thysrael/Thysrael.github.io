@@ -3,4 +3,6 @@
 :END:
 #+title: Interrupt
 
-* 为什么由硬件关中断？
+- [[id:ebf588e5-e1e2-4cc0-8b4d-9caf9b3b6cde][原子中断]]
+- [[id:8262a4b3-061b-410e-9acf-a70af20efb5e][中断嵌套]]
+- [[id:777afd6e-9d97-4fce-b918-187177ede007][中断上下半部]]

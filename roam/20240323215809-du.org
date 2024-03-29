@@ -22,3 +22,9 @@
   -d, --max-depth=N
       显示子文件夹的深度（层级）
 #+end_src 
+
+如显示 ~dir~ 文件夹下子文件夹的大小
+
+#+begin_src shell
+  du -h -d 1 ./dir
+#+end_src

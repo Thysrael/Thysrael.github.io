@@ -1,0 +1,68 @@
+:PROPERTIES:
+:ID:       ca5451cc-b2a4-42ad-98a5-59cac86165c6
+:END:
+#+title: INI
+ 
+INI 语言（我都不知道能不能称其为一种语言，可能更像是一种格式）是一种配置特化语言。
+
+使用 INI 的例子有 [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]] 的 config 文件，[[id:0fe03161-b7dc-47df-a73f-cbb05f151b77][Systemd]] 的单元配置文件，[[id:ad23b779-3e6d-4dca-ac98-813caacf547e][Pacman]] 的配置文件等。这种配置文件以 ~ini, conf, cfg~ 等结尾，在 [[id:7ba3aeb8-f711-4fc8-aac6-5ef4fb647011][Emacs]] 上会对应 ~conf-mode~ 。
+
+INI 语法比较不正式，方言偏多（在 [[id:2b0578d1-ed79-4fd4-838c-672dcc151b6e][Unix]], [[id:9b12f29e-686a-4d74-93a9-220a14a4bd73][Windows]]上有不同用法）。对于是否大小写敏感，是否允许空格都存在差异性。
+
+INI 的基础单元是 key-value 对，采用 ~=~ 连接
+
+#+begin_src conf
+  remote = origin
+#+end_src
+
+INI 并没有其他配置语言所具备的明显层次结构，它的层次结构用 ~section~ 描述，采用 ~[]~ 表示，其格式如下：
+
+#+begin_src conf
+  [section_name]
+#+end_src
+
+不同于同样没有结束符的 [[id:df9b542e-b415-4544-9bc3-a660368efef7][Yaml]] ，INI 不利用缩进分节，就是简单的“在下一个 section 开始前的 key-value 对都属于前一个 section ”。 
+
+如果希望描述层次结构，也就是 ~subsection~ ，需要用 ~.~ 来分割，如下所示：
+
+#+begin_src conf
+  [section.subsection]
+#+end_src
+
+似乎只支持一层嵌套。
+
+使用 ~#~ 或者 ~;~ 进行注释，最后放上大杂烩示例：
+
+#+begin_src conf
+  [project]
+  name = orchard rental service (with app)
+  target region = "Bay Area"
+  ; TODO: advertise vacant positions
+  legal team = (vacant)
+
+  [fruit "Apple"]
+  trademark issues = foreseeable
+  taste = known
+
+  [fruit.Date]
+  taste = novel
+  Trademark Issues="truly unlikely"
+
+  [fruit "Raspberry"]
+  anticipated problems  ="logistics (fragile fruit)"
+  Trademark Issues=\
+   possible
+
+  [fruit.raspberry.proponents.fred]
+  date = 2021-11-23, 08:54 +0900
+  comment = "I like red fruit."
+  [fruit "Date/proponents/alfred"]
+  comment: Why,  \
+   \
+   \
+   I would buy dates.
+  # folding: Is "\\\\\nn" interpreted as "\\n" or "\n"?
+  #   Or does "\\\\" prevent folding?
+  editor  =My name may contain a \\
+  newline.
+#+end_src

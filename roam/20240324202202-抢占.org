@@ -1,5 +1,0 @@
-:PROPERTIES:
-:ID:       bc2314f6-36fc-45e2-ba9e-bbb4e0f95ab2
-:END:
-#+title: 抢占
-

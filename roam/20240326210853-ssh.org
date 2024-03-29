@@ -1,0 +1,102 @@
+:PROPERTIES:
+:ID:       dc3d220f-6007-4c3f-a7f3-b205c3c2b966
+:END:
+#+title: Ssh
+
+* 特点
+ssh (Secure Shell) 为用户连接远端服务器的 shell 提供了安全的环境。
+
+ssh 具有 2 个特点：
+
+- 基于[[id:0f7e3160-d9b1-4ae7-a0d3-5edfa0c5ef76][非对称加密]]的安全认证，所以相比传统的网络服务程序，如 FTP、POP、Telnet 要更加安全。
+- 传输的数据可以是经过压缩的，所以可以加快传输的速度。
+
+在 Linux 上，客户端直接使用 ~ssh~ 即可，服务端需要安装 ~openssh~ ，Windows 用户端需要安装 Putty 。
+
+* 非对称加密
+ssh 提供基于非对称密钥的安全认证。客户端将将公钥上传到服务器。登录的时候，客户端向服务器发送登录请求；服务器收到请求后，向用户发送一段随机字符串；用户用自己的私钥加密后，再发送回服务器；服务器使用事先存储的公钥进行解密，如果解密成功，证明用户可信，允许登录。
+
+客户端使用如下命令生成密钥
+
+#+begin_src shell
+  ssh-keygen
+#+end_src
+
+当然我们一般使用的时候会带一些参数：
+
+| 参数 | 含义                                 |
+|------+--------------------------------------|
+| -t   | 加密方法，如 rsa, ed25519            |
+| -C   | 注释，会作为公钥的一部分，一般是邮箱 |
+| -f   | 文件名，指定密钥存放的路径           |
+
+在密钥生成过程中，会出现如下字样
+
+#+begin_src text
+  Enter passphrase (empty for no passphrase): 
+  # Enter same passphrase again:
+#+end_src
+
+这里提到的 passphrase 是为了保护私钥的，如果有人窃取了你的私钥文件（黑掉了个人电脑），那么它就完全掌握通信过程了。passphrase 就是为了缓解这一情况，当存在 passphrase 的时候，使用私钥前必须输入正确的 passphrase 。不过我们一般都为了方便，不设置 passphrase 。
+
+在公钥生成好后，需要将公钥附加到服务器用户目录下的 ~$HOME/.ssh/authorized_keys~ 文件中，这个动作可以用如下命令完成
+
+#+begin_src shell
+  ssh-copy-id username@remote_host
+#+end_src
+
+当然在 [[id:de9e3146-021b-4bef-b844-c0eb67de0966][Github]] 或者 Gitlab 中是在图形界面中添加的，原理是类似的，如果我们希望访问 Github 的服务器，我们就要把自己的公钥上传给 Github 服务器。
+
+当我们基于 ssh 使用 ~git clone~ 时，我们的用户名是 ~git~ ，这是一个神奇的现象，我在 stackoverflow 上找到了这篇[[https://stackoverflow.com/questions/47664768/why-does-git-using-ssh-use-git-as-a-username][帖子]] 。我没有太看懂，但是我猜测是真正完成功能的用户就是 ~git~ ，它是某种中间人？
+
+* 命令
+ssh 命令格式如下
+
+#+begin_src shell
+  ssh username@remote_host
+#+end_src
+
+参数如下：
+
+| 参数 | 格式                                       | 含义                 |
+|------+--------------------------------------------+----------------------|
+| p    | -p 2222                                    | 使用服务器的特定端口 |
+| i    | -i path/to/key_file                        | 使用特定私钥         |
+| t    | -t command command_arguments               | 执行命令             |
+| T    | -T                                         | 禁用了伪终端的分配   |
+| -J   | -J username@jump_host username@remote_host | 通过跳板机连接       |
+
+~scp~ 命令用于在服务器和客户端间传递文件，它的参数既有 ~ssh~ 的一面，也有 ~cp~ 的一面
+
+#+begin_src shell
+  scp remote_host:path/to/remote_file path/to/local_directory
+  scp -r remote_host:path/to/remote_directory path/to/local_directory
+#+end_src
+
+~sftp~ 会启动一个交互式的、安全的 ftp 服务器，如下所示：
+
+#+begin_src shell
+  sftp remote_user@remote_host
+  # Transfer remote file to the local system
+  get /path/remote_file
+  # Transfer local file to the remote system
+  put /path/local_file
+#+end_src
+
+* SSH Config
+我们可以看到 ~ssh~ 命令可以有非常复杂的参数，比如说我们指定特定的密钥，再使用一个跳板机，那么就会是命令很繁琐，我们可以将这些参数记录在 ~~/.ssh/config~ 中，比如这样的
+
+#+begin_src conf
+  Host sshtest
+      HostName ssh.test.com
+      User user
+      Port 2200
+      IdentityFile ~/.ssh/id_rsa_test
+      ProxyCommand ssh -q proxyuser@proxyhost -p proxyport nc %h %p
+#+end_src
+
+它等价于
+
+#+begin_src shell
+  ssh -o "ProxyCommand ssh -q proxyuser@proxyhost -p proxyport nc %h %p" -p 2200 -i ~/.ssh/id_rsa_test user@ssh.test.com
+#+end_src

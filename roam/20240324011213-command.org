@@ -12,3 +12,4 @@
 - [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]]
 - [[id:8ab7941b-754f-425c-95f7-77e45f8acacb][Less]]
 - [[id:074dc125-7f79-49de-b685-dd71657e7129][Docker]]
+- [[id:dc3d220f-6007-4c3f-a7f3-b205c3c2b966][Ssh]]
