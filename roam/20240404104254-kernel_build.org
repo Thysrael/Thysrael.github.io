@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       b93aba59-daa5-4ed1-aa32-a5c32fb46a72
+:END:
+#+title: Kernel Build
+
+- [[id:b8457aba-78d5-48cc-bb0e-d8272dc3cc85][vmlinux vs Image]]
+- [[id:50ab95fd-c96d-4467-a6a9-e34a4744e2fa][Kernel Module]]

@@ -4,3 +4,4 @@
 #+title: IBM
 
 [[id:b7cbbb61-17ec-450c-b6d4-1c919b86d53b][Microsoft]] 是给 IBM 装 PC 系统的，[[id:47b2dbfe-695d-4af4-91e3-d9cd7220f379][Intel]] 为 IBM 造 CPU 的。
+ 

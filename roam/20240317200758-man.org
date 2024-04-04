@@ -62,3 +62,5 @@
 * 操作方式
 ~man~ 使用 [[id:8ab7941b-754f-425c-95f7-77e45f8acacb][Less]] 作为分页器，所以操作方式就是 ~less~ 的操作方式。
 
+* 网页手册
+除了本地手册外，可以在这个[[https://man7.org/linux/man-pages/index.html][网站]]访问 man 手册，我个人觉得网页版 GUI 界面挺香的。

@@ -5,5 +5,7 @@
 
 内核开发的相关知识：
 
-- [[id:b8457aba-78d5-48cc-bb0e-d8272dc3cc85][vmlinux vs Image]]
+- [[id:b93aba59-daa5-4ed1-aa32-a5c32fb46a72][Kernel Build]]
 - [[id:c4a730af-1bf7-48c4-839e-510cad9c26a1][Interrupt]]
+- [[id:40407a50-af1b-4741-a0e9-a3e2a06aa2ba][Process]]
+

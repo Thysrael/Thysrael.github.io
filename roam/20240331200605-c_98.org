@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       c9825d94-1fbd-4f31-8595-6f38c3f775bd
+:END:
+#+title: C++98
+
+也就是传统 C++ 。

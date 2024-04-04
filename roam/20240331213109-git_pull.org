@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       3faf56b4-cecd-4db0-8e2c-ef54375a2f42
+:END:
+#+title: Git Pull
+
+* 使服务器强制和云端仓库同步
+为了避免复杂性，服务器尽量不承担编辑源码的任务，而是采用在本地编辑并提交云端仓库，服务器和云端仓库同步的方式，但是如果编辑任务琐碎，本地会使用 ~ammend~ 选项并强制推送云端，此时服务器再拉取就会导致 conflict ，所以需要强制云端同步，使用如下命令：
+
+#+begin_src shell
+git fetch --all
+git reset --hard origin/main # 这里 main 要修改为对应的分支名
+#+end_src
+
+相当于先用 ~fetch~ 取得已经云端仓库 commit ，然后再使用 ~reset --hard~ 丢弃现有 commit ，改成云端仓库 commit 。

@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       cc68aae7-8e11-48b1-b944-69ef0d6ea890
+:END:
+#+title: Pid
+
+Linux Kernel 中的进程 ID 有如下示意图：
+
+#+DOWNLOADED:  @ 2024-04-04 11:47:02
+[[file:img/2024-04-04_11-47-02_pid.png]]
+

@@ -1,0 +1,297 @@
+:PROPERTIES:
+:ID:       f8af8819-6abe-40bf-bdac-4fd18c360d56
+:END:
+#+title: STL 迭代器删除
+
+* 遍历容器
+在遍历容器的过程中删除其中的元素，是一个常见的操作，但是却经常容易引发问题。这是因为删除元素的时候可能会更改元素间的联系，进而影响迭代器的迭代功能。
+
+在 C++ 中，我们使用容器的 ~erase~ 方法，通过传入指向迭代器来删除元素（之所以强调这个，是因为 ~erase~ 还有根据值删除和根据范围删除的 *重载* ），上述问题确实存在，但幸好 ~erase~ 方法会 *返回下一个迭代器* 。所以通用方法如下（用 C++ Template 来证明通用性）：
+
+#+begin_src C++
+#include <iostream>
+#include <list>
+#include <vector>
+#include <set>
+
+template <typename Container>
+void removeElements(Container& container, const typename Container::value_type& value)
+{
+    typename Container::iterator it = container.begin();
+    while (it != container.end())
+    {
+        if (*it == value)
+        {
+			// 用 it 接受返回值进而正确迭代
+            it = container.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+}
+
+template <typename Container>
+void printContainer(const Container& container)
+{
+	std::cout << "{ ";
+    for (const auto& elem : container)
+    {
+        std::cout << elem << " ";
+    }
+    std::cout << "}" << std::endl;
+}
+
+int main()
+{
+    std::list<int> valList = { 1, 2, 3, 4, 5, 6 };
+    removeElements(valList, 3);
+    printContainer(valList);
+
+	std::set<int> valSet = { 1, 2, 3, 4, 5, 6 };
+	removeElements(valSet, 3);
+    printContainer(valSet);
+
+	std::vector<int> valVector = { 1, 2, 3, 4, 5, 6 };
+	removeElements(valVector, 3);
+    printContainer(valVector);
+	
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+: { 1 2 4 5 6 }
+: { 1 2 4 5 6 }
+: { 1 2 4 5 6 }
+
+对于序列容器，如 =vector, deque= ， ~erase~ 的本质是将要删除的元素后面的元素统一向前移动，所以原本的指向下一个元素的迭代器就会受到影响。但是对于关联容器，如 =set, map= ，或者不连续容器，如 =list= ，则可以正常使用 ~++~ 进行迭代，并不会有语义问题，如下所示：
+
+#+begin_src C++
+#include <iostream>
+#include <list>
+#include <set>
+#include <deque>
+
+template <typename Container>
+void removeElements(Container& container, const typename Container::value_type& value)
+{
+    typename Container::iterator it = container.begin();
+    while (it != container.end())
+    {
+        if (*it == value)
+        {
+			// it 正常递增即可
+            container.erase(it++);
+			// 但是不能写成如下情况
+			// 前 ++ 返回引用，后 ++ 返回一个临时对象
+			// container.erase(it);
+			// it++;
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
+template <typename Container>
+void printContainer(const Container& container)
+{
+	std::cout << "{ ";
+    for (const auto& elem : container)
+    {
+        std::cout << elem << " ";
+    }
+    std::cout << "}" << std::endl;
+}
+
+int main()
+{
+    std::list<int> valList = { 1, 2, 3, 4, 5, 6 };
+    removeElements(valList, 3);
+    printContainer(valList);
+
+	std::set<int> valSet = { 1, 2, 3, 4, 5, 6 };
+	removeElements(valSet, 3);
+    printContainer(valSet);
+	
+	std::deque<int> valDeque = { 1, 2, 3, 4, 5, 6 };
+	removeElements(valDeque, 3);
+    printContainer(valDeque);
+	
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+: { 1 2 4 5 6 }
+: { 1 2 4 5 6 }
+: { 1 2 4 5 6 }
+
+不过从结果看 =deque= 也没有受到影响，不知道是不是因为这个样例太简单了。我感觉还是第一种利用返回值的方法比较靠谱。此外还有一些更加独特的容器的[[https://zhuanlan.zhihu.com/p/322402705][讨论]]，基本上用不到。
+
+* Erase-Remove Idiom
+上面的方法是用一次迭代器遍历来删除特定的元素，但是实际上我们的目的只是“删除特定元素”，对于是否采用“迭代器遍历”其实并不在意，说不定使用迭代器遍历还会导致性能降低，所以我们可以选择更加本质的 ~erase~ 根据值删除或者 ~erase_if~ 函数。
+
+这里需要强调， ~erase~ 函数和容器的 ~erase~ 方法是两个东西，不过在功能上差不多保持一致，我也不知道为什么要弄出来这么多种写法，可能这就是 C++ 的自由吧。
+
+因为 ~erase~ 基本上等价于 ~erase_if~ 的一个特殊形式，所以我们介绍 ~erase_if~ ，它可以利用一个 lambda 表示[[id:2210e830-9314-4bea-a6f4-3337f976d2a2][谓词]] ，所有符合这个谓词的都会被删除（用一个函数也行），以删除所有奇数举例：
+
+#+begin_src C++ :flags "-std=c++20"
+#include <iostream>
+#include <algorithm>
+#include <list>
+#include <set>
+#include <deque>
+
+template <typename Container>
+void removeElements(Container& container)
+{
+	// 传入一个 lambda 来选择删除的元素
+	std::erase_if(container, [](auto const& x) { return (x % 2) == 1; });
+}
+
+template <typename Container>
+void printContainer(const Container& container)
+{
+	std::cout << "{ ";
+    for (const auto& elem : container)
+    {
+        std::cout << elem << " ";
+    }
+    std::cout << "}" << std::endl;
+}
+
+int main()
+{
+    std::list<int> valList = { 1, 2, 3, 4, 5, 6 };
+    removeElements(valList);
+    printContainer(valList);
+
+	std::set<int> valSet = { 1, 2, 3, 4, 5, 6 };
+	removeElements(valSet);
+    printContainer(valSet);
+	
+	std::deque<int> valDeque = { 1, 2, 3, 4, 5, 6 };
+	removeElements(valDeque);
+    printContainer(valDeque);
+	
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+: { 2 4 6 }
+: { 2 4 6 }
+: { 2 4 6 }
+
+不过也可以看到， ~erase_if~ 是 [[id:45af3425-35ea-4800-b02c-c1352dfae83c][C++20]] 才引入的规定，在这个版本之前进行条件删除的方法是根据范围的 ~erase~ 方法配合 ~remove_if~ 进行删除，形式是这样的：
+
+#+begin_src C++
+#include <iostream>
+#include <algorithm>
+#include <list>
+#include <vector>
+#include <set>
+#include <deque>
+
+template <typename Container>
+void removeElements(Container& container)
+{
+	// 传入一个 lambda 来选择删除的元素
+	container.erase(std::remove_if(container.begin(), container.end(), [](auto const& x)
+		{ return (x % 2) == 1; }));
+}
+
+template <typename Container>
+void printContainer(const Container& container)
+{
+	std::cout << "{ ";
+    for (const auto& elem : container)
+    {
+        std::cout << elem << " ";
+    }
+    std::cout << "}" << std::endl;
+}
+
+int main()
+{
+
+	std::vector<int> valVector = { 1, 2, 3, 4, 5, 6 };
+	removeElements(valVector);
+    printContainer(valVector);
+	
+    std::list<int> valList = { 1, 2, 3, 4, 5, 6 };
+    removeElements(valList);
+    printContainer(valList);
+
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+: { 2 4 6 5 6 }
+: { 2 4 6 5 6 }
+
+这种诡异的先 ~remove~ 后 ~erase~ 的操作被称为 erase-remove idiom ，可以注意到，这种方法并不能在关联容器 =set, map= 中使用（更本质的是不能用于返回 =const_iterator= 的容器）。所有的奇怪因素其实都和 ~remove~ 函数有关。
+
+~remove~ 函数并不会将元素实际删除，而只是将他们移动到序列容器的末尾，并返回交界处的迭代器，如下所示：
+
+#+begin_src C++
+#include<iostream>
+#include<vector>
+#include<algorithm>
+
+
+int main() {
+
+	std::vector<int> vi = { 1, 2, 3, 3, 3 };
+
+    // 调用 remove_if 函数
+    auto end = std::remove_if(vi.begin(), vi.end(), [](auto const& x)
+		{ return x == 3; });
+	// 返回
+	for (auto i = vi.begin(); i != end; ++i) {
+		std::cout << *i << " ";
+    }
+	std::cout << std::endl;
+
+    for (auto i = vi.begin(); i != vi.end(); ++i) {
+		std::cout << *i << " ";
+    }
+	
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+: 1 2 
+: 1 2 3 3 3 
+
+正因如此， ~remove~ 需要配合 ~erase~ 完成全部删除功能，更为详细的讨论可以在[[https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom][这里]]找到。
+
+* 总结
+最为普世的删除容器中符合条件的元素的方法是这个：
+
+#+begin_src c++
+template <typename Container>
+void removeElements(Container& container)
+{
+    typename Container::iterator it = container.begin();
+    while (it != container.end())
+    {
+        if (predicate(*it))
+            it = container.erase(it);
+        else
+            ++it;
+    }
+}
+#+end_src
+
+如果为非序列容器，则不用担心遍历过程中迭代器损坏的问题。
+
+如果版本为 C++20 ，那么可以使用 ~erase_if~ 的普适方法。
+
+如果为序列容器，可以使用 erase-remove idiom 。

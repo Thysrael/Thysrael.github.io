@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       40407a50-af1b-4741-a0e9-a3e2a06aa2ba
+:END:
+#+title: Process
+
+[[id:461a096e-181f-4c25-af06-b585fe591407][IBM]] 在 CTSS/360 系统上引入了 Process 的概念。还有一说是 [[id:731a33db-9fb8-4b90-be32-9b6fe35a4246][MIT]] 在设计 MULTICS 时引入的。
+
+进程的核心技术是[[id:3efde90e-931e-458e-8a09-c448d0a2ffa1][上下文]]切换和 [[id:6c15a4b7-2e4a-4405-875f-c20f0c1b6956][Schedule]] 。它提供了一个程序拥有的软硬件资源集合的抽象（也就是说是整个主板的抽象）。而线程只是一个 CPU 处理器核心的抽象。
+
+- 进程 ID ：[[id:cc68aae7-8e11-48b1-b944-69ef0d6ea890][Pid]] 
+- 由内核线程生成的用户进程：[[id:fcfe7339-0adb-4f4e-8a11-081737dedf04][Kernel User-mode Helpers]]

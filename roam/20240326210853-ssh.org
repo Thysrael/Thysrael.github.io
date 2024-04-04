@@ -73,7 +73,7 @@ ssh 命令格式如下
   scp -r remote_host:path/to/remote_directory path/to/local_directory
 #+end_src
 
-~sftp~ 会启动一个交互式的、安全的 ftp 服务器，如下所示：
+~sftp~ 会启动一个交互式的、安全的 [[id:def6a1dd-c8c7-4ebd-b85c-d1c6af0d8122][ftp]] 服务器，如下所示：
 
 #+begin_src shell
   sftp remote_user@remote_host

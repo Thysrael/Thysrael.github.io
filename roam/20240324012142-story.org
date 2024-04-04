@@ -6,6 +6,10 @@
 
 没有历史会丧失直觉，没有故事会丧失勇气。
 
+* History
 - [[id:24923169-4364-43ff-b526-3fba04a02c02][CISC vs RISC]]
 - [[id:3c978bf4-33e1-4b4a-81ac-88e2f8c94ea7][MIPS vs ARM]]
 - [[id:39e72b21-b578-4365-a435-1482f3ee7df7][ARM Startup]]
+
+* Novel
+- [[id:b294a890-404e-4852-b565-096ccf1f1fa7][汪曾祺]]
