@@ -37,7 +37,7 @@ INI 并没有其他配置语言所具备的明显层次结构，它的层次结�
   [project]
   name = orchard rental service (with app)
   target region = "Bay Area"
-  ; TODO: advertise vacant positions
+  ; TODO advertise vacant positions
   legal team = (vacant)
 
   [fruit "Apple"]

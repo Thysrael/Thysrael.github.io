@@ -60,11 +60,11 @@ ssh 命令格式如下
 
 | 参数 | 格式                                       | 含义                 |
 |------+--------------------------------------------+----------------------|
-| p    | -p 2222                                    | 使用服务器的特定端口 |
-| i    | -i path/to/key_file                        | 使用特定私钥         |
-| t    | -t command command_arguments               | 执行命令             |
-| T    | -T                                         | 禁用了伪终端的分配   |
-| -J   | -J username@jump_host username@remote_host | 通过跳板机连接       |
+| ~p~    | ~-p 2222~                                    | 使用服务器的特定端口 |
+| ~i~    | ~-i path/to/key_file~                        | 使用特定私钥         |
+| ~t~    | ~-t command command_arguments~               | 执行命令             |
+| ~T~    | ~-T~                                         | 禁用了伪终端的分配   |
+| ~-J~   | ~-J username@jump_host username@remote_host~ | 通过跳板机连接       |
 
 ~scp~ 命令用于在服务器和客户端间传递文件，它的参数既有 ~ssh~ 的一面，也有 ~cp~ 的一面
 

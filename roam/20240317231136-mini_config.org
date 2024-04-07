@@ -8,3 +8,4 @@
 
 - [[id:08de66b7-c626-4b88-ad6b-0782eb84301a][Shell Miniconfig]]
 - [[id:55fd0686-7924-41a8-9d55-b81ee523da83][Emacs MiniConfig]]
+- [[id:f0bdd667-1215-488c-bfd8-f780b53fea42][Tmux Miniconfg]]

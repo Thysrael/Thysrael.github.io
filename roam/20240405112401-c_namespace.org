@@ -1,0 +1,117 @@
+:PROPERTIES:
+:ID:       f2189871-0f1e-43e9-8357-9975cdbeca9f
+:END:
+#+title: C++ Namespace
+
+C++ 的 namspace 机制可以减少全局重名符号的冲突，方便项目管理。
+
+* 路径检索
+众所周知，我们可以使用 ~::~ 配合具体的 namespace 名称来索引某个具体的符号，如下所示：
+
+#+begin_src C++
+#include <iostream>
+
+namespace A {
+	namespace B {
+		int value = 514;
+	}
+}
+
+void pr_val() {
+	printf("value: %d\n", A::B::value);
+}
+
+int main()
+{
+	pr_val();
+	return 0;
+}
+#+end_src
+
+#+RESULTS:
+: value: 514
+
+为了方便描述，我们称 ~pr_value~ 中的 ~A::B::~ 为 *路径* 。直观上，我们顺着路径一个个 namspace 找到我们需要的 value 。
+
+如果 ~pr_value~ 本身在某个 namsepace 中，那么应该遵循什么规则呢？核心是这样的，以当前 namespace 根据路径开始索引，如果没有索引到，就在上一级 namespace 中根据路径开始索引。如下所示：
+
+#+begin_src C++
+#include <iostream>
+
+namespace A {
+	namespace B1 {
+		int value1 = 514;
+		int value2 = 514;
+	}
+
+	namespace B2 {
+		namespace B3 {
+			int value1 = 515;
+		}
+
+		void pr_val();
+	}
+}
+
+void A::B2::pr_val()
+{
+	// 当前路径为 A::B2 ，根据 B3 可以获得绝对路径 A::B2::B3::value1 
+	printf("A::B2::B1::value1: %d\n", B1::value1);
+	// 当前路径为 A::B2 ，根据 B1 获得 A::B2::B1 ，然而并不存在目标
+	// 退回父 namsepace ，路径为 A ，根据 B1 获得 A::B1 ，找到目标
+	printf("A::B1::value2: %d\n", B1::value2);
+	// 使用绝对路径
+	printf("A::B1::value1: %d\n", ::A::B1::value1);
+}
+
+
+
+int main()
+{
+	A::B2::pr_val();
+	return 0;
+}
+#+end_src
+
+#+RESULTS:
+: A::B2::B1::value1: 514
+: A::B1::value2: 514
+: A::B1::value1: 514
+
+总的来说，这种方式是一种 *“相对路径”* 的查找法，但是和 Linux 文件系统的路径不同，它不需要显式指定 ~../bro~ 来去索引兄弟文件夹下的内容，而是在子文件夹下没有的情况时，自动搜索兄弟文件夹。
+
+其实我们也可以 ~::~ 开头的命令来表示 *“绝对路径”* ，如上所示。
+
+这种 namespace 的特殊路径检索方法是构成各种 namespace 奇技淫巧的核心。
+
+* 匿名 Namespace 
+当定义一个命名空间时，可以忽略这个命名空间的名称：
+
+#+begin_src c++
+namespace {
+    char c;
+    int i;
+    double d;
+}
+#+end_src
+
+编译器在内部会为这个命名空间生成一个唯一的名字，而且还会为这个匿名的命名空间生成一条 using 指令。所以上面的代码在效果上等同于：
+
+#+begin_src c++
+namespace __UNIQUE_NAME_ {
+    char c;
+    int i;
+    double d;
+}
+using namespace __UNIQUE_NAME_;
+#+end_src
+
+这些名称具有 =internal= 链接属性，这和声明为 =static= 的全局名称的链接属性是相同的，即名称的作用域被限制在当前文件中，无法通过在另外的文件中使用 =extern= 声明来进行链接。
+
+需要注意的是，这是一个语法的特殊用法，并没法简单用普通的 namespace 机制解释，namespace 本身是具有全局可见性的，而 ~using~ 指令只有 =internal= 属性。 
+
+C++ 提倡使用匿名 Namespace 代替原本的 =static= ，有如下原因：
+
+- 减轻 =static= 的多重语义负担
+- 允许嵌套
+- 可以将 =class declare= 赋予 =internal= 属性

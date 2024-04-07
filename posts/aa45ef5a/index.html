@@ -23,19 +23,19 @@
     var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="总论这篇文章的目的是为了比较各个硬件架构之间的异同点，这是因为我的朋友提到了“硬件是围绕软件来设计的”的观点，所以我觉得许多硬件的差异如果进行对比，可以更好得了解软件需求，看清各式各样的硬件的设计意图。 但是这篇文章似乎因为选题过于宏大了，导致非常难以下笔，所以这篇文章应该是一个长期维护的文章。 维护考虑：  或许可以根据 Linux 的命名方式来区分一些概念？">
+  <meta name="description" content="一、总论这篇文章的目的是为了比较各个硬件架构之间的异同点，这是因为我的朋友提到了“硬件是围绕软件来设计的”的观点，所以我觉得许多硬件的差异如果进行对比，可以更好得了解软件需求，看清各式各样的硬件的设计意图。 但是这篇文章似乎因为选题过于宏大了，导致非常难以下笔，所以这篇文章应该是一个长期维护的文章。 维护考虑：  或许可以根据 Linux 的命名方式来区分一些概念？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="硬件平台-架构对比">
 <meta property="og:url" content="https://thysrael.github.io/posts/aa45ef5a/index.html">
 <meta property="og:site_name" content="钟鼓楼">
-<meta property="og:description" content="总论这篇文章的目的是为了比较各个硬件架构之间的异同点，这是因为我的朋友提到了“硬件是围绕软件来设计的”的观点，所以我觉得许多硬件的差异如果进行对比，可以更好得了解软件需求，看清各式各样的硬件的设计意图。 但是这篇文章似乎因为选题过于宏大了，导致非常难以下笔，所以这篇文章应该是一个长期维护的文章。 维护考虑：  或许可以根据 Linux 的命名方式来区分一些概念？">
+<meta property="og:description" content="一、总论这篇文章的目的是为了比较各个硬件架构之间的异同点，这是因为我的朋友提到了“硬件是围绕软件来设计的”的观点，所以我觉得许多硬件的差异如果进行对比，可以更好得了解软件需求，看清各式各样的硬件的设计意图。 但是这篇文章似乎因为选题过于宏大了，导致非常难以下笔，所以这篇文章应该是一个长期维护的文章。 维护考虑：  或许可以根据 Linux 的命名方式来区分一些概念？">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://thysrael.github.io/posts/aa45ef5a/image-20240320232613310.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/aa45ef5a/SorMjJ5xPltFpmA.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/aa45ef5a/image-20240320210506365-17109399087251.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/aa45ef5a/2024-03-21_17-34.png">
 <meta property="article:published_time" content="2024-03-20T10:57:18.000Z">
-<meta property="article:modified_time" content="2024-03-25T01:55:42.307Z">
+<meta property="article:modified_time" content="2024-04-05T09:42:38.801Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="硬件平台">
@@ -135,17 +135,17 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">26</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">27</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">52</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">53</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">170</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">172</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -253,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-25 09:55:42" itemprop="dateModified" datetime="2024-03-25T09:55:42+08:00">2024-03-25</time>
+                <time title="Modified: 2024-04-05 17:42:38" itemprop="dateModified" datetime="2024-04-05T17:42:38+08:00">2024-04-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -278,14 +278,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.8k</span>
+              <span>4k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
+              <span>4 mins.</span>
             </span>
 
         </div>
@@ -297,13 +297,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="总论"><a href="#总论" class="headerlink" title="总论"></a>总论</h2><p>这篇文章的目的是为了比较各个硬件架构之间的异同点，这是因为我的朋友提到了“硬件是围绕软件来设计的”的观点，所以我觉得许多硬件的差异如果进行对比，可以更好得了解软件需求，看清各式各样的硬件的设计意图。</p>
+        <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>这篇文章的目的是为了比较各个硬件架构之间的异同点，这是因为我的朋友提到了“硬件是围绕软件来设计的”的观点，所以我觉得许多硬件的差异如果进行对比，可以更好得了解软件需求，看清各式各样的硬件的设计意图。</p>
 <p>但是这篇文章似乎因为选题过于宏大了，导致非常难以下笔，所以这篇文章应该是一个长期维护的文章。</p>
 <p>维护考虑：</p>
 <ul>
 <li>或许可以根据 Linux 的命名方式来区分一些概念？</li>
 </ul>
-<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="异常概念"><a href="#异常概念" class="headerlink" title="异常概念"></a>异常概念</h3><h4 id="Arm64"><a href="#Arm64" class="headerlink" title="Arm64"></a>Arm64</h4><h4 id="RISCV"><a href="#RISCV" class="headerlink" title="RISCV"></a>RISCV</h4><p>RISCV 的异常分为同步异常和中断两种，可以根据 <code>mcause</code> 的最高位来区分。</p>
+<hr>
+<h2 id="二、异常处理"><a href="#二、异常处理" class="headerlink" title="二、异常处理"></a>二、异常处理</h2><h3 id="2-1-异常概念"><a href="#2-1-异常概念" class="headerlink" title="2.1 异常概念"></a>2.1 异常概念</h3><h4 id="Arm64"><a href="#Arm64" class="headerlink" title="Arm64"></a>Arm64</h4><h4 id="RISCV"><a href="#RISCV" class="headerlink" title="RISCV"></a>RISCV</h4><p>RISCV 的异常分为同步异常和中断两种，可以根据 <code>mcause</code> 的最高位来区分。</p>
 <p>RISCV 的同步异常分为 5 种：</p>
 <ul>
 <li>访问错误异常：当物理内存的地址不支持访问类型时发生（例如尝试写入 ROM）。</li>
@@ -318,9 +319,9 @@
 <li>时钟：当 <code>hart</code> 的时间比较器（一个名为 <code>mtimecmp</code> 的内存映射寄存器）大于实时计数器<br><code>mtime</code> 时，会触发时钟中断。</li>
 <li>外部：由平台级中断控制器（大多数外部设备连接到这个中断控制器）引发。</li>
 </ul>
-<p>总结如下：</p>
+<p>不过我也不知道为啥，这些种类并不会一一对应 <code>mcause</code> 的编码，而是一对多，总结如下：</p>
 <p><img src="/posts/aa45ef5a/image-20240320232613310.png" alt="image-20240320232613310"></p>
-<h3 id="相关寄存器"><a href="#相关寄存器" class="headerlink" title="相关寄存器"></a>相关寄存器</h3><h4 id="Arm64-1"><a href="#Arm64-1" class="headerlink" title="Arm64"></a>Arm64</h4><h4 id="RISCV-1"><a href="#RISCV-1" class="headerlink" title="RISCV"></a>RISCV</h4><p>在 M-mode 下，一共有 8 个 CSR 是 RISCV 异常处理所必须的，如下表所示：</p>
+<h3 id="2-2-相关寄存器"><a href="#2-2-相关寄存器" class="headerlink" title="2.2 相关寄存器"></a>2.2 相关寄存器</h3><h4 id="Arm64-1"><a href="#Arm64-1" class="headerlink" title="Arm64"></a>Arm64</h4><h4 id="RISCV-1"><a href="#RISCV-1" class="headerlink" title="RISCV"></a>RISCV</h4><p>在 M-mode 下，一共有 8 个 CSR 是 RISCV 异常处理所必须的，如下表所示：</p>
 <div class="table-container">
 <table>
 <thead>
@@ -372,8 +373,8 @@
 </ul>
 <p>需要区分 <code>mstatus</code> 的 <code>MIE</code> 位和 <code>mie</code> 寄存器， <code>MIE</code> 只有一位，置 1 表示允许中断，<code>mie</code> 是一个完整的寄存器，其中每一位都对应一个中断的使能，比如说 <code>mie[7]</code> 对于 M 模式的时钟中断。而 <code>mip</code> 也是一个完整寄存器，每一位对应一个中断“当前是否待处理”。如果 <code>mstatus.MIE &amp; mie[7] &amp; mip[7] == 1</code> ，则处理器可以处理时钟中断。</p>
 <p><code>mstatus</code> 这些寄存器只有一个副本，那是不是意味着没法进行中断嵌套了呢？并不是的，只需要保存到栈上即可。</p>
-<p>默认情况下，所有异常（无论在什么权限模式）都会被转发到</p>
-<h3 id="异常路由"><a href="#异常路由" class="headerlink" title="异常路由"></a>异常路由</h3><h4 id="Arm64-2"><a href="#Arm64-2" class="headerlink" title="Arm64"></a>Arm64</h4><ul>
+<p>默认情况下，所有异常（无论在什么权限模式）都会被转发到 M 态。不过 M-mode 可以通过委托机制交给 S-mode</p>
+<h3 id="2-3-异常路由"><a href="#2-3-异常路由" class="headerlink" title="2.3 异常路由"></a>2.3 异常路由</h3><h4 id="Arm64-2"><a href="#Arm64-2" class="headerlink" title="Arm64"></a>Arm64</h4><ul>
 <li><code>svc</code> supervisor call 用户进程请求 OS 服务</li>
 <li><code>hvc</code> hypervisor call 客户 OS 请求虚拟机监视器服务</li>
 <li><code>smc</code> Secure Monitor call</li>
@@ -385,7 +386,7 @@
 <li>使用 <code>ecall</code> 请求服务</li>
 </ul>
 <p>arm64 有多个请求指令，只有 1 个返回指令，RISCV 有多个返回指令，只有 1 个请求指令。arm64 返回的异常等级根据 <code>SPSR</code> 决定，RISCV 的请求等级默认是 M-mode, M-mode 可以委托给 S-mode 处理。</p>
-<h3 id="硬件机制"><a href="#硬件机制" class="headerlink" title="硬件机制"></a>硬件机制</h3><h4 id="Arm64-3"><a href="#Arm64-3" class="headerlink" title="Arm64"></a>Arm64</h4><h4 id="RISCV-3"><a href="#RISCV-3" class="headerlink" title="RISCV"></a>RISCV</h4><p>异常发生时，RISCV 的处理流程如下：</p>
+<h3 id="2-4-硬件机制"><a href="#2-4-硬件机制" class="headerlink" title="2.4 硬件机制"></a>2.4 硬件机制</h3><h4 id="Arm64-3"><a href="#Arm64-3" class="headerlink" title="Arm64"></a>Arm64</h4><h4 id="RISCV-3"><a href="#RISCV-3" class="headerlink" title="RISCV"></a>RISCV</h4><p>异常发生时，RISCV 的处理流程如下：</p>
 <ul>
 <li>将异常指令的 PC 保存在 <code>mepc</code> 中，将 PC 设置成 <code>mtvec</code></li>
 <li>根据异常来源设置 <code>mcause</code> 和 <code>mtval</code></li>
@@ -398,7 +399,8 @@
 <li>将 <code>mstatus.PMIE</code> 写入 <code>mstatus.MIE</code></li>
 <li>将 <code>mstatus.MPP</code> 设置成权限模式</li>
 </ul>
-<h2 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h2><h3 id="权限等级"><a href="#权限等级" class="headerlink" title="权限等级"></a>权限等级</h3><h4 id="Arm64-4"><a href="#Arm64-4" class="headerlink" title="Arm64"></a>Arm64</h4><p>在 <strong>Arm64</strong> 中，具有 4 个异常等级（Exception Level），可以通过 <code>CurrentEL</code> 寄存器进行查询。如下所示：</p>
+<hr>
+<h2 id="三、权限"><a href="#三、权限" class="headerlink" title="三、权限"></a>三、权限</h2><h3 id="3-1-权限等级"><a href="#3-1-权限等级" class="headerlink" title="3.1 权限等级"></a>3.1 权限等级</h3><h4 id="Arm64-4"><a href="#Arm64-4" class="headerlink" title="Arm64"></a>Arm64</h4><p>在 <strong>Arm64</strong> 中，具有 4 个异常等级（Exception Level），可以通过 <code>CurrentEL</code> 寄存器进行查询。如下所示：</p>
 <div class="table-container">
 <table>
 <thead>
@@ -494,15 +496,15 @@
 </div>
 <p>这些特权等级并不平等，比如说 H-mode 这个特权等级，需要通过 <code>H</code> 拓展来获得（主要提供第二级地址翻译和保护），否则一般是没有的。S-mode 也必须通过 M-mode 的异常委托机制才能发挥作用，M-mode 具有一种“拥有全部硬件权限”的语义，而不是像 Arm64 的 EL3 一样只是安全世界的一个守门人。将原本的 <code>M</code> 变成 <code>M + U</code> 似乎只是不信任的软件可以被隔离，提高系统的安全性，而将 <code>M + U</code> 编程 <code>M + S + U</code> ，似乎只是希望借用 S-mode 下虚拟内存功能，这是 M-mode 所不具备的。</p>
 <p>我个人感觉因为 RISCV 的诞生比较靠后，所以可能在设计之初就对市场里的需求有一个总体的把握，不像 X86 或者 ARM 一样需要一步步迭代。此外 RISCV 在一开始就不是一种增量一体式的 ISA 设计，而是一个<strong>模块化</strong>的 ISA ，所以对于各种硬件功能的解耦更加彻底。</p>
-<h3 id="特权指令"><a href="#特权指令" class="headerlink" title="特权指令"></a>特权指令</h3><h4 id="Arm64-5"><a href="#Arm64-5" class="headerlink" title="Arm64"></a>Arm64</h4><p>Arm64 的特权指令非常好记，系统寄存器写指令是 move system from register ，就是那种谁是 dst ，是在前的汇编常见风格。</p>
+<h3 id="3-2-特权指令"><a href="#3-2-特权指令" class="headerlink" title="3.2 特权指令"></a>3.2 特权指令</h3><h4 id="Arm64-5"><a href="#Arm64-5" class="headerlink" title="Arm64"></a>Arm64</h4><p>Arm64 的特权指令非常好记，系统寄存器写指令是 move system from register ，就是那种谁是 dst ，是在前的汇编常见风格。</p>
 <pre class="line-numbers language-asm" data-language="asm"><code class="language-asm">msr csr, r<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>系统寄存器读指令是 move register from system</p>
 <pre class="line-numbers language-asm" data-language="asm"><code class="language-asm">mrs r, csr<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="RISCV-4"><a href="#RISCV-4" class="headerlink" title="RISCV"></a>RISCV</h4><p>RISCV 的系统寄存器被称为 CSR(Control and Status Register, 控制和状态寄存器) 。RISCV 的基础指令都具有 3 个操作数，而不是像 Arm64 一样的 2 个。</p>
 <ul>
-<li>csrrw (CSR read and write)：读写，<code>csr</code> 中的值写入 <code>rd</code>，<code>rs1</code> 的值写入 <code>csr</code>。</li>
-<li>csrrs (CSR read and set)：读并置位，<code>csr</code> 中的值写入 <code>rd</code>， <code>rs1</code>的值或上 <code>csr</code> 中的值再写入 <code>csr</code>。</li>
-<li>csrrc (CSR read and clear)：读并清除，<code>csr</code> 中的值读入 <code>rd</code>，根据 <code>rs1</code> 的值对 <code>csr</code> 中的值按位清零再写入<code>csr</code> 中。</li>
+<li><code>csrrw</code> (CSR read and write)：读写，<code>csr</code> 中的值写入 <code>rd</code>，<code>rs1</code> 的值写入 <code>csr</code>。</li>
+<li><code>csrrs</code> (CSR read and set)：读并置位，<code>csr</code> 中的值写入 <code>rd</code>， <code>rs1</code>的值或上 <code>csr</code> 中的值再写入 <code>csr</code>。</li>
+<li><code>csrrc</code> (CSR read and clear)：读并清除，<code>csr</code> 中的值读入 <code>rd</code>，根据 <code>rs1</code> 的值对 <code>csr</code> 中的值按位清零再写入<code>csr</code> 中。</li>
 </ul>
 <p><code>csrrwi</code>、<code>csrrsi</code>、<code>csrrci</code> 分别于 <code>csrrw</code>、<code>csrrs</code>、<code>csrrc</code> 相似，除了它们是使用一个处于 <code>rs1</code> 字段的、零扩展到 XLEN 位的 5 位立即数。</p>
 <p>我们常用的系统寄存器读指令 <code>csrr</code> ，系统寄存器写指令 <code>csrw</code> ，系统寄存器清空指令 <code>csrc</code> 和系统寄存器置位指令 <code>csrs</code> 都是伪指令，如下所示：</p>
@@ -510,10 +512,14 @@
 csrw csr, rs1   // csrrw zero, csr, rs1
 csrc csr, rs1   // csrrc zero, csr, rs1
 csrs csr, rs1   // csrrs zero, csr, rs1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="运行状态"><a href="#运行状态" class="headerlink" title="运行状态"></a>运行状态</h2><h3 id="Arm64-6"><a href="#Arm64-6" class="headerlink" title="Arm64"></a>Arm64</h3><p>不能认为 <code>SPSR</code> 和 <code>PSTATE</code> 等价，就像不能认为 <code>Trapframe</code> 和 <code>x0, x1, x2, ..., sp, pc</code> 等价。</p>
-<h3 id="RISCV-5"><a href="#RISCV-5" class="headerlink" title="RISCV"></a>RISCV</h3><p>在某种简单的实现中，<code>sstatus</code> 就是 <code>mstatus</code> 的一部分，而不是完全不同的 banked register。从这幅图可以看出些许端倪。</p>
+<h3 id="3-3-运行状态"><a href="#3-3-运行状态" class="headerlink" title="3.3 运行状态"></a>3.3 运行状态</h3><h4 id="Arm64-6"><a href="#Arm64-6" class="headerlink" title="Arm64"></a>Arm64</h4><p>不能认为 <code>SPSR</code> 和 <code>PSTATE</code> 等价，就像不能认为 <code>Trapframe</code> 和 <code>x0, x1, x2, ..., sp, pc</code> 等价。</p>
+<h4 id="RISCV-5"><a href="#RISCV-5" class="headerlink" title="RISCV"></a>RISCV</h4><p>在某种简单的实现中，<code>sstatus</code> 就是 <code>mstatus</code> 的一部分，而不是完全不同的 banked register。从这幅图可以看出些许端倪。</p>
 <p><img src="/posts/aa45ef5a/2024-03-21_17-34.png" alt=""></p>
-<h2 id="SMP"><a href="#SMP" class="headerlink" title="SMP"></a>SMP</h2>
+<hr>
+<h2 id="四、指令集"><a href="#四、指令集" class="headerlink" title="四、指令集"></a>四、指令集</h2><h3 id="4-1-GPR"><a href="#4-1-GPR" class="headerlink" title="4.1 GPR"></a>4.1 GPR</h3><h3 id="4-2-指令"><a href="#4-2-指令" class="headerlink" title="4.2 指令"></a>4.2 指令</h3><h2 id="五、内存管理"><a href="#五、内存管理" class="headerlink" title="五、内存管理"></a>五、内存管理</h2><h3 id="5-1-内存同步"><a href="#5-1-内存同步" class="headerlink" title="5.1 内存同步"></a>5.1 内存同步</h3><h3 id="5-2-页表基址"><a href="#5-2-页表基址" class="headerlink" title="5.2 页表基址"></a>5.2 页表基址</h3><h3 id="Arm64-7"><a href="#Arm64-7" class="headerlink" title="Arm64"></a>Arm64</h3><p>用户使用 <code>ttbr0</code> 寄存器，而内核使用 <code>ttbr1</code> 寄存器。</p>
+<h3 id="RISCV-6"><a href="#RISCV-6" class="headerlink" title="RISCV"></a>RISCV</h3><p>用户和内核都使用 <code>satp</code> 寄存器。</p>
+<hr>
+
     </div>
 
     
@@ -536,7 +542,10 @@ csrs csr, rs1   // csrrs zero, csr, rs1<span aria-hidden="true" class="line-numb
     <a href="/posts/6c683641/" rel="prev" title="计算机组成-内存一致性">
       <i class="fa fa-chevron-left"></i> 计算机组成-内存一致性
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/posts/52d3ca8/" rel="next" title="硬件平台-Trampoline">
+      硬件平台-Trampoline <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -595,7 +604,7 @@ csrs csr, rs1   // csrrs zero, csr, rs1<span aria-hidden="true" class="line-numb
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%AE%BA"><span class="nav-text">总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%A6%82%E5%BF%B5"><span class="nav-text">异常概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-text">相关寄存器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-1"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-1"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E8%B7%AF%E7%94%B1"><span class="nav-text">异常路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-2"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-2"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%9C%BA%E5%88%B6"><span class="nav-text">硬件机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-3"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-3"><span class="nav-text">RISCV</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90"><span class="nav-text">权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AD%89%E7%BA%A7"><span class="nav-text">权限等级</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-4"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Riscv"><span class="nav-text">Riscv</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%9D%83%E6%8C%87%E4%BB%A4"><span class="nav-text">特权指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-5"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-4"><span class="nav-text">RISCV</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81"><span class="nav-text">运行状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Arm64-6"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RISCV-5"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMP"><span class="nav-text">SMP</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-text">二、异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%BC%82%E5%B8%B8%E6%A6%82%E5%BF%B5"><span class="nav-text">2.1 异常概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E7%9B%B8%E5%85%B3%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-text">2.2 相关寄存器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-1"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-1"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%BC%82%E5%B8%B8%E8%B7%AF%E7%94%B1"><span class="nav-text">2.3 异常路由</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-2"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-2"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E7%A1%AC%E4%BB%B6%E6%9C%BA%E5%88%B6"><span class="nav-text">2.4 硬件机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-3"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-3"><span class="nav-text">RISCV</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%9D%83%E9%99%90"><span class="nav-text">三、权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%9D%83%E9%99%90%E7%AD%89%E7%BA%A7"><span class="nav-text">3.1 权限等级</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-4"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Riscv"><span class="nav-text">Riscv</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E7%89%B9%E6%9D%83%E6%8C%87%E4%BB%A4"><span class="nav-text">3.2 特权指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-5"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-4"><span class="nav-text">RISCV</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81"><span class="nav-text">3.3 运行状态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arm64-6"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RISCV-5"><span class="nav-text">RISCV</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8C%87%E4%BB%A4%E9%9B%86"><span class="nav-text">四、指令集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-GPR"><span class="nav-text">4.1 GPR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E6%8C%87%E4%BB%A4"><span class="nav-text">4.2 指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">五、内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E5%86%85%E5%AD%98%E5%90%8C%E6%AD%A5"><span class="nav-text">5.1 内存同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E9%A1%B5%E8%A1%A8%E5%9F%BA%E5%9D%80"><span class="nav-text">5.2 页表基址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arm64-7"><span class="nav-text">Arm64</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RISCV-6"><span class="nav-text">RISCV</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -611,20 +620,20 @@ csrs csr, rs1   // csrrs zero, csr, rs1<span aria-hidden="true" class="line-numb
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -681,7 +690,7 @@ csrs csr, rs1   // csrrs zero, csr, rs1<span aria-hidden="true" class="line-numb
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">18:01</span>
+    <span title="Reading time total">18:03</span>
 </div>
 
         

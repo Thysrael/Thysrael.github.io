@@ -126,17 +126,17 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">26</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">27</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">52</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">53</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">170</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">172</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,399 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c59d80ea/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/c59d80ea/" class="post-title-link" itemprop="url">CPP设计-string</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-05 11:32:40" itemprop="dateCreated datePublished" datetime="2023-02-05T11:32:40+08:00">2023-02-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPP%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">CPP设计</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、IO"><a href="#一、IO" class="headerlink" title="一、IO"></a>一、IO</h2><p>是没有办法使用 C 风格的 IO 去输入和输出字符串的，也就是说，下面的程序是会发生段错误的。</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;bits/stdc++.h&gt;</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+<span class="token punctuation">{</span>
+	string s<span class="token punctuation">;</span>
+	<span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%s"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果想要进行正确的 IO，需要利用 <code>cin, cout</code> ，如下所示</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;bits/stdc++.h&gt;</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+<span class="token punctuation">{</span>
+	string s1<span class="token punctuation">,</span> s2<span class="token punctuation">,</span> s3<span class="token punctuation">,</span> s4<span class="token punctuation">;</span>
+
+	cin <span class="token operator">&gt;&gt;</span> s1<span class="token punctuation">;</span>
+	<span class="token comment">// cin.getline(s2, 20);</span>
+	<span class="token comment">// cin.get(s3, 20);</span>
+	<span class="token function">getline</span><span class="token punctuation">(</span>cin<span class="token punctuation">,</span> s4<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	cout <span class="token operator">&lt;&lt;</span> s1 <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+	<span class="token comment">// cout &lt;&lt; s2 &lt;&lt; endl;</span>
+	<span class="token comment">// cout &lt;&lt; s3 &lt;&lt; endl;</span>
+	cout <span class="token operator">&lt;&lt;</span> s4 <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/c59d80ea/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/f220eea5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/f220eea5/" class="post-title-link" itemprop="url">English-写作词汇</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-24 21:23:52" itemprop="dateCreated datePublished" datetime="2023-01-24T21:23:52+08:00">2023-01-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、文化教育类"><a href="#一、文化教育类" class="headerlink" title="一、文化教育类"></a>一、文化教育类</h2><ol>
+<li>硕士学位：the master’s degree</li>
+<li>博士学位：the doctor’s degree; Ph. D. (Doctor of Philosophy)</li>
+<li>学术表现：academic performance</li>
+<li>学术成就：academic performance</li>
+<li>成就；成绩：accomplishment</li>
+<li>求职者（2 个）：job hunter; job applicant</li>
+<li>简历：resume</li>
+<li>传统书籍：traditional book</li>
+<li>理论与实践：theory and practice</li>
+<li>课外活动：extracurricular activity</li>
+<li>拓宽视野：broaden one’s horizons</li>
+<li>必修课：compulsory course</li>
+<li>选修课（3 个）：selective course; optional course; elective course</li>
+<li>教学大纲：syllabus</li>
+<li>素质教育：quality-oriented education</li>
+<li>应试教育：test-oriented education</li>
+<li>学生会：Student’s Union</li>
+<li>名牌大学：prestigious university</li>
+<li>激烈竞争：fierce competition</li>
+<li>身心健康：physical and mental health</li>
+<li>树立积极榜样：set a positive example</li>
+<li>代沟：generation gap</li>
+<li>娱乐活动：recreational activity</li>
+<li>丰富知识：enrich one’s knowledge</li>
+<li>尖子生（2 个）：top student; straight-A student</li>
+<li>发挥潜能：fulfill one’s potential</li>
+<li>高校排名：university ranking</li>
+<li>高校扩招：expansion of college enrollment</li>
+<li>竞争性考试：competitive examination</li>
+<li>高考：the college entrance examination</li>
+<li>辍学：drop out of school</li>
+<li>研究所：research institution</li>
+<li>努力（3 个）：attempt; endeavor; strive; </li>
+<li>接受教育：receive education</li>
+<li>实现目标：realize the goal</li>
+<li>劳动力市场：labor market</li>
+<li>获得大学文凭：get diploma</li>
+<li>外来务工人员：migrant worker</li>
+<li>课外班：after-school class</li>
+<li>被……录取：be admitted to</li>
+<li>重要决定：significant decision</li>
+<li>报名参加（2 个）：enroll for; sign up for</li>
+<li>重点学校：key school</li>
+<li>职业学校：vocational college</li>
+<li>重视（4 个）：put emphasis on; attach importance to; emphasize; highlight</li>
+<li>教育资源：educational resources</li>
+<li>欠发达地区：underdeveloped region</li>
+<li>促进教育公平：promote equity in education</li>
+<li>改善教育设施：improve educational facilities</li>
+<li>义务教育：compulsory education</li>
+<li>乐器：instrument</li>
+<li>绘画工具：painting tool</li>
+<li>毕业生：graduates</li>
+<li>教育工作者：educators</li>
+<li>培养（3 个）：cultivate; forster; develop</li>
+<li>关键时期：crucial period</li>
+<li>养成……的习惯：develop a habit</li>
+<li>培养……的兴趣：cultivate an interest</li>
+<li>基本素质：essential quality</li>
+<li>光明前途：promising future</li>
+<li>大一学生：freshman</li>
+<li>大二学生：sophomore</li>
+<li>大三学生：junior student</li>
+<li>大四学生：senior student</li>
+<li>文科（2 个）：liberal arts; humanities</li>
+<li>理科：sciences</li>
+<li>招生录取：recruitment and enrollment</li>
+<li>食堂（2 个）：canteen; dinning hall</li>
+<li>员工：staff</li>
+<li>全体老师：faculty</li>
+<li>职业培训：vocational training</li>
+<li>就业指导：career guidance</li>
+<li>激发兴趣：stimulate interest</li>
+<li>学生减负：reduce study load</li>
+<li>研讨会：seminar</li>
+<li>考研：take the postgraduate entrance exam</li>
+<li>创业：start one’s own business</li>
+<li>出国留学：study abroad</li>
+<li>申请入学：apply for admission to</li>
+<li>专门人才：professional personnel</li>
+<li>奖学金：scholarship</li>
+<li>学分：credits</li>
+<li>本硕毕业论文：thesis</li>
+<li>博士毕业论文：dissertation</li>
+<li>学费：tuition fee</li>
+<li>教授：professor</li>
+<li>副教授：associcate professor</li>
+<li>讲师：lecturer</li>
+<li>学习氛围：learning atmosphere</li>
+<li>逃课：skip class</li>
+<li>德智体美劳全面发展：all around development of moral, intellectual, physical, aesthetic and labor education</li>
+</ol>
+<hr>
+<h2 id="二、地域环境类"><a href="#二、地域环境类" class="headerlink" title="二、地域环境类"></a>二、地域环境类</h2><ol>
+<li>环境污染：enviromental pollution</li>
+<li>空气污染：air pollution</li>
+<li>水污染：water pollution</li>
+<li>一次性塑料袋：disposable plastic bag </li>
+<li>节能环保：energy saving and enviromental protection</li>
+<li>淡水资源短缺：the shortage of fresh water</li>
+<li>沙尘暴：sandstorm</li>
+<li>动物灭绝：extinction fo animals</li>
+<li>濒危动物：endangered animals</li>
+<li>生态失衡：the disruption of the ecological balance</li>
+<li>再生资源回收：the recycling of renewable resources</li>
+<li>绿色能源：green energy</li>
+<li>过度使用农药：the over-usage of pesticide</li>
+<li>乱砍滥伐：the over-cutting of the forest</li>
+<li>频繁的水旱灾：frequent floods and droughts</li>
+<li>灾难性的：devastating</li>
+<li>咸水湖：saltwater lake</li>
+<li>淡水湖：fresh lake</li>
+<li>捕鱼业：fishing industry</li>
+<li>海拔 X 米：X meter above the sea level</li>
+<li>平方千米：square kilometer</li>
+<li>候鸟：migrant bird</li>
+<li>迁徙路线：migrant route</li>
+<li>迁徙过程：process of migration</li>
+<li>观鸟者：birdwatcher</li>
+<li>中国传统园林：traditional Chinese garden</li>
+<li>位于：be located in</li>
+<li>栖息地：habitates</li>
+<li>旅游目的地：destination</li>
+<li>文化遗产：cultcural heritage</li>
+<li>古迹：historical site</li>
+<li>珠江：the Pearl River</li>
+<li>长江：the Yangtze River</li>
+<li>黄河：the Yellow River</li>
+<li>发源地：birthplace</li>
+<li>三角洲地区：delta region</li>
+<li>注入；流入：empty into</li>
+<li>流经：flow through</li>
+<li>制造中心：manufacturing center</li>
+<li>灌溉：irrigate</li>
+<li>景点：scenic attraction</li>
+<li>沿海城市：coastal city</li>
+<li>风景独特（2 个）：unique natural scenery; distinctive scenery</li>
+<li>云海：the sea of cloud</li>
+<li>宏伟壮丽：miganificence</li>
+<li>湿润气候：humid climate</li>
+<li>大熊猫：gaint panda</li>
+<li>以竹为食：bamboo-eating</li>
+<li>被列为（3 个）：be listed as; be grouped as; be classified as;</li>
+<li>熊科：bear family</li>
+<li>面临威胁：under threat</li>
+<li>生存（2 个）：existence; survival</li>
+<li>草药：herb</li>
+<li>宜人的居住环境：pleasant living enviroment</li>
+<li>节约自然资源：conserve natural</li>
+<li>砍伐森林：deforestation</li>
+<li>沙漠化：desertification</li>
+<li>自然灾害：natural disaster</li>
+<li>垃圾分类：garbage classification</li>
+<li>低碳经济：low carbon economy</li>
+<li>全球变暖：global warning</li>
+<li>环保产品：enviroment-friendly products</li>
+<li>废水（2 个）：waste water; sewage</li>
+<li>环境恶化（2 个）：environmental degradation ; environmental deterioration</li>
+<li>开发可再生资源：develop the renewable resources</li>
+<li>污染预防：pollution prevention</li>
+<li>污染控制：pollution control</li>
+<li>控制环境污染：curb the enviromental pollution</li>
+<li>提倡：advocate</li>
+<li>号召：call on</li>
+<li>自然宝藏：natural treasure</li>
+<li>享誉盛名：earn a great reputation</li>
+<li>有 X 年历史：has a history of X years</li>
+<li>渔村：fishing village</li>
+<li>水乡：water town</li>
+<li>偏远地区：remote area</li>
+<li>日出：sunrise</li>
+<li>日落：sunset</li>
+<li>温泉：outspring</li>
+<li>瀑布：waterfall</li>
+<li>建筑：archietecture</li>
+<li>寺庙：temple</li>
+<li>摄影：photography</li>
+<li>背包旅行：backpacking</li>
+<li>背包客： backpacker</li>
+<li>络绎不绝：in an endless steam</li>
+<li>住宅：dwelling</li>
+<li>集市：markect</li>
+<li>庭院：countryard</li>
+<li>美不胜收：be too beautiful to be absorbed all at once</li>
+<li>闻名遐迩：enjoy widespread renown</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/f220eea5/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -599,184 +992,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/fe0a8753/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/fe0a8753/" class="post-title-link" itemprop="url">DBMS-设计报告</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-05 12:19:30" itemprop="dateCreated datePublished" datetime="2023-01-05T12:19:30+08:00">2023-01-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DBMS/" itemprop="url" rel="index"><span itemprop="name">DBMS</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>9.8k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>9 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="一、需求分析"><a href="#一、需求分析" class="headerlink" title="一、需求分析"></a>一、需求分析</h1><h2 id="1-1-需求描述"><a href="#1-1-需求描述" class="headerlink" title="1.1 需求描述"></a>1.1 需求描述</h2><h3 id="1-1-1-背景调研"><a href="#1-1-1-背景调研" class="headerlink" title="1.1.1 背景调研"></a>1.1.1 背景调研</h3><p>第八次全国学生体质与健康调研结果显示，大学生体质下滑的问题，仍然没有得到有效遏制。高校体育如何从世界百年未有之大变局和中华民族伟大复兴战略全局中认识新机遇、洞察新挑战、顺应新变化？高校体育如何担起培养社会主义现代化强国的建设者和接班人的伟大使命？作为为祖国培养“健康工作七十年的红色工程师”的北京航空航天大学，应当以怎样的技术和平台来支持学生体育事业。这些问题都值得我们深入思考。</p>
-<p>首先，应当意识到，高校体育是一个完整的生态闭环，体育课程，体育比赛，官方体育活动，社团活动等都是高校体育建设不可或缺的一部分。高校体育建设不应当仅仅局限于每周固定时长的体育课程，恰恰相反，他应当融入大学生的生活中。也就是构建“<strong>立体化</strong>”的高校体育体系，拓展大学体育课程体系的长度、宽度和高度。学校体育课程要为学生走向社会和未来生活做准备，让大学生掌握体育知识、运动技能并能运用于生活之中，保持健康的体魄，促进自己的全面发展，帮助大学生适应未来，引导大学生创造未来。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/fe0a8753/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/ea36b7db/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/ea36b7db/" class="post-title-link" itemprop="url">Ruby设计-开发日志</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-05 12:10:36" itemprop="dateCreated datePublished" datetime="2023-01-05T12:10:36+08:00">2023-01-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Ruby%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">Ruby设计</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>33k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>30 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h1><h2 id="1-产品-Product"><a href="#1-产品-Product" class="headerlink" title="1 产品 Product"></a>1 产品 Product</h2><h3 id="1-1-创建-Product"><a href="#1-1-创建-Product" class="headerlink" title="1.1 创建 Product"></a>1.1 创建 Product</h3><p>创建名为 <code>project</code> 的 rails 应用</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">rails new project<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/ea36b7db/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -848,20 +1063,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -918,7 +1133,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">18:01</span>
+    <span title="Reading time total">18:03</span>
 </div>
 
         

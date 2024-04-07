@@ -6,11 +6,13 @@
 
 这里会记录一些常用的命令行工具：
 
-- [[id:7706f289-883c-4f7e-bfa5-8e2badce1e65][Du]]
-- [[id:92ac4159-22d6-4305-b7bc-842e8b8c71a1][Df]]
-- [[id:50ec1dbf-1bf4-4234-8887-b4813a65095a][Man]]
-- [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]]
-- [[id:8ab7941b-754f-425c-95f7-77e45f8acacb][Less]]
-- [[id:074dc125-7f79-49de-b685-dd71657e7129][Docker]]
-- [[id:dc3d220f-6007-4c3f-a7f3-b205c3c2b966][Ssh]]
-- [[id:def6a1dd-c8c7-4ebd-b85c-d1c6af0d8122][Ftp]]
+- 查看文件夹大小：[[id:7706f289-883c-4f7e-bfa5-8e2badce1e65][Du]]
+- 查看磁盘空间：[[id:92ac4159-22d6-4305-b7bc-842e8b8c71a1][Df]]
+- 手册查阅：[[id:50ec1dbf-1bf4-4234-8887-b4813a65095a][Man]]
+- 版本控制：[[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]]
+- 分页器：[[id:8ab7941b-754f-425c-95f7-77e45f8acacb][Less]]
+- 容器：[[id:074dc125-7f79-49de-b685-dd71657e7129][Docker]]
+- 远端连接：[[id:dc3d220f-6007-4c3f-a7f3-b205c3c2b966][Ssh]]
+- 文件服务器：[[id:def6a1dd-c8c7-4ebd-b85c-d1c6af0d8122][Ftp]]
+- 终端复用器：[[id:235c8b86-4075-48ad-b02c-71e5010c4181][Tmux]]
+- 文件同步：[[id:97a65fac-1627-4324-90f8-4fc3c5a7807e][Rsync]]
