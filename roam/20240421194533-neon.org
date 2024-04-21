@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       c982fd51-63ec-4363-a01d-80c95110a621
+:END:
+#+title: Neon
+
+Neon 是一种 SIMD(Single Instruction Multiple Data) 指令，也就是说，NEON 可以把若干源 (source) 操作数 (operand) 打包放到一个源寄存器中，对他们执行相同的操作，产生若干目的 (dest) 操作数，这种方式也叫向量化 (vectorization)。 
+
+Neon 中有个重要概念被称为通道（lane），非常好理解这个概念。它就相当于并行向量的元素，一个完整的 Neon 寄存器（可能是 128bit）会被分割成不同的 lane, 每个 lane 中存储独立的数据，进行并行运算。

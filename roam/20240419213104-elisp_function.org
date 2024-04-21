@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       24d14c6a-e354-4c60-8fb3-1324869eabbd
+:END:
+#+title: Elisp Function
+
+在 Elisp 里类似函数的对象很多，比如：
+
+- Function: 这里的函数特指用 lisp 写的函数。
+- Primitive: 用 C 写的函数，比如 ~car, append~ 。
+- \lambda 函数
+- Macro: 宏是用 lisp 写的一种结构，它可以把一种 lisp 表达式转换成等价的另一个表达式。
+- Command: 命令能用 command-execute 调用。函数也可以是命令。

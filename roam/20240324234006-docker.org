@@ -35,6 +35,18 @@
 #+end_src
 
 ** Container
+列出容器
+
+#+begin_src shell
+docker ps
+#+end_src
+
+检查某个容器的具体信息
+
+#+begin_src shell
+docker inspect <CONTAINER>
+#+end_src
+
 执行命令/进入容器
 
 #+begin_src shell
@@ -65,6 +77,12 @@
   docker import <name>.tar - <Container Name>
 #+end_src
 
+删除容器：
+
+#+begin_src shell
+docker rm <CONTAINER>
+#+end_src
+
 * 权限
 在服务器上使用 docker 不加 ~sudo~ 的话很容易如下错误：
 
@@ -84,3 +102,9 @@
   # 添加访问和执行权限
   sudo chmod a+rw /var/run/docker.sock
 #+end_src
+
+* 核心原理
+
+- 利用 [[id:dc0fa854-6826-4b9d-9f6e-f70f16db8f32][Linux Namespace]] 隔离资源
+- 利用 [[id:d5e96e08-d27e-4166-9566-02a623f387af][CGroups]] 限制资源的使用
+- 利用 [[id:0e30c122-9c10-4ee3-9cd3-1831732d59cb][Chroot]] 改变进程的根目录到指定的目录

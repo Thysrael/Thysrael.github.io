@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       e7a58c7d-6957-407e-9950-efbb520e9310
+:END:
+#+title: Elisp
+
+Emacs-lisp 是 Emacs 配置使用的 [[id:98bda82c-8a63-4179-911c-d38815483d8c][Lisp]] 方言，除了通用的 lisp 部分，Elisp 中还有一些用于编辑器的库，可以算是一种编辑器配置的 DSL 了。
+
+Elisp 有着非常详细且精炼的[[https://www.gnu.org/software/emacs/manual/html_node/elisp/index.html][教程]] ，它的特点是分段比较多，而每一段比较简短，可以方便查阅。
+
+- 编程数据结构：[[id:85a065c7-7dd9-4e5a-8b7a-4979994d2ff5][Elisp Program Type]]
+- 编辑器数据结构：
+- 类函数：[[id:24d14c6a-e354-4c60-8fb3-1324869eabbd][Elisp Function]]

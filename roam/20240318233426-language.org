@@ -7,6 +7,9 @@
 * 编程语言
 - [[id:5be19847-0df3-40e7-a546-3288bd234c54][Javascript]]
 - [[id:ab518d02-b179-4173-adfa-0bed5591ae81][C++]]
+- [[id:e7a58c7d-6957-407e-9950-efbb520e9310][Elisp]]
+- [[id:a209fbd7-ef3d-4796-895a-c080dd44190e][C]]
+- [[id:bd3fe176-7567-4ace-ae72-8a36f951332e][Rust]]
 
 * 标记语言
 - [[id:dd7d49d7-2e39-4d2f-b360-3bf105e95dd0][HTML]]

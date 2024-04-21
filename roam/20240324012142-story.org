@@ -10,6 +10,9 @@
 - [[id:24923169-4364-43ff-b526-3fba04a02c02][CISC vs RISC]]
 - [[id:3c978bf4-33e1-4b4a-81ac-88e2f8c94ea7][MIPS vs ARM]]
 - [[id:39e72b21-b578-4365-a435-1482f3ee7df7][ARM Startup]]
+- [[id:31e8a537-9a57-4163-ae80-046a206a2d7e][Redis vs Cloud]]
+- [[id:fd04e72c-16c1-445a-9543-c680e88db803][from Bitkeeper to Git]]
 
 * Novel
 - [[id:b294a890-404e-4852-b565-096ccf1f1fa7][汪曾祺]]
+- [[id:751527a5-da6f-44cc-9038-f787749dca1f][新字 vs 新词]]

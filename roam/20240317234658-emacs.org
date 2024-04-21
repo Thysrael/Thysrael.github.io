@@ -5,3 +5,4 @@
 
 - [[id:55fd0686-7924-41a8-9d55-b81ee523da83][Emacs MiniConfig]]
 - [[id:b64bb67b-b0a5-4e1b-8d23-7c33ed0e9ec2][Org-mode]]
+- [[id:e7a58c7d-6957-407e-9950-efbb520e9310][Elisp]]

@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       440c4422-026f-4499-9760-8983f38b4e02
+:END:
+#+title: Rime
+
+* 定制
+Rime 是一款可定制化程度非常高的开源输入法，它可以作为搜狗输入法的替代品。具体的定制可以参见这篇[[https://sspai.com/post/84373][攻略]]。但是正因为太复杂了，所以我也没有看过，不过网上有已经定制好的方案，比如说[[https://github.com/iDvel/rime-ice][雾凇拼音]]，我们可以这样使用：
+
+#+begin_src shell
+# 清除原本的配置
+cd ~/.local/share/fcitx5/
+rm -rf ./rime
+# clone config
+git clone https://github.com/iDvel/rime-ice --depth=1 ./rime
+#+end_src
+
+然后我个人做的配置只有将 =default.yaml= 中的 =page_size= 从 =5= 改成了 =7= 。
+
+* 词库
+词库是是非常重要的，但是我也不太懂，我只知道有些词库很大，会影响 Rime 的启动速率，可以适当禁用来提高启动速率。
+
+另外词库系统和 Emacs 是可以共用的。

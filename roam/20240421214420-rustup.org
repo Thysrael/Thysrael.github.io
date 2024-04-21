@@ -1,0 +1,51 @@
+:PROPERTIES:
+:ID:       089e2a1b-ec0e-4f53-b205-80e20f572541
+:END:
+#+title: RustUp
+
+RustUp 是 Rust 工具链管理器。
+
+Rust 包含：stable、beta、nightly 三个版本。默认情况下我们安装的是 stable 稳定版。nightly 提供的是每日更新的版本（最为激进），而 beta 版本用于对某些 nightly 版本进行回归测试，当 beta 稳定的时候会发布到 stable 版本。这个模型被称为“无停滞稳定”（“stability without stagnation”）。如下所示：
+
+#+begin_src text
+nightly: * - - * - - * - - * - - * - - * - * - *
+                     |                         |
+beta:                * - - - - - - - - *       *
+                                       |
+stable:                                *
+#+end_src
+
+但是因为底层应用开发需要 nightly 的新特征，而 nightly 每天更新，非常不稳定。
+
+在用如下命令安装 rustup 时，会安装一个默认的工具链，有一些配置选项可以选择：
+
+#+begin_src shell
+curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+#+end_src
+
+可以用如下命令查看所有的工具链：
+
+#+begin_src shell
+rustup toolchain list
+#+end_src
+
+其中 ~default~ 表示默认的工具链，而 ~override~ 表示当前项目使用的工具链。
+
+我们可以向项目根目录下 ~rust-toolchain~ 这个文件中写入如下字符来指定工具链版本：
+
+#+begin_src text
+nightly-2023-06-01
+#+end_src
+
+可以用如下命令来安装和卸载指定工具链：
+
+#+begin_src shell
+rustup toolchain install nightly-2021-11-01
+rustup toolchain uninstall nightly-2021-11-01
+#+end_src
+
+还可以用如下命令来查看实际的版本
+
+#+begin_src shell
+rustc --version
+#+end_src

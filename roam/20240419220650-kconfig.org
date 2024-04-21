@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       6c7e31fb-6d5c-4059-8087-0ce8410d2d8a
+:END:
+#+title: KConfig
+
+在 Linux 构建过程中，有许多的编译选项，我们可以使用 ~make menuconfig~ 命令来进行 TUI 配置界面进行配置。最终配置生成的文件会保存在 =.config= 中，而这个文件会进一步生成 =include/generated/autoconf.h= ，这就是一个正经的 C 语言头文件，里面有许多以 ~CONFIG_~ 开头的宏，Kernel 源码中就可以使用条件编译来控制编译结果了。
+
+而用来构建 menuconfig 的就是散布在各个文件夹的 =Kconfig= 文件，这个文件使用了一种特殊的 DSL 来描述各种配置项、各个配置项间的依赖关系、他们的组织和显示形式。
+
+DSL 并不难学，这篇[[https://mp.weixin.qq.com/s/crXt-6EvKtWg9QX7SM90Sw][博客]]写得非常好，可以参考一下。
