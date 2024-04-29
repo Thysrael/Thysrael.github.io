@@ -10,6 +10,7 @@
 - [[id:e7a58c7d-6957-407e-9950-efbb520e9310][Elisp]]
 - [[id:a209fbd7-ef3d-4796-895a-c080dd44190e][C]]
 - [[id:bd3fe176-7567-4ace-ae72-8a36f951332e][Rust]]
+- [[id:aa217bba-decd-4153-8bc7-abdf68bc9710][Haskell]]
 
 * 标记语言
 - [[id:dd7d49d7-2e39-4d2f-b360-3bf105e95dd0][HTML]]

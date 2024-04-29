@@ -11,7 +11,7 @@ for filename in os.listdir(post_folder):
         with open(filepath, 'r') as file:
             content = file.readlines()
 
-        # 将YAML头部部分转换为Python对象
+        # 将 YAML 头部部分转换为Python对象
         header_lines = []
         content_start = 0
         for i, line in enumerate(content):
@@ -23,9 +23,10 @@ for filename in os.listdir(post_folder):
 
         header = yaml.safe_load(''.join(header_lines))
 
-        # 将Python对象转换为YAML字符串
+        # 将 Python 对象转换为 YAML 字符串
         new_header = '---\n' + yaml.dump(header, allow_unicode=True, default_flow_style=None) + '---\n'
 
+        # 去除行首非法的 "\t"
         new_lines = []
         for i, line in enumerate(content[content_start:]):
             if line.startswith("​"):

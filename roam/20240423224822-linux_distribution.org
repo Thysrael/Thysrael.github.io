@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       29055e0b-e7df-4a36-9196-ee3b6ce81713
+:END:
+#+title: Linux Distribution
+#+filetags: :root:
+
+- [[id:8e3d5527-8c90-4c7b-a0ea-34d6b2e8ed3d][Ubuntu]]
