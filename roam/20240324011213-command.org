@@ -17,3 +17,4 @@
 - 终端复用器：[[id:235c8b86-4075-48ad-b02c-71e5010c4181][Tmux]]
 - 文件同步：[[id:97a65fac-1627-4324-90f8-4fc3c5a7807e][Rsync]]
 - 文件格式转换：[[id:ee08858d-bc37-45ac-a547-d6df13b17a20][Pandoc]]
+- 二进制文件查看：[[id:cae2f5fe-7a8f-4261-b5d9-fd19a827b14b][Objdump]]

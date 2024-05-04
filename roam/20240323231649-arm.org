@@ -27,6 +27,6 @@ Arm 的名称非常混乱，这里理清一下：
 - [[id:88f99a3a-c8fd-49c8-898f-d6bc4b4e235f][Arm SCTLR]]
 - [[id:3c8bb797-7d14-400f-8949-e38f43275212][Arm MMU]]
 - [[id:bf0cfe73-a333-49f0-a0e8-f50f17358312][Arm CTR]]
-
+- [[id:da9c8247-86d6-415e-9466-2676df02725e][Arm Cache]]
 
 

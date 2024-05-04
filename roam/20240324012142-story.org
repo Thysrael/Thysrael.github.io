@@ -7,11 +7,15 @@
 没有历史会丧失直觉，没有故事会丧失勇气。
 
 * History
-- [[id:24923169-4364-43ff-b526-3fba04a02c02][CISC vs RISC]]
-- [[id:3c978bf4-33e1-4b4a-81ac-88e2f8c94ea7][MIPS vs ARM]]
-- [[id:39e72b21-b578-4365-a435-1482f3ee7df7][ARM Startup]]
-- [[id:31e8a537-9a57-4163-ae80-046a206a2d7e][Redis vs Cloud]]
-- [[id:fd04e72c-16c1-445a-9543-c680e88db803][from Bitkeeper to Git]]
+- 复杂指令集与精简指令集的发展：[[id:24923169-4364-43ff-b526-3fba04a02c02][CISC vs RISC]]
+- MIPS 与 ARM 之争：[[id:3c978bf4-33e1-4b4a-81ac-88e2f8c94ea7][MIPS vs ARM]]
+- ARM 创业：[[id:39e72b21-b578-4365-a435-1482f3ee7df7][ARM Startup]]
+- 开源数据库与云厂商之争：[[id:31e8a537-9a57-4163-ae80-046a206a2d7e][Redis vs Cloud]]
+- Git 诞生：[[id:fd04e72c-16c1-445a-9543-c680e88db803][from Bitkeeper to Git]]
+
+* Insight
+- Web 后端服务与后端框架：[[id:3f8ec5ca-0d6f-4d0f-93ba-58dab7c65614][Web Server vs Framework]]
+- 冯·诺依曼架构与哈佛架构：[[id:b7060f45-26a8-4c89-b631-142076ded4ae][Von Neumann vs Havard Architecture]]
 
 * Novel
 - [[id:b294a890-404e-4852-b565-096ccf1f1fa7][汪曾祺]]
