@@ -10,3 +10,4 @@
 - [[id:0dfaeb2d-bcf5-43c4-963a-67efee165aa8][Gundam]]
 - [[id:5f09f45f-b118-4076-9c09-a95c08808c60][安妮意大利餐厅]]
 - [[id:97e0ee4a-fc51-4871-9e06-d6aee1d136b3][B-Robo]]
+- [[id:ce529e0d-530b-459b-9aa6-cbe1fead6ffc][真爱小熊]]

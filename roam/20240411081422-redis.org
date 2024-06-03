@@ -16,10 +16,3 @@ Redis 与 MySQL 的对比如下：
 
 #+DOWNLOADED: screenshot @ 2024-04-11 08:30:42
 [[file:img/2024-04-11_08-30-42_screenshot.png]]
-
-
-
-
-
-
-

@@ -1,0 +1,80 @@
+:PROPERTIES:
+:ID:       136d2032-4c95-462f-bb01-fd06481a73d2
+:END:
+#+title: GCC
+
+* 搜索头文件
+在 C 语言中使用到函数库的时候，涉及到了库内符号的引用（也就是对头文件的 ~include~ ）和对库（也就是对于 ~.a~ 或者 ~.so~ 文件）的链接。
+
+GCC 对头文件的搜索有 3 个层次，按照优先级高低可以分为：
+
+1. 在 ~-I~ 指定的目录下搜索。
+2. 在环境变量 ~C_INCLUDE_PATH~ 中包含的目录下搜索。
+3. 在 gcc 默认的搜索路径下搜索。
+
+需要强调的是，这种只是会搜索指定路径下的头文件，并不会递归搜索子文件下的头文件（所以为什么要叫做搜索，应该直接叫做指定）。所以如果涉及了子文件夹，那么应当在头文件中有所显示，比如说我想引用 =/usr/include/openssl/aes.h= 这个头文件文件下的内容，而在编译时的选项是 ~-I/usr/include/~ ，那么我在源码中就应该这样书写
+
+#+begin_src c
+#include <openssl/aes.h>
+#+end_src
+
+但是如果我的编译选项是 ~-I/usr/include/openssl/~ ，那么在源码中只需要这样写：
+
+#+begin_src c
+#include <ase.h>
+#+end_src
+
+如果我们希望查看 gcc 默认了哪些头文件搜索路径，可以使用如下命令，这个命令执行了预编译过程，所以可以看出有哪些文件被包括进去了：
+
+#+begin_src shell
+gcc -xc -E -v -
+#+end_src
+
+在我电脑上的是这样的：
+
+#+begin_src shell
+/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include
+/usr/local/include
+/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/include-fixed
+/usr/include
+#+end_src
+
+可以说非常合理，存在 =/usr/include/, /usr/local/include= 两个常见的头文件文件夹，同时还有两个和编译器相关的文件夹。
+
+此外，如果在源码中使用如下 ~include~ 格式：
+
+#+begin_src c
+#include "headerfile.h"
+#+end_src
+
+那么在前面三个层次之上，还会增加一个层级，就是在“源文件当前目录”搜索头文件，而且这种搜索层次的优先级最高。
+
+* 链接库
+库的搜索逻辑与头文件的类似，也是有 3 个层次：
+
+1. 在 ~-L~ 指定的目录下搜索。
+2. 在环境变量 ~LIBRARY_PATH~ 中包含的目录下搜索。
+3. 在 gcc 默认的搜索路径下搜索。
+
+其中 gcc 的默认路径可以使用如下命令查询：
+
+#+begin_src shell
+gcc -print-search-dirs
+#+end_src
+
+结果也非常合理，存在 =/usr/lib/, /usr/local/lib= 两个常见的库文件文件夹，同时还有编译器相关的文件夹：
+
+#+begin_src shell
+usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../x86_64-pc-linux-gnu/lib/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../x86_64-pc-linux-gnu/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../x86_64-pc-linux-gnu/13.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/:/lib/x86_64-pc-linux-gnu/13.2.1/:/lib/../lib/:/usr/lib/x86_64-pc-linux-gnu/13.2.1/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../x86_64-pc-linux-gnu/lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../
+:/lib/:/usr/lib/
+#+end_src 
+
+除此之外，GCC 还可以直接使用 ~-l~ 参数指定链接器链接的库，如
+
+#+begin_src shell
+gcc demo.c -ldl -lpthread -lssl -lcrypto 
+#+end_src
+
+~-l~ 参数会在系统标准库路径中查找一种特定格式的文件，名为 ~lib<library>.a~ 或者 ~lib<library>.so~ 。不得不说有些库的名字非常短，比如说 ~-lm~ 其实说的是一个叫做 ~m~ 的库，而不是两个编译器参数 ~-l, -m~ 连写，不要造成困扰。
+
+头文件搜索路径和库的搜索路径都是在 gcc 编译前 ~./Configure~ 中设定的。

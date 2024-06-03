@@ -1,0 +1,42 @@
+:PROPERTIES:
+:ID:       08c38d77-be39-4cae-8a2c-813a7ba0c158
+:END:
+#+title: Mount
+
+* 基础挂载命令
+~mount~ 命令用于将外存文件系统挂载到 OS 维护的前端文件系统上。其命令格式为
+
+#+begin_src shell
+mount -t <fs_type> <device> <mount point>
+#+end_src
+
+* 显示挂载情况
+如果直接输入 ~mount~ 命令，那么就会显示 OS 当前的挂载情况，但是输出是线性的，不太好看。所以可以使用如下命令获得挂载点的树形显示
+
+#+begin_src shell
+findmnt
+#+end_src
+
+* 多个挂载点
+同一文件系统可以被挂载到多个 mount point，这被称为"bind mount"（多个路径是 bind 在一起的）：
+
+#+begin_src shell
+mount --bind <old_directory> <new_directory>
+#+end_src
+
+其实这并不难理解，它就像是文件系统层面的一个 symbol link。
+
+* 共用挂载点
+反过来，不同的文件系统也可以共用同一个 mount point，新挂载的文件系统会覆盖掉这个位置之前的文件系统。但如果使用"union mount"的形式，最后呈现的目录结构则是新旧文件系统 merge 后的结果：
+
+#+begin_src shell
+mount --union /dev/sdb /mnt
+#+end_src
+
+* 卸载
+挂载的时候需要同时指定块设备和挂载点，而卸载的时候只需指定其中一个元素即可：
+
+#+begin_src shell
+umount <directory>
+umount <device>
+#+end_src

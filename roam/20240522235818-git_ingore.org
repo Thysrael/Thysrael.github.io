@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       504c9c30-d947-4779-9abe-facb736b14d0
+:END:
+#+title: Git Ingore
+
+* 路径
+Git ignore 的路径要写成绝对路径的形式，比如说想要忽略根目录下的 PDF 文件，应该写作：
+
+#+begin_src shell
+/*.pdf
+#+end_src
+
+而如果写作：
+
+#+begin_src shell
+,*.pdf
+#+end_src
+
+那么会导致整个项目里所有的 PDF 文件都被忽略。
+
+* 反选
+可以使用 ~!~ 来确定不要忽略的文件。

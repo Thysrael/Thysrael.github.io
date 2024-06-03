@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/603a762d/cache.drawio.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/603a762d/VIPT.drawio.png">
 <meta property="article:published_time" content="2024-05-03T13:21:29.000Z">
-<meta property="article:modified_time" content="2024-05-04T06:17:47.359Z">
+<meta property="article:modified_time" content="2024-06-02T06:48:02.837Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="直观理解">
 <meta property="article:tag" content="S8课上">
@@ -143,7 +143,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">174</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">175</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -251,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-04 14:17:47" itemprop="dateModified" datetime="2024-05-04T14:17:47+08:00">2024-05-04</time>
+                <time title="Modified: 2024-06-02 14:48:02" itemprop="dateModified" datetime="2024-06-02T14:48:02+08:00">2024-06-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -311,24 +311,24 @@
 <p>交给 Cache 的地址会被分成 3 个部分，即上图的 Tag（蓝色），Index（绿色） 和 Offset（橙色）。检索 Word 的过程是一个“Index-Check-Index”的过程。</p>
 <p>首先我们根据<strong>绿色部分 index</strong> 找到对应的 Cache Set（这是一个像随机地址访问的过程，称之为 Index），因为 Index 是 1，所以我们找到左下角的 Cache Set 1。然后就会发现里面有一堆的 Cache Line，对于这些 Cache Line，我们没有办法直接确定哪一个是我们要找到的 Cache Line，我们需要用地址上的<strong>蓝色部分 Tag</strong> 和 Cache 中的 Tag 进行比对，只有完全相同才是我们要找的 Cache Line，所以我们在此图中选择了第二个 Cache Line（这个过程需要比对所有的 Tag 的所有位，称之为 Check）。在选定 Cache Line 后，我们需要根据<strong>橙色部分 Offset </strong>选择 Cache Line 中具体的 Word，图中 Offset 是 2，所以我们选择第 2 个 Word 交给 CPU（这个过程和绿色部分一样，也是 Index）。</p>
 <p>如果用伪代码描述，是如下过程：</p>
-<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">using Word = char;
-using CacheLine = Word[4];
-using CacheSet = std::set&lt;Tag, CacheLine&gt;;
-using Cache = CacheSet[4];
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">using</span> Word <span class="token operator">=</span> <span class="token keyword">char</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> CacheLine <span class="token operator">=</span> Word<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> CacheSet <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span>set<span class="token operator">&lt;</span>Tag<span class="token punctuation">,</span> CacheLine<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> Cache <span class="token operator">=</span> CacheSet<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-Word find(Tag tag, Index index, Offset offset)
-{
-	CacheSet set = Cache[index];
-	for (auto &amp;entry : set)
-	{
-		CacheLine line = entry.second;
-		if (entry.first == tag)
-		{
-			return line[offset];
-		}
-	}
-	return nullptr;
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+Word <span class="token function">find</span><span class="token punctuation">(</span>Tag tag<span class="token punctuation">,</span> Index index<span class="token punctuation">,</span> Offset offset<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	CacheSet set <span class="token operator">=</span> Cache<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span> <span class="token operator">&amp;</span>entry <span class="token operator">:</span> set<span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		CacheLine line <span class="token operator">=</span> entry<span class="token punctuation">.</span>second<span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>entry<span class="token punctuation">.</span>first <span class="token operator">==</span> tag<span class="token punctuation">)</span>
+		<span class="token punctuation">{</span>
+			<span class="token keyword">return</span> line<span class="token punctuation">[</span>offset<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> <span class="token keyword">nullptr</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述过程基本上描述了“一个 Word 是怎样从 Cache 中根据地址被检索出来”的过程，省略的部分主要是对于 Cache Line valid 和 dirty 等属性的检验。</p>
 <p>对于检索成功的情况，我们称之为 hit（命中），而对于检索失败的情况，我们称之为 miss（缺失）。</p>
 <h3 id="2-2-矛盾"><a href="#2-2-矛盾" class="headerlink" title="2.2 矛盾"></a>2.2 矛盾</h3><p>在上述过程中，Index 具有随机访问的特征，所以会比较快，而 Check 需要对 Set 内的每个 Line 的 Tag 进行比对，所以比较慢。Check 和 Way 直接相关，因为 Way 就是 Set 里 Line 的数量，所以 Way 越大，Check 对硬件性能的要求越高（因为比较电路非常耗片上资源，而且存储 Tag 也需要额外的空间）。但是换一个角度思考，当 Way 变大时，我们命中 Cache 的可能性也会变大，因为此时会存在更多候选的 Line 。所以选择多少 Way 其实是需要权衡的。</p>
@@ -471,7 +471,7 @@ Word find(Tag tag, Index index, Offset offset)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">174</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -541,7 +541,7 @@ Word find(Tag tag, Index index, Offset offset)
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">18:10</span>
+    <span title="Reading time total">18:14</span>
 </div>
 
         
