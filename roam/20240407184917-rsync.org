@@ -20,7 +20,7 @@ make
 make install
 #+end_src
 
-* 使用
+* 功能
 ** 递归同步
 Rsync 的命令格式和 cp 命令非常类似，如下所示：
 
@@ -79,13 +79,26 @@ rsync -av username@remote_host:<src_dir>/ <dst_dir>
 
 ~-Ph~ 参数会显示 progress ，并且文件大小会以人类方便阅读的方式打印，建议加上。
 
-* 使用
-我尝试了一下，比如说
+** filter
+如果希望排除 ~gitignore~ 中指明的文件有一种常见的想法是：
 
 #+begin_src shell
-rsync -anvPh --delete --exclude-from="<src_prj>.gitignore" --exclude="__pycache__" <src_prj>/ <dst_prj>
+rsync -anvPh --delete --exclude-from="<src_prj>/.gitignore" <src_prj>/ <dst_prj>
 #+end_src
 
-这种范式可以同步一个项目（同时还避免了弥散的 =__pycache__= 文件夹）。
+但是这种做法的问题在于， ~gitignore~ 文件并不只在根目录下存在，有可能在其他目录下也存在，所以仅仅指定根目录下的 ~gitignore~ 并不科学。我们可以使用 ~filter~ 参数 ~--filter=":- .gitignore"~ 。
 
-但是对于具有 =submodule= 的项目，感觉使用起来并不方便，这是因为 =.git= 也许要被同步，但是 =submodule= 的 =.git= 在父仓库的 =.git/module/<submodule_name>= 中维护。所以只能同步父目录，但是父目录无法简单的指明 ignore 的对象，所以并不方便。感觉还是使用 [[id:3faf56b4-cecd-4db0-8e2c-ef54375a2f42][Git Pull]] 工作流中的本地和服务器同步的方式方便。
+这个参数本身的含义应该是 ~:~ 表示目录合并（per-directory merge ，我并不知道这是意思）， ~-~ 表示 exclude 。总之用了这个参数就可以利用多个 ~gitignore~ 了。
+
+* 使用
+我目前使用的 ~rsync~ 的原因是为了同步 Git 项目（也就是源码项目），所以常用的命令是这样的：
+
+#+begin_src shell
+rsync -anvPh /source/project/ /destination/project/ --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore' --delete-after
+#+end_src
+
+这种命令简直就是 [[id:3faf56b4-cecd-4db0-8e2c-ef54375a2f42][Git Pull]] 同步方案的简化版，相比于原版，只需要一个命令搞定，而且有的时候还不需要建立仓库，更加灵活。非常适合处理急活儿。
+
+但是 rsync 的 filter 并不一定能正确理解 gitignore 文件，所以严格意义上说，这种方法存在风险。但是具体在哪里存在风险，我就不知道了，具体的讨论可以看[[https://stackoverflow.com/questions/13713101/rsync-exclude-according-to-gitignore-hgignore-svnignore-like-filter-c][这里]]。所以在有条件的情况下，还是应当使用 Git Pull 同步方案。
+
+考虑到很多项目都来源于他人的 Github 项目，所以这种情况下使用 Git 是在所难免的，这种两个工具的不协调也导致了 rsync 的失宠。

@@ -10,3 +10,4 @@
 - 远端仓库：[[id:de9e3146-021b-4bef-b844-c0eb67de0966][Github]]
 - 输入法框架：[[id:63b2a6df-87d0-4189-a609-3de09b0866b4][Fcitx]]
 - 输入法：[[id:440c4422-026f-4499-9760-8983f38b4e02][Rime]]
+- 字体：[[id:8ccee8c2-774b-484d-afed-c539bfaa7f52][Font]]
