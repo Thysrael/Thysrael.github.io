@@ -126,17 +126,17 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">27</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">28</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">53</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">55</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">175</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">176</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,98 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/6a65902d/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/6a65902d/" class="post-title-link" itemprop="url">自由王国-字体</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-06-10 16:08:50 / Modified: 19:49:09" itemprop="dateCreated datePublished" datetime="2024-06-10T16:08:50+08:00">2024-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E7%94%B1%E7%8E%8B%E5%9B%BD/" itemprop="url" rel="index"><span itemprop="name">自由王国</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、编码"><a href="#一、编码" class="headerlink" title="一、编码"></a>一、编码</h2><p>此章的目的是弄清楚 ASCII, GBK, Unicode, UTF-8 编码的区别，大部分知识都来源于<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html">这里</a>。所以我只是简单转述一下：</p>
+<p>ASCII 是最为古老的编码方式，它指的是用一个字节也就是 8 bit 完成编码，实际上只用了 7 bit ，最高位的值衡为 0 （这也成了其他编码方式兼容 ASCII 的一个重要抓手）。也就是说，ASCII 只能编码 2<sup>7</sup> = 128 个文字，这对英文这种只有 26 个字母的语言体系是足够的。</p>
+<p>但是 ASCII 并不能满足很多类似英语的语言体系，比如说 <code>é, ג</code> 这种字符都是原有的 ASCII 所没有的，但是幸运的是，很多语言的字符数本来就不多，比如俄语是 33 个，而法语是基础的 26 个英文字母加音标。所以这些语言同样可以用一个字节进行编码，英语字符占据了 <code>0 ~ 127</code> ，它们就占据了 <code>128 ~ 255</code> 。这样的缺点就是不同国家的 <code>128 ~ 255</code> 表示不同的字母，彼此之间并不兼容。</p>
+<p>但是像汉语这样的语言就没有那么轻松了，他们就算占据了 <code>128 ~ 255</code> 位，也最多增加 128 个字符，这对于有 10 万个字符的汉语来说是杯水车薪。所以中国就开发了 GB2312 编码系统，后来演变成了 GBK 系统。总的来说，就是采用两个 <code>128 ~ 255</code> 的字节来表示一个汉字（应该是差不多），这样的话大约可以表示 2 万多个汉字，但是这样其实有一些生僻一些的字也是无法表示的。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/6a65902d/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -691,106 +783,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/aa45ef5a/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/aa45ef5a/" class="post-title-link" itemprop="url">硬件平台-架构对比</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-03-20 18:57:18" itemprop="dateCreated datePublished" datetime="2024-03-20T18:57:18+08:00">2024-03-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-04-05 17:42:38" itemprop="dateModified" datetime="2024-04-05T17:42:38+08:00">2024-04-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A1%AC%E4%BB%B6%E5%B9%B3%E5%8F%B0/" itemprop="url" rel="index"><span itemprop="name">硬件平台</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>4k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>这篇文章的目的是为了比较各个硬件架构之间的异同点，这是因为我的朋友提到了“硬件是围绕软件来设计的”的观点，所以我觉得许多硬件的差异如果进行对比，可以更好得了解软件需求，看清各式各样的硬件的设计意图。</p>
-<p>但是这篇文章似乎因为选题过于宏大了，导致非常难以下笔，所以这篇文章应该是一个长期维护的文章。</p>
-<p>维护考虑：</p>
-<ul>
-<li>或许可以根据 Linux 的命名方式来区分一些概念？</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/aa45ef5a/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -862,20 +854,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">176</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">55</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -932,7 +924,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">18:14</span>
+    <span title="Reading time total">18:17</span>
 </div>
 
         

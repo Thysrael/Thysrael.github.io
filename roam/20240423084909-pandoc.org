@@ -19,7 +19,7 @@ pandoc input_file -o output_file
 它会根据输入文件和输出文件的后缀名自动判断格式。
 
 * 提取图片
-可以用 ~--extract-media=<dir_name>~ 的形式来识别输入文档中的图片资源，并将其放在固定文件夹内。
+可以用 ~--extract-media=<dir_name>~ 的形式来识别输入文档中的图片资源，并将其放在固定文件夹内。但是这种方式会将文件放到 =dir_name= 文件夹下的具体的文件夹，所以可能会造成一些误解，需要用 typora 修正。
 
 * 标题等级修改
 因为 markdown 的一级 heading 被用作 title ，所以它的二级 heading 才应该是别的文档的一级 heading ，pandoc 针对这种情况提供了 ~--shift-heading-level-by=-1~ 来完成 md2org 的转变，相应的，如果是 org2md ，那么则需要 ~--shift-heading-level-by=1~ 进行转变。
@@ -40,3 +40,28 @@ end
 
 * 输出 Office 
 相比于 markdown 或者 org-mode 的各种不适应，office 的 docx 或者 pptx 却意外好用。基本上转换后调整格式就好了额，数学公式和代码块都有非常好的处理。
+
+* 用例
+** 将 Org 文件转换成 GFM
+如下所示：
+
+#+begin_src shell
+#!/bin/bash
+# -*- mode: shell-script; -*-
+
+# Usage:
+# org2md input.org
+# org2md input.org output.md
+
+org_file=$1
+# remove the extension
+md_file="${org_file%.*}.md"
+# $2 default
+md_file="${2:-$md_file}"
+media_file="${md_file%.*}"
+
+pandoc "$org_file" -o "$md_file" --to=gfm --shift-heading-level-by=1 --wrap=preserve --extract-media="$media_file"
+echo "$md_file done"
+#+end_src
+
+但是最符合标准的转换还是需要 typora 的辅助，因为图片的位置有些缺憾。正因如此， gfm2org 就更难开发了。

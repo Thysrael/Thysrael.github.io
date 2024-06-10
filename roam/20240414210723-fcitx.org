@@ -25,4 +25,4 @@ sudo pacman fcitx5-chinese-addons fcitx5-qt fcitx5-gtk
 sudo pacman -S fcitx5-material-color
 #+end_src 
 
-在安装问皮肤后，还需要按照这个皮肤的 [[https://github.com/hosxy/Fcitx5-Material-Color][README]] 去启用皮肤。
+在安装问皮肤后，还需要按照这个皮肤的 [[https://github.com/hosxy/Fcitx5-Material-Color][README]] 去启用皮肤。基本上就是修改 =~/.config/fcitx5/conf/classicui.conf= 文件
