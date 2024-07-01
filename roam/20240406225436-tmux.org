@@ -54,6 +54,7 @@ tmux kill-session -t <session>
 
 * 命令模式
 和 Vim 类似，可以使用 =C-b := 来输入命令。
+
 * 滚动模式
 在 Tmux 中按 =C-b [= 进入滚动模式，也叫做复制模式（copy-mode）。在这个模式下快捷键和 Emacs 非常类似：
 
