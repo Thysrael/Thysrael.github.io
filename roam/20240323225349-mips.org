@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       437b60d4-fa3f-4dcf-9835-0daf7a58b899
+:END:
+#+title: MIPS
+

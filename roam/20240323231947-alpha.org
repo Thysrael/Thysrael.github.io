@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       810e5c0e-4843-4fa5-b354-f9fc670b1fde
+:END:
+#+title: Alpha
+

@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       de9e3146-021b-4bef-b844-c0eb67de0966
+:END:
+#+title: Github
+
+- [[id:faa1eb5e-de3e-4107-8585-8c5e4ea9a0e0][Github Page]]
+- [[id:fb77b5a2-7654-42b7-824c-74e0ffe000b8][Github Action]]

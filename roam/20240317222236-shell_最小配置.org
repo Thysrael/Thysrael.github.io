@@ -1,0 +1,193 @@
+:PROPERTIES:
+:ID:       08de66b7-c626-4b88-ad6b-0782eb84301a
+:END:
+#+title: Shell 最小配置
+
+本文旨在构造一个方便迁移的 [[id:976a90ce-bc21-4579-ad3a-7a0f12e13fa7][Shell]] 最小配置，不使用插件，也不使用某些特殊 shell 自带的强大功能。
+
+虽然不想承认，但是用到的主要技术是 [[id:49d87135-b21e-4e17-8dbb-7f153ececf4a][ANSI Color]] 。
+
+* Shell Prompt
+这个 Prompt 主要有以下亮点：
+
+- 具有路径，时间，用户名，主机名信息，方便 log 
+- 三行提示符，让信息不再杂乱
+- [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]] Branch 和 Status 集成
+
+#+begin_src shell
+  # ${VALUE} 是展开字符串，$(FUNC) 是捕获 FUNC 的输出
+  PURPLE="\e[1;35m"
+  YELLOW="\e[1;33m"
+  GREEN="\e[1;32m"
+  BLUE="\e[1;34m"
+  RED="\e[1;31m"
+  WHITE="\e[1;37m"
+  RESET="\e[0m"
+
+  git_branch() {
+  branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ //"`"
+  if [ "${branch}" != "" ];then
+      if [ "${branch}" = "(no branch)" ];then
+          branch="`git rev-parse --short HEAD`..."
+      fi
+      echo "$branch"
+  fi
+  }
+
+  git_status() {
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+      local untracked=0
+      local modified=0
+      local modified_updated=0
+      local new_added=0
+      local deleted=0
+      local deleted_updated=0
+      local renamed_updated=0
+
+      local status_items=$(git status --porcelain)
+      if [ -n "$status_items" ]; then
+        while IFS= read -r item; do
+          case "${item:0:2}" in
+            "??") ((untracked++));;
+            "MM") ((modified++)); ((modified_updated++));;
+            " M") ((modified++));;
+            "M ") ((modified_updated++));;
+            "A ") ((new_added++));;
+            " D") ((deleted++));;
+            "D ") ((deleted_updated++));;
+            "R ") ((renamed_updated++));;
+          esac
+        done <<< "$status_items"
+
+        local result=""
+        local index=""
+        local workdir=""
+
+        if [ "$modified" -ne 0 ]; then
+          workdir+="${modified}${BLUE}*${RESET}"
+        fi
+        if [ "$modified_updated" -ne 0 ]; then
+          index+="${modified_updated}${BLUE}*${RESET}"
+        fi
+
+        if [ "$deleted" -ne 0 ]; then
+          workdir+="${deleted}${RED}x${RESET}"
+        fi
+        if [ "$deleted_updated" -ne 0 ]; then
+          index+="${deleted_updated}${RED}x${RESET}"
+        fi
+        if [ "$renamed_updated" -ne 0 ]; then
+          index+="${renamed_updated}${YELLOW}!${RESET}"
+        fi
+        if [ "$untracked" -ne 0 ]; then
+          workdir+="${untracked}${YELLOW}?${RESET}"
+        fi
+        if [ "$new_added" -ne 0 ]; then
+          index+="${new_added}${PURPLE}+${RESET}"
+        fi
+
+        if [ -z "$index" ]; then
+          index="${WHITE}Ծ${RESET}"
+        fi
+        if [ -z "$workdir" ]; then
+          index="${WHITE}Ծ${RESET}"
+        fi
+
+        result="${index} ${workdir}"
+
+        echo "$result"
+      else
+        echo "${WHITE}ԾᴗԾ${RESET}"
+      fi
+    else
+      echo ""
+    fi
+  }
+
+  GIT_STATUS=$(git_status)
+
+  thy_prompt() {
+      # 必须先将它记下来，不然会被掩盖
+      exitstatus=$?
+      result="${GREEN}┌─[${RESET}\u@\h${GREEN}]─[${RESET}\t${GREEN}]\n"
+      result+="├─[${WHITE}\w${GREEN}]"
+
+      last_command=$(history 1 | awk '{print $2}')
+
+      if [ -n "$(git_branch)" ]; then
+          result+="${GREEN}─[${RESET}$(git_branch)${GREEN}]"
+      fi
+
+
+      if [[ $last_command == git* || $last_command == cd* ]]; then
+          GIT_STATUS=$(git_status)
+      fi
+
+      if [ -n "$GIT_STATUS" ]; then
+          result+="${GREEN}─[${RESET}$GIT_STATUS${GREEN}]"
+      fi
+
+      result+="${GREEN}\n└─>${RESET}"
+      if [[ $exitstatus == 0 ]]; then
+          result+="${YELLOW}λ${RESET} "
+      else
+          result+="${RED}λ${RESET} "
+      fi
+
+      PS1="$result"
+      # echo "$result"
+  }
+  # PROMPT_COMMAND 用于每次更新 PS
+  PROMPT_COMMAND=thy_prompt
+#+end_src
+
+* Colorful Commands
+主要利用了 ~--color=auto~ 这个选项
+
+#+begin_src shell
+  alias ls="ls --color=auto"
+  alias ll="ls --color=auto -al"
+  alias grep="grep --color=auto"
+#+end_src
+
+* Alias
+记录方便的 ~alias~
+
+#+begin_src shell
+  alias time="/usr/bin/time"
+
+  # git 
+  alias ga="git add ."
+  alias gc="git commit -m"
+  alias gp="git push"
+  alias gcl="git clone"
+  alias gl="git log --graph --pretty=oneline"
+
+  # tar
+  alias targz="tar -zcvf"
+  alias tarlgz="tar -ztvf"
+  alias tarugz="tar -zxvf"
+#+end_src
+
+* Colorful Man
+使 man page 变成彩色，实际上只使用到了 ~bold, underline~ 。
+
+#+begin_src shell
+  # colourful man page
+  # mb: start blink
+  # md: start blod
+  # me: turn off bold, blink and underline
+  # us: start underline
+  # ue: stop underline
+  # so: start standout
+  # se: stop standout
+  # just use bold and underline
+  export MANROFFOPT=-c
+  export LESS_TERMCAP_mb=$'\E[01;31m'
+  export LESS_TERMCAP_md=$'\E[01;34m'
+  export LESS_TERMCAP_me=$'\E[0m'
+  export LESS_TERMCAP_so=$'\E[01;33;44m'
+  export LESS_TERMCAP_se=$'\E[0m'
+  export LESS_TERMCAP_us=$'\E[04;32m'
+  export LESS_TERMCAP_ue=$'\E[0m'
+#+end_src

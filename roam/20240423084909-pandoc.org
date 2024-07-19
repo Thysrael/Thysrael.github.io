@@ -1,0 +1,67 @@
+:PROPERTIES:
+:ID:       ee08858d-bc37-45ac-a547-d6df13b17a20
+:END:
+#+title: Pandoc
+
+* 总论
+Pandoc 是基于 [[id:aa217bba-decd-4153-8bc7-abdf68bc9710][Haskell]] 开发的文件格式转换工具，功能非常强大，在这篇[[https://sspai.com/post/77206][博客]]中有一些实用技巧。
+
+Pandoc 支持多种文件格式转换，所以它本身其实也在定义格式，不符合 Pandoc 定义的格式的文档，转换是存在问题的；相应的，Pandoc 转换出来的格式，也并不一定符合用户的心意。
+
+虽然大部分问题可以通过增加定制化参数或者 hack Pandoc 解决，但是这也启发我们要尽量*书写和使用符合 Pandoc 标准的文档*。不要沦落到因为文档格式不标准，而导致束手无策（基本上 pandoc 解决不了的问题，其他工具也都解决不了）。
+
+Pandoc 基本格式是:
+
+#+begin_src shell
+pandoc input_file -o output_file
+#+end_src
+
+它会根据输入文件和输出文件的后缀名自动判断格式。
+
+* 提取图片
+可以用 ~--extract-media=<dir_name>~ 的形式来识别输入文档中的图片资源，并将其放在固定文件夹内。但是这种方式会将文件放到 =dir_name= 文件夹下的具体的文件夹，所以可能会造成一些误解，需要用 typora 修正。
+
+* 标题等级修改
+因为 markdown 的一级 heading 被用作 title ，所以它的二级 heading 才应该是别的文档的一级 heading ，pandoc 针对这种情况提供了 ~--shift-heading-level-by=-1~ 来完成 md2org 的转变，相应的，如果是 org2md ，那么则需要 ~--shift-heading-level-by=1~ 进行转变。
+
+* 保留换行
+一些不规范的 markdown 两段之间并没有空行（仅有换行），这会导致 pandoc 将其识别为一段导致错误，可以使用 ~-wrap=preserve~ 来保留换行。
+
+* 输出 org 时的 drawer
+pandoc 生成 [[id:b64bb67b-b0a5-4e1b-8d23-7c33ed0e9ec2][Org-mode]] 文件时，会增加 ~properties~ drawer, 可以使用如下方法去除，首先创建一个 lua 过滤器：
+
+#+begin_src lua
+function Header (header)
+  return pandoc.Header(header.level, header.content, pandoc.Attr())
+end
+#+end_src
+
+然后使用 ~--lua-filter=remove-header-attr.lua~ 参数来避免这一困难。
+
+* 输出 Office 
+相比于 markdown 或者 org-mode 的各种不适应，office 的 docx 或者 pptx 却意外好用。基本上转换后调整格式就好了额，数学公式和代码块都有非常好的处理。
+
+* 用例
+** 将 Org 文件转换成 GFM
+如下所示：
+
+#+begin_src shell
+#!/bin/bash
+# -*- mode: shell-script; -*-
+
+# Usage:
+# org2md input.org
+# org2md input.org output.md
+
+org_file=$1
+# remove the extension
+md_file="${org_file%.*}.md"
+# $2 default
+md_file="${2:-$md_file}"
+media_file="${md_file%.*}"
+
+pandoc "$org_file" -o "$md_file" --to=gfm --shift-heading-level-by=1 --wrap=preserve --extract-media="$media_file"
+echo "$md_file done"
+#+end_src
+
+但是最符合标准的转换还是需要 typora 的辅助，因为图片的位置有些缺憾。正因如此， gfm2org 就更难开发了。

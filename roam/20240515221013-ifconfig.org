@@ -1,0 +1,56 @@
+:PROPERTIES:
+:ID:       5d98cf2a-43f3-4295-b091-49f8b09280ac
+:END:
+#+title: IfConfig
+
+* 网络接口
+IfConfig 命令是 Interface Config 的缩写，Interface 指的是 Network Interface 网络接口。这是 Linux 中的一个概念，它的本质是对于网卡设备的抽象。一个以太网卡或者无线网卡可以是一个网络接口，一个回环设备或者虚拟网卡同样可以是一个网络接口。
+
+网络接口的属性包括以下内容：
+
+- 接口名称：这是用来标识网络接口的名称，如 eth0, wlan0, ens33 等。
+- IP 地址：这是网络接口的 IP 地址，可以是 IPv4 或者 IPv6 地址，通常由网络管理员分配。
+- 子网掩码：它用来确定 IP 地址的哪一部分属于网络地址，哪一部分属于主机地址。
+- 广播地址：这个地址用来发送广播数据包。一个网络设备发送的广播数据包将会送到同一网络的所有设备。
+- MAC 地址：也称为物理地址，它是每个网络接口唯一的硬件标识。
+- MTU：最大传输单位。它决定了该网络接口一次能够发送的最大数据包大小。
+- 是否启用：表示网络接口是否启用。
+- 路由：决定网络接口如何将数据包路由到其他网络。
+
+这里需要区分一下网络接口（Interface）和端口（Port）的区别：端口是 TCP/IP 网络中用于区分不同应用程序或进程的通信通道。一个 IP 地址和端口号的组合就构成了套接字（socket），每个套接字都对应一个特定的网络连接。
+
+在 OSI 网络模型中，网络接口处于较低的物理层和数据链路层，而端口则处于更高的传输层。同一个网络接口上可以有多个活跃的端口，一般每个 TCP 或 UDP 连接都会有一个唯一的端口。
+
+* IfConfig
+IfConfig 就是一个用于配置和显示网络接口的命令行工具，我们用如下命令来展示网络接口属性
+
+#+begin_src shell
+# 显示启用的接口
+ifconfig
+# 显示全部接口
+ifconfig -a
+#+end_src
+
+用如下命令配置接口
+
+#+begin_src shell
+# 启用或者关闭接口
+ifconfig <interface_name> up/down
+# 配置接口 IP 
+ifconfig <interface_name> <ip_address>
+#+end_src
+
+* IP
+似乎 ifconfig 命令已经逐渐被淘汰了，它的继任者是 ip 命令，我并不是很熟悉。据说因为它使用的是 ~Netlink~ 套接字，而不是 ~ioctl~ 系统调用，所以更先进。
+
+如果希望展示网络接口，可以用：
+
+#+begin_src shell
+ip addr show
+#+end_src
+
+如果希望启用或者关闭接口
+
+#+begin_src shell
+ip link set interface up|down
+#+end_src

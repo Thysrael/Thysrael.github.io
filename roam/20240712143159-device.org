@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       a0e6a0e6-7341-43ed-bec6-9a442e8007ed
+:END:
+#+title: Device
+
+这里记录我所知道的设备：
+
+- [[id:39455c08-d2eb-49ae-9afe-c951113e086e][Console, Terminal, TTY]]
+- [[id:08f158a5-849d-470c-a16f-33d782068dc0][SD vs eMMC]]
+- [[id:70d01197-a7a9-45a2-825a-d93b3a20bdca][GPIO]]

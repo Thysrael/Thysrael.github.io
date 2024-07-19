@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       ee998e13-2c2c-4526-a8e3-172135a7bae5
+:END:
+#+title: C++11
+
+C++11 是自 1998 年 CPP 首次被 [[id:4b8c5781-98b6-4e3b-a837-dbe7d47b4ba7][ISO]] 标准化以来变化最大的一个新标准。

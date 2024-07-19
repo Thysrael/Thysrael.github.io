@@ -1,0 +1,235 @@
+:PROPERTIES:
+:ID:       df9b542e-b415-4544-9bc3-a660368efef7
+:END:
+#+title: Yaml
+
+* 配置语言
+*Yaml* 是一种用于写配置文件的语言。我个人觉得写配置文件并不需要语言具有过强的计算能力，而是需要语言可以更加清晰的描述配置的数据结构。
+
+Yaml 的基本语法规则如下：
+
+- *大小写敏感*
+- 使用 *缩进* 来描述层次结构，缩进不能使用 tab 只能用 space ，缩进的多少不重要，重点是可以对齐
+- 用 ~#~ 表 *注释*
+- 支持 *字典，数组，纯量* 3 种数据结构
+
+Yaml 语法简单（最难的居然是用空格左对齐），介绍 Yaml 较好的教程是[[https://www.ruanyifeng.com/blog/2016/07/yaml.html][阮一峰博客]] ，此外对于拿不准的语法，可以在这个[[https://nodeca.github.io/js-yaml/][网站]]转换成 [[id:5017bd42-044f-4003-9685-6a8d634f0512][JSON]] 格式查看。
+
+* 语法
+** 字典
+字典就是一组 Key-Value 对，用 ~:~ 声明一个 Key-Value 对，如下所示：
+
+#+begin_src yaml
+  name: Steve
+  age: 18
+#+end_src
+
+如果用 JSON 来表达就是：
+
+#+begin_src javascript
+  { "name": 'Steve', "age": 18 }
+#+end_src
+
+字典还有一种行内表达方式，如下所示：
+
+#+begin_src yaml
+  { name: Steve, age: 18 } 
+#+end_src
+
+** 数组
+一组连词线开头的行，构成一个数组。
+
+#+begin_src yaml
+  - Cat
+  - Dog
+  - Goldfish
+#+end_src
+
+对应的 JSON 是：
+
+#+begin_src javascript
+  [ 'Cat', 'Dog', 'Goldfish' ]
+#+end_src
+
+Yaml 同样提供了数组的行内表示法：
+
+#+begin_src yaml
+  [Cat, Dog, Goldfish]
+#+end_src
+
+数据结构的子成员是一个数组，则可以在该项下面缩进一个空格：
+
+#+begin_src yaml
+  -
+   - Cat
+   - Dog
+   - Goldfish
+#+end_src
+
+对应的 JSON 是：
+
+#+begin_src javascript
+  [ [ 'Cat', 'Dog', 'Goldfish' ] ]
+#+end_src
+
+** 纯量
+*** 其他
+Yaml 提供了多种数据类型，不过其实可以分为字符串类和非字符串类，字符串类的语法要更加复杂，而其他数据类型的语法非常简单直白。
+
+- 布尔值： ~true, false, True, False, TRUE, FALSE~
+- null: ~~~ ，如果空着也默认是 null
+- 整数： ~12, 0b1010, 0x77, 0xff~
+- 浮点数： ~3.14, 6.8523015e+5~
+- 日期： ~2018-02-17~
+- 时间： ~2018-02-17T15:02:31+08:00~
+
+其中布尔值可以具有多种写法，整数可以使用多种数制，浮点数可以使用科学计数法，日期和时间遵循的都是 ISO-8601 格式，对于日期，需要用 ~yyyy-MM-dd~ 格式，对于时间，时间和日期之间使用 ~T~ 连接，最后使用 ~+~ 代表时区。
+
+*** 字符串
+**** 冲突
+Yaml 中的字符串默认是不用引号的，如下所示：
+
+#+begin_src yaml
+  str: 这是一行字符串
+#+end_src
+
+对应的 JSON 就是
+
+#+begin_src javascript
+  { "str": '这是一行字符串' }
+#+end_src
+
+这就引发了一个问题，就是其他类型也不用引号，所以我们没法简单的表达一个 ~'true'~ 类型，如果我们这么写
+
+#+begin_src yaml
+  str: true
+#+end_src
+
+是不起作用的。所以要么可以使用强制类型转换：
+
+#+begin_src yaml
+  str: !!str true
+#+end_src
+
+需要用引号显式声明：
+
+#+begin_src yaml
+  str: 'true'
+#+end_src
+
+用引号还可以避免如 ~:, -~ 这样的关键词干扰。
+
+双引号和单引号都可以，单引号不会对特殊字符转义。单引号之中如果还有单引号，必须连续使用两个单引号转义。
+
+**** 多行字符串
+字符串可以写成多行，从第二行开始，必须有一个单空格缩进。换行符会被转为空格。
+
+#+begin_src yaml
+  str: 这是一段
+    多行
+    字符串
+#+end_src
+
+对应的 JSON 为：
+
+#+begin_src javascript
+  { "str": '这是一段 多行 字符串' }
+#+end_src
+
+多行字符串可以使用 ~|~ 保留换行符，也可以使用 ~>~ 折叠换行：
+
+#+begin_src yaml
+  this: |
+    Foo
+    Bar
+  that: >
+    Foo
+    Bar
+#+end_src
+
+对应的 JSON 为：
+
+#+begin_src javascript
+  { "this": 'Foo\nBar\n', "that": 'Foo Bar\n' }
+#+end_src
+
+~+~ 表示保留文字块末尾的换行， ~-~ 表示删除字符串末尾的换行。
+
+#+begin_src yaml
+  s1: |
+    Foo
+
+  s2: |+
+    Foo
+
+  s3: |-
+    Foo
+#+end_src
+
+对应的 JSON 为：
+
+#+begin_src javascript
+  { "s1": 'Foo\n', "s2": 'Foo\n\n\n', "s3": 'Foo' }
+#+end_src
+
+** 引用
+我其实没有太看懂，其中 ~&~ 用于声明一个引用， ~*~ 用来使用这个引用。关键是 ~&~ 似乎只能在两个特殊的位置出现，一个是 ~key:~ 的 ~:~ 之后，用 ~*~ 会获得 ~key~ 所表示的节点，如下所示：
+
+#+begin_src yaml
+  this: &label 
+    - son0
+    - son1 
+  that: *label
+#+end_src
+
+对应的 JSON 是：
+
+#+begin_src javascript
+  { "this": [ 'son0', 'son1' ], "that": [ 'son0', 'son1' ] }
+#+end_src
+
+另一种是表示数组的 ~-~ 之后，纯量之前（不是纯量就不行），如下所示：
+
+#+begin_src yaml
+  - &label scalar
+  - *label
+#+end_src
+
+对应的 JSON 是：
+
+#+begin_src javascript
+  [ 'scalar', 'scalar' ]
+#+end_src
+
+~<<~ 表示将引用的内容合并到当前字典，局限性似乎非常大：
+
+#+begin_src yaml
+  defaults: &defaults
+    adapter:  postgres
+    host:     localhost
+
+  development:
+    database: myapp_development
+    <<: *defaults
+#+end_src
+
+等价于
+
+#+begin_src yaml
+  defaults:
+    adapter:  postgres
+    host:     localhost
+
+  development:
+    database: myapp_development
+    adapter:  postgres
+    host:     localhost
+#+end_src
+
+* 缩进层次结构
+我个人感觉比较难以理解的是无论是字典还是数组，都没有像其他语言里那种明确的 ~[], {}~ 分界符，以致于不熟悉时，很难分清某段代码，是“有 3 个元素的数组”，还是“只有 1 个元素的数组，这个元素是一个有 3 个元素的数组”？
+
+其实关键在于“缩进”，有如下规则：
+
+- 利用缩进可以形成一颗树
+- 兄弟节点必须是相同类型，要么用 ~:~ ，要么用 ~-~ 。

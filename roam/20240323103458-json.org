@@ -1,0 +1,25 @@
+:PROPERTIES:
+:ID:       5017bd42-044f-4003-9685-6a8d634f0512
+:END:
+#+title: JSON
+
+相比 [[id:c18b3c56-cf81-4df5-9657-5a19bcf4e7be][XML]] 和 [[id:df9b542e-b415-4544-9bc3-a660368efef7][Yaml]]，JSON 的语法还真是简单和规范呀。从[[https://www.json.org/json-en.html][这里]]的自动机图中可以看出。
+
+JSON 同样支持 *对象，数组，纯值* 三种类型。解析器从 *对象* 开始解析，对象是一组键值对，其中 key 一定是一个有引号的 ~string~ ，如下所示：
+
+#+DOWNLOADED: screenshot @ 2024-03-23 15:57:53
+[[file:img/2024-03-23_15-57-53_screenshot.png]]
+
+ 
+确实在一些地方有 ~key~ 直接是一个不带引号的 ~symbol~ 的情况，但是这种用法一般用在 [[id:5be19847-0df3-40e7-a546-3288bd234c54][Javascript]] 中，应该是一个语法糖。而在 JSON 中，为了统一地描述那些带有空格的 key ，规定必须用 ~string~ 来表示 ~key~ 。
+
+而 ~value~ 的值又对应一下几种类型：
+
+#+DOWNLOADED: screenshot @ 2024-03-23 15:59:45
+[[file:img/2024-03-23_15-59-45_screenshot.png]]
+
+其中 ~array~ 这个类型如下定义：
+
+#+DOWNLOADED: screenshot @ 2024-03-23 16:00:26
+[[file:img/2024-03-23_16-00-26_screenshot.png]]
+

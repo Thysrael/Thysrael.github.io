@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       f0bdd667-1215-488c-bfd8-f780b53fea42
+:END:
+#+title: Tmux MiniConfg
+
+配置需要存储在 =~/.tmux.conf= 中。
+
+#+begin_src conf
+set -g mouse on
+set -g default-terminal "screen-256color"
+set -g history-limit 6400
+bind-key   @ choose-window 'join-pane -h -s "%%"'
+bind-key C-@ choose-window 'join-pane    -s "%%"'
+#+end_src

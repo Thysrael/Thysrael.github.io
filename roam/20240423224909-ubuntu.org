@@ -1,0 +1,26 @@
+:PROPERTIES:
+:ID:       8e3d5527-8c90-4c7b-a0ea-34d6b2e8ed3d
+:END:
+#+title: Ubuntu
+
+* Apt
+~apt~ 是 Ubuntu 上的包管理器，它有如下命令：
+
+#+begin_src shell
+# install
+sudo apt install package
+# remove
+sudo apt remove package
+# remove and delete config file
+sudo apt remove --purge package
+# update package list
+sudo apt update
+# upgrade installed package
+sudo apt upgrade
+# search the package
+sudo apt search package
+#+end_src
+
+其中值得强调的是，安装或者包的时候，并不会完全连网，包的搜索是在 =/etc/apt/sources.list= 下进行的，所以如果这个文件比较落后，那么安装和更新会并不及时，所以如果没有安装到符合预期的包，那么可以先使用 ~sudo apt update~ 来先更新。
+
+此外，我们还常见到 ~apt-get~ 指令，这个指令是 ~apt~ 的“前辈”， ~apt~ 可以兼容 ~apt-get~ 的命令，两者的命令都很类似， ~apt~ 的优点在于对于 ~search~ 的支持更好，并且可以支持更加复杂的依赖关系，更新包时会删除旧版本的包。

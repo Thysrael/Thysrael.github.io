@@ -1,0 +1,201 @@
+:PROPERTIES:
+:ID:       f2189871-0f1e-43e9-8357-9975cdbeca9f
+:END:
+#+title: C++ Namespace
+
+* 比喻为文件系统
+C++ 的 namspace 机制可以减少全局重名符号的冲突，方便项目管理。
+
+我个人觉得，namespace 的设计机制和文件系统的索引机制非常类似。
+
+* 路径检索
+众所周知，我们可以使用 ~::~ 配合具体的 namespace 名称来索引某个具体的符号，如下所示：
+
+#+begin_src C++
+#include <iostream>
+
+namespace A {
+	namespace B {
+		int value = 514;
+	}
+}
+
+void pr_val() {
+	printf("value: %d\n", A::B::value);
+}
+
+int main()
+{
+	pr_val();
+	return 0;
+}
+#+end_src
+
+#+RESULTS:
+: value: 514
+
+为了方便描述，我们称 ~pr_value~ 中的 ~A::B::~ 为 *路径* 。直观上，我们顺着路径一个个 namspace 找到我们需要的 value 。
+
+如果 ~pr_value~ 本身在某个 namsepace 中，那么应该遵循什么规则呢？核心是这样的，以当前 namespace 根据路径开始索引，如果没有索引到，就在上一级 namespace 中根据路径开始索引。如下所示：
+
+#+begin_src C++
+#include <iostream>
+
+namespace A {
+	namespace B1 {
+		int value1 = 514;
+		int value2 = 515;
+	}
+
+	namespace B2 {
+		namespace B3 {
+			int value1 = 516;
+		}
+
+		void pr_val();
+	}
+}
+
+void A::B2::pr_val()
+{
+	// 当前路径为 A::B2 ，根据 B3 可以获得绝对路径 A::B2::B3::value1 
+	printf("A::B2::B3::value1: %d\n", B3::value1);
+	// 当前路径为 A::B2 ，根据 B1 获得 A::B2::B1 ，然而并不存在目标
+	// 退回父 namsepace ，路径为 A ，根据 B1 获得 A::B1 ，找到目标
+	printf("A::B1::value2: %d\n", B1::value2);
+	// 使用绝对路径
+	printf("A::B1::value1: %d\n", ::A::B1::value1);
+}
+
+
+
+int main()
+{
+	A::B2::pr_val();
+	return 0;
+}
+#+end_src
+
+#+RESULTS:
+: A::B2::B3::value1: 516
+: A::B1::value2: 515
+: A::B1::value1: 514
+
+需要注意的是，上文说的 *“没有找到”* 指的是没有找到对应的 namespace 而非 namespace 里具体的符号，到找不到 namespace 的时候会发生“回退”现象，但是如果找到了 namespace 而没有找到其中的符号，则不会发生回退现象，如下所示：
+
+#+begin_src C++
+#include <iostream>
+
+namespace A {
+	namespace B1 {
+		int value1 = 514;
+		int value2 = 515;
+	}
+
+	namespace B2 {
+		namespace B1 {
+			int value1 = 516;
+		}
+		
+		void pr_val();
+	}
+}
+
+void A::B2::pr_val()
+{
+	// 当前路径为 A::B2 ，根据 B1 可以获得绝对路径 A::B2::B1::value1 
+	printf("A::B2::B1::value1: %d\n", B1::value1);
+	// ERROR
+	printf("A::B1::value2: %d\n", B1::value2);
+	// 当前路径为 A::B2 ，根据 B1 获得 A::B2::B1
+	// 存在 A::B2::B1 但是不存在 A::B2::B1::value2
+	// 此时并不会回退到 A::B1::value2 中
+}
+
+int main()
+{
+	A::B2::pr_val();
+	return 0;
+}
+#+end_src
+
+#+RESULTS:
+: error：‘value2’ is not a member of ‘A::B2::B1’; did you mean ‘value1’?
+:    30 |         printf("A::B1::value2: %d\n", B1::value2);
+:       |                                           ^~~~~~
+:       |                                           value1
+
+总的来说，这种方式是一种 *“相对路径”* 的查找法，但是和 Linux 文件系统的路径不同，它不需要显式指定 ~../bro~ 来去索引兄弟文件夹下的内容，而是在子文件夹没有的情况时，自动搜索兄弟文件夹。
+
+其实我们也可以 ~::~ 开头的命令来表示 *“绝对路径”* ，如上所示。
+
+这种 namespace 的特殊路径检索方法是构成各种 namespace 奇技淫巧的核心。
+
+* 匿名 Namespace 
+当定义一个命名空间时，可以忽略这个命名空间的名称：
+
+#+begin_src c++
+namespace {
+    char c;
+    int i;
+    double d;
+}
+#+end_src
+
+编译器在内部会为这个命名空间生成一个唯一的名字，而且还会为这个匿名的命名空间生成一条 using 指令。所以上面的代码在效果上等同于：
+
+#+begin_src c++
+namespace __UNIQUE_NAME_ {
+    char c;
+    int i;
+    double d;
+}
+using namespace __UNIQUE_NAME_;
+#+end_src
+
+这些名称具有 =internal= 链接属性，这和声明为 =static= 的全局名称的链接属性是相同的，即名称的作用域被限制在当前文件中，无法通过在另外的文件中使用 =extern= 声明来进行链接。
+
+需要注意的是，这是一个语法的特殊用法，并没法简单用普通的 namespace 机制解释，namespace 本身是具有全局可见性的，而 ~using~ 指令只有 =internal= 属性。 
+
+C++ 提倡使用匿名 Namespace 代替原本的 =static= ，有如下原因：
+
+- 减轻 =static= 的多重语义负担
+- 允许嵌套
+- 可以将 =class declare= 赋予 =internal= 属性
+
+* “快捷方式”
+我们在 C++ 中常会见到使用 ~using~ 的关键字的情况，如下所示：
+
+#+begin_src C++
+#include<iostream>
+using namespace std;
+
+namespace A {
+	namespace B {
+		int value = 5;
+	}
+	
+	namespace C {
+		int value = 6;
+	}
+}
+
+using A::B::value;
+// using A::C::value; ERROR!
+
+int main()
+{
+	cout << value << endl;
+}
+#+end_src
+
+#+RESULTS:
+: 5
+
+使用 ~using~ 可以避免繁琐的命名空间书写。
+
+但是有些事情一直困惑我，“使用 ~using~ 会不会导致符号的重复”，其实是有概率的，但是这种情况并不会发生符号的覆盖，而是会直接报错。所以不用杞人忧天，去担心当符号出现重复时的 UB 。
+
+我们可以将 ~using~ 理解为“快捷方式的创建”，可以将复杂的文件路径压缩到当前文件夹。
+
+而 ~using namespace~ 的用法更像是挂载，这个 namespace 下的所有符号都可以使用。这种挂载同样不允许符号的重复。

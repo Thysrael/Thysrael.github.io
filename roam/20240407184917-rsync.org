@@ -1,0 +1,104 @@
+:PROPERTIES:
+:ID:       97a65fac-1627-4324-90f8-4fc3c5a7807e
+:END:
+#+title: Rsync
+
+Rsync 是一个远程文件同步工具，与 [[id:def6a1dd-c8c7-4ebd-b85c-d1c6af0d8122][Ftp]] 等文件传输工具不同，它仅同步有变动的部分，效率更高。
+
+* 安装
+同步的双方均安装 Rsync, 依赖比较多，所以在服务器上采用手动安装到用户目录的方式：
+
+#+begin_src shell
+# 高版本的依赖比较多
+wget https://rsync.samba.org/ftp/rsync/src/rsync-3.1.3.tar.gz
+# 解压
+tar xvzf rsync-3.1.3.tar.gz
+# 设置安装目录并安装
+cd rsync-3.1.3
+./configure --prefix=$HOME/.local/
+make
+make install
+#+end_src
+
+* 功能
+** 递归同步
+Rsync 的命令格式和 cp 命令非常类似，如下所示：
+
+#+begin_src shell
+rsync <source> <destination>
+#+end_src
+
+如果希望同步目录，可以使用 ~-r~ 参数，但是更推荐使用 ~-a~ 参数，archieve 参数除了可以递归同步以外，还可以同步元信息（比如修改时间、权限等）。由于 =rsync= 默认使用文件大小和修改时间决定文件是否需要更新，所以 ~-a~ 比 ~-r~ 更有用。格式如下：
+
+#+begin_src shell
+rsync -a <src_dir> <dst_dir>
+#+end_src
+
+这样会在目标文件夹下生成一个 =dst_dir/src_dir= 的结构，如果希望将 =dst_dir= 内容完全同步成 =src_dir= ，而不是其下的一个子文件夹，就应当使用如下命令：
+
+#+begin_src shell
+rsync -a <src_dir>/ <dst_dir>
+#+end_src
+
+** 同步删除
+默认情况下， =rsync= 只确保源目录的所有内容（明确排除的文件除外）都复制到目标目录。它不会使两个目录保持相同，并且不会删除文件。如果要使得目标目录成为源目录的镜像副本，则必须使用 ~--delete~ 参数，这将删除只存在于目标目录、不存在于源目录的文件。
+
+#+begin_src shell
+rsync -a --delete <src_dir>/ <dst_dir>
+#+end_src
+
+上面命令中， ~--delete~ 参数会使得 ~dst_dir~ 成为 ~src_dir~ 的一个镜像。
+
+** 排除文件
+如果有些文件或者文件夹不希望同步，可以使用如下命令：
+
+#+begin_src shell
+rsync -a --exclude="exclude" <src_dir>/ <dst_dir>
+#+end_src
+
+支持通配符或者多次使用。
+
+如果需要排除的文件太多了，那么可以使用 ~--exclude-from~ 参数，这个参数会读取一个 =ignore= 文件，没错，现在就可以复用 =.gitignore= 文件了，如下所示：
+
+#+begin_src shell
+rsync -a --delete --exclude-from=".gitignore" <src_dir>/ <dst_dir> 
+#+end_src
+
+** 远程同步
+Rsync 支持 [[id:dc3d220f-6007-4c3f-a7f3-b205c3c2b966][Ssh]] 协议，所以可以使用 ssh 在本地和服务器上进行同步，如下所示：
+
+#+begin_src shell
+rsync -av <src_dir>/ username@remote_host:<dst_dir>
+rsync -av username@remote_host:<src_dir>/ <dst_dir>
+#+end_src
+
+** 显示
+~-v~ 参数会让打印 =rsync= 的所有输出，也就是一个增量传输文件列表，这样可以清楚的知道自己同步了哪些文件，同时如果配合 ~-n~ 也就是 ~--dry-run~ 选项， =rsync= 并不会实际进行传输，而只是模拟执行，打印传输列表。两者配合在一起，可以用于 debug 。
+
+~-q~ 参数会省略一些打印信息，只打印无法传输的部分（有可能是因为 docker 导致的 root 权限问题）。同样可以配合 ~-n~ 用于确定打印问题。
+
+~-Ph~ 参数会显示 progress ，并且文件大小会以人类方便阅读的方式打印，建议加上。
+
+** filter
+如果希望排除 ~gitignore~ 中指明的文件有一种常见的想法是：
+
+#+begin_src shell
+rsync -anvPh --delete --exclude-from="<src_prj>/.gitignore" <src_prj>/ <dst_prj>
+#+end_src
+
+但是这种做法的问题在于， ~gitignore~ 文件并不只在根目录下存在，有可能在其他目录下也存在，所以仅仅指定根目录下的 ~gitignore~ 并不科学。我们可以使用 ~filter~ 参数 ~--filter=":- .gitignore"~ 。
+
+这个参数本身的含义应该是 ~:~ 表示目录合并（per-directory merge ，我并不知道这是意思）， ~-~ 表示 exclude 。总之用了这个参数就可以利用多个 ~gitignore~ 了。
+
+* 使用
+我目前使用的 ~rsync~ 的原因是为了同步 Git 项目（也就是源码项目），所以常用的命令是这样的：
+
+#+begin_src shell
+rsync -anvPh /source/project/ /destination/project/ --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore' --delete-after
+#+end_src
+
+这种命令简直就是 [[id:3faf56b4-cecd-4db0-8e2c-ef54375a2f42][Git Pull]] 同步方案的简化版，相比于原版，只需要一个命令搞定，而且有的时候还不需要建立仓库，更加灵活。非常适合处理急活儿。
+
+但是 rsync 的 filter 并不一定能正确理解 gitignore 文件，所以严格意义上说，这种方法存在风险。但是具体在哪里存在风险，我就不知道了，具体的讨论可以看[[https://stackoverflow.com/questions/13713101/rsync-exclude-according-to-gitignore-hgignore-svnignore-like-filter-c][这里]]。所以在有条件的情况下，还是应当使用 Git Pull 同步方案。
+
+考虑到很多项目都来源于他人的 Github 项目，所以这种情况下使用 Git 是在所难免的，这种两个工具的不协调也导致了 rsync 的失宠。

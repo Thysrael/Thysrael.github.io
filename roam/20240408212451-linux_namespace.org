@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       dc0fa854-6826-4b9d-9f6e-f70f16db8f32
+:END:
+#+title: Linux Namespace
+
+Linux 命名空间（namespace）是一种功能强大的机制，用于在内核级别隔离和管理系统资源，使得不同进程组可以独立地执行各自的任务，而不会互相干扰。

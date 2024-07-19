@@ -1,0 +1,78 @@
+:PROPERTIES:
+:ID:       3f8ec5ca-0d6f-4d0f-93ba-58dab7c65614
+:END:
+#+title: Web Server vs Framework
+
+我之前只了解后端框架（Web Framework），我一直以为这就是后端的全部了，在服务器上运行一个后端框架程序（App），并暴露到特定端口（[[id:f410c15c-aa8c-4bd5-93ba-d7d85b265d93][HTTP]] 是 80 端口），用户就会通过这个端口和后端进行通信，浏览器发送 http request, 后端发送给浏览器 html, css, [[id:5be19847-0df3-40e7-a546-3288bd234c54][js]] 三件套。例子有 Rails, [[id:d88ab72e-c442-497b-844b-4bc29a32bcda][Django]] 等。
+
+示意图如下所示：
+
+#+begin_src artist
+                                        
+     +---------------+                  
+     |               | render html and css
+     |    Browser    | run javascript   
+     |               |                  
+     +----+-----+----+                   
+          |     ^                       
+  HTML    |     |                       
+ Request  |     |                       
+         +-------+                      
+---------|  P80  |-------------------------
+         +-------+                      
+          |     |  html, css            
+          |     |  javascript           
+          v     |                       
+      +---+-----+----+                  
+      |              |                  
+      |  Backend App | maintain states  
+      |              | build web content
+      +--------------+
+         
+#+end_src
+
+在这其中后端 APP 承担了维护状态（因为 http 本身无状态）和生成 web 页面的工作（也就是生成 html, css, js）。
+
+但是存在两个问题：
+
+- 一个操作系统只有一个 80 端口，那么一个操作系统只能和一个后端 APP 通信。
+- 后端框架的核心任务是维护 http 维护不了的状态，降低开发的难度，但是如果有很多用户访问 80 端口，这就涉及了高并发吞吐量的场景。这并不是后端框架擅长解决的。
+
+所以“和多个用户进行高并发通信，分发 request 和 response”的任务并不是后端框架来完成，而是用 Web Server 来完成，常见的 Web Server 有 [[id:3eb44776-e09f-4c4e-b3cc-93357b4f60ca][Apache]] 和 [[id:395dc289-21cb-429d-acce-90dbc633cc9d][Nginx]] 。整体架构图变成了这样：
+
+#+begin_src artist
+                                        
+     +---------------+                  
+     |               | render html and css
+     |    Browser    | run javascript   
+     |               |                         
+     +----+-----+----+                   
+          |     ^                       
+  HTML    |     |                                       
+ Request  |     |                                       
+         +-------+                                      
+---------|  P80  |--------------------------------      
+         +-------+                           
+          |     |  html, css                 
+          |     |  javascript                
+          v     |                            
+      +---+-----+----+                       
+      |              |     HTTP
+      |  Web Server  | throughoutput         
+      |              |                       
+      +------+-------+                       
+             +------------------------+      
+             |        maintain        |      
+      +------+-------+  state  +------+-------+
+      |              |         |              |
+      | Backend App1 |         | Backend App2 |
+      |              |         |              |
+      +--------------+         +--------------+
+                     
+#+end_src
+
+总结一下：
+
+对于像 django、rails、sinatra、spring-mvc 这样的 Web 框架，主要关注的是开发的简易性、对请求对象的完整访问、在需要时维护某些状态的能力，最重要的是，有一种方法来编写所有的业务层逻辑。
+
+对于像 apache、tomcat、nginx 这样的 Web 服务器，面临的挑战是并行执行、同时维护与数千个用户的连接（并发性）。能够在给定时间内传输大量数据（吞吐量）等。

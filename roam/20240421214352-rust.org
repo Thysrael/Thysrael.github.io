@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       bd3fe176-7567-4ace-ae72-8a36f951332e
+:END:
+#+title: Rust
+
+- 工具链控制：[[id:089e2a1b-ec0e-4f53-b205-80e20f572541][RustUp]]

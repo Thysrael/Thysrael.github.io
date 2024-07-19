@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       b7cbbb61-17ec-450c-b6d4-1c919b86d53b
+:END:
+#+title: Microsoft
+

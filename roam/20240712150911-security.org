@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       774bd682-2a02-44c9-b9cd-e9b65ca92232
+:END:
+#+title: Security
+
+- [[id:3074726d-e51d-438a-b6bc-c5bc26975a53][加密]]
+- [[id:a12d0c4c-921f-4302-b205-78f0da8635ab][Hierarchical vs Capability]]

@@ -1,0 +1,25 @@
+:PROPERTIES:
+:ID:       1d40ec33-ad1b-4bfe-b857-85251724ec43
+:END:
+#+title: ROOT
+#+filetags: :root:
+
+这是一切的起点。虽然卡片笔记会构成一个网状结构，但是我依然希望存在一个根节点，通过它可以方便的访问所有节点。换句话说，我要维护这张网上的树形结构。
+
+引入树形结构会让 Roam 变得更加杂乱且有些生硬。如果不喜欢可以点击左上角 =Filter ==> Tag filters ==> Add tag to tag blocklist= 过滤 =root= 标签。
+
+- [[id:faa09ef8-bc14-4f41-a501-0cc81318b884][方法论]]
+- [[id:e424f62d-8e62-4e91-86b3-0ca2f615ab4c][Story]]
+- [[id:a64a206b-3db3-4401-bce3-54ed5bc5ab2b][Work]]
+- [[id:a9f007fa-a472-403b-b628-627eea16d3b6][Study]]
+- [[id:2446ba47-29b0-48d3-9e12-685bea4679d5][Project]]
+- [[id:fe4fc452-1f5d-40de-9feb-77e1f6ada152][Dear AJ]]
+
+#+DOWNLOADED: screenshot @ 2024-03-16 20:05:18
+[[file:img/2024-03-16_20-05-18_screenshot.png]]
+
+#+begin_quote
+Can you hear me? 
+
+Call me /ROOT/!
+#+end_quote

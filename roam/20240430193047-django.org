@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       d88ab72e-c442-497b-844b-4bc29a32bcda
+:END:
+#+title: Django
+
+确实应该念“姜戈”， ~d~ 不发音，因为昆汀有一部电影叫做《Django Unchained》，也就是“被解救的姜戈”。

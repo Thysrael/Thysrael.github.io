@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       7351996e-f1b8-4054-8c79-17285f48af42
+:END:
+#+title: Virtualization
+
+- [[id:ea15802a-7023-4bcd-978b-8e338092a7ba][eBPF]]
+- [[id:d5e96e08-d27e-4166-9566-02a623f387af][CGroups]]
+- [[id:dc0fa854-6826-4b9d-9f6e-f70f16db8f32][Linux Namespace]]

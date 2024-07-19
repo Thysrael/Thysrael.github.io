@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       63b2a6df-87d0-4189-a609-3de09b0866b4
+:END:
+#+title: Fcitx
+
+* 输入法框架
+fcitx（Free Chinese Input Toy for X）是一个输入法框架，需要注意它并不是输入法本身，在安装完后还需要安装诸如搜狗或者 [[id:440c4422-026f-4499-9760-8983f38b4e02][Rime]] 输入法。
+
+* 竞品对比
+这个部分我也不太清楚，反正还有一款输入法框架被叫做 Ibus ，但是具体效果是怎样的，就不得而知。似乎 [[id:728880f1-44b8-40de-b6ba-7aea8a98e82d][KDE]] 桌面支持 fcitx 更好，而 [[id:5e1706c8-0bcb-4113-a251-5c5c3a2cef9a][Gnome]] 桌面支持 Ibus 更好。
+
+此外并不是所有的输入法都能在任何一个输入法框架中运行，据说 Ibus 支持的输入法少了一些。
+
+此外，fcitx5 是 fcitx 的完全继任者，所以如果两种都可以安装的话，推荐 fctix5 。
+
+* 安装
+正如前文所说，我们安装 fcitx5 作为更好的选择，执行如下命令
+
+#+begin_src shell
+# fcitx5 的本体和 GUI 配置工具
+sudo pacman -S fcitx5 fcitx5-configtool
+# fcitx5 的中文支持，qt 程序支持，gtk 程序支持
+sudo pacman fcitx5-chinese-addons fcitx5-qt fcitx5-gtk
+# fcitx5 皮肤
+sudo pacman -S fcitx5-material-color
+#+end_src 
+
+在安装问皮肤后，还需要按照这个皮肤的 [[https://github.com/hosxy/Fcitx5-Material-Color][README]] 去启用皮肤。基本上就是修改 =~/.config/fcitx5/conf/classicui.conf= 文件

@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       627cef21-29b6-4b89-9a9e-2686c276378d
+:END:
+#+title: Git Submodule
+
+* 添加一个 local 已有仓库为 submodule
+即使是已有 local 仓库，也必须使用 ~url~ 完成，如下所示：
+
+#+begin_src shell
+git submodule add <remote.git> <local path>
+#+end_src
+
+* 递归 clone 
+对于有 ~submodule~ 的仓库，在 ~clone~ 时应当使用如下命令
+
+#+begin_src shell
+git clone --recursive <remote.git>
+#+end_src
+
+如果忘记使用 ~--recursive~ ，那么可以使用如下命令补救：
+
+#+begin_src shell
+git submodule update --init
+#+end_src

@@ -1,0 +1,101 @@
+:PROPERTIES:
+:ID:       85a065c7-7dd9-4e5a-8b7a-4979994d2ff5
+:END:
+#+title: Elisp Program Type
+
+* Print, Read
+对于 Elisp 这种解释型语言，打印和读取不再是像 [[id:a209fbd7-ef3d-4796-895a-c080dd44190e][C]] 语言那种单纯的 ~printf, scanf~ 。Elisp 中的 =read= 指的是 elisp 解释器读入 elisp 代码并解析的过程，而 =print= 则指的是 elisp 中的 object 以一种自省的方式打印自身信息的过程。
+
+并不是所有的对象都是可以读入的，但是所有对象都可以输出。不可读入的对象会以“哈希表示法（hash notation）”来表示，它以 ~#<~ 开头，以 ~>~ 结尾，中间是描述性字符串，如下所示：
+
+#+begin_src emacs-lisp
+#<buffer objects.texi>
+#+end_src
+
+* Predicate
+Predicate 是“断言”的意思，来自离散数学中 [[id:2210e830-9314-4bea-a6f4-3337f976d2a2][Predicate]] 的概念。它在 elisp 中就是布尔函数的意思，可以用来判断某个 Object 是某种类型。这对于弱类型的 elisp 来说非常重要。
+
+* Number
+数字大致可以分为 3 类：整数，浮点数和字符。
+
+整数可以用多种进制表达，其中对于非十进制数，需要用 ~#~ 为开头来表示特殊进制，同时可以用 ~#<n>r~ 来指定 ~n~ 进制：
+
+#+begin_src emacs-lisp
+44        ; 10 进制
+#b101100  ; 2 进制
+#o54      ; 8 进制
+#x2c      ; 16 进制
+#24r1k    ; 24 进制
+#+end_src
+
+对于浮点数，可以使用科学计数法表示， ~1500.0, 15e2, 15.0e2, 1.5e3~ 和 ~.15e4~ 都可以用来表示一个浮点数 ~1500.~ 。遵循 IEEE 标准，elisp 也有一个特殊类型的值称为 ~NaN~ (not-a-number)。
+
+对于字符，其本质是整数，只是 =read= 形式不同，需要以 ~?~ 开头，如下所示：
+
+#+begin_src emacs-lisp
+?A    ; => 65
+?a    ; => 97
+#+end_src
+
+控制字符可以有多种表示方式，比如 ~C-i~ ，这些都是对的：
+
+#+begin_src emacs-lisp
+?\^I  ?\^i  ?\C-I  ?\C-i 
+#+end_src
+
+他们都是整数 ~9~ 。
+
+* List
+List 是 elisp 中最为常见的数据结构，它的本质在 [[id:98bda82c-8a63-4179-911c-d38815483d8c][Lisp]] 中探讨的不少。
+
+其实 list 还有一个重要特性就是它可以模拟多种数据结构，比如说树、集合、栈等。也就是说，它是很多种数据结构的基础，它的这种模拟是通过各式各样作用于 list 的函数来实现的。比如说对于栈，有 ~push, pop~ 函数，对于集合，有 ~delq, remq~ 函数。
+
+Elisp 中有一种基于 list 实现的数据结构被称为 association list, alist（关联表），这种结构就类似于编程语言中的 map ，它有两种形式，如下所示：
+
+#+begin_src emacs-lisp
+;; 由 cons 组成 pair
+((pine . cones)
+ (oak . acorns)
+ (maple . seeds))
+
+;; 由 list 组成 pair
+((rose red) (lily white) (buttercup yellow))
+#+end_src
+
+其中 =car= 的部分是 key ，而 =cdr= 的部分是 value 。我们并不对 key 和 value 的数据类型做限定，形式的差异性并不奇怪，因为它们本质都是 list ，形式的差异只是在 =value= 到底是一个 list 还是 atom ：
+
+#+begin_src emacs-lisp
+(assoc-default "a" '(("a" 97) ("b" 98)))      ; (97)
+(assoc-default "a" '(("a" . 97) ("b" . 98)))  ; 97
+#+end_src
+
+还存在一种 property list, plist （属性列表），其含义和 alist 类似，也是一种 map ，但是它不需要将 key-value pair 放到一个 list 中，而是依照 list 中的 index 的奇偶性来判断 key, value 和他们的对应关系：
+
+#+begin_src emacs-lisp
+;; alist
+'((?a 97) (?b 98))
+;; plist
+'(?a 97 ?b 98)
+#+end_src
+
+Plist 相对于 alist 结构更更加简单，所以在功能方面要弱一些，但是 plist 是一种 Emacs 专用的数据结构，非常常见。
+
+* Array
+Elisp 里的 array 包括 string、vector 、char-table 和 bool vector 4 种。
+
+vector 有如下示例：
+
+#+begin_src emacs-lisp
+(setq my-vector [1 2 3]) ; 使用方括号创建向量
+(aref my-vector 0) ; 使用 aref 函数通过索引访问向量元素
+(aset my-vector 1 5) ; 使用 aset 函数通过索引更新向量元素
+(length my-vector) ; 使用 length 函数获取向量的长度
+(mapcar #'(lambda (x) (* x 2)) my-vector) ; 使用 mapcar 函数遍历向量
+#+end_src
+
+* Symbol
+符号是一个有名字（是一个字符串）的 object, 我们要求在不能出现重名的 symbol 。需要注意的是，elisp 中的 symbol name 可以包含任何字符且区分大小写，也就是说，像 ~1+~ 这种看着非常奇怪的结构，也可能是一个 symbol name 。
+
+Symbol 的唯一性是通过一个叫做 ~obarray~ 的结构保障的，这个结构相当于一个 symbol 的集合，每当 elisp 解释器读入一个符号时，通常会先查找这个符号是否在 ~obarray~ 里出现过，如果没有则会把这个符号加入到 ~obarray~ 里。这样查找并加入一个符号的过程称为是 ~intern~ 。 ~intern~ 函数可以查找或加入一个名字到 ~obarray~ 里，返回对应的符号。默认是全局的 ~obarray~ ，也可以指定一个 ~obarray~ 。
+
+一个 Symbol 由 4 个组件（Component or Cell）组成，分别是 ~Print name, Value, Function, Property list~ 。他们分别表示符号名称，符号对应的变量，符号对应的函数，符号的属性。

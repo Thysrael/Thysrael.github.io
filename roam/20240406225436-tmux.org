@@ -1,0 +1,65 @@
+:PROPERTIES:
+:ID:       235c8b86-4075-48ad-b02c-71e5010c4181
+:END:
+#+title: Tmux
+
+* 概念
+Tmux 中的概念和 [[id:7ba3aeb8-f711-4fc8-aac6-5ef4fb647011][Emacs]] 中的有些类似，一共有 3 个概念，和 Emacs 形成如下对比：
+
+| Tmux 概念 | Emacs 概念 | 解释                                               |
+|-----------+------------+----------------------------------------------------|
+| Session   | Server     | 一组实体的集合，不随着连接的关闭而注销             |
+| Window    | Frame      | 一个占据全部终端画布的东西                         |
+| Panel     | Window     | 终端画布的一部分                                   |
+| Command   | Buffer     | 管理的实体，在 Tmux 中是命令，在 Emacs 中是 Buffer |
+
+* Session
+有如下命令：
+
+#+begin_src shell
+# 列出所有的 session
+tmux ls
+# 进入会话
+tmux attach -t <session>
+# 删除会话
+tmux kill-session -t <session>
+#+end_src
+
+有如下快捷键：
+
+- =C-b d=: 断开 sesssion
+
+* Window
+有如下快捷键：
+
+- =C-b c=: 创建一个新的 window
+- =C-b n, C-b p=: 切换下/上一个 window
+- =C-b f=: 查找并切换 window
+
+* Panel
+有如下快捷键（感觉很多快捷键和 Emacs 都很像）：
+
+- =C-b '=: 水平分屏
+- =C-b %=: 垂直分屏
+- =C-b !=: 将当前 Panel 中的 Command 移入一个新的 Window
+- =C-b z=: 将当前 Panel 最大化或者恢复
+- =C-b x=: 关闭当前 Panel
+- =C-b o=: 遍历所有 Panel
+- =C-b <direction>=: 切换 Panel
+
+此外根据 [[id:f0bdd667-1215-488c-bfd8-f780b53fea42][Tmux MiniConfg]] 中加入的命令，还可以使用如下命令：
+
+- =C-b @=: 将一个 Window 中的 Command 加入另一个 Window, 并垂直拆分出一个 Panel
+- =C-b C-@=: 将一个 Window 中的 Command 加入另一个 Window, 并水平拆分出一个 Panel 
+
+* 命令模式
+和 Vim 类似，可以使用 =C-b := 来输入命令。
+
+* 滚动模式
+在 Tmux 中按 =C-b [= 进入滚动模式，也叫做复制模式（copy-mode）。在这个模式下快捷键和 Emacs 非常类似：
+
+- 移动：可以用 =C-f, M-f= 等移动
+- 搜索：使用 =C-s, C-r= 分别向后或者向前搜索
+- 复制粘贴：用 =C-SPC= 来选择区域，用 =M-w= 来进行复制，用 =C-b ]= 进行粘贴
+
+需要强调的是，这种复制是没有办法复制到系统剪贴板的，所以如果希望复制到剪贴板，可以按住 =Shift= 使用鼠标进行普通终端模拟器的选择。

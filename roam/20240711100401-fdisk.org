@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       2ec06fe5-43c2-4383-89bf-ac29bd2d058b
+:END:
+#+title: FDisk
+
+fdisk 是一款命令行磁盘分区工具，可以对一个设备文件进行分区，但是因为是命令行操作，所以我觉得可能有些不直观，不如 [[id:f0579c4f-a581-4da1-8451-230629d3c930][GParted]] 这种 GUI 工具舒服。
+
+但是还可以用 fdisk 来查看磁盘分区情况，比较舒适，如下所示：
+
+#+begin_src shell
+sudo fdisk -l <image-path>
+#+end_src

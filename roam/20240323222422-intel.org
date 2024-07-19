@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       47b2dbfe-695d-4af4-91e3-d9cd7220f379
+:END:
+#+title: Intel
+

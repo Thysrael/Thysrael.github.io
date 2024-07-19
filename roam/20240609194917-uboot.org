@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       7960b36a-4544-499a-b4c8-e8346b75805a
+:END:
+#+title: Uboot
+
+* uboot 启动命令
+采用如下形式设置系统启动命令：
+
+#+begin_src shell
+setenv bootcmd '<command>'
+saveenv
+#+end_src
+
+* 内核启动参数
+用如下命令设置内核启动参数：
+
+#+begin_src shell
+setenv bootargs '--debug-dt'
+#+end_src

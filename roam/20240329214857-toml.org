@@ -1,0 +1,110 @@
+:PROPERTIES:
+:ID:       67babc04-7154-4153-b815-1fa995594d84
+:END:
+#+title: Toml
+
+TOML 是 Tom's Obvious, Minimal Language 的意思，有些有趣。
+
+TOML 的[[https://toml.io/cn/v1.0.0][文档]]非常详细美观，如果有不懂的可以查阅。
+
+* Key Value
+TOML 和 [[id:ca5451cc-b2a4-42ad-98a5-59cac86165c6][INI]] 格式非常相像，基本单元都是键值对，用 ~=~ 连接，如下所示：
+
+#+begin_src toml
+  key = "value"
+#+end_src
+
+如上形式的 ~key~ 没有被引号包裹，称为“裸键”，裸键只能包含 ASCII 字母，ASCII 数字，下划线和短横线，但是实际上裸键就是字符串，如果希望在 key 中更加复杂的符号，需要使用引号键
+
+#+begin_src toml
+  "character encoding" = "value"
+  'quoted "value"' = "value"
+#+end_src
+
+*点分隔键* 是一系列通过点相连的裸键或引号键。
+
+#+begin_src toml
+  physical.color = "orange"
+  physical.shape = "round"
+#+end_src
+
+等价与：
+
+#+begin_src javascript
+  "physical": {
+    "color": "orange",
+    "shape": "round"
+  }
+#+end_src
+
+* 数组
+数组是内含值的方括号。空白会被忽略。子元素由逗号分隔。数组可以包含与键值对所允许的相同数据类型的值。可以混合不同类型的值。
+
+如下所示：
+
+#+begin_src toml
+  integers = [ 1, 2, 3 ]
+  colors = [ "红", "黄", "绿" ]
+  nested_array_of_ints = [ [ 1, 2 ], [3, 4, 5] ]
+  nested_mixed_array = [ [ 1, 2 ], ["a", "b", "c"] ]
+  string_array = [ "所有的", '字符串', """是相同的""", '''类型''' ]
+
+  # 允许混合类型的数组
+  numbers = [ 0.1, 0.2, 0.5, 1, 2, 5 ]
+  contributors = [
+    "Foo Bar <foo@example.com>",
+    { name = "Baz Qux", email = "bazqux@example.com", url = "https://example.com/bazqux" }
+  ]
+#+end_src
+
+* 表
+虽然有了 *点分隔键* 我们就已经可以表示层次结构了，但是 TOML 提供了一种更为直观的方式，也就是表（两者等价），使用 ~[]~ 声明，如下所示：
+
+#+begin_src toml
+  [dog."tater.man"]
+  type.name = "pug"
+#+end_src 
+
+对应 JSON 
+
+#+begin_src javascript
+  { "dog":
+    { "tater.man":
+  	{ "type":
+  	  { "name": "pug"
+  	  }
+  	}
+    }
+  }
+#+end_src
+
+和 INI 一样，在它下方，直至下一个表头或文件结束，都是这个表的键值对。
+
+* 表数组
+表数组是一种方便得定义对象数组的方式，用 ~[[]]~ 表示，表头的第一例定义了这个数组及其首个表元素，而后续的每个则在该数组中创建并定义一个新的表元素。
+
+#+begin_src toml
+  [[products]]
+  name = "Hammer"
+  sku = 738594937
+
+  [[products]]  # 数组里的空表
+
+  [[products]]
+  name = "Nail"
+  sku = 284758393
+
+  color = "gray"
+#+end_src
+
+等价于 JSON 
+
+#+begin_src javascript
+  {
+    "products": [
+      { "name": "Hammer", "sku": 738594937 },
+      { },
+      { "name": "Nail", "sku": 284758393, "color": "gray" }
+    ]
+  }
+#+end_src

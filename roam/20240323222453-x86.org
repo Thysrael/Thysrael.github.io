@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       e016355e-c94d-4611-92ba-d99bba8eba53
+:END:
+#+title: X86
+
+- [[id:55a1b54b-6d09-4c50-ac4b-ac50facc581d][X86 MSR]]

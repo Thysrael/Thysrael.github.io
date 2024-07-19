@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       a12d0c4c-921f-4302-b205-78f0da8635ab
+:END:
+#+title: Hierarchical vs Capability
+
+这两种都是权限管理的方式。简单来说，Hierarchical 的方式是传统的方式，它是一个“环状结构”，比如特权等级式，高特权级的实体拥有对于低特权级实体的访问权限。
+
+而 Capaility 是“散点结构”，没有特权级的高低之说，不同权限实体之间相互独立。
+
+[[file:img/clipboard-20240717T091137.png]]

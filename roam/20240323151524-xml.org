@@ -1,0 +1,79 @@
+:PROPERTIES:
+:ID:       c18b3c56-cf81-4df5-9657-5a19bcf4e7be
+:END:
+#+title: XML
+
+* 自我描述性
+XML(Extensible Markup Language) 和 [[id:dd7d49d7-2e39-4d2f-b360-3bf105e95dd0][HTML]] 非常类似，HTML 更加侧重于数据的表现和展示，而 XML 则更加侧重于数据的传输和存储。
+
+相比于 HTML ，XML 有一个特性是 *自我描述性* ，其本意是指 XML 不需要任何文档说明，就可以方便的阅读。我觉得它更像是三个特性的概括：
+
+- 独立于所有的平台，不像 HTML 依赖于浏览器或者互联网。
+- XML 不会做任何事情，即 XML 标签没有被预定义。
+- XML 元素是可扩展，以携带更多的信息，即其子节点个数并不固定
+
+也就是说，XML 是一种既通用，又特化（特化在了过于通用和稳定上）的标记语言，其设计思路，其实和配置语言类似了。
+
+* 语法
+** 声明 Declaration
+声明位于 XML 文档的开头，用于指定 XML 文档的源信息， ~<?xml ... ?>~ 是用来声明XML文档的开始部分，而 ~<!DOCTYPE ... >~ 用于定义文档类型，如下所示：
+
+#+begin_src xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE fontconfig SYSTEM 'urn:fontconfig:fonts.dtd'>
+#+end_src
+
+** DOM
+和 HTML 类似，XML 文档也可以被解析为一棵 DOM 树，所以具体的语法参见 [[id:dd7d49d7-2e39-4d2f-b360-3bf105e95dd0][HTML]] 。 
+
+** 转义
+XML 中的字符 ~<~ 和 ~&~ 是关键的语法标记，另外还有一些字符用得也比较多，所以都推荐用转义字符来表达字符原意，不过和 ANSI 的转义字符不同，他们有一套特殊的写法：
+
+|--------+--------|
+| 转义前 | 转义后 |
+|--------+--------|
+| &lt;   | <      |
+| &gt;   | >      |
+| &amp;  | &      |
+| &apos; | '      |
+| &quot; | "      |
+|--------+--------|
+
+** 其他
+XML 还有一些其他语法规则，一并列出：
+
+- XML 标签对大小写敏感
+- XML 属性值必须加引号
+- XML 中空格会被保留，而不是去除或者合并（与 HTML 存在差异）
+
+* DTD
+既然 XML 是不提供预定义元素的，所以 XML 中出现的所有元素都需要自定义。有一种定义 XML 文档的方式被称为 DTD(Document Type Defination) 。它的存在有点类似于 [[id:362a1ab8-8744-4a3d-807f-3f98a3072a0f][LaTeX]] 中的 ~documentclass~ 。
+
+不过可惜的是，了解 DTD 语法或者了解具体的 DTD 文件并不会让我们更好得理解 XML 文档本身，因为 DTD 更像是一份语法规范，并不涉及对于语义的定义，这和它的设计目的——传输和存储是相适应的。传输和存储并不需要过于强大的语义能力，而是应该用语法约束，这样才能有普遍性。
+
+举个例子，一份定义 ~note~ 的 DTD 文件
+
+#+begin_src xml
+  <?xml version="1.0"?>
+  <!DOCTYPE note [
+  <!ELEMENT note (to,from,heading,body)>
+  <!ELEMENT to (#PCDATA)>
+  <!ELEMENT from (#PCDATA)>
+  <!ELEMENT heading (#PCDATA)>
+  <!ELEMENT body (#PCDATA)>
+  ]>
+#+end_src
+
+对于的 XML 文件：
+
+#+begin_src xml
+  <!DOCTYPE fontconfig SYSTEM 'note.dtd'>
+  <note>
+    <to>Steve</to>
+    <from>Jenny</from>
+    <heading>Reminder</heading>
+    <body>Don't forget me this weekend</body>
+  </note>
+#+end_src
+
+可以看到即使 DTD 中规定了 ~note, to, from~ 等元素的形式，但是看到这些定义并没有让我们更好的理解文章的含义。

@@ -1,0 +1,45 @@
+:PROPERTIES:
+:ID:       0e30c122-9c10-4ee3-9cd3-1831732d59cb
+:END:
+#+title: Chroot
+
+Chroot 是一个非常强大且奇妙的命令，它和 [[id:074dc125-7f79-49de-b685-dd71657e7129][docker]] 非常相像。
+
+我们可以在挂载一个文件系统（一般是根文件系统）后，利用 ~chroot~ 将根目录设置到挂载点，就像进入了一个 docker 一样，如下所示：
+
+#+begin_src shell
+  sudo mount <rootfs.img> mnt
+  # ... some other code
+  sudo chroot mnt /bin/bash
+#+end_src
+
+~chroot~ 需要指定根目录（也就是 =mnt= ）和要运行的命令，这个命令是在新的根文件系统下的。
+
+~chroot~ 不仅会改变根目录，同时还会改变 ~user_id, group_id~ ，默认是对新根目录拥有 root 权限，这点和 docker 也非常类似。
+
+但是 ~chroot~ 并不会像 docker 一样主动分配设备资源，所以需要我们手动分配，利用的是 [[id:08c38d77-be39-4cae-8a2c-813a7ba0c158][Mount]] 的绑定挂载机制。本质就是根本没有分配，将原来 OS 的资源（以文件的形式呈现）直接共享给新的根文件系统。
+
+#+begin_src shell
+  sudo mount --bind /sys mnt/sys
+  sudo mount --bind /proc mnt/proc
+  sudo mount --bind /dev mnt/dev
+#+end_src
+
+所以总结下来就是：
+
+#+begin_src shell
+  sudo mount new.img mnt
+  sudo mount --bind /sys mnt/sys
+  sudo mount --bind /proc mnt/proc
+  sudo mount --bind /dev mnt/dev
+  sudo chroot mnt /bin/bash
+#+end_src
+
+在卸载的时候，也需要依次卸载：
+
+#+begin_src shell
+  sudo umount mnt/sys
+  sudo umount mnt/proc
+  sudo umount mnt/dev
+  sudo umount mnt
+#+end_src

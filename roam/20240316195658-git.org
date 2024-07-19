@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       a211d19f-1479-4a3d-8dc5-151f677204f3
+:END:
+#+title: Git
+
+* Git Trick
+这里记录了一些 ~git~ 的实践技巧。
+
+- 大文件存储：[[id:ef7802bf-d859-48ac-bb66-31162350f441][Git LFS]]
+- 仓库同步：[[id:3faf56b4-cecd-4db0-8e2c-ef54375a2f42][Git Pull]]
+- 子模块：[[id:627cef21-29b6-4b89-9a9e-2686c276378d][Git Submodule]]
+- 忽略文件：[[id:504c9c30-d947-4779-9abe-facb736b14d0][Git Ingore]]
+
+* Code hosting platforms
+这里记录一些代码托管平台相关笔记
+
+- [[id:de9e3146-021b-4bef-b844-c0eb67de0966][Github]]

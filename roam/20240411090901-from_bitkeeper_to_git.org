@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       fd04e72c-16c1-445a-9543-c680e88db803
+:END:
+#+title: from Bitkeeper to Git
+
+在 Linux 开发的早期，开发人员使用闭源软件 Bitkeeper 来进行代码管理。但是 [[id:97a65fac-1627-4324-90f8-4fc3c5a7807e][Rsync]] 之父 Andrew Tridgell 为了自己工作的便利，逆向了 Bitkeeper ，导致违反了闭源协议，Bitkeeper 禁止 Kernel 开发使用。
+
+所以 Linus Torvalds 只好自己开发出 [[id:a211d19f-1479-4a3d-8dc5-151f677204f3][Git]] 用于 Kernel 的代码管理。Linus 批评了 Andrew 的行为，他指出他希望遵循不同人的道德。

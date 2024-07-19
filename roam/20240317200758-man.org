@@ -1,0 +1,66 @@
+:PROPERTIES:
+:ID:       50ec1dbf-1bf4-4234-8887-b4813a65095a
+:END:
+#+title: Man
+
+* Man Section
+~man~ 是 [[id:2b0578d1-ed79-4fd4-838c-672dcc151b6e][Unix]] 和 [[id:03abe92f-02d1-4dfb-addc-5ba89fc354be][Linux]] 系统自带的参考手册查询命令。
+
+其实 ~man~ 是分章节（section）的，一共有九个章节：
+
+1. 可执行程序或 shell 命令
+2. 系统调用(内核提供的函数)
+3. 库调用(程序库中的函数)
+4. 特殊文件(通常位于 ~/dev~ 下)
+5. 文件格式和规范，如 ~/etc/passwd~
+6. 游戏
+7. 杂项（包括宏包和规范），如 ~man(7)~, ~groff(7)~, ~man-pages(7)~
+8. 系统管理命令(通常只针对 ~root~ 用户)
+9. 内核例程
+
+此外还有一些特殊章节，比如说 ~1p, 3p~ 指的是对于章节 ~1, 3~ 的 [[id:60f8ab36-27f5-426b-9822-53727b8792f0][POSIX]] 补充。 ~l, n~ 指的是某些函数库。
+
+可以如果查询的内容是在多个章节均有出现，比如说 ~read~ 命令，它既是命令，也是系统调用，还是库函数。那么并不是会直接展示所有的内容，而是在某一章节查到后，就不再查询了，查询的顺序依赖于环境变量 ~$MANSECT~ ，它的顺序大致是 ~1 1p n l 8 3 3p 0 0p 2 3type 5 4 9 6 7~ ，所以一旦在第一章查到，就不会往后查询了。
+
+为了准确找到所需要的内容，我们需要指定查询的章节，比如说我们如果希望查询作为系统调用的 ~read~ ，那么就应该使用如下命令：
+
+#+begin_src shell
+  man 2 read
+  man read(2)
+#+end_src
+
+或者如果希望看到关于所有章节的内容，那么也可以使用如下命令进行查询
+
+#+begin_src shell
+  man -a read
+#+end_src
+
+其中 1 和 3 是 [[id:60f8ab36-27f5-426b-9822-53727b8792f0][POSIX]] 组成成分，分别代表常用的命令和库函数 API ，正是通过在这两个方面保持一致性，确保了用户程序具有良好的移植性和 OS 用户熟悉的操作体验。
+
+* 结构
+~man~ 的搜索结构以 *页（page）* 为单位，每个程序、工具或函数名对应一页。
+
+一个手册页面包含若干个小节。小节名称通常包括名称(NAME), 概述(SYNOPSIS), 配置(CONFIGURATION), 描述(DESCRIPTION), 选项(OPTIONS), 退出状态(EXIT STATUS), 返回值(RETURN VALUE), 错误(ERRORS), 环境(ENVIRONMENT), 文件(FILES), 版本(VERSIONS), 标准(STANDARDS), 注(NOTES), 缺陷(BUGS), 示例(EXAMPLE), 作者(AUTHORS) 和亦见(SEE ALSO).
+
+不过 ~man~ 的页面展示过于朴素以至于难以阅读，所以我们可以让 ~man~ 变成彩色的，具体参考 [[id:08de66b7-c626-4b88-ad6b-0782eb84301a][Shell 最小配置]] 。
+
+* 模糊搜索
+可以用 ~whatis~ 参数来搜索手册库中的某个命令，它应该是只会搜索名称：
+
+#+begin_src shell
+  man --whatis read
+  whatis read
+#+end_src
+
+也可以用 ~apropos~ 来搜索手册库，它会搜索名称和概述：
+
+#+begin_src shell
+  man --apropos read
+  apropos read
+#+end_src
+
+* 操作方式
+~man~ 使用 [[id:8ab7941b-754f-425c-95f7-77e45f8acacb][Less]] 作为分页器，所以操作方式就是 ~less~ 的操作方式。
+
+* 网页手册
+除了本地手册外，可以在这个[[https://man7.org/linux/man-pages/index.html][网站]]访问 man 手册，我个人觉得网页版 GUI 界面挺香的。

@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       55a1b54b-6d09-4c50-ac4b-ac50facc581d
+:END:
+#+title: X86 MSR
+
+MSR（Model Specific Register）是 X86 架构中的概念，指的是在 X86 架构处理器中，一系列用于控制 CPU 运行、功能开关、调试、跟踪程序执行、监测 CPU 性能等方面的寄存器。
+
+我们可以使用 ~rdmsr~ 读取 msr 寄存器，用 ~wrmsr~ 来写入寄存器，我们需要在 ~ecx~ 中写入 ~msr index~ ，然后在 ~edx:eax~ 中读出或写入寄存器的值，如下所示：
+
+#+begin_src c
+uint64_t read_msr(uint32_t msr) {
+	uint32_t hi, lo, ans;
+	asm volatile("rdmsr" : "=a"(lo), "=d"(hi) : "c"(msr));
+	ans = ((uint64_t) hi << 32) | lo;
+	return ans;
+}
+
+void write_msr(uint32_t msr, uint32_t lo, uint32_t hi) {
+   asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+}
+#+end_src

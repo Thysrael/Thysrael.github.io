@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       8210f9ca-154c-4102-b60e-64f4fa1c7773
+:END:
+#+title: ArchLinux
+
+* Yay
+当需要彻底卸载一个软件包时，可以使用如下命令：
+
+#+begin_src shell
+yay -Rns <package-name>
+#+end_src
+
+其中参数为：
+
+- ~R~: 移除（remove）指定的包。
+- ~n~: 不保存（no-save）依赖项。
+- ~-s~: 移除未使用的依赖项（cascade removal）。

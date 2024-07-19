@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       b64bb67b-b0a5-4e1b-8d23-7c33ed0e9ec2
+:END:
+#+title: Org-mode
+
+Org-mode 不应该视作一种单一功能的语言，而是一种具有多功能的语言，每个功能用到的语法是不同的。
+
+- [[id:1a7f6bf3-827b-46e7-8bbf-1bcea96cbfb8][Org Babel]]
+- [[id:9a25fbc2-ed09-462a-a98a-7719b875ff01][Org Archive]]
+- [[id:88a5904b-18fe-438c-99d7-9e914aeed937][Org Local Variable]]

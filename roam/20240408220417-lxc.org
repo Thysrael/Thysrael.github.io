@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       59fff9c6-1356-43e9-96ef-fa35c71bc3f5
+:END:
+#+title: LXC
+
+LXC 是 Linux 容器（Linux Containers）的缩写，是一种轻量级的虚拟化技术，允许在同一主机上运行多个相互隔离的 Linux 容器，每个容器都有自己的完整的文件系统、网络、进程和资源隔离环境。
+
+[[id:074dc125-7f79-49de-b685-dd71657e7129][Docker]] 出现之初，便是采用了 lxc 技术作为 docker 底层，对容器虚拟化的控制。后来随着 docker 的发展，它自己封装了 libcontainer （golang 的库）来实现 Cgroup 和 Namespace 控制，从而消除了对 lxc 的依赖。

@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       f0579c4f-a581-4da1-8451-230629d3c930
+:END:
+#+title: GParted
+

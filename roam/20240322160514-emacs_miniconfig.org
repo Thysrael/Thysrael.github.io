@@ -1,0 +1,239 @@
+:PROPERTIES:
+:ID:       55fd0686-7924-41a8-9d55-b81ee523da83
+:END:
+#+title: Emacs MiniConfig
+
+* early-init.el
+#+begin_src emacs-lisp
+  ;; 内存垃圾回收优化
+  (setq gc-cons-threshold most-positive-fixnum  ; 垃圾回收的上限增大
+        gc-cons-percentage 1.0)   ; 每次垃圾回收时的比例
+
+  ;; 开启延迟原生编译
+  (setq native-comp-deferred-compilation t)
+
+  ;; emacs 非交互式对话加载时更加倾向加载 el 文件而非 elc, eln 文件，据说可以节约 IO 时间
+  ;; 这是因为一般的加载会优先考虑 elc 和 eln
+  (setq load-prefer-newer noninteractive)
+
+  ;; 禁止自动调整 Emacs 窗口框架的大小
+  (setq frame-inhibit-implied-resize t)
+
+  ;; 禁用起始界面
+  (setq inhibit-startup-screen t  ; 禁用起始画面
+        inhibit-startup-echo-area-message t ; 禁用起始时回显区域
+        inhibit-startup-message t ; 禁用起始信息
+        initial-scratch-message nil ; 清除 scratch 注释信息
+        initial-major-mode 'fundamental-mode) ; 设置起始主模式
+  (advice-add #'display-startup-echo-area-message :override #'ignore) ; 将绘制起始信息函数清空
+  (advice-add #'display-startup-screen :override #'ignore) ; 将绘制起始画面函数清空
+
+  ;; 禁用 package.el，因为我们会改用更加先进的包管理器
+  (setq package-enable-at-startup nil)
+
+  ;; 禁用菜单栏工具栏等元素
+  (push '(menu-bar-lines . 0) default-frame-alist)    ; 在 default-frame 的元素中取消 menu-bar
+  (push '(tool-bar-lines . 0) default-frame-alist)    ; 在 default-frame 的元素中取消 tool-bar
+  (push '(vertical-scroll-bars) default-frame-alist)  ; 在 default-frame 的元素中取消 vertical-scroll-bar
+  (setq menu-bar-mode nil
+        tool-bar-mode nil
+        scroll-bar-mode nil)  ; 再关闭一下，避免出事
+
+  ;; 使文件大小写敏感，可以节省时间，据说是分析关键路径得出的结论
+  (setq auto-mode-case-fold nil)
+
+  ;; 禁用文件名管理器，可以提高文件加载速度
+  (unless (or (daemonp) noninteractive init-file-debug) ; 只有在这三种情况下不禁用
+    (let ((old-value file-name-handler-alist))
+      (setq file-name-handler-alist nil)  ; 禁用
+      (add-hook 'emacs-startup-hook
+                (lambda ()
+                  "Recover file name handlers."
+                  (setq file-name-handler-alist
+                        (delete-dups (append file-name-handler-alist
+                                             old-value))))))) ; 重新恢复
+  ;; 禁止显示加载信息
+  (define-advice load-file (:override (file) silence)
+    (load file nil 'nomessage))
+  (define-advice startup--load-user-init-file (:after (&rest _) undo-silence)
+    (advice-remove #'load-file #'load-file@silence))
+
+  ;; 禁止 org-mode 加载一些模块
+  ;; https://emacs-china.org/t/org-babel/18699/10
+  (setq org-modules-loaded t)
+#+end_src
+
+* init.el
+#+begin_src emacs-lisp
+  ;;; Functions
+  ;; 临时文件设置
+  (setq-default
+   ;; 关闭锁文件，防止生成 file~#
+   create-lockfiles nil
+   ;; 关闭备份文件，防止生成 file~
+   make-backup-files nil
+   ;; 自动保存功能，#file#
+   auto-save-default t ; 开启自动保存功能
+   auto-save-include-big-deletions t  ; 自动保存较大的删除
+   auto-save-default t
+   auto-save-include-big-deletions t ; Don't auto-disable auto-save after deleting big chunks.
+   auto-save-list-file-prefix (expand-file-name "autosaves/" user-emacs-directory)
+   auto-save-file-name-transforms (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
+                                              (concat auto-save-list-file-prefix "tramp-\\2") t)
+                                        (list ".*" auto-save-list-file-prefix t))
+
+   )
+  ;; 设置自动恢复数据
+  (advice-add #'after-find-file :around
+              (lambda (fn &rest args) (cl-letf (((symbol-function #'sit-for) #'ignore))
+                                   (apply fn args))))
+
+  ;; 剪切粘贴行为修正
+  (setq kill-do-not-save-duplicates t) ; 不重复增加 kill ring 内容
+  (setq save-interprogram-paste-before-kill t) ; 在 replace 将替换内容存入 kill ring
+  ;; 将关键命令移动到右手核心区
+  (define-key key-translation-map (kbd "C-j") (kbd "C-x"))
+  ;; 绑定恢复 buffer 函数
+  (global-set-key (kbd "<f5>") 'revert-buffer) ; 撤销所有没有保存的更改
+  (global-set-key (kbd "C-z") 'undo)
+
+  (setq-default
+   ;; 使得读取外部程序的输出增大，可以提高效率
+   read-process-output-max (* 3 1024 1024)
+   ;; 对于符号链接永远直接跳转
+   find-file-visit-truename t
+   vc-follow-symlinks t
+   ;; 在补全的时候忽略大小写
+   read-buffer-completion-ignore-case t
+   read-file-name-completion-ignore-case t
+   ;; 设置句子结尾
+   sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*"
+   sentence-end-double-space nil
+   ;; emacs 不会自动解析域名
+   ffap-machine-p-known 'reject
+   )
+  ;; 设置编码方式
+  (set-language-environment "UTF-8")
+  ;; 开启删除所选区域模式
+  (add-hook 'after-init-hook 'delete-selection-mode)
+  ;; 退出 emacs 时并直接杀死进程
+  (setq confirm-kill-processes nil)
+  ;; 弹出窗口时使用左右分屏
+  (setq split-width-threshold 1)
+
+  ;;; UI
+  ;; 用户界面基础设置
+  (setq-default
+   ;; 没有客户端启动信息
+   server-client-instructions nil
+   ;; 禁止双向文本（类似阿拉伯语或者希伯来语）
+   bidi-inhibit-bpa t
+   bidi-paragraph-direction 'left-to-right
+   bidi-display-reordering 'left-to-right
+   ;; 缩进设置
+   tabify-regexp "^\t* [ \t]+" ; 将缩进用的空格转变成制表符的命令
+   indent-tabs-mode nil ; 使用空格而不是制表符
+   tab-always-indent t
+   tab-width 4 ; 默认宽度为 4
+   ;; 用 y-or-n to 代替 yes-or-no
+   use-short-answers t
+   ;; 避免文件重名警告
+   find-file-suppress-same-file-warnings t
+   ;;避免在创建文件时提示不存在文件
+   confirm-nonexistent-file-or-buffer nil
+   ;; 如果 buffer 名字相同，则会显示 path/name
+   uniquify-buffer-name-style 'forward
+   )
+
+  ;; 滚动
+  (setq
+   fast-but-imprecise-scrolling t ; 滚动风格
+                                          ; 滚动不会让光标过于靠上或者靠下（最多 5 行）
+   scroll-step 0
+   scroll-margin 5
+   scroll-conservatively 101
+   ;; Reduce cursor lag by a tiny bit by not auto-adjusting `window-vscroll' for tall lines.
+   auto-window-vscroll nil
+                                          ; 水平滚动
+   auto-hscroll-mode t
+   hscroll-step 0
+   hscroll-margin 2)
+
+  ;; Allow minibuffer commands while in the minibuffer.
+  (setq enable-recursive-minibuffers t
+        echo-keystrokes 0.02)
+  ;; Keep the cursor out of the read-only portions of the minibuffer
+  (setq minibuffer-prompt-properties '(read-only t
+                                                 intangible t
+                                                 cursor-intangible t
+                                                 face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+  ;; Allow emacs to query passphrase through minibuffer
+  (setq epg-pinentry-mode 'loopback)
+  ;; 主题
+  (load-theme 'modus-operandi t)
+  ;; 垂直 minibuffer 
+  (fido-vertical-mode)
+
+  ;;; KeyBindings
+  ;; 强化复制和粘贴功能
+  (defun my-kill-region-or-line ()
+    "Kill the region or the current line if no region is active, and keep the cursor at its original position."
+    (interactive)
+    (let ((start (point)))
+      (if (region-active-p)
+          (progn
+            (kill-region (region-beginning) (region-end))
+            (goto-char start)
+            )
+        (progn
+          (kill-whole-line)
+          (previous-line)
+          (end-of-line)))))
+
+  (defun my-copy-region-or-line ()
+    "Save the region to the kill ring or the current line if no region is active, and keep the cursor at its original position."
+    (interactive)
+    (let ((start (point)))
+      (if (region-active-p)
+          (kill-ring-save (region-beginning) (region-end))
+        (kill-ring-save (line-beginning-position) (line-end-position)))
+      (goto-char start)))
+
+  ;; 绑定新的复制和剪切函数
+  (global-set-key (kbd "C-q") 'my-kill-region-or-line)
+  (global-set-key (kbd "C-w") 'my-copy-region-or-line)
+
+
+  ;; window scroll 绑定
+  (defvar +scrolling-lines 5)
+  (bind-keys*
+   ;; 在其他窗口滚动
+   ("M-<down>" . (lambda () (interactive) (scroll-other-window +scrolling-lines)))
+   ("M-<up>" . (lambda () (interactive) (scroll-other-window-down +scrolling-lines)))
+   ;; 在本窗口滚动
+   ("C-v" . (lambda () (interactive) (scroll-up +scrolling-lines)))
+   ("C-M-v" . (lambda () (interactive) (scroll-up (- +scrolling-lines))))
+   )
+
+  ;; 改变光标移动绑定，使其更加方便
+  (global-set-key (kbd "C-f") '+smart-forward)
+  (defun +smart-forward ()
+    "Move cursor based on its position in a word."
+    (interactive)
+    (cond
+     ((looking-at "\\w") (forward-word 1))
+     ((looking-at "\\s-") (progn (re-search-forward "\\S-") (backward-char)))
+     (t (forward-char))))
+
+  ;; 智能注释
+  (defun +smart-comment (&optional arg)
+    (interactive "*P")
+    (comment-normalize-vars)
+    (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
+        (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+      (comment-dwim arg)))
+  (global-set-key (kbd "C-/") '+smart-comment)
+  (global-set-key (kbd "C-_") '+smart-comment)
+  (setq comment-empty-lines t) ; comment over empty lines
+#+end_src

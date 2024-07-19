@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       7692e03b-322b-458a-9e24-b15c70f6de19
+:END:
+#+title: HTTPS
+
+HTTPS 可以被简单理解为 [[id:f410c15c-aa8c-4bd5-93ba-d7d85b265d93][HTTP]] 加上了加密模块 SSL 。HTTPS 经由 HTTP 进行通信，但利用 SSL/TLS 来加密数据包。
+
+#+DOWNLOADED: screenshot @ 2024-05-07 18:14:48
+[[file:img/2024-05-07_18-14-48_screenshot.png]]

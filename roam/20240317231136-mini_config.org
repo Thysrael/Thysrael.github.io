@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       53a31b1e-c691-43e5-8ed7-aba2874d1af4
+:END:
+#+title: Mini Config
+#+filetags: :root:
+
+这里会记录着在 [[id:03abe92f-02d1-4dfb-addc-5ba89fc354be][Linux]] 环境下各种工具的最小配置，方便迁移：
+
+- [[id:08de66b7-c626-4b88-ad6b-0782eb84301a][Shell Miniconfig]]
+- [[id:55fd0686-7924-41a8-9d55-b81ee523da83][Emacs MiniConfig]]
+- [[id:f0bdd667-1215-488c-bfd8-f780b53fea42][Tmux Miniconfg]]

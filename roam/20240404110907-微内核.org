@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       8c581929-cb97-4621-a2d7-1f1218087ca7
+:END:
+#+title: 微内核
+

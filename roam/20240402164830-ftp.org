@@ -1,0 +1,32 @@
+:PROPERTIES:
+:ID:       def6a1dd-c8c7-4ebd-b85c-d1c6af0d8122
+:END:
+#+title: Ftp
+
+Ftp 的使用和 [[id:dc3d220f-6007-4c3f-a7f3-b205c3c2b966][Ssh]] 的感觉有点类似，都是需要先登录
+
+#+begin_src shell
+ftp <IP>
+#+end_src
+
+然后有可能需要输入用户名和密码，输入完后也会进入到一个类似 shell 的操作界面，里面有一些类似 shell 的 CLI 命令，如下所示：
+
+#+begin_src shell
+# Download multiple files (glob expression):
+mget *.png
+
+# Upload multiple files (glob expression):
+mput *.zip
+
+# Delete multiple files on the remote server:
+mdelete *.txt
+
+# Rename a file on the remote server:
+rename original_filename new_filename
+
+# Exit
+bye
+
+# help
+?
+#+end_src

@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       de23f65a-949e-4c21-a237-07f8e61bd207
+:END:
+#+title: 宏内核
+

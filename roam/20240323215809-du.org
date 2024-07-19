@@ -1,0 +1,30 @@
+:PROPERTIES:
+:ID:       7706f289-883c-4f7e-bfa5-8e2badce1e65
+:END:
+#+title: Du
+
+因为 ~ls -l~ 查看文件夹大小时，仅显示 ~4KB~ ，这是用来存储文件夹的元数据的大小。如果希望查看文件夹的大小，就需要用 ~du~ (Disk Usage) 命令。
+
+使用 ~du~ 命令可以查看目录或文件的大小。默认使用递归方式总结磁盘使用情况，以获取目录及其子目录的大小。
+
+它常用的选项有：
+
+#+begin_src shell
+  -h, --human-readable
+      以K，M，G为单位，显示文件的大小
+
+  -s, --summarize
+      只显示总计的文件大小
+
+  -S, --separate-dirs
+      显示时并不含其子文件夹的大小
+
+  -d, --max-depth=N
+      显示子文件夹的深度（层级）
+#+end_src 
+
+如显示 ~dir~ 文件夹下子文件夹的大小
+
+#+begin_src shell
+  du -h -d 1 ./dir
+#+end_src

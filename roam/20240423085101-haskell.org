@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       aa217bba-decd-4153-8bc7-abdf68bc9710
+:END:
+#+title: Haskell
+

@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       880b2c98-b3a3-40c2-baa9-bbd0ad9e1a92
+:END:
+#+title: 笔记方法论
+
+这里记录着我对于如何打造出自己的知识管理体系的一些认识：
+
+- [[id:48c25303-8e2d-41cd-9f0b-191bfdb94484][混合笔记]]：从树形笔记到卡片笔记的思考和妥协
+- [[id:3da439f4-fbee-4da1-bd45-f2daca5ae706][双链]]：反链到底有什么用
+- [[id:87ba7825-b75f-470d-bdee-b37068b5c211][Roam Tag]]：Org-Roam 中 tag 有什么用
