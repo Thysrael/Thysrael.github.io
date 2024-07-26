@@ -2,3 +2,7 @@
 :ID:       03abe92f-02d1-4dfb-addc-5ba89fc354be
 :END:
 #+title: Linux
+
+* Linux 发行版
+- [[id:8e3d5527-8c90-4c7b-a0ea-34d6b2e8ed3d][Ubuntu]]
+- [[id:8210f9ca-154c-4102-b60e-64f4fa1c7773][ArchLinux]]

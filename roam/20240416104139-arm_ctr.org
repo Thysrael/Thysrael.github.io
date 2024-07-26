@@ -1,6 +1,6 @@
 :PROPERTIES:
 :ID:       bf0cfe73-a333-49f0-a0e8-f50f17358312
 :END:
-#+title: Arm CTR
+#+title: ARM CTR
 
 在 ARMv8 架构中，CTR 寄存器（Counter Register）是一个特殊的寄存器，用于与计时器相关的功能。它通常用于实现性能计数器和事件跟踪功能。

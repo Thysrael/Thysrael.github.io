@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       3e44a83f-ded4-48eb-bcfb-21f79a57a21c
+:END:
+#+title: MBR
+
+主引导记录（Master Boot Record，简称 MBR）中存放的是启动代码、分区表和一个有效签名。
+
+严格意义上说，MBR 并不能算是一个第一阶段 bootloader ，它更应该是外存元数据的记录者（分区表）和第一阶段 bootloader 的加载者（引导程序）的角色。

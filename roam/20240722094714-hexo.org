@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       aa310248-f305-487c-a1e8-0d4f8d26e9ca
+:END:
+#+title: Hexo
+
+如果需要安装 Hexo ，可以执行如下命令：
+
+#+begin_src shell
+yay -S node npm hexo-cli
+#+end_src
+
+按理说，在执行完后直接在 =blog= 文件夹下即可部署 Hexo （当然还需要配置好与 github 的 ssh）。

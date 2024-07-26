@@ -4,10 +4,26 @@
 #+title: OS
 #+filetags: :root:
 
-* 操作系统产品
+* Firmware
+Firmware 固件存放在主板 ROM 中的软件，一般由硬件厂商提供，他们的主要任务是找到外存中对应的 bootloader 。
+
+- [[id:82a37f12-bc16-4554-b6e0-2d931b759b00][BIOS]]
+- [[id:e8f0d45b-991b-4c77-901d-d62d8914c417][UEFI]]
+- [[id:7f0c8234-4a59-41e1-b200-c2be3a86a815][Boot ROM]]
+
+* Bootloader
+Bootloader 是外存上的软件，用于加载操作系统。因为启动过程比较繁复，所以往往分成多个阶段进行加载（一般是 2 个阶段）。
+
+Stage1 Bootloader 主要是对于内存控制器的设置和对于安全的设置:
+- [[id:3e44a83f-ded4-48eb-bcfb-21f79a57a21c][MBR]]
+
+Stage2 Bootloader 主要负责加载内核：
+- [[id:7960b36a-4544-499a-b4c8-e8346b75805a][Uboot]]
+- [[id:10732f20-f769-45b8-abe8-9dc4c7a921c3][Grub]]
+
+* 操作系统
 - [[id:03abe92f-02d1-4dfb-addc-5ba89fc354be][Linux]]
 - [[id:2b0578d1-ed79-4fd4-838c-672dcc151b6e][Unix]]
-- [[id:7960b36a-4544-499a-b4c8-e8346b75805a][Uboot]]
 
 * 组件
 - [[id:b93aba59-daa5-4ed1-aa32-a5c32fb46a72][Kernel Build]]

@@ -1,7 +1,7 @@
 :PROPERTIES:
 :ID:       da9c8247-86d6-415e-9466-2676df02725e
 :END:
-#+title: Arm Cache
+#+title: ARM Cache
 
 * PoU and PoC
 Point of Unification(PoU) 和 Point of Coherency(PoC) 是 Arm 为了描述 Cache 的一致性提出的两个概念。我个人觉得它们是具有某种特性的缓存结构，具有这种特性的缓存之上的观察者们，一致性得到了一定的保证。
@@ -15,7 +15,7 @@ PoC 指的是在 *整个硬件系统* 下内的所有 CPU Core, DMA, GPU, DSP �
 #+DOWNLOADED: screenshot @ 2024-05-04 14:29:57
 [[file:img/2024-05-04_14-29-57_screenshot.png]]
 
-*  Cache 指令
+* Cache 指令
 Armv8 的 Cache 指令非常复杂，它由多个参数组成，分别指定了针对 Cache 的操作、类型、范围、Point(就是 PoU 还是 PoC) 。
 
 在操作（function）方面，Armv8 提供了 3 种方式：

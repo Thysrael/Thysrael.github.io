@@ -19,3 +19,5 @@ void write_msr(uint32_t msr, uint32_t lo, uint32_t hi) {
    asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
 }
 #+end_src
+
+需要注意的是，MSR 并不是唯一的一种“系统寄存器”（就像在 ARM 或者 RISCV 中出现的那样），事实上在 X86 中还有 [[id:4b29cade-1a3a-4125-b2f0-583940087ccc][CR]] (Control Register)、[[id:8f9bcfe4-6c9e-4fed-a31b-abebb42e6d22][Flags]]（标志寄存器）和 DR (Debug Register) 等多种非通用的系统寄存器。MSR 的特点在于它是“Model Specific”的，即对于特定的架构，会存在特定的 MSR ，是比较灵活的系统寄存器。这在它的使用方式中也有体现，它是通过索引而非寄存器助记符来使用的，因为索引是动态的，而助记符是写死的。

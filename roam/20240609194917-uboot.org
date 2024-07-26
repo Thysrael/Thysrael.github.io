@@ -3,6 +3,8 @@
 :END:
 #+title: Uboot
 
+Uboot 广泛用于嵌入式系统。
+
 * uboot 启动命令
 采用如下形式设置系统启动命令：
 

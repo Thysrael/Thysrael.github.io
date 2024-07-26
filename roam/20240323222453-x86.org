@@ -3,4 +3,14 @@
 :END:
 #+title: X86
 
+* 历史
+- [[id:8e8bdb52-39c5-4b4f-9967-f9efbbf7aa62][X86 History]]
+
+* 系统寄存器
+- [[id:4b29cade-1a3a-4125-b2f0-583940087ccc][X86 CR]]
+- [[id:8f9bcfe4-6c9e-4fed-a31b-abebb42e6d22][X86 Flags]]
 - [[id:55a1b54b-6d09-4c50-ac4b-ac50facc581d][X86 MSR]]
+
+* 功能
+- [[id:eb0ae23c-8fb3-4f62-853c-c9c30c672414][X86 Mode]]
+- [[id:9577b8fa-bb2f-4dd0-a985-1fc53dcb196e][X86 Memory]]

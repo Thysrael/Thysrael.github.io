@@ -12,6 +12,7 @@
 - ARM 创业：[[id:39e72b21-b578-4365-a435-1482f3ee7df7][ARM Startup]]
 - 开源数据库与云厂商之争：[[id:31e8a537-9a57-4163-ae80-046a206a2d7e][Redis vs Cloud]]
 - Git 诞生：[[id:fd04e72c-16c1-445a-9543-c680e88db803][from Bitkeeper to Git]]
+- X86 架构发展历史：[[id:8e8bdb52-39c5-4b4f-9967-f9efbbf7aa62][X86 History]]
 
 * Insight
 - Web 后端服务与后端框架：[[id:3f8ec5ca-0d6f-4d0f-93ba-58dab7c65614][Web Server vs Framework]]

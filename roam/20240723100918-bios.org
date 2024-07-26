@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       82a37f12-bc16-4554-b6e0-2d931b759b00
+:END:
+#+title: BIOS
+
+第一代传统的启动固件，它的原理是寻找外存的 [[id:3e44a83f-ded4-48eb-bcfb-21f79a57a21c][MBR]] 来完成加载。

@@ -1,0 +1,79 @@
+:PROPERTIES:
+:ID:       4b29cade-1a3a-4125-b2f0-583940087ccc
+:END:
+#+title: X86 CR
+
+CR 即 Control Register ，是 X86 中比较固定的系统寄存器，一共有 4 个。不同于 [[id:55a1b54b-6d09-4c50-ac4b-ac50facc581d][MSR]] 寄存器的专有指令，可以直接使用 ~mov~ 指令进行读写。
+
+* CR0
+~CR0~ 主要负责全局配置控制和协处理器控制，其位域如下：
+
+| Bit | Label | Description           |
+|-----+-------+-----------------------|
+|   0 | PE    | Protected Mode Enable |
+|   1 | MP    | Monitor co-processor  |
+|   2 | EM    | x87 FPU Emulation     |
+|   3 | TS    | Task switched         |
+|   4 | ET    | Extension type        |
+|   5 | NE    | Numeric error         |
+|  16 | WP    | Write protect         |
+|  18 | AM    | Alignment mask        |
+|  29 | NW    | Not-write through     |
+|  30 | CD    | Cache disable         |
+|  31 | PG    | Paging                |
+
+其中 ~PE, PG~ 和内存管理相关。分别表示开启保护模式和开启分页。
+
+* CR1
+保留不用， ~CR5, 6, 7~ 都是一样。
+
+* CR2
+~CR2~ 寄存器包含了最近发生的页错误（page fault）的线性地址（也即虚拟地址）。当处理器检测到页错误异常时（异常编号为 14）， ~CR2~ 会被自动加载发生错误的地址。
+
+* CR3
+~CR3~ 寄存器包含当前使用的页目录的物理地址。所以也被称为 ~PDBR~ 。
+
+* CR4
+~CR4~ 在奔腾系列后才引入，为系统提供了更多的控制特性。：
+
+| Bit | Name                                        | Description                                             |
+|-----+---------------------------------------------+---------------------------------------------------------|
+|   0 | VME (Virtual-8086 Mode Extensions)          | 提供对虚拟 8086 模式增强的支持。                        |
+|   1 | PVI (Protected-Mode Virtual Interrupts)     | 在保护模式下启用虚拟中断处理。                          |
+|   2 | TSD (Time Stamp Disable)                    | 禁止在用户模式下读取时间戳计数器                        |
+|   3 | DE (Debugging Extensions)                   | 为调试提供更多的能力。                                  |
+|   4 | PSE (Page Size Extension)                   | 启用 4MB 页面，扩展标准的 4KB 页面大小。                |
+|   5 | PAE (Physical Address Extension)            | 启用 36 位物理地址空间，从而支持多达 64GB 的物理内存。  |
+|   6 | MCE (Machine-Check Exception)               | 启用系统级的错误检测和报告。                            |
+|   7 | PGE (Page Global Enable)                    | 允许非全局页面表条目在地址空间切换时保持在 TLB 缓存中。 |
+|   8 | PCE (Performance-Monitoring Counter Enable) | 允许从任何特权级读取性能监控计数器。                    |
+|   9 | OSFXSR                                      | 支持更高效的浮点上下文切换。                            |
+|  10 | OSXMMEXCPT                                  | 允许 SIMD 浮点异常的操作系统支持。                      |
+| ... | ...                                         | 其他保留位或特定处理器可能定义的特定位                  |
+|  18 | OSXSAVE                                     | 启用扩展状态保存和恢复 XSAVE/XRSTOR 指令。              |
+| ... | ...                                         | 其他保留位或特定处理器可能定义的特定位                  |
+
+* CR8
+~CR8~ 寄存器，也称为任务优先级寄存器（Task Priority Register，TPR），是在 x86-64 架构（也称为 AMD64 或 Intel 64）中引入的。它用于支持在 64 位模式下的处理器中实现任务优先级机制。
+
+~CR8~ 的主要作用是存储任务优先级值，该值用于管理对局部 APIC 进行中断请求（IRQ）的阻塞。任务优先级值定义了处理器接收中断请求的阈值：只有优先级高于或等于当前 ~CR8~ 值的中断请求才能被派送到处理器。这样， ~CR8~ 寄存器允许软件根据当前执行的任务的重要性来最小化干扰。
+
+~CR8~ 寄存器的低 4 位用于设置当前任务的优先级，而其余位保留未用。
+
+* XCR0
+~XCR0~ （Extended Control Register 0）是 x86 架构中的一个拓展控制寄存器，它用于管理 CPU 的扩展状态和特性。这些扩展的状态通常包括新的处理器功能，如新的 SIMD（Single Instruction, Multiple Data）指令集扩展。 ~XCR0~ 是通过~XGETBV~ 和 ~XSETBV~ 指令进行访问和修改的，这两个指令分别用于读取和设置 ~XCR0~ 的值。
+
+~XCR0~ 寄存器主要用于对处理器的保存和恢复操作指定哪些状态应该被保护。当操作系统执行上下文切换时，例如，在不同的应用之间或者在用户态和内核态之间进行切换，必须保存和恢复特定寄存器的状态，以确保应用程序和系统的正常运行。这些状态包括了标准的 x87 FPU 状态、SSE 状态和新加入的 AVX 状态，等等。
+
+~XCR0~ 中的每个位表示以下状态：
+
+| Bit | Name                              | Description                                                  |
+|-----+-----------------------------------+--------------------------------------------------------------|
+|   0 | x87 state                         | 控制 x87 浮点单元的状态保存和加载。                          |
+|   1 | SSE state                         | 控制 SSE 指令集的状态（XMM 寄存器）保存和加载。              |
+|   2 | AVX state                         | 控制 AVX 指令集的状态（YMM 寄存器的高位 256 位）保存和加载。 |
+|   3 | MPX state                         | 控制 MPX 寄存器状态的保存和加载。                            |
+|   4 | AVX-512 state                     | 控制 AVX-512 指令集的状态保存和加载。                        |
+| 5-7 | AVX-512 state extended components | 控制 AVX-512 指令集更多状态（如 ZMM 寄存器）的保存和加载。   |
+|   8 | PKRU state                        | 控制保护密钥寄存器（用于内存保护扩展）的状态保存和加载。     |
+| ... | ...                               | 其他保畷位或特定处理器可能定义的特定位。                     |

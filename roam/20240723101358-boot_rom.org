@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       7f0c8234-4a59-41e1-b200-c2be3a86a815
+:END:
+#+title: Boot ROM
+
+许多嵌入式处理器有一个固化在芯片中的 Boot ROM，这是第一个运行的代码，用于初始化硬件（如内存控制器）并从预定的启动媒体（比如 SD 卡、NAND 闪存、UART 等）加载引导加载程序（比如 [[id:7960b36a-4544-499a-b4c8-e8346b75805a][U-Boot]]）。Boot ROM 是硬件制造商提供的，为硬件特定的引导流程提供支持。
+
+Boot ROM 在逻辑上也可以被认为是一个 Stage1 的 bootloader ，因为它可以直接引导 Stage2 的 Uboot 。

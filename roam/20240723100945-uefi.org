@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       e8f0d45b-991b-4c77-901d-d62d8914c417
+:END:
+#+title: UEFI
+
+UEFI 是相比于 [[id:82a37f12-bc16-4554-b6e0-2d931b759b00][BIOS]] 更加先进的固件，它不再局限于寻找 [[id:3e44a83f-ded4-48eb-bcfb-21f79a57a21c][MBR]] ，而是可以直接加载外存上的 EFI 文件（这些文件往往就是bootloader）。

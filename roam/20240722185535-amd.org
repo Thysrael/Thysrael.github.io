@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       cba11249-c17d-4eb0-9a86-ab933e2a0aed
+:END:
+#+title: AMD
+
+在 [[id:47b2dbfe-695d-4af4-91e3-d9cd7220f379][Intel]] 从仙童脱胎后，1969 年 5 月 1 日，桑德斯（之前在摩托罗拉，后来去了[[id:b784b5ba-1eb5-403b-9a81-987ce55451fe][仙童半导体]]）也带着 7 个人另立门户，成立了超微半导体（Advanced Micro Devices, AMD）。

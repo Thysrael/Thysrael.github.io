@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       10732f20-f769-45b8-abe8-9dc4c7a921c3
+:END:
+#+title: Grub
+
+GRUB (GRand Unified Bootloader) 是在个人 [[id:e016355e-c94d-4611-92ba-d99bba8eba53][X86]] PC 上非常常见的 Stage2 Bootloader ，可以用于引导 Linux 和 Windows 程序。

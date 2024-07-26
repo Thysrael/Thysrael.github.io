@@ -1,7 +1,7 @@
 :PROPERTIES:
 :ID:       3c8bb797-7d14-400f-8949-e38f43275212
 :END:
-#+title: Arm MMU
+#+title: ARM MMU
 
 * 基本知识
 MMU(Memory Manage Unit) 由 TLB(Translation Lookaside Buffer) 和 Table Walk Unit 组成，如下所示：

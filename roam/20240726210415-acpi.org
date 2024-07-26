@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       4956339b-8b75-406d-b033-2242fb8a3773
+:END:
+#+title: ACPI
+
+Advanced Configuration and Power Interface (ACPI) 是 X86 上可以对标 [[id:5cfb61f9-86e0-4f30-8959-a81f27e6113e][Device Tree]] 的设备接口架构。
+
+X86 利用它来发现和配置计算机硬件组件、执行电源管理。相比于设备树，它具有更多的操作结构，可以通过 ACPI 来直接操作和监视设备，而设备树只提供了设备的描述功能。
