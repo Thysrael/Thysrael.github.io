@@ -21,7 +21,7 @@ X86 存在多个模式，这里的模式有些类似于 Armv8 具有 A32 和 A64
 
 IA-32e 又具有两个子模式：
 
-1. 64 位模式（64-bit Mode）：即 64 位模式
+1. 64 位模式（64-bit Mode）：即 64 位模式，也被称作长模式（long-mode）
 2. 兼容模式（Compatibility Mode）：使得在 64 位操作系统上能够运行 32 位的程序
 
 这些模式不仅在内存使用中存在差异，在寄存器、中断、权限管理和任务切换方面都存在差异，但是如果统一介绍，那么篇幅就过长了。
@@ -32,3 +32,14 @@ IA-32e 又具有两个子模式：
 BIOS 就是运行在实模式下的，另外说一嘴，BIOS 不止负责启动，它还为操作系统提供了一些服务（BIOS routines，类似于 [[id:e36b6a81-d1e8-4af4-93ec-0993ecd5c4a9][RISCV]] 的 [[id:4e79ca55-6bdb-46ba-b693-02d03415725e][SBI]]）设计，我们可以使用 ~int~ 指令来触发。
 
 另外，只有在实模式下才可以使用 BIOS routines ，在保护模式下不可以。
+
+* IA-32e
+** IA-32e Setup
+从保护模式进入 IA-32e 需要配置 EFER (Extended Feature Enable Register) 寄存器。它的格式如下：
+
+[[file:img/clipboard-20240727T222236.png]]
+
+其中 ~syscall enable~ 指的是在 64 位模式下启动 ~SYSCALL/SYSRET~ 指令。
+
+** 兼容模式
+在 IA-32e 中，内核是 64 位的，而用户态可以是 64 位，也可以是 32 位的。

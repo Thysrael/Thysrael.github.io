@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       53950d04-73ab-41dd-b9a2-af2d289719fc
+:END:
+#+title: BSD
+
+BSD（Berkeley Software Distribution）是一个源自于加州大学伯克利分校（[[id:6bc20ec2-a38d-4f70-8e6d-791eb54873c2][UC Berkeley]]）的 UNIX 操作系统的一个版本。
+
+BSD 的发展始于 1970 年代，最初是针对 AT&T 的 UNIX 系统的扩展。其第一版，称为 1BSD，于 1977 年发布。随后发布了多个版本，包括 2BSD、3BSD、4BSD 等，其中 4BSD 是最著名的版本之一，它为后来的 UNIX 系统奠定了基础。
+
+BSD 影响了许多现代操作系统，尤其是在网络相关技术方面。以下是一些主要的 BSD 变种：
+
+- FreeBSD：强调性能和可用性的 BSD 版本，广泛应用于服务器和桌面环境。
+- OpenBSD：着重于安全性和代码质量，旨在提供一个安全的环境，是许多安全特性的发源地。
+- NetBSD：强调可移植性，支持多种硬件体系结构，适合嵌入式系统和多平台应用。

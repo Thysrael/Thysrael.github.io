@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       4764e866-da4b-4291-9d89-cd1a187c1bec
+:END:
+#+title: X86 Syscall
+
+* IA-32
+在 32 位模式下，Linux 内核使用 ~int 0x80~ 中断调用系统调用。参数的传递主要通过寄存器来完成， ~eax~ 用于指定系统调用号，使用 ~ebx, ecx, edx, esi, edi, ebp~ 来传递参数。
+
+~int~ 指令会将 ~eflags~ 和 ~cs:eip~ 压入栈中，然后根据中断向量（在 Linux 上就是 ~0x80~ ）在 IDT 中选择对应的门，选择的门会修改 CPL 完成特权级的转变。而在返回时，只需要使用 ~iret~ 指令即可，它会从用弹栈的方式恢复 ~eflags, cs, eip~ 。
+
+* IA-32e
+在 64 位模式下，使用 ~syscall~ 指令进行系统调用。使用 ~rax~ 来指定系统调用号，使用 ~rdi,rsi, rdx, r10, r8, r9~ 来传递参数。
+
+在执行这条指令后，CPU 会执行以下操作：
+
+1. 执行流切换：将返回地址保存在 ~rcx~ 中，将 ~rip~ 修改位 ~lstar~
+2. 屏蔽中断：将 ~rflags~ 保存到 ~r11~ 中，用 ~fmask~ 屏蔽 ~rflags~
+3. 改变特权等级：根据 ~star~ 寄存器写入 ~cs, ds~ 。
+
+我们需要使用 ~sysret~ 指令来返回，它将 ~rcx~ 写入 ~rip~ 并将 ~r11~ 写入 ~rflags~ 。
+
+涉及到的寄存器如下：
+
+[[file:img/clipboard-20240727T200518.png]]

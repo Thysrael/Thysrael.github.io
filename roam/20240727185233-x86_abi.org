@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       929d7b6f-554a-4902-80eb-2466aa11185b
+:END:
+#+title: X86 ABI
+
+不愧是 X86 ，连 ABI 都存在多个标准，所以这个就看个乐呵就好了。
+
+* 32 Bit
+C 语言标准 cdel 规定参数在堆栈上传递（从右到左压栈，最后一个参数首先压入），返回值放在 ~eax~ 中，其中 ~eax, ecx, edx~ 由被调用者保存
+
+* 64 Bit
+对于 64 位系统，存在 [[id:b7cbbb61-17ec-450c-b6d4-1c919b86d53b][Microsoft]] 和 [[id:a8c93c59-67ca-407a-97fe-02ffcc309b3f][System V]]（适用于 Linux/MacOS/FreeBSD）两套标准。微软标准用 ~RCX、RDX、R8、R9~ 4 个寄存器传参，而 SystemV 标准用 ~RDI、RSI、RDX、RCX、R8、R9~ 6 个寄存器。他们都用 ~RAX~ 来传递 64 位的返回值，用 ~RDX:RAX~ 来传递 128 位返回值。
+

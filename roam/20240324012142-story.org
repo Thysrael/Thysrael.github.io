@@ -19,6 +19,7 @@
 - 冯·诺依曼架构与哈佛架构：[[id:b7060f45-26a8-4c89-b631-142076ded4ae][Von Neumann vs Havard Architecture]]
 - 控制台与终端：[[id:39455c08-d2eb-49ae-9afe-c951113e086e][Console, Terminal, TTY]]
 - 继承式和能力式权限管理：[[id:a12d0c4c-921f-4302-b205-78f0da8635ab][Hierarchical vs Capability]]
+- 提供机制而不提供策略：[[id:b169b4e7-0291-483c-a3ea-92376e1bf052][Mechanism or Policy]]
 
 * Novel
 - [[id:b294a890-404e-4852-b565-096ccf1f1fa7][汪曾祺]]

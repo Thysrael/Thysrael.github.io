@@ -6,7 +6,6 @@
 
 这里记录着工具性的东西，无关学习。
 
-- 个人工作环境：[[id:95203d2b-355a-42ff-9f2f-70909c5132d2][工作环境]] 
-- 最小配置，方便迁移：[[id:53a31b1e-c691-43e5-8ed7-aba2874d1af4][Mini Config]] 
+- 个人工作环境：[[id:ed6bd31e-0b93-4965-a2a3-bb22ca752a6c][Enviroment]]
+- 最小配置，方便迁移：[[id:53a31b1e-c691-43e5-8ed7-aba2874d1af4][Mini Config]]
 - 常用的命令行工具：[[id:736fd7c9-ec8f-47d8-a387-d4dabcb81eb1][Command]]
-- Linux 发行版：[[id:80882e00-0704-41b7-ba7c-7e0f0d80ed23][Linux Distribution]]

@@ -3,5 +3,6 @@
 :END:
 #+title: Unix
 
-- 提供机制而不提供策略：[[id:b169b4e7-0291-483c-a3ea-92376e1bf052][Mechanism or Policy]]
-
+* 变体
+- [[id:a8c93c59-67ca-407a-97fe-02ffcc309b3f][System V]]
+- [[id:53950d04-73ab-41dd-b9a2-af2d289719fc][BSD]]

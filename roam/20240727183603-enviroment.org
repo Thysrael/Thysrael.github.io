@@ -1,8 +1,10 @@
 :PROPERTIES:
-:ID:       95203d2b-355a-42ff-9f2f-70909c5132d2
+:ID:       ed6bd31e-0b93-4965-a2a3-bb22ca752a6c
 :END:
-#+title: 工作环境
+#+title: Enviroment
 #+filetags: :root:
+
+这里记录着工作环境的工具：
 
 - 编辑器：[[id:7ba3aeb8-f711-4fc8-aac6-5ef4fb647011][Emacs]]
 - 截屏软件：flameshot
@@ -13,3 +15,5 @@
 - 字体配置：[[id:86c95f93-f218-4c05-ad56-f7f15cd62a84][FontConfig]]
 - 磁盘分区工具：[[id:f0579c4f-a581-4da1-8451-230629d3c930][GParted]]
 - 静态网站生成器：[[id:aa310248-f305-487c-a1e8-0d4f8d26e9ca][Hexo]]
+- Linux 发行版：[[id:8210f9ca-154c-4102-b60e-64f4fa1c7773][ArchLinux]]
+
