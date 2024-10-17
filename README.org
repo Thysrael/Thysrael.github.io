@@ -1,0 +1,21 @@
+#+title: Thysrael Blog
+#+author: thysrael
+#+language: zh
+
+* Install
+
+#+begin_src shell
+npm install
+cd ./themes/next/
+npm install
+#+end_src
+
+* Roam
+
+#+begin_src shell
+cd ./source
+git clone git@github.com:Thysrael/Roam-Site.git
+#+end_src
+
+* Punycode
+I can't fix it.
