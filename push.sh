@@ -1,5 +1,6 @@
 #!/bin/bash
 
+hexo clean
 hexo g -d
 
 # 获取当前日期，并格式化为 YYYY-MM-DD 格式
