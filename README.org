@@ -44,3 +44,14 @@ patch < changes.patch
 #+end_src
 
 The problem has been issued [[https://github.com/hexojs/hexo/issues/4492][here]]. and the path is [[https://github.com/xcodebuild/hexo-asset-image/blob/3c114cf0c0343ab28469635085b225fcae7fb9d3/index.js#L24][this]]. 
+
+* Multi Branch
+the ~main~ branch is the deploy branch. We use another branch ~blog~ to manage the source. To accomplish that, I used these commands:
+
+#+begin_src shell
+git init .
+git commit -m "init"
+git branch blog
+git checkout blog
+git push origin blog
+#+end_src
