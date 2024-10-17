@@ -30,13 +30,6 @@ sitemap:
 baidusitemap:
   path: baidusitemap.xml
 
-# 主动推送百度，被百度收录
-baidu_url_submit:
-  count: 10
-  host: https://thysrael.github.io/
-  token: kOgV4N9TRvfzFvzN
-  path: baidu_urls.txt
-
 # nofollow 标签
 nofollow:
   enable: true
@@ -195,5 +188,4 @@ deploy:
     #repo: https://github.com/livingfrontier/livingfrontier.github.io.git
     repo: git@github.com:Thysrael/Thysrael.github.io.git
     branch: main
-  - type: baidu_url_submitter
 
