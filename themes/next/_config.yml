@@ -1073,4 +1073,12 @@ friendslinks:
     site: https://chlience.cn/
     info: 他头没了(\\doge)
 
-
+utteranc:
+  enable: true
+  repo: Thysrael/blog-comment
+  pathname: pathname
+  # theme: github-light,github-dark,github-dark-orange
+  theme: github-light
+  # cdn: https://utteranc.es/client.js
+  # If you want to modify priority, please config in **hexo**
+  #priority:
