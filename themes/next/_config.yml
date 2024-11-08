@@ -52,7 +52,7 @@ language_switcher: false
 
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
-  since: 2021-12
+  since: 2021.12.18
 
   # Icon between year and copyright info.
   icon:
