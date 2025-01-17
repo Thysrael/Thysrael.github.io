@@ -1073,6 +1073,11 @@ friendslinks:
     site: https://chlience.cn/
     info: 他头没了(\\doge)
 
+  - nickname: Linyu
+    avatar: https://avatars.githubusercontent.com/u/94553312?v=4
+    site: https://www.linyu.cool/
+    info: 热爱生活的可爱小哥
+
 # 评论
 utteranc:
   enable: true
