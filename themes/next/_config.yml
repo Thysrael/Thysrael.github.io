@@ -1078,6 +1078,11 @@ friendslinks:
     site: https://www.linyu.cool/
     info: 热爱生活的可爱小哥
 
+  - nickname: DearAJ
+    avatar: https://avatars.githubusercontent.com/u/105581880?v=4
+    site: https://dearaj.github.io/
+    info: 开朗小太阳
+    
 # 评论
 utteranc:
   enable: true
