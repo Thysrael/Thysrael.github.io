@@ -1032,6 +1032,11 @@ friendslinks:
     avatar: https://mmmusel.github.io/avatar/photo.jpg
     site: https://mmmusel.github.io/
     info: 这个人就是汉堡
+    
+  - nickname: DearAJ
+    avatar: https://avatars.githubusercontent.com/u/105581880?v=4
+    site: https://dearaj.github.io/
+    info: 开朗小太阳
 
   - nickname: 重结晶
     avatar: https://cjj826.github.io/img/bing.jpg
@@ -1077,11 +1082,6 @@ friendslinks:
     avatar: https://avatars.githubusercontent.com/u/94553312?v=4
     site: https://www.linyu.cool/
     info: 热爱生活的可爱小哥
-
-  - nickname: DearAJ
-    avatar: https://avatars.githubusercontent.com/u/105581880?v=4
-    site: https://dearaj.github.io/
-    info: 开朗小太阳
     
 # 评论
 utteranc:
