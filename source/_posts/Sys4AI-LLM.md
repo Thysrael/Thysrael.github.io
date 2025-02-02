@@ -25,9 +25,238 @@ tags: ["S9假期", "Sys4AI", "直观理解"]
 
 ## 二、数学基础
 
-### 2.1 GEMM 时间复杂度
+### 2.1 张量求导
 
-### 2.2 反向传播求导
+#### 2.1.1 规律
+
+之前我多次学习张量求导的数学定义，但是总感觉非常生硬和无厘头，因为我不清楚到底要求多少次偏导，导数矩阵的形状是什么（甚至有些都不是矩阵了，而是 3 维张量了），还有如何跟我之前学过的数学分析、线性代数知识联系在一起。
+
+经过又一次的学习，我总结出如下规律：
+
+- 导数矩阵分量的个数，是因变量的分量个数与自变量的分量个数的乘积。这个细想下来非常显然，在求导的时候，当然应该对影响每个因变量的每个自变量求偏导，这样的每个结果就是导数矩阵中的一个分量。我们以最经典的雅各比矩阵举例，一个 $M$ 维的向量函数对于 $N$ 维的自变量向量求导，它的雅各比矩阵形状是 $M \times N$ ，也就是有 $MN$ 个分量。
+- 导数矩阵的形状是出于适配链式求导法则等制定的，在梯度下降法中导数矩阵的形状需要与自变量形状相同。由上一条可知，我们已经可以确定导数矩阵中分量具体是什么了，但是如何排列这些分量组成导数矩阵依然不确定。经过我的学习，我觉得形状没有简单的规律可以总结。其核心在于一定要适用于链式法则，也就是要考虑到所有中间变量并求和（下文会有详述）。我又注意到，为了使梯度下降法生效，那么导数矩阵（也就是梯度矩阵），必须和自变量矩阵形状相同，要不然就无法实现矩阵减法了（对应元素相减）。顺便吐槽一下，梯度下降法并不是那么合理，用自变量减去导数，并没有实际意义，它只是在自变量处于极值点时，达到不动点。
+- 在 ML 中，只有因变量是标量的导数，是最终结果，而因变量是向量或者矩阵的情况，只是中间结果。这是因为梯度下降法求解的是损失函数对各个参数（向量或者矩阵）的梯度，而损失函数是一个标量。如果从数学角度看，区分“最终结果”和“中间结果”的意义并不大，因为我们总是要通过“中间结果”来计算出“最终结果”的。但是从实践角度看，因为“中间结果”有可能是三维张量（因变量为向量或者矩阵），所以矩阵乘法就不显然适用了（也可以强行适用，毕竟高维计算也是要落实在），又因为在线性变换等场景下，三维向量的稀疏性很好，所以我们常常并不计算出完整的“中间变量”，而是使用链式法则，来简化高维运算。
+
+#### 2.1.2 链式法则
+
+在标量世界中，对于 $z = g(y), y = f(x)$ ，链式法则通常写做：
+$$
+\frac{\part z}{\part x} = \frac{\part z}{\part y} \frac{\part y}{\part x}
+$$
+那么如果 $x$ 不再是标量，而是一个向量 $X$ 怎么办，那么我们依然可以列出来 $X$ 的任意分量 $x_i$ ，有：
+$$
+\frac{\part z}{\part x_i} = \frac{\part z}{\part y} \frac{\part y}{\part x_i}
+$$
+显然如果 $X$ 是一个矩阵，那么情形也是类似的，对于任意分量 $x_{ij}$ ，有：
+$$
+\frac{\part z}{\part x_{ij}} = \frac{\part z}{\part y} \frac{\part y}{\part x_{ij}}
+$$
+上面的都很简单且显然，那么我们可以思考一下如果 $y$ 不再是标量，而是一个 $N$ 维向量 $Y$ 怎么办？那么 $X$ 的某个分量 $x_i$ 就可以通过影响 $Y$ 的所有分量 $y_1, y_2, \dots, y_n$ 来影响 $z$ ，所以当我们求 $z$ 对 $x_i$ 的偏导的时候，要考虑到所有的 $y_k$ ，所以其形式如下：
+$$
+\frac{\part z}{\part x_{i}} = \sum_{k = 1} ^ N \frac{\part z}{\part y_k} \frac{\part y_k}{\part x_{i}}
+$$
+这个分量形式也可以被整理成更加规整的矩阵乘法形式（毕竟上面就是乘加运算），也就是如下所示：
+$$
+\frac{\partial z}{\partial \mathbf{X}} = \frac{\partial z}{\partial \mathbf{Y}} \frac{\partial Y}{\partial \mathbf{X}}
+
+\\
+= \begin{bmatrix}
+\frac{\partial z}{\partial y_1} 
+\frac{\partial z}{\partial y_2} 
+\cdots 
+\frac{\partial z}{\partial y_n}
+\end{bmatrix}
+
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_{1}} & \frac{\partial y_1}{\partial x_{2}} & \cdots & \frac{\partial y_1}{\partial x_{m}} \\
+\frac{\partial y_2}{\partial x_{1}} & \frac{\partial y_2}{\partial x_{2}} & \cdots & \frac{\partial y_2}{\partial x_{m}} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial y_n}{\partial x_{1}} & \frac{\partial y_n}{\partial x_{2}} & \cdots & \frac{\partial y_n}{\partial x_{m}}
+\end{bmatrix}
+$$
+右边的那个方阵，就是传说中的雅各比矩阵。
+
+我们在“规律”这一节探讨的求导矩阵的形状问题，其实核心就在于求导矩阵的形状，可以在链式法则中直接应用，而不需要经过大量的 reshape。
+
+那如果 $X$ 和 $Y$ 有任一方是一个矩阵怎么办？可以想见，此时的雅各比矩阵就不再是二维的了，而是三维（$X$ 和 $Y$ 仅有一个是矩阵）或者四维张量（$X$ 和 $Y$ 均是矩阵）了。此时就很难整理成矩阵乘法的形式了，但是分量求和公式依然成立。
+
+而在 ML 实践中，常常因为有些 $\frac{\part z}{\part y_k} \frac{\part y_k}{\part x_{i}}$ 项为零，进而可以简化高维张量运算。我们来举个例子，以 ML 中常见的全连接层 $Y = WX$ 为例（省略了偏置量 $B$），其中 $X$ 是 $N$ 维向量，$Y$ 是 $M$ 维向量，$W$ 是 $M \times N$ 维矩阵。那么在反向传播中，就有：
+$$
+\frac{\part Y}{\part W} = 
+\begin{bmatrix}
+\begin{bmatrix}
+\frac{\partial y_1}{\partial w_{11}} & \frac{\partial y_1}{\partial w_{12}} & \cdots & \frac{\partial y_1}{\partial w_{1n}} \\
+\frac{\partial y_1}{\partial w_{21}} & \frac{\partial y_1}{\partial w_{22}} & \cdots & \frac{\partial y_1}{\partial w_{2n}} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial y_1}{\partial w_{m1}} & \frac{\partial y_1}{\partial w_{m2}} & \cdots & \frac{\partial y_1}{\partial w_{mn}}
+\end{bmatrix} 
+
+\\
+
+\begin{bmatrix}
+\frac{\partial y_2}{\partial w_{11}} & \frac{\partial y_2}{\partial w_{12}} & \cdots & \frac{\partial y_2}{\partial w_{1n}} \\
+\frac{\partial y_2}{\partial w_{21}} & \frac{\partial y_2}{\partial w_{22}} & \cdots & \frac{\partial y_2}{\partial w_{2n}} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial y_2}{\partial w_{m1}} & \frac{\partial y_2}{\partial w_{m2}} & \cdots & \frac{\partial y_2}{\partial w_{mn}}
+\end{bmatrix}
+
+\\
+
+\vdots
+
+\\
+
+\begin{bmatrix}
+\frac{\partial y_n}{\partial w_{11}} & \frac{\partial y_n}{\partial w_{12}} & \cdots & \frac{\partial y_n}{\partial w_{1n}} \\
+\frac{\partial y_n}{\partial w_{21}} & \frac{\partial y_n}{\partial w_{22}} & \cdots & \frac{\partial y_n}{\partial w_{2n}} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial y_n}{\partial w_{m1}} & \frac{\partial y_n}{\partial w_{m2}} & \cdots & \frac{\partial y_n}{\partial w_{mn}}
+\end{bmatrix}
+
+\end{bmatrix}
+$$
+这个式子看着就非常恐怖，再进行矩阵运算不得活活难死（其实还好），但是我们注意到对于任意分量 $y_i$ ，它等于：
+$$
+y_i = \sum_{j = 0}^N w_{ij} x_j
+$$
+也就是说，对于特定的 $i$， $y_i$ 不和 $W$ 的所有分量有关，而是只跟 $W$ 第 $i$ 行分量有关，也就是：
+$$
+\frac{\part Y}{\part W} = 
+\begin{bmatrix}
+\begin{bmatrix}
+\frac{\partial y_1}{\partial w_{11}} & \frac{\partial y_1}{\partial w_{12}} & \cdots & \frac{\partial y_1}{\partial w_{1n}} \\
+0 & 0 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 0 \\
+\end{bmatrix} 
+
+\\
+
+\begin{bmatrix}
+0 & 0 & \cdots & 0 \\
+\frac{\partial y_2}{\partial w_{21}} & \frac{\partial y_2}{\partial w_{22}} & \cdots & \frac{\partial y_2}{\partial w_{2n}} \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 0 \\
+\end{bmatrix}
+
+\\
+
+\vdots
+
+\\
+
+\begin{bmatrix}
+0 & 0 & \cdots & 0 \\
+0 & 0 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial y_n}{\partial w_{m1}} & \frac{\partial y_n}{\partial w_{m2}} & \cdots & \frac{\partial y_n}{\partial w_{mn}}
+\end{bmatrix}
+
+\end{bmatrix}
+
+=
+
+\begin{bmatrix}
+\begin{bmatrix}
+x_1 & x_2 & \cdots & x_n \\
+0 & 0 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 0 \\
+\end{bmatrix} 
+
+\\
+
+\begin{bmatrix}
+0 & 0 & \cdots & 0 \\
+x_1 & x_2 & \cdots & x_n \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 0 \\
+\end{bmatrix}
+
+\\
+
+\vdots
+
+\\
+
+\begin{bmatrix}
+0 & 0 & \cdots & 0 \\
+0 & 0 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+x_1 & x_2 & \cdots & x_n \\
+\end{bmatrix}
+\end{bmatrix}
+$$
+其实我们都没有必要再关注这个复杂的 $\frac{\part Y}{\part W}$ 的稀疏性质了，我们直接回归本源，我们的核心目的是求解损失函数 $l$ 对 $W$ 的导数，那么按照原本来说，有：
+$$
+\frac{\part l}{\part w_{ij}} = \frac{\part l}{\part Y} \frac{\part Y}{\part w_{ij}}
+$$
+又因为在 $i,j$ 确定的情况下， $w_{ij}$ 只会影响 $Y$ 的 $y_i$ 分量，所以上面这个式子就会变化成：
+$$
+\frac{\part l}{\part w_{ij}} = \frac{\part l}{\part Y}\frac{\part Y}{\part w_{ij}} = \frac{\part l}{\part y_i}\frac{\part y_i}{\part w_{ij}} = \frac{\part l}{\part y_i}x_j
+$$
+有了这样的化简后，就可以被整理成新的向量乘法，如下所示：
+$$
+\frac{\part l}{\part W} = \frac{\part l}{\part Y} X^T
+$$
+再次变得简洁优雅。
+
+这件事情很启发我，我之前学习反向传播时，太关注复杂的神经网络的梯度的张量表示了，动不动就会出现三维和四维的张量，然后陷入停滞。而实际上，就算在数学上产生了这些拦路虎，我们也并不在意，因为这些高维张量本来就不是我们的目的，它只是链式求和公式的一种形式。我们会重新回到链式求和公式，来构建更加简单的矩阵乘法，而不是固守高维张量。
+
+#### 2.1.2 标量-张量
+
+标量对张量进行求导时，生成的导数矩阵和张量（无论张量是标量、向量还是矩阵）的形状完全相同。比如说对于一个 $N$ 维列向量 $X$ ，其导数矩阵如下所示：
+$$
+\frac{\partial y}{\partial \mathbf{X}} = 
+\begin{bmatrix}
+\frac{\partial y}{\partial x_1} \\
+\frac{\partial y}{\partial x_2} \\
+\vdots \\
+\frac{\partial y}{\partial x_n}
+\end{bmatrix}
+$$
+而对于 $M \times N$ 维的矩阵求导，其形式也是类似的：
+$$
+\frac{\partial y}{\partial \mathbf{X}} = 
+\begin{bmatrix}
+\frac{\partial y}{\partial x_{11}} & \frac{\partial y}{\partial x_{12}} & \cdots & \frac{\partial y}{\partial x_{1n}} \\
+\frac{\partial y}{\partial x_{21}} & \frac{\partial y}{\partial x_{22}} & \cdots & \frac{\partial y}{\partial x_{2n}} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial y}{\partial x_{m1}} & \frac{\partial y}{\partial x_{m2}} & \cdots & \frac{\partial y}{\partial x_{mn}}
+\end{bmatrix}
+$$
+
+#### 2.1.3 向量-向量
+
+向量对向量的求导，就会生成著名的雅可比矩阵（Jacobian Matrix）。考虑 $M$ 维 $Y$ 向量对 $N$ 维 $X$ 向量求导，有：
+$$
+J = \frac{\partial \mathbf{Y}}{\partial \mathbf{X}} =
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_1} & \frac{\partial y_1}{\partial x_2} & \cdots & \frac{\partial y_1}{\partial x_n} \\
+\frac{\partial y_2}{\partial x_1} & \frac{\partial y_2}{\partial x_2} & \cdots & \frac{\partial y_2}{\partial x_n} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}
+\end{bmatrix}
+$$
+这里列出的方阵，横轴是 $x$ 分量，而纵轴是 $y$ 分量。我个人觉得只要保证链式法则的基本要求，似乎转置一下也没有大关系，矩阵形状和矩阵乘法，只不过是一种简写的方式。
+
+#### 2.1.4 向量-矩阵
+
+#### 2.1.5 标量-矩阵
+
+#### 2.1.6 矩阵-矩阵
+
+### 2.2 FLOPS
+
+#### 2.2.1 GEMM
+
+GEMM 即 General Matrix Multiply ，就是最为常见的矩阵乘法操作。
+
+对于一个 $M \times K$ 的矩阵与一个 $K \times N$ 的矩阵进行 GEMM 运算，FLOPS 是 $2 MNK$ 。
+
+这是因为结果矩阵中有 $MN$ 个元素，而每个元素都是一个 $K$ 维行向量和一个 $K$ 维列向量的点积结果。而点积需要进行 $K$ 次乘法操作和 $K - 1$ 次加法操作，故总共需要约 $2K$ 次操作（其实我觉得这里存疑，因为如果是 MAC，Multi-Add 的话，其实点积只需要 $K$ 次操作）。进而 GEMM 需要 $2MNK$ 次操作。 
+
+总之在 GEMM 中，FLOPS 分别是 3 个维度的一次函数。
 
 ### 2.3 IM2Col
 
