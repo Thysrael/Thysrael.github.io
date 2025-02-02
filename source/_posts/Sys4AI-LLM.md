@@ -291,11 +291,136 @@ GEMM 即 General Matrix Multiply ，就是最为常见的矩阵乘法操作。
 
 总之在 GEMM 中，FLOPS 分别是 3 个维度的一次函数。
 
-#### 2.2.2 $\frac{\partial l}{\partial Y}$
+#### 2.2.2 损失函数
 
-在神经网络中的最后一层，往往输出一个向量 $Y$ ，我们需要根据向量
+在神经网络中的最后一层，往往输出一个 $N$ 维向量 $Z$ ，我们需要根据向量 $Z$ 来计算损失函数 $l$ ，我们考虑一种最常见的损失函数：
+$$
+l = \sum^{N}_{i = 1} (z_i - t)^2
+$$
+其中 $t$ 是目标期望值，那么就有：
+$$
+\frac{\partial l}{\partial Z} = 2(Z - T)
+$$
+其中 $T$ 是一个每个分量均为 $t$ 的 $N$ 维向量。因为要进行 $N$ 次元素操作，此时的 FLOPS 就是 $N$ 。
+
+#### 2.2.3 隐藏层
+
+我们首先定义一下隐藏层，首先我们有一个 $N$ 维的输入向量 $I$ ，他会先经过线性变换变成一个 $M$ 维向量 $Y$ ，如下所示：
+$$
+Y = WI + B
+$$
+ 然后经过激活函数 $\sigma(Y)$ 的元素变化进行激活，有：
+$$
+\sigma(y_i) = \frac{1}{1 + e^{-x}}
+$$
+我们记录 $M$ 维向量 $O$ 为激活后的值，即：
+$$
+O = \sigma(Y)
+$$
+我们首先计算正向传播一个向量的 FLOPS。在计算 $Y$ 这个步骤的 FLOPS 是 $2NM$ ，计算 $O$ 这个步骤是 $M$ ，所以总体的 FLOPS 就是 $2NM + M$  （常数凑活看吧，领会精神）。
+
+然后我们计算反向传播一个向量的 FLOPS。我们还需要定义一些其他辅助计算的符号。反向传播是遵循链式法则的，所以我们在计算当前层时，一定已经有了后面一个隐藏层输入的梯度，而后一个隐藏层的输入就是当前隐藏层的输出，也就是说，我们已知 $\frac{\partial l}{\partial O}$ 的值了。
+
+在这个反向传播的过程中，我们希望求解参数的梯度 $\frac{\partial l}{\partial W}, \frac{\partial l}{\partial B}$ ，此外，我们还需要求解 $\frac{\partial l}{\partial I}$ ，虽然这个值和当前层的参数更新没有关系，但是上一层的反向传播的参数梯度，需要 $\frac{\partial l}{\partial I}$ ，正如我们需要  $\frac{\partial l}{\partial O}$ 一样。
+
+首先我们计算激活值的梯度，有
+$$
+\frac{\partial l}{\partial Y} = \frac{\partial l}{\partial O} \frac{\partial O}{\partial Y}
+$$
+又因为有：
+$$
+\sigma'(x) = \sigma(x) \cdot (1 - \sigma(x))
+$$
+所以有：
+$$
+\frac{\partial O}{\partial Y} = 
+\begin{bmatrix}
+o_1 (1 - o_1) \\
+o_2 (1 - o_2) \\
+\cdots \\
+o_m (1 - o_m)
+\end{bmatrix}
+$$
+计算 $\frac{\partial l}{\partial Y}$ 的过程总 FLOPS 是 $2M$ ，先计算出 $\frac{\partial O}{\partial Y}$ 的 FLOPS 是 $M$ ，然后 $\frac{\partial l}{\partial O}$ 和 $\frac{\partial O}{\partial Y}$ 对应元素相乘，FLOPS 是 $M$ 。
+
+然后我们计算权重矩阵的梯度，有：
+$$
+\frac{\partial l}{\partial W} = \frac{\partial l}{\partial Y} \frac{\partial Y}{\partial W}
+$$
+按理说 $\frac{\partial Y}{\partial W}$ 是一个三维张量，比较难处理，但是又因为线性变换的特性（在“链式规则”处证明），有：
+$$
+\frac{\partial l}{\partial W} = \frac{\partial l}{\partial Y} I^T
+$$
+因为 $\frac{\partial l}{\partial Y}$ 是 $M$ 维， $I$ 是 $N$ 维，所以总 FLOPS 是 $MN$ （没有加法过程，所以没有常数 $2$）。但是如果还要考虑用 $\frac{\partial l}{\partial W}$ 来修正 $W$ ，那么总 FLOPS 就是 $2MN$ 。
+
+然后我们计算偏置量的梯度，有：
+$$
+\frac{\partial l}{\partial B} = \frac{\partial l}{\partial Y} \frac{\partial Y}{\partial B}
+$$
+又因为：
+$$
+\frac{\partial Y}{\partial B} =
+\begin{bmatrix}
+1 \\
+1 \\
+\cdots \\
+1
+\end{bmatrix}
+$$
+所以：
+$$
+\frac{\partial l}{\partial B} = \frac{\partial l}{\partial Y}
+$$
+FLOPS 直接可忽略，如果算上更新 $B$ ，那么 FLOPS 是 $N$ 。
+
+最后我们还需要计算 $\frac{\partial l}{\partial I}$ ，有：
+$$
+\frac{\partial l}{\partial I} = \frac{\partial l}{\partial Y} \frac{\partial Y}{\partial I}
+$$
+又因为：
+$$
+\frac{\partial Y}{\partial I} = W^T
+$$
+所以总的 FLOPS 是一次 $M$ 维向量与 $M \times N$ 维矩阵乘法的 FLOPS，也就是 $2MN$ 。
+
+所以总得来看，反向传播的 FLOPS 是 $4MN$ 左右，但是这个值很没有意义，只是说，它的量值依然是正比于输入维度 $N$ 和输出维度 $M$ 。
+
+#### 2.2.4 Attention
+
+Softmax 是一个独特的元素映射函数，这里记录一下它的梯度函数。设 softmax 的输入是一个 $N$ 维向量 $Z$ ，输出是一个 $N$ 维向量 $P$ ，有：
+$$
+\frac{\partial l}{\partial Z} = \frac{\partial l}{\partial P} \frac{\partial P}{\partial Z}
+$$
+其中 $\frac{\partial P}{\partial Z}$ 是一个 $N \times N$ 维的雅克比矩阵。有如下定理，当 $i = j$ 时：
+$$
+\frac{\partial p_{i}}{\partial z_j} = p_i(1 - p_i)
+$$
+当 $i \ne j$ 时：
+$$
+\frac{\partial p_{i}}{\partial z_j} = -p_ip_j
+$$
+那么这里的反向传播的本质也是一个矩阵与向量乘法，FLOPS 大约是 $N^2$ 。
+
+而 Attention 的其他部分用到了在隐藏层中没有出现过的矩阵乘法，比如说 $QK^T$ 计算，看似会产生四维张量，实际上和线性变换类似，非常直观，设：
+$$
+S = \frac{QK^T}{\sqrt{d_k}}
+$$
+有：
+$$
+\frac{\partial l}{\partial Q} = \frac{\partial l}{\partial S} \frac{\partial S}{\partial Q} = \frac{1}{\sqrt{d_k}} \frac{\partial l}{\partial S} K \\
+\frac{\partial l}{\partial K} = \frac{\partial l}{\partial S} \frac{\partial S}{\partial K} = \frac{1}{\sqrt{d_k}} \frac{\partial l}{\partial S} Q
+$$
+因此依然是矩阵与向量乘法的 FLOPS，FLOPS 是 $Q,K$ 维度的乘积，也就是 $seq\_len \times d_{key}$ 。
 
 ### 2.3 IM2Col
+
+IM2Col 的意思是 Image To Column，本质是将卷积计算转换成矩阵乘法，然后因为矩阵乘法已经被优化得很好了，所以可以加速计算。如下所示：
+
+![image-20250202175313184](Sys4AI-LLM/image-20250202175313184.png)
+
+但是这种方式并不从理论上减少计算的复杂度，只是比较简单实现，并且效果较好。此外 FFT 也可以用于加速卷积计算，并且是理论上加速。
+
+---
 
 
 
