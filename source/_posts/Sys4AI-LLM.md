@@ -41,19 +41,19 @@ tags: ["S9假期", "Sys4AI", "直观理解"]
 
 在标量世界中，对于 $z = g(y), y = f(x)$ ，链式法则通常写做：
 $$
-\frac{\part z}{\part x} = \frac{\part z}{\part y} \frac{\part y}{\part x}
+\frac{\partial z}{\partial x} = \frac{\partial z}{\partial y} \frac{\partial y}{\partial x}
 $$
 那么如果 $x$ 不再是标量，而是一个向量 $X$ 怎么办，那么我们依然可以列出来 $X$ 的任意分量 $x_i$ ，有：
 $$
-\frac{\part z}{\part x_i} = \frac{\part z}{\part y} \frac{\part y}{\part x_i}
+\frac{\partial z}{\partial x_i} = \frac{\partial z}{\partial y} \frac{\partial y}{\partial x_i}
 $$
 显然如果 $X$ 是一个矩阵，那么情形也是类似的，对于任意分量 $x_{ij}$ ，有：
 $$
-\frac{\part z}{\part x_{ij}} = \frac{\part z}{\part y} \frac{\part y}{\part x_{ij}}
+\frac{\partial z}{\partial x_{ij}} = \frac{\partial z}{\partial y} \frac{\partial y}{\partial x_{ij}}
 $$
 上面的都很简单且显然，那么我们可以思考一下如果 $y$ 不再是标量，而是一个 $N$ 维向量 $Y$ 怎么办？那么 $X$ 的某个分量 $x_i$ 就可以通过影响 $Y$ 的所有分量 $y_1, y_2, \dots, y_n$ 来影响 $z$ ，所以当我们求 $z$ 对 $x_i$ 的偏导的时候，要考虑到所有的 $y_k$ ，所以其形式如下：
 $$
-\frac{\part z}{\part x_{i}} = \sum_{k = 1} ^ N \frac{\part z}{\part y_k} \frac{\part y_k}{\part x_{i}}
+\frac{\partial z}{\partial x_{i}} = \sum_{k = 1} ^ N \frac{\partial z}{\partial y_k} \frac{\partial y_k}{\partial x_{i}}
 $$
 这个分量形式也可以被整理成更加规整的矩阵乘法形式（毕竟上面就是乘加运算），也就是如下所示：
 $$
@@ -80,9 +80,9 @@ $$
 
 那如果 $X$ 和 $Y$ 有任一方是一个矩阵怎么办？可以想见，此时的雅各比矩阵就不再是二维的了，而是三维张量或者四维张量了。此时就很难整理成矩阵乘法的形式了，但是分量求和公式依然成立。
 
-而在 ML 实践中，常常因为有些 $\frac{\part z}{\part y_k} \frac{\part y_k}{\part x_{i}}$ 项为零，进而可以简化高维张量运算。我们来举个例子，以 ML 中常见的全连接层 $Y = WX$ 为例（省略了偏置量 $B$），其中 $X$ 是 $N$ 维向量，$Y$ 是 $M$ 维向量，$W$ 是 $M \times N$ 维矩阵。那么在反向传播中，就有：
+而在 ML 实践中，常常因为有些 $\frac{\partial z}{\partial y_k} \frac{\partial y_k}{\partial x_{i}}$ 项为零，进而可以简化高维张量运算。我们来举个例子，以 ML 中常见的全连接层 $Y = WX$ 为例（省略了偏置量 $B$），其中 $X$ 是 $N$ 维向量，$Y$ 是 $M$ 维向量，$W$ 是 $M \times N$ 维矩阵。那么在反向传播中，就有：
 $$
-\frac{\part Y}{\part W} = 
+\frac{\partial Y}{\partial W} = 
 \begin{bmatrix}
 \begin{bmatrix}
 \frac{\partial y_1}{\partial w_{11}} & \frac{\partial y_1}{\partial w_{12}} & \cdots & \frac{\partial y_1}{\partial w_{1n}} \\
@@ -121,7 +121,7 @@ y_i = \sum_{j = 0}^N w_{ij} x_j
 $$
 也就是说，对于特定的 $i$， $y_i$ 不和 $W$ 的所有分量有关，而是只跟 $W$ 第 $i$ 行分量有关，也就是：
 $$
-\frac{\part Y}{\part W} = 
+\frac{\partial Y}{\partial W} = 
 \begin{bmatrix}
 \begin{bmatrix}
 \frac{\partial y_1}{\partial w_{11}} & \frac{\partial y_1}{\partial w_{12}} & \cdots & \frac{\partial y_1}{\partial w_{1n}} \\
@@ -187,17 +187,17 @@ x_1 & x_2 & \cdots & x_n \\
 \end{bmatrix}
 \end{bmatrix}
 $$
-其实我们都没有必要再关注这个复杂的 $\frac{\part Y}{\part W}$ 的稀疏性质了，我们直接回归本源，我们的核心目的是求解损失函数 $l$ 对 $W$ 的导数，那么按照原本来说，有：
+其实我们都没有必要再关注这个复杂的 $\frac{\partial Y}{\partial W}$ 的稀疏性质了，我们直接回归本源，我们的核心目的是求解损失函数 $l$ 对 $W$ 的导数，那么按照原本来说，有：
 $$
-\frac{\part l}{\part w_{ij}} = \sum_{k = 0}^M \frac{\part l}{\part y_k} \frac{\part y_k}{\part w_{ij}}
+\frac{\partial l}{\partial w_{ij}} = \sum_{k = 0}^M \frac{\partial l}{\partial y_k} \frac{\partial y_k}{\partial w_{ij}}
 $$
 又因为在 $i,j$ 确定的情况下， $w_{ij}$ 只会影响 $Y$ 的 $y_i$ 分量，所以上面这个式子就会变化成：
 $$
-\frac{\part l}{\part w_{ij}} = \sum_{k = 0}^M \frac{\part l}{\part y_k} \frac{\part y_k}{\part w_{ij}} = \frac{\part l}{\part y_i}\frac{\part y_i}{\part w_{ij}} = \frac{\part l}{\part y_i}x_j
+\frac{\partial l}{\partial w_{ij}} = \sum_{k = 0}^M \frac{\partial l}{\partial y_k} \frac{\partial y_k}{\partial w_{ij}} = \frac{\partial l}{\partial y_i}\frac{\partial y_i}{\partial w_{ij}} = \frac{\partial l}{\partial y_i}x_j
 $$
 有了这样的化简后，就可以被整理成新的向量乘法，如下所示：
 $$
-\frac{\part l}{\part W} = \frac{\part l}{\part Y} X^T
+\frac{\partial l}{\partial W} = \frac{\partial l}{\partial Y} X^T
 $$
 再次变得简洁优雅。
 
@@ -228,9 +228,9 @@ $$
 
 #### 2.1.4 张量-张量
 
-当因变量是张量的时候，就是对于因变量张量的每一个分量都应用一遍上文介绍的“标量-张量”方法。因变量分量会组成导数张量的外层维度，每个元素都是一个“标量-张量”导数矩阵。我们举个例子，有 $2 \times 3$ 维的向量 $X$ 和 $3 \times 2$ 维的 $Y$ 相乘得到 $2 \times 2$ 维的 $Z$ ，对于 $\frac{\part Z}{\part X}$ 有：
+当因变量是张量的时候，就是对于因变量张量的每一个分量都应用一遍上文介绍的“标量-张量”方法。因变量分量会组成导数张量的外层维度，每个元素都是一个“标量-张量”导数矩阵。我们举个例子，有 $2 \times 3$ 维的向量 $X$ 和 $3 \times 2$ 维的 $Y$ 相乘得到 $2 \times 2$ 维的 $Z$ ，对于 $\frac{\partial Z}{\partial X}$ 有：
 $$
-\frac{\part Z}{\part X} =
+\frac{\partial Z}{\partial X} =
 
 \begin{bmatrix}
 \frac{\partial z_{11}}{\partial X} & \frac{\partial z_{12}}{\partial X} \\
@@ -291,7 +291,9 @@ GEMM 即 General Matrix Multiply ，就是最为常见的矩阵乘法操作。
 
 总之在 GEMM 中，FLOPS 分别是 3 个维度的一次函数。
 
+#### 2.2.2 $\frac{\partial l}{\partial Y}$
 
+在神经网络中的最后一层，往往输出一个向量 $Y$ ，我们需要根据向量
 
 ### 2.3 IM2Col
 
