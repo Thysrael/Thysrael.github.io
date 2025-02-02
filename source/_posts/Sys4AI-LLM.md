@@ -80,7 +80,9 @@ $$
 
 那如果 $X$ 和 $Y$ 有任一方是一个矩阵怎么办？可以想见，此时的雅各比矩阵就不再是二维的了，而是三维张量或者四维张量了。此时就很难整理成矩阵乘法的形式了，但是分量求和公式依然成立。
 
-而在 ML 实践中，常常因为有些 $\frac{\partial z}{\partial y_k} \frac{\partial y_k}{\partial x_{i}}$ 项为零，进而可以简化高维张量运算。我们来举个例子，以 ML 中常见的全连接层 $Y = WX$ 为例（省略了偏置量 $B$），其中 $X$ 是 $N$ 维向量，$Y$ 是 $M$ 维向量，$W$ 是 $M \times N$ 维矩阵。那么在反向传播中，就有：
+而在 ML 实践中，常常因为有些 $\frac{\partial z}{\partial y_k}\frac{\partial y_k}{\partial x_i}$ 项为零，进而可以简化高维张量运算。
+
+我们来举个例子，以 ML 中常见的全连接层 $Y = WX$ 为例（省略了偏置量 $B$），其中 $X$ 是 $N$ 维向量，$Y$ 是 $M$ 维向量，$W$ 是 $M \times N$ 维矩阵。那么在反向传播中，就有：
 $$
 \frac{\partial Y}{\partial W} = 
 \begin{bmatrix}
