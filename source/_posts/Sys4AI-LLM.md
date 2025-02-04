@@ -616,11 +616,21 @@ Y = softmax(\frac{QK^T}{\sqrt{d_{in}}})V
 $$
 当 $Q, K, V$ 来源不相同时，我们称之为 Cross-Attention，即交叉注意力机制，常用于机器翻译。而当 $Q, K, V$ 来源相同时，则被称为 Self-Attention 机制，常用于发现上下文联系，理解或者产生新的语义。
 
+我们看一下 Transformer 的架构图：
+
+![image-20250204155327984](Sys4AI-LLM/image-20250204155327984.png)
+
+
+
+我们以“中译英”来距离， `inputs` 就是要中译英的语料库，`outputs` 刚开始就是要翻译的中文 ，`output probabilities` 是翻译好的英文（之所以叫作 probalities，应该是因为这里采用了 Self-Regression 架构）。在右上角的橙色 Attention 块中，`inputs` 负责提供 $K, V$ ，而 `outputs` 提供 $Q$。
+
 那么如果在 Self-Attention 中，还有必要区分 $Q, K, V$ 吗？还是说只要像最开始那样，直接使用 $X$ 就好了呢？其实还是有必要区分 $Q, K, V$ 的，在上面的介绍中可以看出， $Q, K, V$ 是各司其职，所以即使在 Self-Attention 中，也是有这样的分工。我们可以使用三个权重矩阵，来使得来源相同的 $Q, K, V$ 有不同的作用，如下所示：
 $$
-Q = X W_Q\\
-K = X W_K\\
-V = X W_V\\
+Q = X W_Q 
+\\
+K = X W_K 
+\\
+V = X W_V
 $$
 这样做，还可以改变 $Q, K, V$ 的形状，他们不再必须和 $X$ 保持相同的形状 $t \times d_{model}$ ，而是可以变成 $t \times d_k$ 和  $t \times d_v$ 。之所以没有 $d_q$ ，是因为 $d_q$ 和 $d_k$ 是相等的。
 
@@ -652,13 +662,47 @@ def generative(prompt):
 
 这种“浪费”会被下文的 KV-Cache 缓解。
 
-mask
+### 3.5 Encoder Decoder
+
+我们从上面的 Transformer 架构中注意到，上面一共有 3 种 Attention，我们详细介绍过的是位于右上角的 cross attention 块。在左下和右下还有两个 self-attention 快，分别是 encode-attention 和 decode-attention。
+
+这两种 attention 实现的都不是翻译任务，而是一种“让 token 关注上下文语义”的任务。通过 attention，原本独立的 token 语义会在上下文的影响下发生变化，这对之后的 cross-attention 是一种帮助。
+
+但是为什么 decoder-attention 相比于 encode-attention，多了一个 Sequence Mask 机制，它说得是对于 $A$ 矩阵中的 $a_{ij}$ ，如果有 $j > i$ ，那么就会被 $softmax$ 忽略。这样的目的是确保模型在生成当前词时，只能使用当前词及其之前的词，而不能“偷看”未来的词。而 encoder 就没有这个问题，为了获得语料库中的所有语义，Encoder 是允许使用全部上下文的。
+
+这里有个问题，就是在 Self-Regression 中，本来就是逐词生成的，在当前词没有生成的时候，未来的词也肯定没有生成，那么就算模型想偷看，也偷看不成。为了解释清楚，我们就需要理解逐词生成是推理的行为，而在训练的时候，模型是并行处理整个目标序列的，所以才需要掩码。
 
 ### 3.5 Multi-Head
 
 除了计算资源的浪费之外，我们还注意到 Self-Attention 的并行度又变差了。本来在机器翻译中，Attention 机制改进了 RNN 每个 token 逐个翻译的缺点，可以并行生成一整个输出语句（也就是 token 集合 $Y$）。但是在这个算法中，并行生成的 $Y$ 只用最后一个 token 的行向量 $y$ ，就又变成串行生成了。
 
-但是这种“串行生成”是 self-attention 的精髓，所以我个人感觉很难改变。但是我们依然有办法加速，那就是每次 attention 的时候通过减少 $d_k, d_v$ 来提高速度。
+但是这种“串行生成”是 self-regression 的精髓，所以我个人感觉很难改变。但是我们依然有办法加速，那就是每次 attention 的时候通过减少 $d_k, d_v$ 来提高速度。这种缩减 $d_k, d_v$ 的行为，可以理解为在原本 $d_{model}$ 的空间里提取特征。
+
+那么仅提供一个特征，就容易导致精度丧失，所以我们可以使用多个 attention，提取多个不同的特征，最后再将结果拼接在一起，这样提高了并行度和延迟，又不损失精度。我们设模型的 head 数为 $h$ ，通常有：
+$$
+d_{model} =  h \cdot d_k
+$$
+我们举一个例子，有参数：
+
+- $d_{model} = 4$
+- $t = 6$
+- $h = 2$
+- $d_k = 2$
+
+示意图如下：
+
+![](Sys4AI-LLM/attention2.drawio.png)
 
 ### 3.6 KV Cache
 
+正如前所述，在 Self-Regression 中我们计算 $Y$ 的目的只是为了得到最后一个行向量 $Y_t$ ，在上述计算中，有很多计算是冗余的，我们在上图中用“实心”标出计算 $Y_t$ 所需要的分量：
+
+![](Sys4AI-LLM/attention3.drawio.png)
+
+也就是说，只需要 $Q$ 的最后一个行向量，全部的 $K, V$ 向量，就可以满足计算要求，我们并不需要全部的 $Q$ 。
+
+更进一步，因为 $K, V$ 都是逐步增长的，也就是每次增加最后一个横向量，所以前面的部分都是可以被 cache 的，避免了 $X$ 每次都需要与 $W$ 进行运算，如果对 $K,V$ 进行 cache（用“交叉线”填充），那么计算量会进一步减少：
+
+![](Sys4AI-LLM/attention4.drawio.png)
+
+但是因为 $KV$ 的形状都包括一个 $t$ ，所以在长上下文场景下（也就是 $t$ 很大），会导致缓存的数据很多，这样
