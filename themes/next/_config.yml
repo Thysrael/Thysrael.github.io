@@ -1082,7 +1082,12 @@ friendslinks:
     avatar: https://avatars.githubusercontent.com/u/94553312?v=4
     site: https://www.linyu.cool/
     info: 热爱生活的可爱小哥
-    
+
+  - nickname: Yifeng
+    avatar: https://avatars.githubusercontent.com/u/114285105?v=4
+    site: https://yifengchen2023.github.io/blog4yifeng/
+    info: 牛逼留子
+
 # 评论
 utteranc:
   enable: true
