@@ -1,10 +1,13 @@
 ---
-abbrlink: 66584e99
 categories: 编译技术
-date: 2022-12-28 23:05:20
 mathjax: true
-tags: [S5课上, 编译技术, 知识总结]
+tags:
+  - S5课上
+  - 编译技术
+  - 知识总结
 title: 编译技术-llvm生成
+abbrlink: '66584e99'
+date: 2022-12-28 23:05:20
 ---
 
 # LLVM IR 生成

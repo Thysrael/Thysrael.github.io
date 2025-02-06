@@ -1,10 +1,13 @@
 ---
-abbrlink: 74e05380
 categories: CPP设计
-date: 2022-04-28 22:22:46
 mathjax: true
-tags: [CPP设计, S4课上, 知识总结]
+tags:
+  - CPP设计
+  - S4课上
+  - 知识总结
 title: CPP设计-C高阶
+abbrlink: '74e05380'
+date: 2022-04-28 22:22:46
 ---
 
 ## 综述
