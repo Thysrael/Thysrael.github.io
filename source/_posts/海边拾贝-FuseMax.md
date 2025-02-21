@@ -88,7 +88,7 @@ Einsum 的特点在于，它将 compute 和 reduce 阶段完全区分开了，�
 
 具体而言，在 compute 阶段，我们会根据输入坐标，构建一个迭代空间，然后遍历空间中的每一个点进行计算，得到一个相同维度的张量。以矩阵乘法为例，输入坐标是$$m,k$$和$$k,n$$，我们构建的迭代空间是$$[1,M] \times [1,K] \times [1,N]$$。经过计算得到的张量是$$z'_{m,k, n} = [a_{m,k} \times b_{k,n}]$$。
 
-在 reduce 阶段，我们需要将我们得到的张量 $$z_{m,k,n}$$与输出坐标$$m,n$$进行比对，发现多了一个$$$$维度。所以我们会沿着多出的维度进行规约，然后就可以得到 $$z_{m,n}=[\sum^{K}_{k=1}[a_{m,k} \times b_{k,n}]$$。
+在 reduce 阶段，我们需要将我们得到的张量 $z_{m,k,n}$ 与输出坐标 $$m,n$$ 进行比对，发现多了一个 $$k$$ 维度。所以我们会沿着多出的维度进行规约，然后就可以得到 $$z_{m,n}=[\sum^{K}_{k=1}[a_{m,k} \times b_{k,n}]$$。
 
 对比我平时用的矩阵乘法，可以看到 compute 和 reduce 是混合在一起的。
 
@@ -106,7 +106,7 @@ Einsum 的特点在于，它将 compute 和 reduce 阶段完全区分开了，�
 
 TeAAL 是一个加速器模型 generator，可以根据不同算子生成不同的加速器模型。在它的设计中，算子需要使用 Einsum Cascade 来进行描述，也就是一系列的 Einsum 。
 
-使用 Einsum 好处在于，引入了迭代空间，使得许多**加速器****设计**中的优化和 tradeoff 都非常清晰。TeAAL 提出了 3 个维度的优化：
+使用 Einsum 好处在于，引入了迭代空间，使得许多加速器设计中的优化和 tradeoff 都非常清晰。TeAAL 提出了 3 个维度的优化：
 
 - **Loop Order**：迭代空间“是$$[1,M] \times [1,K] \times [1,N]$$还是$$[1,K] \times [1,M] \times [1,N]$$”？这会影响数据是 stationary 的，还是 stream 的。
 - **Splitting**：运算中我们常常将输入分块计算，也可以视为在对迭代空间分块。
@@ -218,7 +218,7 @@ WorkLoad 有 BERT，TrXL，T5，XLM。
 
 在 inference 时的加速比：
 
-![img](https://ipads.feishu.cn/space/api/box/stream/download/asynccode/?code=YjAzY2VjN2ZjMjZjYzZhYTlmMTNjY2MyNTg3ZDFiNThfTnRMM0RvUzBHYzVEeVU1djMyakdvdFAzWHlLUUp0TXZfVG9rZW46TFJhcGI1MGZBb0ZhWlh4TnhoNGNBQ2FtbmhpXzE3Mzk0NTM3MDU6MTczOTQ1NzMwNV9WNA)
+![](./海边拾贝-FuseMax/28d63d58-4bd5-4995-ac91-a004c6cf6f85.png)
 
 因为计算单元利用率提高，所以加速比也显著提高。
 
@@ -230,7 +230,7 @@ WorkLoad 有 BERT，TrXL，T5，XLM。
 
 在 inference 时的能耗：
 
-![img](https://ipads.feishu.cn/space/api/box/stream/download/asynccode/?code=NjllZGU4M2M4NjM2YTY2ZGJhNjUwOGVhYzBlYWUxNmFfYkdGUm9IZUJnOW9OeTBHS1RZb3hxYVpsMmdLeXZVeE1fVG9rZW46SzliTGJZaXYyb3FVN054SGdWYWNmTDJkbjNjXzE3Mzk0NTM3MDU6MTczOTQ1NzMwNV9WNA)
+![2861afa9-44ca-43ca-ba57-24cee9103951](./海边拾贝-FuseMax/2861afa9-44ca-43ca-ba57-24cee9103951-1740103737579-3.png)
 
 Flash-Attention 节约了 DRAM 的访存开销。
 
