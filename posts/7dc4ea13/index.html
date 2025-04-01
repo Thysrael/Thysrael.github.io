@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/7dc4ea13/attention3.drawio.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/7dc4ea13/attention4.drawio.png">
 <meta property="article:published_time" content="2025-01-30T14:24:19.000Z">
-<meta property="article:modified_time" content="2025-02-21T02:11:22.031Z">
+<meta property="article:modified_time" content="2025-03-13T08:17:56.506Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="直观理解">
 <meta property="article:tag" content="S9假期">
@@ -138,7 +138,7 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">33</span></a>
 
   </li>
         <li class="menu-item menu-item-tags">
@@ -148,7 +148,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">191</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">192</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-02-21 10:11:22" itemprop="dateModified" datetime="2025-02-21T10:11:22+08:00">2025-02-21</time>
+                <time title="Modified: 2025-03-13 16:17:56" itemprop="dateModified" datetime="2025-03-13T16:17:56+08:00">2025-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -923,7 +923,21 @@ d_{model} =  h \cdot d_k</script><p>我们举一个例子，有参数：</p>
 <p>也就是说，只需要 $Q$ 的最后一个行向量，全部的 $K, V$ 向量，就可以满足计算要求，我们并不需要全部的 $Q$ 。</p>
 <p>更进一步，因为 $K, V$ 都是逐步增长的，也就是每次增加最后一个横向量，所以前面的部分都是可以被 cache 的，避免了 $X$ 每次都需要与 $W$ 进行运算，如果对 $K,V$ 进行 cache（用“交叉线”填充），那么计算量会进一步减少：</p>
 <p><img src="/posts/7dc4ea13/attention4.drawio.png" alt=""></p>
-<p>但是因为 $KV$ 的形状都包括一个 $t$ ，所以在长上下文场景下（也就是 $t$ 很大），会导致缓存的数据很多，这样</p>
+<p>但是因为 $KV$ 的形状都包括一个 $t$ ，所以在长上下文场景下（也就是 $t$ 很大），会导致缓存的数据很多，这样就会导致 GPU 的访存压力很大。</p>
+<h3 id="3-7-Prefill-amp-Decode"><a href="#3-7-Prefill-amp-Decode" class="headerlink" title="3.7 Prefill &amp; Decode"></a>3.7 Prefill &amp; Decode</h3><p>在了解完 KV Cache 后，我们可以来计算一下 Attention 机制的复杂度。对于一个 decode 阶段的 token 的时间复杂度而言：</p>
+<p>使用 $W_Q$ 对输入进行投影得到 $q$ ，时间复杂度是：</p>
+<script type="math/tex; mode=display">
+2 d_{model}d_k</script><p>利用 $q$ 与 $K$ 相乘得到注意力得分，时间复杂度是：</p>
+<script type="math/tex; mode=display">
+2d_{k}t</script><p>对于一个 $t$ 个元素的注意力得分与 $V$ 进行计算，时间复杂度是：</p>
+<script type="math/tex; mode=display">
+2d_{k}t</script><p>也就是说，这是一个与 $t$ 呈线性时间复杂度的算法。</p>
+<p>不过这么好的方法并不适用于整个算法。在我们生成第一个 token 的时候，是将整个 prompt 进行计算的，所以还是会需要计算出一个注意力方阵，而非一个注意力向量。</p>
+<p>那么在 prefill 阶段，那么注意力得分的时间复杂度是：</p>
+<script type="math/tex; mode=display">
+2d_kt^2</script><p>而与 $V$ 进行计算的时间复杂度为：</p>
+<script type="math/tex; mode=display">
+2d_kt^2</script><p>都是 $O(t^2)$ 的算法。</p>
 
     </div>
 
@@ -1016,7 +1030,7 @@ d_{model} =  h \cdot d_k</script><p>我们举一个例子，有参数：</p>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80"><span class="nav-text">二、数学基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%BC%A0%E9%87%8F%E6%B1%82%E5%AF%BC"><span class="nav-text">2.1 张量求导</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-%E8%A7%84%E5%BE%8B"><span class="nav-text">2.1.1 规律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99"><span class="nav-text">2.1.2 链式法则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3-%E6%A0%87%E9%87%8F-%E5%BC%A0%E9%87%8F"><span class="nav-text">2.1.3 标量-张量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-%E5%BC%A0%E9%87%8F-%E5%BC%A0%E9%87%8F"><span class="nav-text">2.1.4 张量-张量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-FLOPS"><span class="nav-text">2.2 FLOPS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-GEMM"><span class="nav-text">2.2.1 GEMM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-text">2.2.2 损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E9%9A%90%E8%97%8F%E5%B1%82"><span class="nav-text">2.2.3 隐藏层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-Attention"><span class="nav-text">2.2.4 Attention</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Im2Col"><span class="nav-text">2.3 Im2Col</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Transformer"><span class="nav-text">三、Transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Embedding"><span class="nav-text">3.1 Embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Attention"><span class="nav-text">3.2 Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Cross-Attention"><span class="nav-text">3.3 Cross-Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Self-Regression"><span class="nav-text">3.4 Self-Regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Encoder-Decoder"><span class="nav-text">3.5 Encoder Decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Multi-Head"><span class="nav-text">3.5 Multi-Head</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-KV-Cache"><span class="nav-text">3.6 KV Cache</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80"><span class="nav-text">二、数学基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%BC%A0%E9%87%8F%E6%B1%82%E5%AF%BC"><span class="nav-text">2.1 张量求导</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-%E8%A7%84%E5%BE%8B"><span class="nav-text">2.1.1 规律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99"><span class="nav-text">2.1.2 链式法则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3-%E6%A0%87%E9%87%8F-%E5%BC%A0%E9%87%8F"><span class="nav-text">2.1.3 标量-张量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-%E5%BC%A0%E9%87%8F-%E5%BC%A0%E9%87%8F"><span class="nav-text">2.1.4 张量-张量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-FLOPS"><span class="nav-text">2.2 FLOPS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-GEMM"><span class="nav-text">2.2.1 GEMM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-text">2.2.2 损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E9%9A%90%E8%97%8F%E5%B1%82"><span class="nav-text">2.2.3 隐藏层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-Attention"><span class="nav-text">2.2.4 Attention</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Im2Col"><span class="nav-text">2.3 Im2Col</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Transformer"><span class="nav-text">三、Transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Embedding"><span class="nav-text">3.1 Embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Attention"><span class="nav-text">3.2 Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Cross-Attention"><span class="nav-text">3.3 Cross-Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Self-Regression"><span class="nav-text">3.4 Self-Regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Encoder-Decoder"><span class="nav-text">3.5 Encoder Decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Multi-Head"><span class="nav-text">3.5 Multi-Head</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-KV-Cache"><span class="nav-text">3.6 KV Cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-Prefill-amp-Decode"><span class="nav-text">3.7 Prefill &amp; Decode</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1032,14 +1046,14 @@ d_{model} =  h \cdot d_k</script><p>我们举一个例子，有参数：</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">191</span>
+          <span class="site-state-item-count">192</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -1102,7 +1116,7 @@ d_{model} =  h \cdot d_k</script><p>我们举一个例子，有参数：</p>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">19:38</span>
+    <span title="Reading time total">19:46</span>
 </div>
 
         
