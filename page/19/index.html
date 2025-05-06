@@ -131,12 +131,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">66</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">67</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">192</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">194</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,210 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/50071041/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/50071041/" class="post-title-link" itemprop="url">面向对象-JML</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-06 09:11:37" itemprop="dateCreated datePublished" datetime="2022-06-06T09:11:37+08:00">2022-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-10-17 14:35:03" itemprop="dateModified" datetime="2024-10-17T14:35:03+08:00">2024-10-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>16 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>第三个单元作为从第二个单元的心态考验中解放的一个单元，很容易让人先入为主的松了一口气。这个单元干的事情确实要之前两个单元要少，这是因为其实我觉得 <code>OO</code> 最体现思维的“架构设计” 部分被 <code>JML</code> 剥夺了（这么说并不严谨，之后分析）。导致确实这个单元的任务重心并不在完成作业本身，这是大部分人呈现的情况。</p>
+<p>但是人的精力总是一定的，没有被写 <code>OO</code> 本身浪费掉，就会被其他事情浪费掉。而这个单元恰恰有两件浪费精神的事情。一件是去优化算法的复杂度，，一件是去做测评。</p>
+<p>关于算法时间复杂度的优化，我个人感觉是一种“被动卷”。这种卷带来的不好受并不是像前两个单元，因为简化一个表达式，或者改一种电梯策略的“主动卷”。而是一个必须参与的“默认卷”，一个很死板的东西。从三个方面分析：</p>
+<ul>
+<li>代价过大，比如说如果没有进行算法优化，不是没有性能分，而是直接被人 hack 掉，虽然分数确实不多，但是太令人恶心了。</li>
+<li>毫无美感，所谓的优化就是内部维护一个中间变量，不涉及算法（当然图算法也算用到了，但是最恶心的是其他的维护变量）</li>
+<li>与 <code>JML</code> 无关，哪怕是图算法或者并查集，很精妙，但是跟 <code>JML</code> 没有关系，<code>JML</code> 是用于规范代码的行为的，算法是用来改善代码行为的。类似于一个是法律，一个是经济，要研究法律（<code>JML</code>），探讨的应该是“张三与 20 个老婆结婚但是都不领结婚证，算不算重婚？”这一类明显需要细细甄别的问题，而不应该探讨“如何让张三与 20 个老婆结婚但不领结婚证”这个问题（这是一个经济问题（算法））。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/50071041/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/ad223710/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/ad223710/" class="post-title-link" itemprop="url">CPP设计-元编程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-09 21:40:13" itemprop="dateCreated datePublished" datetime="2022-05-09T21:40:13+08:00">2022-05-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-10-17 14:35:01" itemprop="dateModified" datetime="2024-10-17T14:35:01+08:00">2024-10-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPP%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">CPP设计</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="总论"><a href="#总论" class="headerlink" title="总论"></a>总论</h2><p>当我们去说元编程的时候，我觉得我们其实有很多方面，大致有如下几个：</p>
+<ul>
+<li>可以自动生成代码</li>
+<li>可以执行字符串源码</li>
+<li>在运行时可以修改源码</li>
+</ul>
+<p>总之每一个都是对于“源码只读”这个规矩的挑战。对于 C 而言，可以用<strong>宏</strong>来生成代码，而对于 C++ 而言，可以用 template 来代替宏。而对于其他元编程能力，C++ 显得有些为难。</p>
+<p>总之，需要明确，C++ template 有着和 C 的 define 相同的设计思路，可以看作是宏的强化。它提供了一种类型安全，方便调试的宏。这种思路在强调 template 和宏一样，本质上都是在产生源码。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/ad223710/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -620,205 +824,10 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/74e05380/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/74e05380/" class="post-title-link" itemprop="url">CPP设计-C高阶</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-28 22:22:46" itemprop="dateCreated datePublished" datetime="2022-04-28T22:22:46+08:00">2022-04-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-02-15 00:01:18" itemprop="dateModified" datetime="2025-02-15T00:01:18+08:00">2025-02-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPP%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">CPP设计</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>4.3k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><p>之所以在介绍 C++ 的文章里 C 语言，是因为 C++ 确实脱胎于 C，所以很多语法现象都是和 C 保持一致的。</p>
-<hr>
-<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h2><p>虽然盲目的整理过会就忘，但是还是有很多可以记住的东西</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/74e05380/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/45420b6b/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/45420b6b/" class="post-title-link" itemprop="url">操作系统-OS不相信抽象</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-28 20:22:20" itemprop="dateCreated datePublished" datetime="2022-04-28T20:22:20+08:00">2022-04-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-10-17 14:35:03" itemprop="dateModified" datetime="2024-10-17T14:35:03+08:00">2024-10-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7.8k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>7 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这是一次对于 MOS 内存管理的钻牛角尖梳理，在梳理过程中诞生了一些奇怪的东西。</p>
-<h2 id="kseg0-的第一性映射"><a href="#kseg0-的第一性映射" class="headerlink" title="kseg0 的第一性映射"></a>kseg0 的第一性映射</h2><p>操作系统的代码不是 C 就是汇编。所以我们从一开始就在使用虚拟空间了。但是很有意思的是，我们为什么可以？我们在一开始的时候没有内存控制块，也没有页表结构。所以我们到底是怎么完成映射的？</p>
-<p>其实就是对于 kseg0，只要我们往里面写东西，那么内容就会直接写到高位抹零后对应的物理地址上。这种映射是<strong>第一性</strong>的，也就是说，即使我一直不建立内存控制块，一直不建立页表结构，只要我用链接器把代码放到了 kseg0，那么这种关系依然是成立的。我写的每一段代码，操作的每一个数据，都是直接写到物理内存中的，不走 MMU，不查页表。这是一切的本源。</p>
-<p>关于 kseg1 的情况，其实应该是书里写错了，采用的映射关系其实不是抹掉高 3 位以后映射到物理地址，而是映射到了设备总线。只有这样，才可以避免 kseg0 和 kseg1 的不同的虚拟页面映射到同一个物理页框。不同的虚拟页面确实可以映射到同一个物理页框，但是这意味着这两个虚拟页面的内容应该是相同的，但是显然这两个段内容显然不是相同的，所以两个段必然不能遵守书中的规则。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/45420b6b/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -886,7 +895,7 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">192</span>
+          <span class="site-state-item-count">194</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -899,7 +908,7 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -956,7 +965,7 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">19:46</span>
+    <span title="Reading time total">19:50</span>
 </div>
 
         
