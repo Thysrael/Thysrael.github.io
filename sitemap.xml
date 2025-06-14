@@ -326,7 +326,7 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/posts/8b373749/</loc>
+    <loc>https://thysrael.github.io/posts/50071041/</loc>
     
     <lastmod>2024-10-17</lastmod>
     
@@ -335,7 +335,7 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/posts/50071041/</loc>
+    <loc>https://thysrael.github.io/posts/8b373749/</loc>
     
     <lastmod>2024-10-17</lastmod>
     
@@ -1550,7 +1550,7 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/posts/ea36b7db/</loc>
+    <loc>https://thysrael.github.io/posts/5af22558/</loc>
     
     <lastmod>2024-10-17</lastmod>
     
@@ -1559,7 +1559,7 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/posts/5af22558/</loc>
+    <loc>https://thysrael.github.io/posts/ea36b7db/</loc>
     
     <lastmod>2024-10-17</lastmod>
     
@@ -1939,13 +1939,6 @@
   </url>
   
   <url>
-    <loc>https://thysrael.github.io/tags/S8%E8%AF%BE%E4%B8%8A/</loc>
-    <lastmod>2025-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://thysrael.github.io/tags/S9%E5%81%87%E6%9C%9F/</loc>
     <lastmod>2025-06-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -1954,6 +1947,13 @@
   
   <url>
     <loc>https://thysrael.github.io/tags/Sys4AI/</loc>
+    <lastmod>2025-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://thysrael.github.io/tags/S8%E8%AF%BE%E4%B8%8A/</loc>
     <lastmod>2025-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
