@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、总论第三个单元作为从第二个单元的心态考验中解放的一个单元，很容易让人先入为主的松了一口气。这个单元干的事情确实要之前两个单元要少，这是因为其实我觉得 OO 最体现思维的“架构设计” 部分被 JML 剥夺了（这么说并不严谨，之后分析）。导致确实这个单元的任务重心并不在完成作业本身，这是大部分人呈现的情况。 但是人的精力总是一定的，没有被写 OO 本身浪费掉，就会被其他事情浪费掉。而这个单元恰恰有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象-JML">
+<meta property="og:url" content="https://thysrael.github.io/posts/50071041/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、总论第三个单元作为从第二个单元的心态考验中解放的一个单元，很容易让人先入为主的松了一口气。这个单元干的事情确实要之前两个单元要少，这是因为其实我觉得 OO 最体现思维的“架构设计” 部分被 JML 剥夺了（这么说并不严谨，之后分析）。导致确实这个单元的任务重心并不在完成作业本身，这是大部分人呈现的情况。 但是人的精力总是一定的，没有被写 OO 本身浪费掉，就会被其他事情浪费掉。而这个单元恰恰有">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/50071041/未命名绘图.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/50071041/image-20220521123039830-16544784620721.png">
+<meta property="article:published_time" content="2022-06-06T01:11:37.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.115Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S4课上">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="面向对象">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/50071041/未命名绘图.drawio.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/50071041/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>面向对象-JML | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/50071041/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面向对象-JML
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-06 09:11:37" itemprop="dateCreated datePublished" datetime="2022-06-06T09:11:37+08:00">2022-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>16 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>第三个单元作为从第二个单元的心态考验中解放的一个单元，很容易让人先入为主的松了一口气。这个单元干的事情确实要之前两个单元要少，这是因为其实我觉得 <code>OO</code> 最体现思维的“架构设计” 部分被 <code>JML</code> 剥夺了（这么说并不严谨，之后分析）。导致确实这个单元的任务重心并不在完成作业本身，这是大部分人呈现的情况。</p>
+<p>但是人的精力总是一定的，没有被写 <code>OO</code> 本身浪费掉，就会被其他事情浪费掉。而这个单元恰恰有两件浪费精神的事情。一件是去优化算法的复杂度，，一件是去做测评。</p>
+<p>关于算法时间复杂度的优化，我个人感觉是一种“被动卷”。这种卷带来的不好受并不是像前两个单元，因为简化一个表达式，或者改一种电梯策略的“主动卷”。而是一个必须参与的“默认卷”，一个很死板的东西。从三个方面分析：</p>
+<ul>
+<li>代价过大，比如说如果没有进行算法优化，不是没有性能分，而是直接被人 hack 掉，虽然分数确实不多，但是太令人恶心了。</li>
+<li>毫无美感，所谓的优化就是内部维护一个中间变量，不涉及算法（当然图算法也算用到了，但是最恶心的是其他的维护变量）</li>
+<li>与 <code>JML</code> 无关，哪怕是图算法或者并查集，很精妙，但是跟 <code>JML</code> 没有关系，<code>JML</code> 是用于规范代码的行为的，算法是用来改善代码行为的。类似于一个是法律，一个是经济，要研究法律（<code>JML</code>），探讨的应该是“张三与 20 个老婆结婚但是都不领结婚证，算不算重婚？”这一类明显需要细细甄别的问题，而不应该探讨“如何让张三与 20 个老婆结婚但不领结婚证”这个问题（这是一个经济问题（算法））。</li>
+</ul>
+<p>关于做测评，这个单元推出了“单元测试”的概念，但是我会在下面分析，我个人觉得其实也是不太适合这个单元的命题背景。</p>
+<hr>
+<h2 id="二、架构设计"><a href="#二、架构设计" class="headerlink" title="二、架构设计"></a>二、架构设计</h2><h3 id="2-1-总体架构"><a href="#2-1-总体架构" class="headerlink" title="2.1 总体架构"></a>2.1 总体架构</h3><p>这个单元的架构设计很简单，还是被约束好了的，大概是这样：</p>
+<p><img src="/posts/50071041/未命名绘图.drawio.png" alt="未命名绘图.drawio"></p>
+<p>就是很自然的“社交网络里面有人，有小组，小组里有人”这个结构，更直白的是，这次里面并不设计 <code>Network</code> 通过 <code>Group</code> 进行中转然后再对 <code>Person</code> 进行比较复杂的操作，所有对于 <code>Person</code> 的复杂操作都是直接通过 <code>Person</code> 进行的，这无疑降低了难度。</p>
+<h3 id="2-2-图算法"><a href="#2-2-图算法" class="headerlink" title="2.2 图算法"></a>2.2 图算法</h3><p>这个单元会涉及一些最短路径，最小生成树的图论算法，还有并查集算法。算法本身的实现就算困难，但是反正网上都有，抄就好了。但是 <code>Java</code> 在很 “面向对象” 的，所以实现这些算法的时候总会让人感觉“丑丑的”（就是那种很可爱的丑）。为了解决这个问题，可以考虑采用内部类等手段进行优化，或者直接像面向过程的语言一样，直接开数组，而不用已经有的容器。</p>
+<h3 id="2-3-架构再评价"><a href="#2-3-架构再评价" class="headerlink" title="2.3 架构再评价"></a>2.3 架构再评价</h3><p>这里放上我对于这个单元架构的看法，仅是个人看法，我还挺喜欢这个单元的。我觉得这个单元最大的问题就是“架构太简单”。架构一旦简单，就会导致很多问题。</p>
+<p>首先是 <code>JML</code> 变得很没有必要，我个人觉得 <code>JML</code> 的意义就在于，自然语言已经没办法描述清楚需求了，这才需要一种“歧义性小的，类似与数学语言”的 <code>JML</code> 来进行描述。但是我们现在来看一个例子，这是 <code>JML</code> 语言的描述：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/*@ public normal_behavior
+      @ requires containsMessage(id) &amp;&amp; getMessage(id).getType() == 0 &amp;&amp;
+      @         !isCircle(getMessage(id).getPerson1().getId(), getMessage(id).getPerson2().getId());
+      @ ensures \result == -1;
+      @ also
+      @ public normal_behavior
+      @ requires containsMessage(id) &amp;&amp; getMessage(id).getType() == 0 &amp;&amp;
+      @          isCircle(getMessage(id).getPerson1().getId(), getMessage(id).getPerson2().getId());
+      @ assignable messages, emojiHeatList;
+      @ assignable getMessage(id).getPerson1().socialValue, getMessage(id).getPerson1().money;
+      @ assignable getMessage(id).getPerson2().messages, getMessage(id).getPerson2().socialValue, getMessage(id).getPerson2().money;
+      @ ensures !containsMessage(id) &amp;&amp; messages.length == \old(messages.length) - 1 &amp;&amp;
+      @         (\forall int i; 0 &lt;= i &amp;&amp; i &lt; \old(messages.length) &amp;&amp; \old(messages[i].getId()) != id;
+      @         (\exists int j; 0 &lt;= j &amp;&amp; j &lt; messages.length; messages[j].equals(\old(messages[i]))));
+      @ ensures (\exists Person[] pathM;
+      @         pathM.length &gt;= 2 &amp;&amp;
+      @         pathM[0].equals(\old(getMessage(id)).getPerson1()) &amp;&amp;
+      @         pathM[pathM.length - 1].equals(\old(getMessage(id)).getPerson2()) &amp;&amp;
+      @         (\forall int i; 1 &lt;= i &amp;&amp; i &lt; pathM.length; pathM[i - 1].isLinked(pathM[i]));
+      @         (\forall Person[] path;
+      @         path.length &gt;= 2 &amp;&amp;
+      @         path[0].equals(\old(getMessage(id)).getPerson1()) &amp;&amp;
+      @         path[path.length - 1].equals(\old(getMessage(id)).getPerson2()) &amp;&amp;
+      @         (\forall int i; 1 &lt;= i &amp;&amp; i &lt; path.length; path[i - 1].isLinked(path[i]));
+      @         (\sum int i; 1 &lt;= i &amp;&amp; i &lt; path.length; path[i - 1].queryValue(path[i])) &gt;=
+      @         (\sum int i; 1 &lt;= i &amp;&amp; i &lt; pathM.length; pathM[i - 1].queryValue(pathM[i]))) &amp;&amp;
+      @         \result==(\sum int i; 1 &lt;= i &amp;&amp; i &lt; pathM.length; pathM[i - 1].queryValue(pathM[i])));
+      @ ensures \old(getMessage(id)).getPerson1().getSocialValue() ==
+      @         \old(getMessage(id).getPerson1().getSocialValue()) + \old(getMessage(id)).getSocialValue() &amp;&amp;
+      @         \old(getMessage(id)).getPerson2().getSocialValue() ==
+      @         \old(getMessage(id).getPerson2().getSocialValue()) + \old(getMessage(id)).getSocialValue();
+      @ ensures (\old(getMessage(id)) instanceof RedEnvelopeMessage) ==&gt;
+      @         (\old(getMessage(id)).getPerson1().getMoney() ==
+      @         \old(getMessage(id).getPerson1().getMoney()) - ((RedEnvelopeMessage)\old(getMessage(id))).getMoney() &amp;&amp;
+      @         \old(getMessage(id)).getPerson2().getMoney() ==
+      @         \old(getMessage(id).getPerson2().getMoney()) + ((RedEnvelopeMessage)\old(getMessage(id))).getMoney());
+      @ ensures (!(\old(getMessage(id)) instanceof RedEnvelopeMessage)) ==&gt; (\not_assigned(people[*].money));
+      @ ensures (\old(getMessage(id)) instanceof EmojiMessage) ==&gt;
+      @         (\exists int i; 0 &lt;= i &amp;&amp; i &lt; emojiIdList.length &amp;&amp; emojiIdList[i] == ((EmojiMessage)\old(getMessage(id))).getEmojiId();
+      @          emojiHeatList[i] == \old(emojiHeatList[i]) + 1);
+      @ ensures (!(\old(getMessage(id)) instanceof EmojiMessage)) ==&gt; \not_assigned(emojiHeatList);
+      @ ensures (\forall int i; 0 &lt;= i &amp;&amp; i &lt; \old(getMessage(id).getPerson2().getMessages().size());
+      @          \old(getMessage(id)).getPerson2().getMessages().get(i+1) == \old(getMessage(id).getPerson2().getMessages().get(i)));
+      @ ensures \old(getMessage(id)).getPerson2().getMessages().get(0).equals(\old(getMessage(id)));
+      @ ensures \old(getMessage(id)).getPerson2().getMessages().size() == \old(getMessage(id).getPerson2().getMessages().size()) + 1;
+      @ also
+      @ public exceptional_behavior
+      @ signals (MessageIdNotFoundException e) !containsMessage(id) ||
+      @         containsMessage(id) &amp;&amp; getMessage(id).getType() == 1;
+      @*/</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">sendIndirectMessage</span><span class="token punctuation">(</span><span class="token keyword">int</span> id<span class="token punctuation">)</span> <span class="token keyword">throws</span>
+            <span class="token class-name">MessageIdNotFoundException</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>四十多行，但是其实用自然语言描述 “最小生成树”五个字就够了（哪怕把离散数学这一章中关于最小生成树的内容全介绍，也没这个多）。会发现 <code>JML</code> 并没有辅助开发，而成了开发的阻碍。这其实是个很正常的现象，因为自然语言的描述主体就是简单的事情，如果架构很简单，那么就是用自然语言描述有优势。、</p>
+<p>那种 <code>JML</code> 很严谨的语言，不是不好，而是其描述的主体就是复杂的事情，如果一个方法会抛出 100 个异常，那么这 100 个异常的优先顺序是怎样的，检测条件有什么不同，每个异常要怎样处理，这些东西用自然语言是很难描述的，用 JML 就很合适。如果一个方法很不符合人的逻辑，比如一个有负边的图的行为的定义，那么用 JML 也很合适。但是这次的架构是没有这些东西的，这次的架构很简单，唯一有这种感觉的是那个小组人数不得超过 <code>1111</code> 人，这个特殊的行为，如果再复杂一些，就没有办法用自然语言描述了，是一个很好的地方。</p>
+<p>其次，架构一旦简单，单元测试就变得没有必要。我个人觉得，对于 <code>Person</code> 进行单元测试，不如直接通过 <code>Network</code> 对 <code>Person</code> 进行测试，还能顺便测试一下 <code>Network</code> 对于 <code>Person</code> 的管理能力。我们解释单元测试的意义，常用的例子是制造飞机的时候，不能上来直接测试飞机，而是应该先对飞机的部分，比如说发动机，机翼等进行测试。但是如果我们制造的就是机翼呢？那还有没有必要进行单元测试呢？如果还有，那么如果我们制造钢板，那么是不是还要进行单元测试。一旦单元的复杂度下降，那么单元测试的必要就变少。就好像我们搭建乐高的时候，从来不会测试积木块。</p>
+<p>最后，因为架构的难度没有上去，就会导致其他的卷的地方被开发出来。这是一个必然的现象，如果一个部分简单了，那么其他部分的难度就会上去，不然这个课程就太安逸了。但是架构简单导致的不只是 <code>JML</code> 部分的难度上不去，而且还导致了很多正确的 <code>OO</code> 的难度都上不去，比如抽象出新的类，利用已有的高级容器之类的。难度只能在算法上进行提高（毕竟算法在哪里都有），要是这样也还好，用 <code>Java</code> 实现数据结构学过的算法，是一件很有意思的事情。但是算法依然没有筛选度，最有筛选度的是无聊的 <code>quary group value sum</code> 的 <code>O(n^2)</code> 优化，这个就维护一个中间变量就好了，算法简单，除了很难想到会被卡以外没啥难度。这就是一种不健康的卷，我这个单元关注群消息关注的远远比前两个单元，因为很担心因为自己的疏忽导致一个简单的算法没有被优化，我个人觉得不太好。</p>
+<hr>
+<h2 id="三、测试"><a href="#三、测试" class="headerlink" title="三、测试"></a>三、测试</h2><h3 id="3-1-总论"><a href="#3-1-总论" class="headerlink" title="3.1 总论"></a>3.1 总论</h3><p>在这个单元因为答题思路被 <code>JML</code> 限制了大部分的设计（这其实是一个很有意思的话题，底下聊），所以节约出很多时间来思考测试相关的东西。</p>
+<p>我个人观点，一个测评机（无论是单元测试还是黑箱随机测试）主要由三部分组成：</p>
+<ul>
+<li>数据生成器</li>
+<li>正确性检验器</li>
+<li>自动化测试器</li>
+</ul>
+<p>对于这个单元来说，由于引入了单元测试，我觉得测试的方法变成了三种，即：</p>
+<ul>
+<li>全局的白箱测试</li>
+<li>单元测试</li>
+<li>全局随机黑箱测试</li>
+</ul>
+<p>在下面我会就这些方面去介绍我的思考。</p>
+<h3 id="3-2-白箱测试"><a href="#3-2-白箱测试" class="headerlink" title="3.2 白箱测试"></a>3.2 白箱测试</h3><h4 id="3-2-1-单元测试理解"><a href="#3-2-1-单元测试理解" class="headerlink" title="3.2.1 单元测试理解"></a>3.2.1 单元测试理解</h4><p>对于单元测试来说，测试的是每一个方法的执行效果，如果按照上面的逻辑去分析，数据生成器的任务就由人脑承担了，正确性检验的任务也是由人脑承担的，自动化测试由 <code>junit 4</code> 承担。</p>
+<p>正确性检验是结合 <code>assert</code> 来实现的，具体的语法如下</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">assert</span> conditon <span class="token operator">:</span> <span class="token string">"assert information"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>condition 本质是一个布尔表达式，如果其为 <code>true</code> 的话，就啥都不会发生，而其为 <code>false</code> 的时候，就会向 <code>stderr</code> 输出 <code>assert information</code>。</p>
+<h4 id="3-2-2-全局白箱测试"><a href="#3-2-2-全局白箱测试" class="headerlink" title="3.2.2 全局白箱测试"></a>3.2.2 全局白箱测试</h4><p>对于全局白箱测试，我将其定义为人脑构造样例然后扔进去跑的行为。数据生成器和正确性个检验依然是由人脑承担，自动化测试部分可以由 <code>Juint4</code> 承担，也可以对拍承担。</p>
+<p>其与单元测试的区别就是，他不再限制于只测试某个特定的方法，而是将整个程序看为一个整体，对于特定的功能或者说接口进行测试。</p>
+<h4 id="3-2-3-单元测试的初步分析"><a href="#3-2-3-单元测试的初步分析" class="headerlink" title="3.2.3 单元测试的初步分析"></a>3.2.3 单元测试的初步分析</h4><p>那么这个单元到底适不适合单元测试呢？我个人观点是不适合的（求轻锤）。我个人觉得，单元测试的特点就在于它的测试的粒度更加小，对于一个庞大的系统来说，如果只对系统本身进行一种全局性的测试，其缺点在于不能覆盖到每一个方法，同时也不能方便的定位到底是哪里除了问题。这些全局测试没有办法解决的事情，单元测试都可以有较好的表现。</p>
+<p>我们知道，对于一个系统来说，可以有这样一个划分，方法和组织方法的方法，类似于“生产部门”和“管理部门”。“生产部门”去负责实际的算法实现，“管理部门”去负责组织和管理“生产部门”。单元测试的对象是“生产部门”，我们可以测试飞机的发动机正不正常，翅膀好不好看，但是我们没有办法单元测试这个飞机的整体飞行效果，因为唯一的测试方法就是造好一架飞机然后放一个驾驶员去指定路线让他去飞行，这就变成了全局的事情。当然也不是完全不能测，但是就要求搭建一个飞行模拟器，显然是不适合很快速的测试的。</p>
+<p>那么这个单元的“生产部门”？对于 <code>People</code> 来说，就是一堆的 <code>getter,setter</code> 。对于 <code>Group</code> 也类似，对于 <code>Network</code> ，大致分三个部分，一个是异常的检测，一个是图论算法的实现，一个是一大堆的 <code>getter,setter</code> 。那么这些方法有必要单元测试吗？我们认为图论算法是有必要的，因为他复杂，但是其他的呢？写异常的时候丢掉一个 <code>!</code> ，用肉眼de都比写单元检测快。</p>
+<p>那么这个单元的“管理部门”呢？只有 <code>Group</code> 和 <code>Network</code> 具有管理功能，但是这种管理是直白的，单一的，对于一个对外的接口，这个接口里根本不会调用两个复杂的生产零件，只会调用一个，那么这种管理就是个“包装性质”的接口，<code>queryGroupAgeVar</code> 根本跟 <code>Network</code> 没关系，他本质上测试的就是 <code>Group</code> 的 <code>getAgeVar</code> 这个方法，所有方法都是这个特点，<code>sendIndirect</code> 就是求最短路径，里面用到其他复杂算法了吗？没有。</p>
+<p>那么就没有必要对于任何的“生产部门”进行测试了，因为都可以转换成对相应“管理部门”的测试，而对于管理部门的测试，就又会变成一种全局的测试，这样以来，单元测试成了一种不经济的选择。</p>
+<h4 id="3-2-4-单元测试与架构设计"><a href="#3-2-4-单元测试与架构设计" class="headerlink" title="3.2.4 单元测试与架构设计"></a>3.2.4 单元测试与架构设计</h4><p>如果接着上面的分析，这个单元不适合单元测试的原因我个人认为就是架构太简单了（不是说题目简单），<code>Pre2</code> 的架构设计都比他复杂，这个单元的架构说白了就是 <code>Network</code> 管理 <code>Group</code> 和 <code>People</code>，然后 <code>Group</code> 有可能管理 <code>People</code> 。在 <code>Pre2</code> 那个冒险者类还可以管理好几种类，两个冒险者之间还可以互相作用，管理的层次还是一个递归的（冒险者管理冒险者）。</p>
+<p>一旦架构变得简单，单元测试就没了意义。这是因为单元测试的最朴素的认知就是，因为看不清全局，所以要保证每一个局部。对于一个这么简单的架构和代码量，单元测试就像是检查一万遍 <code>1+1=2</code> 一样。只是一种浪费时间的行为。</p>
+<p>另外还可以从一个角度考虑，就是架构设计到底支不支持单元测试，单元测试最基本的就是要有测试的单元，底下这个东西是没有单元测试可能的。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello, world.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只有把架构改成这样，才具有单元测试的可能。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">printHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello, world.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">printHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是因为 <code>JML</code> 的约束关系，让人很去掉原有的简单的架构设计（如果 <code>Runner</code> 里只传入 <code>MyNetwork.class</code> 估计就可以），而改成一个复杂而清晰的架构。所以只能说很遗憾了。</p>
+<p>但是在这里还是提供几个可以抽象出新的零件的思路，一个是对于图论算法，可以单独抽象出一个图论工具类，一个是对于并查集，可以单独抽象出一个类，最后一个是对于异常检测，可以在 <code>MyNetWork</code> 中抽象出方法来检验比如说人员或者信息的合法性问题。但是其实还是没有改变很多架构设计的简单性。</p>
+<h4 id="3-2-5-全局白箱测试的优势"><a href="#3-2-5-全局白箱测试的优势" class="headerlink" title="3.2.5 全局白箱测试的优势"></a>3.2.5 全局白箱测试的优势</h4><p>全局黑箱和全局白箱最大的一个区别就是全局黑箱对于控制测试的种类很难达到一种细颗粒度（或者说覆盖度），比如说如果是全随机式的数据生成器，那么现在 HW11 有 26 个接口，那么想测到某条指令的概率就是 1/26。如果只随机 25 条指令，那么肯定最少有一条指令没有被测试到，再加上有些指令是有逻辑顺序的，如果在 <code>ap,ar</code> 前就 <code>sm</code> ，那么只会得到异常，对于正常的功能是没法测试的。虽然有水平的黑箱数据生成器会用很多方法增加覆盖率，但是不得不承认，这个单元比第一单元和第二单元采用黑箱测试的时候的覆盖了低多了（因为前两者的数据间的依赖性没有那么强），这也是这个单元一个优秀的数据生成器，动辄就是 <code>100000</code> 这个量级指令的生成。</p>
+<p>但是全局白箱就不具有这个缺点，因为他是人脑构造的，所以用较小的数据就可以达到较高的覆盖率，而且精细度很高，因为即使是优秀的随机生成，也没办法保证比如说一个联通分支上只有两个点（如果有可能，我个人觉得以我的智商代价稍微大了一些）。而且全局白箱也并非具有“全局”的缺点，他依然是可以参照某一个功能进行测试，我的全局白箱依然用的是 <code>Junit4</code> 架构，在 <code>MyNetWorkTest</code> 中进行测试，依然是每个方法构造相关的例子，可以做到针对某一特定功能（接口）的测试。</p>
+<p>一般而言，全局白箱的缺点是只能针对功能进行测试，而不能针对具体的方法零件进行测试，这就会导致对于方法的一些参数的覆盖率降低，但是很遗憾的是（对于单元测试很遗憾），这次的接口全都是包装接口，所以基本上测试接口就是在测试零件。</p>
+<h3 id="3-3-黑箱测试"><a href="#3-3-黑箱测试" class="headerlink" title="3.3 黑箱测试"></a>3.3 黑箱测试</h3><h4 id="3-3-1-个人感言"><a href="#3-3-1-个人感言" class="headerlink" title="3. 3.1 个人感言"></a>3. 3.1 个人感言</h4><p>因为我确实不太会做这个测试，尤其是不会写测评机中的数据生成器这个部分，我干了很多次写完以后发现只能再写一个评测机去评测我的数据生成器的傻蛋事情。所以这个部分大量的东西都是关于数据生成的，所以求轻锤。</p>
+<h4 id="3-3-2-与白箱对比"><a href="#3-3-2-与白箱对比" class="headerlink" title="3.3.2 与白箱对比"></a>3.3.2 与白箱对比</h4><p>黑箱测试的覆盖率并不能说完全不如白箱，因为很重要的一个点就是黑箱只是指定规则，然后生成的数据是依照规则生成的，而白箱则是需要人脑全程制作，这就导致如果一个 bug 是人脑都没有意识到的，那么白箱就一定测不出来，比如我 HW11 有一个 bug 是当发送表情信息不成功的时候，表情的热度依然会增加，但是我本来就是认为会增加的，所以我做自己的白箱测试是通过了的。只有通过黑箱测试，才能检测出这个 bug。</p>
+<p>所以说道这里，应该说黑箱和白箱即使不比较成本问题，光讨论测试强度问题，也可以说是黑箱和白箱各有所长，只有两者都结合起来，才可以说是尽量完美的测试。</p>
+<h4 id="3-3-3-提高测试强度"><a href="#3-3-3-提高测试强度" class="headerlink" title="3.3.3 提高测试强度"></a>3.3.3 提高测试强度</h4><p>那么如何提高黑箱的测试强度呢？通过对于大佬数据生成器的研究，我总结出一下规律（我好卑微，呜呜呜）</p>
+<ul>
+<li>数据量一定要大，大到让人恶心到没法定位 bug 的地步</li>
+<li>用参数去控制生成器行为，比如限定生成器的生成指令的种类，数量啥的，可能还有更高级的参数，但是我看不懂</li>
+</ul>
+<h4 id="3-3-4-其他组件"><a href="#3-3-4-其他组件" class="headerlink" title="3.3.4 其他组件"></a>3.3.4 其他组件</h4><p>上面讨论的是数据生成器部分，但是一个评测机还有其他部分组成。我个人观点是数据生成器只负责制造数据（只制造一个数据），而其他部分交由其他程序负责，这样可以最大程度的解耦联和定制测试的强度（还可以显得我比较能耐）。</p>
+<p>那么用什么语言去实现其他组件呢？常用的就是 python 了，python 对于对拍，创建文件夹，各种系统调用都是十分擅长的。但是我是一般人吗？我刚学了 Linux 脚本，我要是也用 python，怎么能显示出我跟别人的不一样来？怎么显得比别人厉害呢？怎么能让小姑娘有一种“哇塞，这个孙子好厉害我好爱” 的感觉呢，是吧？</p>
+<p>玩笑归玩笑，采用 Linux 脚本的原因是因为他比较方便测量运行时间（虽然用 python 也可以，严格讲所有脚本操作都可以用 python 实现）。而且对于重定向和文件操作比较直观，python 一调用函数，我就很担心问题，而且调试起来比较方便（对我个人而言）。在对拍方面，有很好的 <code>diff</code> 工具可以使用，也是我选择 shell 脚本的一个原因。</p>
+<h3 id="3-4-用-shell-脚本辅助评测机"><a href="#3-4-用-shell-脚本辅助评测机" class="headerlink" title="3.4 用 shell 脚本辅助评测机"></a>3.4 用 shell 脚本辅助评测机</h3><h4 id="3-4-1-前言"><a href="#3-4-1-前言" class="headerlink" title="3.4.1 前言"></a>3.4.1 前言</h4><p>这一章是我写这篇文章的一个很期待的地方，因为确实很有意义，第一次写一个这么人性化的评测机的脚本。不得不说，我的好兄弟们编写了强大的数据生成器，而且完成了评测机架构的初步构想，我是在他们基础上完成了微不足道的一点修补。可以说是很开心的一次合作了。</p>
+<p>之所以这个评测机这么的复杂，其实本质上是设计构想的强大。丁灵玲写的数据生成器具有多个参数来设置各种不同的测试类型性，这就要求对于生成的测试数据进行分文件夹管理。朱七七最开始的评测机架构，就指明了要完成生成数据的自动化和测试的自动化，而且给测试规模定下了一个很宏伟的目标。燕七也是提出了对于定位bug的诸多用户需求，还有明月楼成功让我刮目相看，鼓励我继续完成开发。我也是在兄弟们的基础上进行了完善。</p>
+<p>底下用到的 shell 脚本的知识可以在我的博客里找到，这是链接 <a href="https://thysrael.github.io/posts/6feda75c/">https://thysrael.github.io/posts/6feda75c/</a></p>
+<h4 id="3-4-2-自动化数据生成"><a href="#3-4-2-自动化数据生成" class="headerlink" title="3.4.2 自动化数据生成"></a>3.4.2 自动化数据生成</h4><h5 id="3-4-2-1-给数据生成器传入参数"><a href="#3-4-2-1-给数据生成器传入参数" class="headerlink" title="3.4.2.1 给数据生成器传入参数"></a>3.4.2.1 给数据生成器传入参数</h5><p>因为数据生成器需要依靠参数决定生成数据的种类，而没法在生成器内部遍历这些参数（也不是不行，但是那样生成的数据点就会比较散乱，得写一个脚本去整理他们），所以这里给出的方法是利用可执行文件的传参，首先在数据生成器里加入解析参数的函数</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">parseArgument</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>argc <span class="token operator">!=</span> <span class="token number">3</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Wrong argument.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Generate the "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Normal"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Normal "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Message"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Message "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Group"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Group "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Graph"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Graph "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Exception"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Exception "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Sim"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Sim "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Emoji"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Emoji "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Notice"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Notice "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Super"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Super "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            type <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\nWrong type.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Discrete"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Discrete "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            noGroup <span class="token operator">=</span> false<span class="token punctuation">;</span>
+            oneGroup <span class="token operator">=</span> false<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"None"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"None "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            noGroup <span class="token operator">=</span> true <span class="token punctuation">;</span>
+            oneGroup <span class="token operator">=</span> false<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token string">"Union"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Union "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            noGroup <span class="token operator">=</span> false<span class="token punctuation">;</span>
+            oneGroup <span class="token operator">=</span> true<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\nWrong subtype.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"type data.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后在写一个脚本去循环调用这个程序。先在脚本里声明待遍历的参数数组</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token assign-left variable">types</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"Normal"</span> <span class="token string">"Message"</span> <span class="token string">"Group"</span> <span class="token string">"Graph"</span> <span class="token string">"Exception"</span> <span class="token string">"Sim"</span> <span class="token string">"Emoji"</span> <span class="token string">"Notice"</span><span class="token punctuation">)</span>
+<span class="token assign-left variable">subtypes</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">"Discrete"</span> <span class="token string">"None"</span> <span class="token string">"Union"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>然后用下面的语句遍历并传参（generator 是数据生成器）：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token keyword">for</span> <span class="token for-or-select variable">type</span> <span class="token keyword">in</span> <span class="token variable">${types<span class="token punctuation">[</span>*<span class="token punctuation">]</span>}</span>
+<span class="token keyword">do</span>
+    <span class="token keyword">for</span> <span class="token for-or-select variable">subtype</span> <span class="token keyword">in</span> <span class="token variable">${subtypes<span class="token punctuation">[</span>*<span class="token punctuation">]</span>}</span>
+    <span class="token keyword">do</span>
+        ./generator <span class="token variable">$type</span> <span class="token variable">$subtype</span>
+    <span class="token keyword">done</span>
+<span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-4-2-2-为不同数据创建目录"><a href="#3-4-2-2-为不同数据创建目录" class="headerlink" title="3.4.2.2 为不同数据创建目录"></a>3.4.2.2 为不同数据创建目录</h5><p>因为参数不同，所以生成的数据是不同的，这时候需要将不同的数据分门别类的放好，方便后续定位 bug 和专项测试。生成文件夹的时候要考虑文件夹是否存在，不然 shell 会有一个警告，具体写法如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token keyword">for</span> <span class="token for-or-select variable">type</span> <span class="token keyword">in</span> <span class="token variable">${types<span class="token punctuation">[</span>*<span class="token punctuation">]</span>}</span>
+<span class="token keyword">do</span>
+    <span class="token keyword">for</span> <span class="token for-or-select variable">subtype</span> <span class="token keyword">in</span> <span class="token variable">${subtypes<span class="token punctuation">[</span>*<span class="token punctuation">]</span>}</span>
+    <span class="token keyword">do</span>
+        <span class="token assign-left variable">dir</span><span class="token operator">=</span><span class="token variable">$type</span><span class="token variable">$subtype</span>
+        <span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token operator">!</span> -d <span class="token string">"<span class="token variable">$dir</span>"</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+            <span class="token function">mkdir</span> -p <span class="token variable">$dir</span>
+        <span class="token keyword">else</span>
+            <span class="token function">rm</span> -rf <span class="token variable">$dir</span>
+            <span class="token function">mkdir</span> -p <span class="token variable">$dir</span>
+        <span class="token keyword">fi</span>
+    <span class="token keyword">done</span>
+<span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-4-2-3-为随机种子休眠"><a href="#3-4-2-3-为随机种子休眠" class="headerlink" title="3.4.2.3 为随机种子休眠"></a>3.4.2.3 为随机种子休眠</h5><p>因为现在比较简单的随机算法都是用时间当作随机种子的，但是因为程序运行过快，所以导致随机出来结果并不会发生变化（所以编写完之后最好打开看一看不同测试点是否相同）。我看到可以用一些外包来增强随机效果，但是一个优秀的辅助，能不麻烦 ADC，就坚决不麻烦（其实是不好意思麻烦，但是我依然麻烦了）。所以我们可以让脚本自动休眠。</p>
+<p>具体写法如下，意思是调用后休眠 0.7s 后进行下一次调用。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">./generator <span class="token variable">$type</span> <span class="token variable">$subtype</span>
+<span class="token function">sleep</span> <span class="token number">0.7</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="3-4-3-自动化测试"><a href="#3-4-3-自动化测试" class="headerlink" title="3.4.3 自动化测试"></a>3.4.3 自动化测试</h4><h5 id="3-4-3-1-错误停止"><a href="#3-4-3-1-错误停止" class="headerlink" title="3.4.3.1 错误停止"></a>3.4.3.1 错误停止</h5><p>当测试的时候出现错误，脚本应该可以自动停止，使错误信息得到保留，这里采用的 <code>diff</code> 的返回值结合条件判断的写法，写法如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">diff</span> -y -W  <span class="token number">200</span> <span class="token variable">${name}</span>.txt cjj.txt <span class="token operator">&gt;</span> difference.txt
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable">$?</span> -ne <span class="token number">0</span> <span class="token punctuation">]</span> <span class="token punctuation">;</span> <span class="token keyword">then</span>
+	<span class="token builtin class-name">echo</span> <span class="token variable">${name}</span> <span class="token string">"wrong at"</span> <span class="token string">"<span class="token variable">$dir</span>/<span class="token variable">$testcase</span>"</span>
+	<span class="token builtin class-name">exit</span> <span class="token number">1</span>
+<span class="token keyword">fi</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>$?</code> 表示前一个命令的返回值。</p>
+<h5 id="3-4-3-2-时间处理"><a href="#3-4-3-2-时间处理" class="headerlink" title="3.4.3.2 时间处理"></a>3.4.3.2 时间处理</h5><p>用 shell 自带的 <code>time</code> 命令可以很好的实现命令执行时间的测算</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">time</span> -p java -jar <span class="token variable">${name}</span>.jar <span class="token operator">&lt;</span> input.txt <span class="token operator">&gt;</span> <span class="token variable">${name}</span>.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>效果如图</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">real <span class="token number">0.44</span>
+user <span class="token number">1.12</span>
+sys <span class="token number">0.11</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>如果想要统计有没有 tle，需要把获得的时间记录下来，这个时候可以考虑将 <code>time</code> 的结果重定向到一个文件中，然后再读取这个文件获得执行时间变量。</p>
+<p>但是因为 <code>time</code> 是输出到 <code>stderr</code> 的，所以重定向的时候写法是这样的</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">(</span>time -p java -jar <span class="token variable">${name}</span>.jar <span class="token operator">&lt;</span> input.txt <span class="token operator">&gt;</span> <span class="token variable">${name}</span>.txt<span class="token punctuation">)</span> <span class="token operator"><span class="token file-descriptor important">2</span>&gt;</span>timer.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但是这样就没有办法在屏幕上显示了，所以我们可以用 <code>tee</code> 命令保证多文件输出</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">(</span>time -p java -jar <span class="token variable">${name}</span>.jar <span class="token operator">&lt;</span> input.txt <span class="token operator">&gt;</span> <span class="token variable">${name}</span>.txt<span class="token punctuation">)</span> <span class="token operator"><span class="token file-descriptor important">2</span>&gt;</span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">tee</span> <span class="token variable">${name}</span>_time.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后我们需要分析这个文件中的内容，操作系统上学的各种工具都可以上了，这里摆出我的处理</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token assign-left variable">test_time</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> $<span class="token punctuation">{</span>name<span class="token punctuation">}</span>_time.txt <span class="token operator">|</span> <span class="token function">sed</span> -n 2p <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{print $2}'</span><span class="token variable">)</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后获得时间以后我们需要比较两个时间，我们以燕七作为所有人的标准，以“1.5燕”作为评判标准（事实证明这个界限给小了，燕七把所有人都卷了一遍），可以写出如下判断式</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">echo</span> <span class="token string">"<span class="token variable">$cjj_time</span>*1.5 &lt; <span class="token variable">$test_time</span>"</span><span class="token operator">|</span><span class="token function">bc</span><span class="token variable">`</span></span> -eq <span class="token number">1</span> <span class="token punctuation">]</span> <span class="token punctuation">;</span> <span class="token keyword">then</span>
+	<span class="token builtin class-name">echo</span> <span class="token variable">${name}</span> <span class="token string">"time limmit exceed at"</span> <span class="token string">"<span class="token variable">$dir</span>/<span class="token variable">$testcase</span>"</span>
+	<span class="token builtin class-name">exit</span> <span class="token number">1</span>
+<span class="token keyword">fi</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-4-3-3-遍历测试文件夹"><a href="#3-4-3-3-遍历测试文件夹" class="headerlink" title="3.4.3.3 遍历测试文件夹"></a>3.4.3.3 遍历测试文件夹</h5><p>这里的处理摆烂了，只是判断所有工作目录下的 <code>ls</code> 出的东西是不是文件，而没有考虑有的文件夹可能不是测试文件夹。所以这就要求工作目录下的文件夹必须是测试文件夹，让工作目录显得不是很整洁</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token keyword">for</span> <span class="token for-or-select variable">dir</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">ls</span> ./<span class="token variable">)</span></span> 
+<span class="token keyword">do</span>
+	<span class="token keyword">if</span> <span class="token punctuation">[</span> -d <span class="token variable">$dir</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+		<span class="token punctuation">..</span>.
+	<span class="token keyword">fi</span>
+<span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-4-3-4-测试存档"><a href="#3-4-3-4-测试存档" class="headerlink" title="3.4.3.4 测试存档"></a>3.4.3.4 测试存档</h5><p>因为多人测试会出现一个人bug，那么全组的测试就停止了，重新来的时候就又变成重新开始，那么对于其他人就变得很低效。所以设置一个日志文件，每完成一个测试点就记录这个点到文件中，然后运行的时候跳过这些在文件中已经存在的点（利用 <code>grep</code> 分析文件 ），具体操作如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token operator">!</span> -f <span class="token string">"finished.txt"</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+  <span class="token function">touch</span> finished.txt
+<span class="token keyword">fi</span>
+
+<span class="token keyword">for</span> <span class="token for-or-select variable">dir</span> <span class="token keyword">in</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">ls</span> ./<span class="token variable">)</span></span> 
+<span class="token keyword">do</span>
+	<span class="token function">grep</span> <span class="token string">"<span class="token variable">$dir</span>"</span> finished.txt <span class="token operator">&gt;</span>/dev/null
+	<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable">$?</span> -eq <span class="token number">1</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+		<span class="token punctuation">..</span>.
+	<span class="token keyword">fi</span>
+<span class="token keyword">done</span>
+
+<span class="token function">rm</span> finished.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-4-3-5-文本比对"><a href="#3-4-3-5-文本比对" class="headerlink" title="3.4.3.5 文本比对"></a>3.4.3.5 文本比对</h5><p>虽然我平时是使在线文本比对工具的 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.jq22.com/textDifference?d=1602569068152。但是这次数据量太大了，我一复制粘贴，网站就崩了，所以倒逼我探究了一下">https://www.jq22.com/textDifference?d=1602569068152。但是这次数据量太大了，我一复制粘贴，网站就崩了，所以倒逼我探究了一下</a> <code>diff</code> 命令。</p>
+<p>只要使用如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">diff</span> -y -W  <span class="token number">200</span> <span class="token variable">${name}</span>.txt cjj.txt <span class="token operator">&gt;</span> difference.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>就可以在 <code>difference.txt</code> 中看出很好的效果，输入如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">less</span> -N difference.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>效果如图</p>
+<p><img src="/posts/50071041/image-20220521123039830-16544784620721.png" alt="image-20220521123039830"></p>
+<p>对于不一样的地方，会有 <code>'&lt;', '&gt;', '|'</code> 进行测试。</p>
+<h5 id="3-4-3-6-打扫工作目录"><a href="#3-4-3-6-打扫工作目录" class="headerlink" title="3.4.3.6 打扫工作目录"></a>3.4.3.6 打扫工作目录</h5><p>个人习惯，不太喜欢工作目录太乱，所以脚本完了以后加上删除中间文件的命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token keyword">for</span> <span class="token for-or-select variable">name</span> <span class="token keyword">in</span> <span class="token variable">${names<span class="token punctuation">[</span>*<span class="token punctuation">]</span>}</span>
+<span class="token keyword">do</span>
+    <span class="token function">rm</span> <span class="token variable">${name}</span>_time.txt
+    <span class="token function">rm</span> <span class="token variable">${name}</span>.txt
+<span class="token keyword">done</span>
+<span class="token function">rm</span> cjj.txt
+<span class="token function">rm</span> cjj_time.txt
+<span class="token function">rm</span> finished.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-4-3-7-赋予权限"><a href="#3-4-3-7-赋予权限" class="headerlink" title="3.4.3.7 赋予权限"></a>3.4.3.7 赋予权限</h5><p>不知道为啥，经常有的文件报“没有权限”，所以最简单的方法就是来到工作目录的父目录，执行如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">chmod</span> -R <span class="token number">777</span> work_dictionary<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h2 id="四、对Network进行扩展，并给出相应的JML规格"><a href="#四、对Network进行扩展，并给出相应的JML规格" class="headerlink" title="四、对Network进行扩展，并给出相应的JML规格"></a>四、对Network进行扩展，并给出相应的JML规格</h2><p>发送产品广告</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/*@ public normal_behavior
+      @ requires containsMessage(id) &amp;&amp; (getMessage(id) instanceof Advertisement);
+      @ assignable messages;
+      @ assignable people[*].messages;
+      @ ensures  !containsMeaage(id) &amp;&amp; messages.length == \old(messages.length) - 1 &amp;&amp;
+      @         (\forall int i; 0 &lt;= i &amp;&amp; i &lt; \old(messages.length) &amp;&amp; \old(messages[i].getId()) != id;
+      @         (\exists int j; 0 &lt;= j &amp;&amp; j &lt; messages.length; messages[j].equals(\old(messages[i]))));
+     
+　　   @ ensures (\forall int i; 0 &lt;= i &amp;&amp; i &lt; people.length &amp;&amp; !getMessage(id).getPerson1().isLinked(people[i]);
+      @           people[i].getMessages().equals(\old(people[i].getMessages()));
+      @ ensures (\forall int i; 0 &lt;= i &amp;&amp; i &lt; people.length &amp;&amp; getMessage(id).getAdvertiser().isLinked(people[i]);
+      @           (\forall int j; 0 &lt;= j &amp;&amp; j &lt; \old(people[i].getMessages().size());
+      @             people[i].getMessages().get(j+1) == \old(people[i].getMessages().get(j)))
+      @ ensures  people[i].getMessages().get(0).equals(\old(getMessage(id))) 
+      @ ensures  people[i].getMessages().size() == \old(people[i].getMessages().size()) + 1);
+      @ also
+      @ public exceptional_behavior
+      @ signals (MessageIdNotFoundException e) !containsMessage(id);
+      @ signals (NotAdvertisementException e) !(getMessage(id) instanceof Advertisement);
+      @*/</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sendAdvertisement</span><span class="token punctuation">(</span><span class="token keyword">int</span> id<span class="token punctuation">)</span> <span class="token keyword">throws</span>
+            <span class="token class-name">MessageIdNotFoundException</span><span class="token punctuation">,</span> <span class="token class-name">NotAdvertisementException</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>生产产品</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/*@ public normal_behavior
+      @ requires contains(producerId) &amp;&amp; (getPerson(producerId) instanceof Producer)
+　　　　　
+      @ assignable products[];
+　　　 @ ensures (\exists int i; i&lt;product.length &amp;&amp; i&gt;=0; products[i] == product);
+      @ ensures getProductCount(productId) ==
+      @           \old(getProductCount(productId)) + 1;
+      @ also
+      @ public exceptional_behavior
+      @ signals (PersonIdNotFoundException e) !contains(producerId);
+      @ signals (NotProducerException e) !(getPerson(producerId) instanceof Producer);
+　　　 @
+      @*/</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">produceProduct</span><span class="token punctuation">(</span><span class="token keyword">int</span> producerId<span class="token punctuation">,</span> <span class="token class-name">Produce</span> product<span class="token punctuation">)</span> <span class="token keyword">throws</span>
+            <span class="token class-name">PersonIdNotFoundException</span><span class="token punctuation">,</span> <span class="token class-name">NotProducerException</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>购买产品</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/*public normal_behavior
+　　@ requires product.contains(product) &amp;&amp; contains(coustomerId) &amp;&amp; getPerson(customerId) instanceof Customer
+　　
+   @ assignable products[], getPerson(customerId).money, getPerson(customerId).products;
+　　@ ensures products.length == \old(products.length) - 1;
+　　@ ensures (\forall int i; i&gt;=0 &amp;&amp; i&lt;=\old(products.length)) &amp;&amp; product[i]!=product; 
+　　　　　　　　　　(\exist int j; j&gt;=0 &amp;&amp; j&lt;=products.length; product[j].equals(product[i]))
+　　@ ensures getPerson(customerId).getmoney == \old(getPerson(customerId)) - product.getValue();
+　　
+　　@ ensures getPerson(customerId).getProduct().length == \old(getPerson(customerId).getProduct().length)+1;
+　　@ ensures (\forall int i; i&gt;=0&amp;&amp;i&lt;=\old(getPerson(customerId).getProduct().length)&amp;&amp;\old(getPerson(customerId).getProduct().get(i));
+　　　　　　　　　　(\exist int j; j&gt;=0 &amp;&amp; j&lt;=getPerson(customerId).getProduct().length; 
+　　　　　　　　　　　　getPerson(customerId).getProduct().get(j).equals(\old(getPerson(customerId).getProduct().get(i)))
+　　@ ensures (\exist int j; j&gt;=0 &amp;&amp; j&lt;=getPerson(customerId).getProduct().length; getPerson(customerId).getProduct().get(i).equals(product);
+　　
+　　@public exceptional_behavior
+　　@ signals (NotProductException e) !product.contains(product); 
+　　@ signals (NotCustomerException e) !contains(coustomerId) || !(getPerson(producerId) instanceof Producer);
+*/</span>
+ 
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">buyProduct</span><span class="token punctuation">(</span><span class="token keyword">int</span> coustomerId<span class="token punctuation">,</span> <span class="token class-name">Product</span> product<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">NotProductException</span><span class="token punctuation">,</span> <span class="token class-name">NotCustomerException</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h2 id="五、写在后面的话"><a href="#五、写在后面的话" class="headerlink" title="五、写在后面的话"></a>五、写在后面的话</h2><p>这个单元虽然吐槽了这么多，但是还是挺有意思的，<code>JML</code> 让我对于语言的认识又进了一步，而且确实很新鲜很有意思，感觉 <code>OO</code> 这门课程上不止能学到 <code>OO</code> ，还可以学到很多其他有意思的东西，体验非常好。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S4%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S4课上</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag"><i class="fa fa-tag"></i> 面向对象</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/ad223710/" rel="prev" title="CPP设计-元编程">
+      <i class="fa fa-chevron-left"></i> CPP设计-元编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/c8a10fd9/" rel="next" title="操作系统-文件系统">
+      操作系统-文件系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-text">二、架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-text">2.1 总体架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%9B%BE%E7%AE%97%E6%B3%95"><span class="nav-text">2.2 图算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%9E%B6%E6%9E%84%E5%86%8D%E8%AF%84%E4%BB%B7"><span class="nav-text">2.3 架构再评价</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95"><span class="nav-text">三、测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">3.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E7%99%BD%E7%AE%B1%E6%B5%8B%E8%AF%95"><span class="nav-text">3.2 白箱测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%90%86%E8%A7%A3"><span class="nav-text">3.2.1 单元测试理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E5%85%A8%E5%B1%80%E7%99%BD%E7%AE%B1%E6%B5%8B%E8%AF%95"><span class="nav-text">3.2.2 全局白箱测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%9A%84%E5%88%9D%E6%AD%A5%E5%88%86%E6%9E%90"><span class="nav-text">3.2.3 单元测试的初步分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-text">3.2.4 单元测试与架构设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-5-%E5%85%A8%E5%B1%80%E7%99%BD%E7%AE%B1%E6%B5%8B%E8%AF%95%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-text">3.2.5 全局白箱测试的优势</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E9%BB%91%E7%AE%B1%E6%B5%8B%E8%AF%95"><span class="nav-text">3.3 黑箱测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-%E4%B8%AA%E4%BA%BA%E6%84%9F%E8%A8%80"><span class="nav-text">3. 3.1 个人感言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-%E4%B8%8E%E7%99%BD%E7%AE%B1%E5%AF%B9%E6%AF%94"><span class="nav-text">3.3.2 与白箱对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-%E6%8F%90%E9%AB%98%E6%B5%8B%E8%AF%95%E5%BC%BA%E5%BA%A6"><span class="nav-text">3.3.3 提高测试强度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-4-%E5%85%B6%E4%BB%96%E7%BB%84%E4%BB%B6"><span class="nav-text">3.3.4 其他组件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E7%94%A8-shell-%E8%84%9A%E6%9C%AC%E8%BE%85%E5%8A%A9%E8%AF%84%E6%B5%8B%E6%9C%BA"><span class="nav-text">3.4 用 shell 脚本辅助评测机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-%E5%89%8D%E8%A8%80"><span class="nav-text">3.4.1 前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90"><span class="nav-text">3.4.2 自动化数据生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-2-1-%E7%BB%99%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90%E5%99%A8%E4%BC%A0%E5%85%A5%E5%8F%82%E6%95%B0"><span class="nav-text">3.4.2.1 给数据生成器传入参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-2-2-%E4%B8%BA%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95"><span class="nav-text">3.4.2.2 为不同数据创建目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-2-3-%E4%B8%BA%E9%9A%8F%E6%9C%BA%E7%A7%8D%E5%AD%90%E4%BC%91%E7%9C%A0"><span class="nav-text">3.4.2.3 为随机种子休眠</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-3-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95"><span class="nav-text">3.4.3 自动化测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-1-%E9%94%99%E8%AF%AF%E5%81%9C%E6%AD%A2"><span class="nav-text">3.4.3.1 错误停止</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-2-%E6%97%B6%E9%97%B4%E5%A4%84%E7%90%86"><span class="nav-text">3.4.3.2 时间处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-3-%E9%81%8D%E5%8E%86%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-text">3.4.3.3 遍历测试文件夹</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-4-%E6%B5%8B%E8%AF%95%E5%AD%98%E6%A1%A3"><span class="nav-text">3.4.3.4 测试存档</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-5-%E6%96%87%E6%9C%AC%E6%AF%94%E5%AF%B9"><span class="nav-text">3.4.3.5 文本比对</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-6-%E6%89%93%E6%89%AB%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-text">3.4.3.6 打扫工作目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-3-7-%E8%B5%8B%E4%BA%88%E6%9D%83%E9%99%90"><span class="nav-text">3.4.3.7 赋予权限</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%AF%B9Network%E8%BF%9B%E8%A1%8C%E6%89%A9%E5%B1%95%EF%BC%8C%E5%B9%B6%E7%BB%99%E5%87%BA%E7%9B%B8%E5%BA%94%E7%9A%84JML%E8%A7%84%E6%A0%BC"><span class="nav-text">四、对Network进行扩展，并给出相应的JML规格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2%E7%9A%84%E8%AF%9D"><span class="nav-text">五、写在后面的话</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

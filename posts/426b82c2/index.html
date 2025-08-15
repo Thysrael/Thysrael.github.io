@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="代码优化1 个人信息    条目 内容     学号 2037xxxx   姓名 Thysrael   年级 2006   学院 计算机学院   竞速排名 2     2 总论我个人认为，优化分为两类，一类是分析型优化，这种类型的优化并不会改变 llvm ir 的结构，所以也不会有实际的优化效果，但是它们分析出来的信息，会去指导加工型优化的进行。另一种是加工型优化，这种优化会真正改变 llvm i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译技术-编译优化">
+<meta property="og:url" content="https://thysrael.github.io/posts/426b82c2/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="代码优化1 个人信息    条目 内容     学号 2037xxxx   姓名 Thysrael   年级 2006   学院 计算机学院   竞速排名 2     2 总论我个人认为，优化分为两类，一类是分析型优化，这种类型的优化并不会改变 llvm ir 的结构，所以也不会有实际的优化效果，但是它们分析出来的信息，会去指导加工型优化的进行。另一种是加工型优化，这种优化会真正改变 llvm i">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-28T14:57:16.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.995Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S5课上">
+<meta property="article:tag" content="编译技术">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/426b82c2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>编译技术-编译优化 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/426b82c2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译技术-编译优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-12-28 22:57:16" itemprop="dateCreated datePublished" datetime="2022-12-28T22:57:16+08:00">2022-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编译技术</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h1><h2 id="1-个人信息"><a href="#1-个人信息" class="headerlink" title="1 个人信息"></a>1 个人信息</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学号</td>
+<td>2037xxxx</td>
+</tr>
+<tr>
+<td>姓名</td>
+<td>Thysrael</td>
+</tr>
+<tr>
+<td>年级</td>
+<td>2006</td>
+</tr>
+<tr>
+<td>学院</td>
+<td>计算机学院</td>
+</tr>
+<tr>
+<td>竞速排名</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2-总论"><a href="#2-总论" class="headerlink" title="2 总论"></a>2 总论</h2><p>我个人认为，优化分为两类，一类是分析型优化，这种类型的优化并不会改变 llvm ir 的结构，所以也不会有实际的优化效果，但是它们分析出来的信息，会去指导加工型优化的进行。另一种是加工型优化，这种优化会真正改变 llvm ir 的结构，达到优化的目的。</p>
+<p>需要注意的是，分析和加工都不是只进行一次就可以的，加工型优化会改变 llvm ir 的结构发生改变，这就导致可以进行新的分析信息，而新的分析信息也就可以指导新的加工优化，这是一个周而复始的过程，这也是经典的 <code>DomAnalyze-SideEffectAnalyze-GVN-DCE-GCM-BranchOpt</code> 不动点循环的由来。最后的 <code>BranchOpt</code> 会改变 CFG 图，导致支配信息和副作用信息发生变化，这就可以指导进一步的加工型优化。</p>
+<h2 id="3-支配分析"><a href="#3-支配分析" class="headerlink" title="3 支配分析"></a>3 支配分析</h2><p>在进行很多分析之前，都需要进行支配分析，这是因为支配树会提供很多的支配流信息，尤其是数据是怎样在数据块中流动，哪些数据必然从这个块流入另一个块，可以说，支配信息是对于 CFG 图的一种高度凝练的表达。</p>
+<p>在求解支配树的时候，分为两步，第一步首先支配者和被支配者，这是一个不动点问题，利用的公式是</p>
+<script type="math/tex; mode=display">
+temp = {index} \cup (\bigcap_{j \in preds(index)} domer(j) )</script><p>需要一直求解到不发生变化为止。</p>
+<p>第二步是计算支配边界，构造支配树，支配树是比原来的支配图更加直观而且“强”的条件，我们在优化中一般也是使用支配树的信息条件。所谓支配边界，就是恰好不被支配的一个块。</p>
+<p>需要强调，支配树不仅应用在编译领域，这是一个很常见的图论算法，所以可以在网上找到详实的资料，所以对于算法问题就不赘述。</p>
+<p>支配分析基于 CFG图会被用在 LoopInfoAnalyze， mem2reg，GVN 中，所以只要 CFG 发生改变，就会需要重新分析。</p>
+<h2 id="4-循环分析"><a href="#4-循环分析" class="headerlink" title="4 循环分析"></a>4 循环分析</h2><p>虽然没有做专门的循环优化，但是 GCM 会需要利用循环深度信息，所以还是需要进行循环分析。循环是多种块组成的一种结构，比较重要的块有</p>
+<ul>
+<li>循环头块，位于循环内部，一个循环有且仅有一个头块，一个头块可以被多个循环拥有。</li>
+<li>闩锁块，位于循环中，其中有一个后继是头块</li>
+</ul>
+<p>在循环分析中，我们是为了构建一棵循环森林，每个循环节点都是一组组成循环的块，内层循环是外层循环的子节点。我们发现循环的方式是按照支配树的后续遍历结果寻找栓块，这是为了先提内循环，后提外循环，这是因为内循环是受到外循环的头块的支配（循环头支配循环体）。闩块的判断标准是如果某个块直接支配它的前驱块，那么前驱块就是闩块。当我们登记完闩块后，就可以根据闩块寻找每一个循环。最后再补充循环之间的父子关系即可。</p>
+<p>循环分析会用到支配分析，同时会在 GCM 和寄存器分配的时候使用。</p>
+<h2 id="5-函数调用分析"><a href="#5-函数调用分析" class="headerlink" title="5 函数调用分析"></a>5 函数调用分析</h2><p>如果在调用者和被调用者之间构建一条有向边，那么就可以构建一个函数调用图，函数调用关系主要是为了后面的副作用分析，无用函数删除，函数内联做准备。在实际应用中，一般不会单独作为一个 pass ，这是因为这个用的很多，基本上是随用随做。</p>
+<p>因为 SysY 并不支持函数声明，所以其实不会出现循环递归或者其他的阴间情况，这无疑对后面是一个好消息。</p>
+<h2 id="6-副作用分析"><a href="#6-副作用分析" class="headerlink" title="6 副作用分析"></a>6 副作用分析</h2><p>所谓的副作用（SideEffect），其实没有一个明确的概念，大概就是我们不喜欢的作用，就会被叫做副作用。在中端的副作用，指的是某个指令或者函数，会不会对内存或者 IO 造成影响，如果不会，那么就是没有副作用的。</p>
+<p>没有副作用的东西很良好，因为他们造成的唯一影响只能通过返回值，所以如果返回值没有用到，那么这个东西就可以去掉了。不仅仅是去掉这么暴力，如果没有副作用，相当于有了一个很“强”的条件保证，我们对于某些优化的进行会变得更加自信，比如说一个函数如果没有副作用，我们就可以直接把他当成一条指令处理，对于</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">%</span>v1 <span class="token operator">=</span> call i32 <span class="token function">f</span><span class="token punctuation">(</span><span class="token operator">%</span>a1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">%</span>v2 <span class="token operator">=</span> call i32 <span class="token function">f</span><span class="token punctuation">(</span><span class="token operator">%</span>a1<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>我们可以直接判断 <code>v1 == v2</code> 是很好的东西。</p>
+<p>进行副作用分析的时候，需要先构建一个函数调用关系图，这是因为有的函数本身并不会造成副作用，但是他调用的函数就会有副作用，导致调用这个函数也会有副作用。</p>
+<p>我们一般认为这几个东西有副作用</p>
+<ul>
+<li>store 指令</li>
+<li>call 内联函数</li>
+<li>call 有副作用的函数</li>
+</ul>
+<p>副作用分析会被用在 GVN，GCM ，DCE 中。</p>
+<h2 id="7-Mem2reg"><a href="#7-Mem2reg" class="headerlink" title="7 Mem2reg"></a>7 Mem2reg</h2><p>mem2reg 可以将内存形式的 SSA 转变成真正比较好理解的 SSA，但是需要注意的是，mem2reg 并非只有这一个功能（我之前一直认为它只是插入 phi 节点），它其实是对于访存的一次彻底的优化。我们需要讨论的东西也就更多。</p>
+<p>mem2reg 会对 ir 做出两点修改，其中是用 load 指令直接替换，同时删掉对应的 alloca 指令。另一个就是插入 phi 指令。在具体的实现上，需要用到支配信息，求解支配边界的闭包。</p>
+<p>一个基本块的开始需要插入一个变量的 phi 节点的条件，是这个基本块是这个变量某个定义的支配边界。这个操作需要迭代，事实上就只需要建立一个队列，每次取出队首，计算其支配边界，并把新算出的支配边界插入到队列的末尾。注意，这时的 phi 节点还是空的，即只有左值没有右值。</p>
+<h2 id="8-Global-Value-Number"><a href="#8-Global-Value-Number" class="headerlink" title="8 Global Value Number"></a>8 Global Value Number</h2><p>全局值编号。首先理解值编号，就是如果某个值等价于某个表达式，那么就给表达式一个编号，当再次出现这个表达式的时候，就可以发现这个编号是相同的，然后就可以替换成之前的那个值。</p>
+<p>在 llvm 中，因为值和表达式是不分家的：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">%</span>v1 <span class="token operator">=</span> add i32 <span class="token operator">%</span>a1<span class="token punctuation">,</span> <span class="token operator">%</span>a2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>所以 <code>%v1</code> 就可以看成值编号（这里的理解会稍微有些难度）也就是真正查表的时候，需要这样查</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+     * 最关键的方法，查找 valueNumber
+     * @param lookUp 查询 value
+     * @return 一个可以用的 value
+     */</span>
+<span class="token keyword">private</span> <span class="token class-name">Value</span> <span class="token function">findValueNumber</span><span class="token punctuation">(</span><span class="token class-name">Value</span> lookUp<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// 通过遍历查找</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>valueNumberTable<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>lookUp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> valueNumberTable<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>lookUp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Not found, add</span>
+    <span class="token class-name">Value</span> allocatedValue <span class="token operator">=</span> <span class="token function">allocateNumber</span><span class="token punctuation">(</span>lookUp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    valueNumberTable<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>lookUp<span class="token punctuation">,</span> allocatedValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> allocatedValue<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于表内没有对应编号的 Value，需要为他们分配一个编号（如果实在分配不出来，那么编号就是他们自己），但是有些情况会用别的编号，比如说计算指令，如果两个操作数相同，那么就是相同编号，<code>GEP</code> 也有这个效果，如果 <code>Call</code> 一个无副作用的函数，只要实参相同，那么就分配相同的编号。</p>
+<p>全局值编号就是维护一个全局的编号表用于查询，这种形式有些激进，因为 GVN 可能消掉位于不同分支上的相同表达式，但是这个问题会被 GCM 修正，所以 GVN 必须绑定 GCM。</p>
+<p>同时还需要注意，GVN 需要遍历基本块，不同的遍历顺序会导致不同的编号结果，显然我们希望尽可能的在使用点前遍历到定义点，这样才有标号的意义，但是并不是总尽如人意的。我选择的是逆序遍历 CFG 图，然后逆序遍历，这是书上的参考方法，后续遍历会保证尽可能在遍历父节点前遍历子节点，逆序后就是先遍历父节点，那么自然定义会先于使用。但是似乎更好的方法是对于支配树前序遍历。这里我没有实现，不敢妄加讨论。</p>
+<h2 id="9-指令化简-amp-amp-运算强度削弱"><a href="#9-指令化简-amp-amp-运算强度削弱" class="headerlink" title="9 指令化简 &amp;&amp; 运算强度削弱"></a>9 指令化简 &amp;&amp; 运算强度削弱</h2><p>夹杂在 GVN 中进行，这是因为指令化简可以给 GVN 创造更多的机会。比较常见的指令化简是常数替换，比如说将</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">%</span>v1 <span class="token operator">=</span> add i32 <span class="token operator">%</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">%</span><span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>将所有的 <code>%v1</code> 都用 <code>3</code> 替代。</p>
+<p>除此之外，还可以进行一定的运算强度削弱，比如说</p>
+<pre class="line-numbers language-none"><code class="language-none">%v1 = mul i32 %v2, 2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>换成</p>
+<pre class="line-numbers language-none"><code class="language-none">%v1 = add i32 %v2, %v2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>再比如说</p>
+<pre class="line-numbers language-none"><code class="language-none">%v1 = add i32 %v2, 0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>直接用 <code>v2</code> 替换 <code>v1</code>。</p>
+<p>然后还有更加激进的优化，比如说对于</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">%</span>v1 <span class="token operator">=</span> add i32 <span class="token operator">%</span>v2<span class="token punctuation">,</span> 
+<span class="token operator">%</span>v3 <span class="token operator">=</span> add i32 <span class="token operator">%</span>v1<span class="token punctuation">,</span> <span class="token number">1</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>是没法优化的，但是他其实描述的就是</p>
+<script type="math/tex; mode=display">
+v3 = (v2 + 1) + 1</script><p>那么我们可以考虑多生成一条冗余指令</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">%</span>v4 <span class="token operator">=</span> add i32 <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后发现优化空间，最后优化成</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">%</span>v1 <span class="token operator">=</span> add i32 <span class="token operator">%</span>v2<span class="token punctuation">,</span> <span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但是因为这条指令能否优化是不确定的，所以我们一定会生成冗余指令，这就需要死代码删除来帮助我们删掉这些冗余指令。</p>
+<h2 id="10-Dead-Code-Emit"><a href="#10-Dead-Code-Emit" class="headerlink" title="10 Dead Code Emit"></a>10 Dead Code Emit</h2><p>所谓的死代码，就是不会对程序造成影响的代码，我们可以用与“副作用分析”类似的眼光去看，所有的访存指令，return 指令，call 一个有副作用的函数，分支指令，这些东西都是有用的，我们不能删除，那么这些指令使用到的指令，同样也是不能删除的，以此类推，这样求出一个<strong>有用指令的闭包</strong>，所有不在这个指令闭包内的指令，都是死代码，是可以删除的。</p>
+<h2 id="11-Global-Code-Motion"><a href="#11-Global-Code-Motion" class="headerlink" title="11 Global Code Motion"></a>11 Global Code Motion</h2><p>对于大多数指令结点，它们现在处于的基本块都是由源程序直译出来的，现在它们的控制依赖关系体现出来的控制流图结构并不是最佳的，甚至因为前面执行过的某些优化（比如全局值编号）可能还是错的。我们需要一种方式，将结点的海洋重建成我们需要的 CFG，它应当是<strong>正确</strong>的（体现在基本块中的每个指令的每个操作数都能够支配当前基本块），同时是<strong>高效</strong>的（体现在每个指令所位处的循环嵌套深度最浅），这种方法就是全局代码提升。</p>
+<p>重建 CFG 的好处倒是显然的，毕竟它是许多优化算法的结构基础。对于我们的编译器，由于前端解析的时候构造过 Module 的基本块结构，因此完成这个结点归位的工作倒不是什么难事。</p>
+<p>Cliff Click 给出了一个直接的近线性时间算法来完成全局代码移动 (GCM) ，算法将代码从循环中提取出来，并将其插入更依赖于控制的 (同时，可能执行频率更低) 基本块中。GCM 不是最优的，因为它很有可能会延长一些路径。它会使依赖于控制的代码脱离循环，因此如果循环至少执行一次，那么这种算法就是有利可图的。GCM 只依赖于指令之间的依赖关系（因为是基于支配树的），在执行算法时，原始的调度顺序将被忽略。</p>
+<p>GCM 会移动指令，但它不改变控制流图 (CFG) ，也不删除冗余代码。GCM 受益于 CFG 整形(如分离控制相关的边，或插入循环的 landing pads)。GCM 允许我们为全局值编码 (GVN) 使用一种简单的基于哈希的技术，因此 GCM 和 GVN 优化往往是同时进行的。</p>
+<h2 id="12-函数内联"><a href="#12-函数内联" class="headerlink" title="12 函数内联"></a>12 函数内联</h2><p>函数内联的思想没有 GVN，GCM 那么抽象，很显然，只需要将被调用的函数接入到原来调用他的函数中即可。但是还是有一些点需要注意的。</p>
+<p>首先因为调用可能调用多次，所以需要每次都复制一遍函数，其次，对于多个 return 的情况，需要利用 phi 指令保证正确性，最后，对于形参，需要替换成实参，这要求 SSA 形式。</p>
+<h2 id="13-全局变量局部化"><a href="#13-全局变量局部化" class="headerlink" title="13 全局变量局部化"></a>13 全局变量局部化</h2><p>因为全局变量的访问需要在 llvm 中访存，比较低效，所以考虑对于只被一个函数使用了的全局变量（这就没有意义是全局的了），将其移入成局部变量。</p>
+<h2 id="14-乘法优化"><a href="#14-乘法优化" class="headerlink" title="14 乘法优化"></a>14 乘法优化</h2><p>乘法可以被优化成加法和移位操作，因为乘法的代价是 4，所以加法和移位操作最多有 3 条，那么考虑“移位-加法-移位”的组合，那么也就是可以拆出两条移位指令，那么可以枚举 32 位内由上述组合可以达到的组合，然后记录下来。</p>
+<p>在乘法运算的时候，可以按照事先准备的进行操作。</p>
+<h2 id="16-窥孔优化"><a href="#16-窥孔优化" class="headerlink" title="16 窥孔优化"></a>16 窥孔优化</h2><p>窥孔优化在后端进行，有如下几种形式</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+     * 处理的是加减法第二个数为 0 的情况，有
+     * add r0, r1, 0 =&gt; mov r0, r1
+     * add r0, r0, 0 =&gt; null
+     * sub 同理
+     */</span>
+ <span class="token comment">/**
+     * 处理的是 mov 指令源和目的寄存器相同的情况
+     * mov r0, r0 =&gt; null
+     */</span>
+<span class="token comment">/**
+     * 处理的是两个 mov 时的赋值覆盖问题
+     * mov r0, r1 (cur, remove)
+     * mov r0, r2
+     */</span>
+<span class="token comment">/**
+     * 判断的是
+     * j block_label =&gt; null
+     * block_label:
+     */</span>
+<span class="token comment">/**
+     *   store a, memory
+     *   load b, sameMemory
+     *   =&gt;
+     *   move b, a
+     */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="17-数据流窥孔"><a href="#17-数据流窥孔" class="headerlink" title="17 数据流窥孔"></a>17 数据流窥孔</h2><p>这个数数据流窥孔的最重要的分析方法，它以基本块为单位进行分析。最终我们获得的是一个 writerToReader 的映射，这个映射可以根据一个写指令去查询最后一次的与之相关的读指令，之所以这个映射有用，是因为我们在数据流窥孔中会删除写指令或者改变写指令，而一旦改变，后面的读指令也应当发生改变，只有当写指令与读指令的距离小于窥孔的直径的时候，才是可以更改的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S5%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S5课上</a>
+              <a href="/tags/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" rel="tag"><i class="fa fa-tag"></i> 编译技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/bae88282/" rel="prev" title="算法设计-hw4">
+      <i class="fa fa-chevron-left"></i> 算法设计-hw4
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3c8b9ba3/" rel="next" title="编译技术-语法分析">
+      编译技术-语法分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96"><span class="nav-text">代码优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF"><span class="nav-text">1 个人信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%80%BB%E8%AE%BA"><span class="nav-text">2 总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%94%AF%E9%85%8D%E5%88%86%E6%9E%90"><span class="nav-text">3 支配分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%BE%AA%E7%8E%AF%E5%88%86%E6%9E%90"><span class="nav-text">4 循环分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%88%86%E6%9E%90"><span class="nav-text">5 函数调用分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%89%AF%E4%BD%9C%E7%94%A8%E5%88%86%E6%9E%90"><span class="nav-text">6 副作用分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Mem2reg"><span class="nav-text">7 Mem2reg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Global-Value-Number"><span class="nav-text">8 Global Value Number</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E6%8C%87%E4%BB%A4%E5%8C%96%E7%AE%80-amp-amp-%E8%BF%90%E7%AE%97%E5%BC%BA%E5%BA%A6%E5%89%8A%E5%BC%B1"><span class="nav-text">9 指令化简 &amp;&amp; 运算强度削弱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Dead-Code-Emit"><span class="nav-text">10 Dead Code Emit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Global-Code-Motion"><span class="nav-text">11 Global Code Motion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-%E5%87%BD%E6%95%B0%E5%86%85%E8%81%94"><span class="nav-text">12 函数内联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E5%B1%80%E9%83%A8%E5%8C%96"><span class="nav-text">13 全局变量局部化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-%E4%B9%98%E6%B3%95%E4%BC%98%E5%8C%96"><span class="nav-text">14 乘法优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-%E7%AA%A5%E5%AD%94%E4%BC%98%E5%8C%96"><span class="nav-text">16 窥孔优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%AA%A5%E5%AD%94"><span class="nav-text">17 数据流窥孔</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

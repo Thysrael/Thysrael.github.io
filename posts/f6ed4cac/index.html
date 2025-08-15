@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、数理逻辑总论1.1 形式“Logic is about the form of things, but not the things themselves.” 逻辑&#x3D;语法+语义，但是并非像自然语言一样，语义占据了统治地位，而语法只起辅助作用。恰恰相反，逻辑更关注语法，即形式。罗素说，数理逻辑是数学中的数学，也就是元数学，它试图构建一个基础，用来支撑庞大的数学体系。从这个角度来看，关注语法，确切">
+<meta property="og:type" content="article">
+<meta property="og:title" content="离散数学-形式演算">
+<meta property="og:url" content="https://thysrael.github.io/posts/f6ed4cac/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、数理逻辑总论1.1 形式“Logic is about the form of things, but not the things themselves.” 逻辑&#x3D;语法+语义，但是并非像自然语言一样，语义占据了统治地位，而语法只起辅助作用。恰恰相反，逻辑更关注语法，即形式。罗素说，数理逻辑是数学中的数学，也就是元数学，它试图构建一个基础，用来支撑庞大的数学体系。从这个角度来看，关注语法，确切">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-16T08:28:48.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.982Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S2复习">
+<meta property="article:tag" content="离散数学">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/f6ed4cac/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>离散数学-形式演算 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/f6ed4cac/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          离散数学-形式演算
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 16:28:48" itemprop="dateCreated datePublished" datetime="2022-01-16T16:28:48+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">离散数学</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、数理逻辑总论"><a href="#一、数理逻辑总论" class="headerlink" title="一、数理逻辑总论"></a>一、数理逻辑总论</h2><h3 id="1-1-形式"><a href="#1-1-形式" class="headerlink" title="1.1 形式"></a>1.1 形式</h3><p><em>“Logic is about the form of things, but not the things themselves.”</em></p>
+<p><strong>逻辑=语法+语义</strong>，但是并非像自然语言一样，语义占据了统治地位，而语法只起辅助作用。恰恰相反，逻辑更关注语法，即<strong>形式</strong>。罗素说，数理逻辑是<strong>数学中的数学</strong>，也就是<strong>元数学</strong>，它试图构建一个基础，用来支撑庞大的数学体系。从这个角度来看，关注<strong>语法</strong>，确切的是<strong>形式</strong>，是十分必要的，因为这个<strong>元数学</strong>必须适用于<strong>所有的数学理论</strong>，那么仅仅局限与一个体系的<strong>语义</strong>，没有办法做到适用于所有体系。就好像数学对客观世界的抽象，如果只纠结于<strong>1怎么写</strong>，<strong>1+1=2</strong>的问题，数学是没有长足发展的，只有提炼出<strong>未知数x</strong>这种可以代表一切自然数的东西，才能使数学的<strong>概括能力</strong>有所提高。我们也可以说，x是某个特定自然数，比如1，的<strong>形式</strong>。就像现在的<strong>数理逻辑</strong>是比如<strong>数论</strong>、<strong>欧式几何</strong>的抽象，所以过于纠结于语义的现象就像在问“x+1里的x是多少一样？“没有意义。</p>
+<h3 id="1-2-定义形式"><a href="#1-2-定义形式" class="headerlink" title="1.2 定义形式"></a>1.2 定义形式</h3><p>有了形式的概念以后，就可以重新思考某些定义，比如<strong>联结词</strong>当时定义的时候涉及了<strong>函数</strong>的概念，这说明它是一个<strong>语义定义</strong>，但是联结词和命题变元的写法并不是在定义联结词的时候定义的，而是在<strong>定义公式</strong>的时候定义的，那个<strong>归纳定义</strong>至今记忆犹新，这个定义并不涉及任何<strong>语义</strong>，所以是个<strong>语法定义</strong>，但是我在理解的时候还是喜欢用函数的概念理解，这就犯了错误。</p>
+<h3 id="1-3-对错与存在"><a href="#1-3-对错与存在" class="headerlink" title="1.3 对错与存在"></a>1.3 对错与存在</h3><p><strong>对错</strong>就是<strong>语义</strong>的部分，但是显然这不是<strong>逻辑</strong>关注的重点，<strong>逻辑</strong>关注的是<strong>存在性</strong>。数理逻辑系统是由一串<strong>“符号”</strong>组成的系统，由<strong>“符号”</strong>组成<strong>“式子”</strong>，再确定<strong>推导规则</strong>。逻辑系统不关注<strong>式子</strong>的对错，只关心式子是否<strong>存在</strong>。也就是假定存在某些<strong>式子</strong>，再确定推导规则，然后按照这些规则看1能推导出哪些式子，哪些假定存在的式子就被称为<strong>公理</strong>。总结起来，逻辑系统关心的是给定<strong>公理</strong>和<strong>推导规则</strong>后，判断某个式子是否存在。所以，在学习逻辑系统的过程中，首先要摒弃“是非对错”观念，而谨记“存在与否，是否有效”观念。</p>
+<h3 id="1-4-积木的类比"><a href="#1-4-积木的类比" class="headerlink" title="1.4 积木的类比"></a>1.4 积木的类比</h3><p><strong>搭积木</strong>是对<strong>命题演算</strong>很好的比喻，两者具有极佳的相似性：积木不关心材质（他就是一个模型），命题演算不关心<strong>语义</strong>。积木只能拼出某些形状，比如如果没有胶水，桥就很难搭，命题演算关注完备性，也就是这个系统能不能拼出所有的理论。积木只有有限的几个形状，但是可以组装出很多复杂的<strong>零件</strong>，然后再组装成<strong>装配体</strong>，命题演算也呈现这种特征，公理的数量极少，但是可以组装出<strong>定理</strong>用于证明。积木拼装最关键是<strong>严丝合缝</strong>，命题推演最重要的是<strong>推演规则</strong>。总之，积木很好的概括了数理逻辑的<strong>形式特点</strong>。</p>
+<h2 id="二、逻辑推论"><a href="#二、逻辑推论" class="headerlink" title="二、逻辑推论"></a>二、逻辑推论</h2><h3 id="2-1-逻辑推论"><a href="#2-1-逻辑推论" class="headerlink" title="2.1 逻辑推论"></a>2.1 逻辑推论</h3><p>其实这一章要讲的内容不是<strong>语法</strong>，而是<strong>语义</strong>，由于考试的需要，基本的定义不会太涉及，因为时间不富裕，但是基本的精髓还是要有的。就是逻辑推论的证明时<strong>语义证明</strong>，具体就是表现在大量运用<strong>等值演算</strong>和<strong>真值赋值和解释</strong>，这些都是语义特征。</p>
+<p>在命题逻辑这一章，比较重要的是<strong>逻辑推论</strong>的定义，他是如是说的：设 $\Gamma$ 是公式的集合，如果每个满足 $\Gamma$ 的真值赋值都满足 A，则称 A 是 $\Gamma$ 的逻辑推论，记作 $\Gamma \models A$。然后就会衍生两个不那么自然的概念。一个是 $\models A$，说明 A 是永真式，因为任何真值赋值都满足空公式集，所以所有真值赋值都满足 A ，也就是 A 是永真式。另一个是“设 $\Gamma$ 是公式集合，$\Gamma$ 是不可满足的当且仅当任何一个公式都是 $\Gamma$ 的逻辑推论”，因为当 $\Gamma$ 不可满足时，只有0个真值赋值可以满足 $\Gamma$ ，所以每个满足 $\Gamma$ 的真值赋值都可以满足任何公式。</p>
+<p>在谓词逻辑这一章基本上内容与命题逻辑相同，唯一有一个比较需要注意的是这个“设 $\Gamma$ 是公式集合，A 是公式，变元 x 不是 $\Gamma$ 中任何公式的自由变元，若 $\Gamma\models A$ ，则$\Gamma\models \forall xA$” ，我也不知道他为什么这么不自然，他好像与 UG 规则类似。</p>
+<h3 id="2-2-命题逻辑的归结法"><a href="#2-2-命题逻辑的归结法" class="headerlink" title="2.2 命题逻辑的归结法"></a>2.2 命题逻辑的归结法</h3><h4 id="2-2-1-子句"><a href="#2-2-1-子句" class="headerlink" title="2.2.1 子句"></a>2.2.1 子句</h4><p>文字的有穷集合叫做子句，不包含任何文字的子句叫做空子句，记为 $\Box $。然后我们在让一个子句对应一个公式，就是对应一个<strong>简单析取式</strong>，析取式的项就是集合中的文字，显然 $\Box$ 对应的是永假式 0 。说子句 $C_1$ 和子句 $C_2$ 推出 $C_3$ 是说两个对应的公式推出第三个公式，就是两个简单析取式推出第三个简单析取式。我们说满足一个子句，就是满足这个集合中的一个文字就够了，这与常见的<strong>满足集合</strong>不同，满足集合一般是满足集合中的<strong>所有公式</strong>。</p>
+<h4 id="2-2-2-子句集"><a href="#2-2-2-子句集" class="headerlink" title="2.2.2 子句集"></a>2.2.2 子句集</h4><p>子句的集合叫做子句集，注意子句集是<strong>集合的集合</strong>，同时也要注意到，因为子句对应的是<strong>公式</strong>，所以子句集也同时是一个我们常见的<strong>公式集</strong>。所有说满足一个子句集，就是要满足所有的子句。</p>
+<h4 id="2-2-3-归结子句"><a href="#2-2-3-归结子句" class="headerlink" title="2.2.3 归结子句"></a>2.2.3 归结子句</h4><p>设 $L_1$ 和 $L_2$ 是相反的文字，并且在子句 $C_1$ 和子句 $C_2$ 中分别出现，称子句 $(C_1-{L_1})\bigcup(C_2-{L_2})$ 是前两者的归结子句（记为 $C_3$ ）。有性质：$C_1,C_2\models C_3$ ，如果用乘法的思想理解，去掉相反文字的过程就是去掉方程组不可能解的过程，那么再用乘法连接后就是一个新的可以代表原来两个方程的一个新方程。</p>
+<h4 id="2-2-4-反驳"><a href="#2-2-4-反驳" class="headerlink" title="2.2.4 反驳"></a>2.2.4 反驳</h4><p>设 $S$ 是一个子句集合，如果子句序列 $C_1,\dots ,C_n$中每个子句满足以下任意一个条件，则称该子句序列为 $S$ 的一个反驳</p>
+<ul>
+<li><p>$C_i \in S$</p>
+</li>
+<li><p>$C_i$ 是 $C_j$ 和 $C_k$ 的归结子句，且 $i,j&lt;k$</p>
+</li>
+<li><p>$C_n$ 是 $\Box$</p>
+<p>这个反驳其实是 $S$ 和由 $S$ 衍生的归结子句集合的<strong>并集</strong>的一个<strong>拓扑序列</strong>，路径就是存在归结子句，终点就是空子句。</p>
+</li>
+</ul>
+<h4 id="2-2-5-条件转换"><a href="#2-2-5-条件转换" class="headerlink" title="2.2.5 条件转换"></a>2.2.5 条件转换</h4><p>$A_1,\dots ,A_n\models B$ 等价于 $A_1\wedge\dots\wedge A_n\wedge\neg B$ 为永假式，我们可以进行如下转化</p>
+<ul>
+<li><p>将 $A_1,\dots ,A_n, B$ 转换为合取范式（不是主范式，因为没必要）</p>
+</li>
+<li><p>取 $S$ 为上述合取范式所有简单析取式对应的子句的集合</p>
+</li>
+<li><p>如果能找到这样的一个反驳，就说明能推出，不然则不能</p>
+</li>
+</ul>
+<p>这么做的依据是这样的，因为反驳最后会推出空语句，可以理解为 $S\models 0$，所以 S 是不可满足的，也就是说 $A_1\wedge\dots\wedge A_n\wedge\neg B$ 为永假式。就可以说明问题了，仔细思考这一过程，其实跟<strong>因式分解</strong>还是有很大关系的。</p>
+<p>还是应该看到，归结法与<strong>语义推理</strong>紧密联系，所以他是<strong>语义</strong>推理的一部分，而不是形式推理系统的一部分，他也不具有可以抽象出证明形式的特点，他只不过是一种特殊的<strong>算法</strong>罢了。</p>
+<h3 id="2-3-谓词逻辑的归结法"><a href="#2-3-谓词逻辑的归结法" class="headerlink" title="2.3 谓词逻辑的归结法"></a>2.3 谓词逻辑的归结法</h3><h4 id="2-3-1-总论"><a href="#2-3-1-总论" class="headerlink" title="2.3.1 总论"></a>2.3.1 总论</h4><p>因为谓词逻辑更加复杂，所以为了把他限制在一个比较统一的模式里，就必须引入一大堆<strong>规范</strong>，而把原来嘈杂的公式转换成规范的形式，就不一定保证还具有原来的信息，所以书中会采取一大堆证明和叙述来描述这些转换造成的影响，但是由于我看不懂，所以在这章里面主要讲三个方面：基本的规范是怎样的，归结法的思路是什么，怎么使用归结法。</p>
+<h4 id="2-3-2-文字，子句"><a href="#2-3-2-文字，子句" class="headerlink" title="2.3.2 文字，子句"></a>2.3.2 文字，子句</h4><p>$P(x),\neg P(x)$ 是相反的文字，但是 $P(x),\neg P(y)$ 不是相反的文字，文字的集合被称为子句，但是与命题逻辑不同的是，谓词逻辑对应的是一个<strong>闭包</strong>，而不是简单的析取式，也就是说讨论的基本单元是一种<strong>特殊的语句</strong>（这也是对<strong>斯科伦范式</strong>的召唤）（语句就是不含自由变元的公式，也就是说他的取值<strong>只受解释的影响</strong>）</p>
+<h4 id="2-3-3-基系列"><a href="#2-3-3-基系列" class="headerlink" title="2.3.3 基系列"></a>2.3.3 基系列</h4><p>不出现变元的文字称为基文字，基文字的有穷集合叫做基子句，如果一个<strong>代换</strong>使得原来的子句变成了基子句，那么就称这个<strong>基子句</strong>是原来子句的<strong>基实例</strong>。</p>
+<p>赫布兰德定理：设 $S_1$ 是由子句集 $S$ 中的全体子句的所有基实例组成的集合。若 $S$ 不可满足，则有 $S_1$ 的有穷子集不可满足。</p>
+<p>赫布兰德解释将所有的<strong>基项解释为他自己</strong>，但是没有规定<strong>谓词符号的意义</strong>，这是一种<strong>限制</strong>，是为了避免大量的复杂字符串，我们用赫布兰德解释对其进行了限制，我们可以证明，如果一个语句集是可满足的，那么必然存在一个赫布兰德解释满足它，也就是说，这种限制并没有造成任何不利的影响。</p>
+<p>赫布兰德解释，定理和基的概念，确保了<strong>谓词逻辑</strong>可以向<strong>命题逻辑</strong>进行转换，毕竟确定了常元，运算函数的谓词就像一个命题变元一样了。这在之后为谓词逻辑的归结法的<strong>完备性</strong>打下基础。其实其他地方用的不多。但是这种向常元转换的思想在证明<strong>归结子句性质</strong>时用到了。</p>
+<h4 id="2-3-4-归结子句"><a href="#2-3-4-归结子句" class="headerlink" title="2.3.4 归结子句"></a>2.3.4 归结子句</h4><p>设 $C_1,C_2$ 是子句，如果存在代换 $\sigma_1,\sigma_2 $ 和相反的文字 $L_1,L_2$ ，使得 $L_1\in C_1\sigma_1$ 且 $L_2\in C_2\sigma_2$，则称$(C_1\sigma_1-{L_1})\bigcup(C_2\sigma_2-{L_2})$ 为 $C_1,C_2$ 的归结子句，同样有 $C_1,C_2\models C_3$ 。这个性质保证了归结法的正确性。</p>
+<h4 id="2-3-5-斯科伦范式"><a href="#2-3-5-斯科伦范式" class="headerlink" title="2.3.5 斯科伦范式"></a>2.3.5 斯科伦范式</h4><p>量词都在前面的公式叫做前束范式，去掉量词以后的公式叫做原公式的<strong>母式</strong>。</p>
+<p><strong>前束范式的</strong>无 $\exist$ 前束范式指的是涉及存在量词的都用常元换掉。</p>
+<p>斯科伦范式指的是母式为合取范式的无 $\exist$ 前束范式。</p>
+<hr>
+<h2 id="三、命题逻辑的公理系统"><a href="#三、命题逻辑的公理系统" class="headerlink" title="三、命题逻辑的公理系统"></a>三、命题逻辑的公理系统</h2><h3 id="3-1-一种证明思路"><a href="#3-1-一种证明思路" class="headerlink" title="3.1 一种证明思路"></a>3.1 一种证明思路</h3><p>考虑公理二和公理三只要结合MP规则，就可以把原来要证的<strong>蕴含式</strong>，转换为一个新的<strong>蕴含式</strong>，证明的第一步就是利用这些条件尽可能把蕴含式弄得简简单单的，然后证明这个简简单单的蕴含式。</p>
+<p>证这个蕴含式的思路是利用<strong>传递律</strong>，我们可以从前件开始写<strong>定理</strong>，然后一步步地写到<strong>后件</strong>，然后定理就证完了。最后把用到的<strong>连接定理</strong>都进行证明就可以了。</p>
+<p>但是这种思路是跟<strong>还原演绎定理</strong>思路矛盾的，所以二者必取其一。应该是这种思路更好一些，是因为当应用超过两次演绎定理以后，就会用到T33定理，那个定理很难证明。所以这种思路更好一些。</p>
+<h3 id="3-2-协调性"><a href="#3-2-协调性" class="headerlink" title="3.2 协调性"></a>3.2 协调性</h3><h4 id="3-2-1-定义"><a href="#3-2-1-定义" class="headerlink" title="3.2.1 定义"></a>3.2.1 定义</h4><p>对每个公式 $A$ ，有 $\Gamma\vdash A$ 则 $\Gamma$ 是不协调的，否则， $\Gamma$ 是协调的。</p>
+<h4 id="3-2-2-定理"><a href="#3-2-2-定理" class="headerlink" title="3.2.2 定理"></a>3.2.2 定理</h4><p>若 $\Gamma\vdash p\wedge\neg p$，则 $\Gamma$ 是不协调的，其实 $\Gamma$ 推出任何一个永假式，都是<strong>不协调的</strong>。</p>
+<h4 id="3-2-3-性质"><a href="#3-2-3-性质" class="headerlink" title="3.2.3 性质"></a>3.2.3 性质</h4><p>协调<strong>等价于</strong>可满足。</p>
+<h3 id="3-3-紧致性"><a href="#3-3-紧致性" class="headerlink" title="3.3 紧致性"></a>3.3 紧致性</h3><h4 id="3-3-1-第一形式"><a href="#3-3-1-第一形式" class="headerlink" title="3.3.1 第一形式"></a>3.3.1 第一形式</h4><p>若 $\Gamma\models A$ ，则存在 $\Gamma$ 的有穷子集  $\Gamma^\prime$  ，满足$\Gamma^\prime\models A$ 。这是因为<strong>推演</strong>是一个有限的序列，所以由推演中出现的公式构成的  $\Gamma^\prime$ 满足条件。再借助<strong>完备性</strong>即可得证。</p>
+<h4 id="3-3-2-第二形式"><a href="#3-3-2-第二形式" class="headerlink" title="3.3.2 第二形式"></a>3.3.2 第二形式</h4><p>若 $\Gamma$ 不可满足，则有 $\Gamma$ 的有穷子集不可满足。</p>
+<p>这是因为当 $\Gamma$ 不可满足时，有 $\Gamma$ 推出永假式（ $\Gamma$ 协调，则 $\Gamma$ 可满足的逆否命题），则由第一形式可知  $\Gamma^\prime$ 推出永假式，所以  $\Gamma^\prime$ 不可满足。</p>
+<h4 id="3-3-3-理解"><a href="#3-3-3-理解" class="headerlink" title="3.3.3 理解"></a>3.3.3 理解</h4><p><strong>紧致性定理</strong>的作用在于，它将对无穷公式集的<strong>语义</strong>性质的讨论归结为对它的的一个有穷子集的<strong>语义性质</strong>的讨论，紧致性定理讨论的是逻辑的语义性质，没有涉及语法公理系统。</p>
+<hr>
+<h2 id="四、谓词逻辑的公理系统"><a href="#四、谓词逻辑的公理系统" class="headerlink" title="四、谓词逻辑的公理系统"></a>四、谓词逻辑的公理系统</h2><h3 id="4-1-区别"><a href="#4-1-区别" class="headerlink" title="4.1 区别"></a>4.1 区别</h3><p>谓词逻辑公理系统与命题逻辑公理系统有一些区别。首先表现为谓词逻辑推演的<strong>前提集</strong>是<strong>语句集</strong>（也就是不受赋值影响的公式），这与<strong>逻辑推论</strong>，也就是语义证明中的不同，语义证明没有要求集合 $\Gamma$ 是<strong>语句集</strong>，只要是<strong>公式集</strong>就好了。这就衍生出一个问题，因为谓词逻辑公理系统的<strong>公理模式</strong>并没有要求<strong>语句</strong>，所以会有一大部分东西是没有办法借助命题逻辑的模式证明的，所以谓词逻辑有他独有的推理工具，具体表现为两个方面，一个是增加了新的公理，为了进行<strong>原始证明</strong>（不涉及各种定理的证明）。另一种是<strong>定理证明</strong>，原来以<strong>演绎定理</strong>为主导的证明因为演绎定理受到了<strong>语句</strong>的限制，需要进行新的补充，也就是<strong>常元替换法</strong>和<strong>重言式替换法</strong>。相应的，将<strong>定理证明转换为原始证明</strong>的方法也要进一步提高。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S2%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S2复习</a>
+              <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 离散数学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/75288196/" rel="prev" title="离散数学-谓词逻辑">
+      <i class="fa fa-chevron-left"></i> 离散数学-谓词逻辑
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/2fb912cf/" rel="next" title="数学分析-数竞备考">
+      数学分析-数竞备考 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E7%90%86%E9%80%BB%E8%BE%91%E6%80%BB%E8%AE%BA"><span class="nav-text">一、数理逻辑总论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%BD%A2%E5%BC%8F"><span class="nav-text">1.1 形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%AE%9A%E4%B9%89%E5%BD%A2%E5%BC%8F"><span class="nav-text">1.2 定义形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AF%B9%E9%94%99%E4%B8%8E%E5%AD%98%E5%9C%A8"><span class="nav-text">1.3 对错与存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E7%A7%AF%E6%9C%A8%E7%9A%84%E7%B1%BB%E6%AF%94"><span class="nav-text">1.4 积木的类比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%80%BB%E8%BE%91%E6%8E%A8%E8%AE%BA"><span class="nav-text">二、逻辑推论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%80%BB%E8%BE%91%E6%8E%A8%E8%AE%BA"><span class="nav-text">2.1 逻辑推论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%91%BD%E9%A2%98%E9%80%BB%E8%BE%91%E7%9A%84%E5%BD%92%E7%BB%93%E6%B3%95"><span class="nav-text">2.2 命题逻辑的归结法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E5%AD%90%E5%8F%A5"><span class="nav-text">2.2.1 子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E5%AD%90%E5%8F%A5%E9%9B%86"><span class="nav-text">2.2.2 子句集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E5%BD%92%E7%BB%93%E5%AD%90%E5%8F%A5"><span class="nav-text">2.2.3 归结子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-%E5%8F%8D%E9%A9%B3"><span class="nav-text">2.2.4 反驳</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-5-%E6%9D%A1%E4%BB%B6%E8%BD%AC%E6%8D%A2"><span class="nav-text">2.2.5 条件转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91%E7%9A%84%E5%BD%92%E7%BB%93%E6%B3%95"><span class="nav-text">2.3 谓词逻辑的归结法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">2.3.1 总论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E6%96%87%E5%AD%97%EF%BC%8C%E5%AD%90%E5%8F%A5"><span class="nav-text">2.3.2 文字，子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-%E5%9F%BA%E7%B3%BB%E5%88%97"><span class="nav-text">2.3.3 基系列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-%E5%BD%92%E7%BB%93%E5%AD%90%E5%8F%A5"><span class="nav-text">2.3.4 归结子句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-5-%E6%96%AF%E7%A7%91%E4%BC%A6%E8%8C%83%E5%BC%8F"><span class="nav-text">2.3.5 斯科伦范式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%91%BD%E9%A2%98%E9%80%BB%E8%BE%91%E7%9A%84%E5%85%AC%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-text">三、命题逻辑的公理系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%B8%80%E7%A7%8D%E8%AF%81%E6%98%8E%E6%80%9D%E8%B7%AF"><span class="nav-text">3.1 一种证明思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%8D%8F%E8%B0%83%E6%80%A7"><span class="nav-text">3.2 协调性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E5%AE%9A%E4%B9%89"><span class="nav-text">3.2.1 定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E5%AE%9A%E7%90%86"><span class="nav-text">3.2.2 定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E6%80%A7%E8%B4%A8"><span class="nav-text">3.2.3 性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%B4%A7%E8%87%B4%E6%80%A7"><span class="nav-text">3.3 紧致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-%E7%AC%AC%E4%B8%80%E5%BD%A2%E5%BC%8F"><span class="nav-text">3.3.1 第一形式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-%E7%AC%AC%E4%BA%8C%E5%BD%A2%E5%BC%8F"><span class="nav-text">3.3.2 第二形式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-%E7%90%86%E8%A7%A3"><span class="nav-text">3.3.3 理解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%B0%93%E8%AF%8D%E9%80%BB%E8%BE%91%E7%9A%84%E5%85%AC%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-text">四、谓词逻辑的公理系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%8C%BA%E5%88%AB"><span class="nav-text">4.1 区别</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

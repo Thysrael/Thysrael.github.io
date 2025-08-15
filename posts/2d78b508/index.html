@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Overview这本书是对《Science Research Writing For Non-Native Speakers of English》的总结梳理。这本书分为多个章节，每个章节对应一个论文写作里的部分。在每个章节内部，又有如下几个部分：  介绍一下这个章节在整体文章中的作用 展示一篇例文 介绍一些基础的英语语法和词汇 对例文结构进行分析（分解成小组件），也就是他说的 model 对 m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="沟通交流-学术写作">
+<meta property="og:url" content="https://thysrael.github.io/posts/2d78b508/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="Overview这本书是对《Science Research Writing For Non-Native Speakers of English》的总结梳理。这本书分为多个章节，每个章节对应一个论文写作里的部分。在每个章节内部，又有如下几个部分：  介绍一下这个章节在整体文章中的作用 展示一篇例文 介绍一些基础的英语语法和词汇 对例文结构进行分析（分解成小组件），也就是他说的 model 对 m">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/2d78b508/shape.png">
+<meta property="article:published_time" content="2024-11-28T02:07:14.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.893Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S9课上">
+<meta property="article:tag" content="沟通交流">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/2d78b508/shape.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/2d78b508/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>沟通交流-学术写作 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/2d78b508/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          沟通交流-学术写作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-28 10:07:14" itemprop="dateCreated datePublished" datetime="2024-11-28T10:07:14+08:00">2024-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B2%9F%E9%80%9A%E4%BA%A4%E6%B5%81/" itemprop="url" rel="index"><span itemprop="name">沟通交流</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>这本书是对《Science Research Writing For Non-Native Speakers of English》的总结梳理。这本书分为多个章节，每个章节对应一个论文写作里的部分。在每个章节内部，又有如下几个部分：</p>
+<ol>
+<li>介绍一下这个章节在整体文章中的作用</li>
+<li>展示一篇例文</li>
+<li>介绍一些基础的英语语法和词汇</li>
+<li>对例文结构进行分析（分解成小组件），也就是他说的 model</li>
+<li>对 model 进行一些心法层面的阐述，也就是他说的 key</li>
+<li>按照 model 和 key 介绍一些固定词汇、句式和搭配，也就是他说的 vocabulary</li>
+<li>最后让你自己写一个文章</li>
+</ol>
+<p>很多东西都是实践性质的，并非专业知识本身。所以如果总结的话，其实可以按照 model 的形式来组织 vocabulary ，其他的东西（比如例文、基础语法、动手实践）都可以省略，结构清晰。</p>
+<p>因为时间问题，所以我会逐步更新这篇博文。</p>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p>这篇文章将一片论文分成了 5 个部分：</p>
+<p><img src="/posts/2d78b508/shape.png" alt="shape"></p>
+<ul>
+<li>Abstract 用于提供一个对文章的总结</li>
+<li>Introduction 初步介绍问题，帮助原本陌生的读者对问题的认识更加具象和熟悉</li>
+<li>Methodology 用于描述自己是如何进行这项研究的</li>
+<li>Results 用于描述研究的现象和结构</li>
+<li>Conclusion/Discussion 用于升华主题，让具象问题变得抽象普适</li>
+</ul>
+<p>而对于计算机会议论文来说，在章节方面会有一定程度的细化。Introduction 部分会包括：</p>
+<ul>
+<li>Background: 介绍背景知识</li>
+<li>Motivation: 介绍研究动机</li>
+</ul>
+<p>Methodology 部分会包括：</p>
+<ul>
+<li>Insight: 完成设计的核心思想</li>
+<li>Design: 设计本身</li>
+<li>Implementation: 具体的实现</li>
+</ul>
+<p>Results 部分会包括：</p>
+<ul>
+<li>如果一个新技术，那么需要指明技术的应用场景 Use Case ；如果是原有技术改进，那么需要指明 Baseline </li>
+<li>Evaluation: 对设计的评估</li>
+</ul>
+<p>Conclusion/Discussion 部分会包括：</p>
+<ul>
+<li>Discussion: 负责将研究升华，提供一些更加定性和抽象的描述</li>
+<li>Related Work: 用于和现有工作对比</li>
+<li>Conclusion: 对上文的总结回顾，起行文上的收束作用（而 Discussion 则承担设计上的发散升华作用）。</li>
+</ul>
+<p>如果有机会，我希望按照更加符合计算机会议的方式重新组织一下这个模板。</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><h3 id="Revisit-the-Research-Aim-Exisiting-Research"><a href="#Revisit-the-Research-Aim-Exisiting-Research" class="headerlink" title="Revisit the Research Aim / Exisiting Research"></a>Revisit the Research Aim / Exisiting Research</h3><p>不要直接描述自己的实验结果，这样过于唐突了，要想办法把读者和后面的实验联系起来，比较有效的方法就是回顾前文或者已有的其他人的工作，这些都是对实验的一种背景介绍，一种铺垫。</p>
+<p>对前文的回顾：</p>
+<blockquote>
+<p>as discussed previously, …<br>as mentioned earlier/before, ..<br>as outlined in the introduction, …</p>
+</blockquote>
+<p>对实验目的的回顾：</p>
+<blockquote>
+<p>in order to …, we examined …<br>it is important to reiterate that …<br>our aim/purpose/intention was to …<br>since/because …, we investigated …<br>to investigate …, we needed to …<br>the main purpose of this work was …<br>In this work, we sought to …</p>
+</blockquote>
+<p>对现有其他实验的回顾：</p>
+<blockquote>
+<p>as reported, …<br>it is known from the literature that …<br>the aforementioned theory/aim/prediction …<br>in earlier studies …</p>
+</blockquote>
+<p>对结果的预期：</p>
+<blockquote>
+<p>we reasoned/predicted that …<br>it was predicted that …</p>
+</blockquote>
+<h3 id="General-Overview-of-Results"><a href="#General-Overview-of-Results" class="headerlink" title="General Overview of Results"></a>General Overview of Results</h3><p>在介绍具体的实验之前，应当先给读者一个整体印象，这样才能避免读者陷入“流水帐式阅读”。整体印象应当包括我们的实验设置、实验目的、最终的实现效果。</p>
+<p>对实验的总结概括：</p>
+<blockquote>
+<p>in this section, we compare/evaluate/present …<br>the results are divided into two parts as follows:</p>
+</blockquote>
+<p>对结果的总结概括：</p>
+<blockquote>
+<p>generally speaking, …<br>in general, …<br>in most/all cases, …<br>in the main, …<br>it is appparent that in all/most/the majority of cases, …<br>it is evident from the results that …<br>on the whole, …<br>the overall response was …<br>using the method described above, we obtained …</p>
+</blockquote>
+<h3 id="Invitation-to-View-Results"><a href="#Invitation-to-View-Results" class="headerlink" title="Invitation to View Results"></a>Invitation to View Results</h3><p>应当主动引导读者去看图或者看表，而不是只画图，而在正文里绝口不提。</p>
+<p>对结果的被动引用：</p>
+<blockquote>
+<p>(see Fig)<br>according to Fig<br>as detailed/evident/illustrated/indicated/listed/shown from/in Fig<br>as can be seen/found/identified/observed from/in Fig<br>comparing Fig.1 and Fig.4 shows that …<br>displayed in Fig<br>evidence for this is in Fig<br>inspection of Fig indicates …<br>be given/represented/visible in Fig<br>in Fig we compare/present ….<br>results are given in Fig</p>
+</blockquote>
+<p>对结果的主动引用</p>
+<blockquote>
+<p>Fig contains/corresponds/demostrates/displays/gives/illustates/lists/plots/presents/provides/reports/represents/reveals/shows/summaries</p>
+</blockquote>
+<p>在引用结果时，某张图或者某张表的粒度可能过粗，可以更细一些，指向图中的某个具体数据：</p>
+<blockquote>
+<p>the data in Fig<br>the rate in Table<br>the results of Fig</p>
+</blockquote>
+<h3 id="Special-Key-Results-in-Detail"><a href="#Special-Key-Results-in-Detail" class="headerlink" title="Special/Key Results in Detail"></a>Special/Key Results in Detail</h3><p>讲究的是客观描述与主观判断的结合。</p>
+<h4 id="Objective-Description"><a href="#Objective-Description" class="headerlink" title="Objective Description"></a>Objective Description</h4><p>这些词应当加上具体的数据来修饰，这样才能更有说服力和客观。比如说</p>
+<blockquote>
+<p>2% increase</p>
+</blockquote>
+<p>增加：</p>
+<blockquote>
+<p>accelerate<br>expand<br>increase<br>be higher/highest<br>peak<br>precede<br>rise</p>
+</blockquote>
+<p>减少：</p>
+<blockquote>
+<p>decline<br>decrease<br>delay<br>drop<br>fall<br>be lower/lowest<br>reduce</p>
+</blockquote>
+<p>变化：</p>
+<blockquote>
+<p>change<br>vary<br>be different<br>produce</p>
+</blockquote>
+<p>不变：</p>
+<blockquote>
+<p>be constant/unaffected/unchanged<br>remain constant/the same<br>level off</p>
+</blockquote>
+<p>存在：</p>
+<blockquote>
+<p>exist<br>find<br>range from<br>be found/seen<br>occur</p>
+</blockquote>
+<p>对比：</p>
+<blockquote>
+<p>be equal/indentical/uniform<br>match</p>
+</blockquote>
+<h4 id="Subjective-Description"><a href="#Subjective-Description" class="headerlink" title="Subjective Description"></a>Subjective Description</h4><p>数量评价：</p>
+<blockquote>
+<p>abundant<br>adequate<br>inadequate<br>minimal<br>negligible<br>imperceptible<br>few<br>brief<br>sufficient<br>scarce<br>substantial<br>immense</p>
+</blockquote>
+<p>程度评价：</p>
+<blockquote>
+<p>almost<br>largely<br>likelihood<br>more or less<br>somewhat<br>most<br>mild<br>virtual<br>considerable<br>general</p>
+</blockquote>
+<p>图表评价：</p>
+<blockquote>
+<p>clear<br>measurable<br>sharp<br>smooth<br>steep<br>sudden</p>
+</blockquote>
+<p>符合预期/不符合预期：</p>
+<blockquote>
+<p>acceptable<br>appreciable<br>appropriate<br>unexpected<br>unusual</p>
+</blockquote>
+<p>非常好/差：</p>
+<blockquote>
+<p>dramatic<br>drastic<br>essential<br>excellent<br>extensive<br>important<br>marked<br>noticeable<br>overwhelming<br>poor<br>remarkable<br>satisfactory<br>serious<br>severe<br>significant<br>simple<br>striking<br>strong<br>suitable<br>surprising<br>radical<br>rapid<br>valuable</p>
+</blockquote>
+<p>比较：</p>
+<blockquote>
+<p>comparable<br>consistent<br>distinct<br>equivalent<br>excessive<br>exceptional<br>extreme<br>fair<br>obvious<br>only<br>resembling<br>similar<br>dominant</p>
+</blockquote>
+<p>名词：</p>
+<blockquote>
+<p>tendency<br>the majority of<br>main</p>
+</blockquote>
+<h3 id="Comparison-with-Other-Results"><a href="#Comparison-with-Other-Results" class="headerlink" title="Comparison with Other Results"></a>Comparison with Other Results</h3><p>和其他已有成果对比是非常必要的，baseline 必须好好选取，才能增加说服力。</p>
+<p>印证/推翻：</p>
+<blockquote>
+<p>as anticipated, …<br>as expected, …<br>as predicted by …<br>as reported by …<br>confirm<br>corroborate<br>disprove<br>inconsistent with<br>concur with<br>inline with<br>be in good agreement<br>prove<br>refute<br>reinforce<br>support<br>validate<br>verify</p>
+</blockquote>
+<p>优劣：</p>
+<blockquote>
+<p>compare well with<br>be better than</p>
+</blockquote>
+<p>相似性：</p>
+<blockquote>
+<p>consistent with<br>contrary to<br>match<br>be identical<br>be similar/dissimilar to<br>be parallel to<br>be unlike<br>correlate</p>
+</blockquote>
+<h3 id="Problems-with-Results"><a href="#Problems-with-Results" class="headerlink" title="Problems with Results"></a>Problems with Results</h3><p>似乎这个会被写入 future work 而不是 evaluation 中。</p>
+<p>问题：</p>
+<blockquote>
+<p>immaterial<br>incompelte<br>infinitesimal<br>insignificant<br>less than ideal/perfect<br>a minor deficit/limitation</p>
+</blockquote>
+<p>转折：</p>
+<blockquote>
+<p>despite this<br>however<br>nevertheless</p>
+</blockquote>
+<p>开脱：</p>
+<blockquote>
+<p>at a preliminary attempt<br>neligible<br>not always/completely reliable/accurate/ideal/identical/clear/perfect/precise/significant<br>of no/little consequence/significance<br>only<br>reasonable results were obtain<br>room for improvement<br>slightly<br>a slight mismatch/limitation<br>somewhat<br>technicality<br>unimportant</p>
+</blockquote>
+<p>原因：</p>
+<blockquote>
+<p>may/could/might have been<br>beyond the scope of this study<br>be not the focus of this paper<br>be not within the scope of this paper<br>caused by<br>difficult to<br>due to<br>hard to control<br>inevitable<br>it should be noted that …<br>be not attempted/examined/expored in this study<br>possible sources of error<br>unavoidable<br>unexpected<br>unfortunately<br>unpredictable<br>unworkable<br>unavailable</p>
+</blockquote>
+<p>解决办法：</p>
+<blockquote>
+<p>futher work is planned<br>futher work should …<br>future work will<br>in future, care should be taken<br>in future, it is advised that</p>
+</blockquote>
+<h3 id="Possible-Implications-on-Results"><a href="#Possible-Implications-on-Results" class="headerlink" title="Possible Implications on Results"></a>Possible Implications on Results</h3><p>感觉似乎过于侧重 possible 了，有些让人感到虚弱了，不应该出现在这里。不应当成为一个必要的结构，而是应当成为一种行文的小修饰。</p>
+<blockquote>
+<p>apparently<br>could be due to / explained by / attributed to / interpreted as / seen as<br>could account for<br>evidently<br>imply that<br>indicate that<br>in some circumstances<br>be owing to / associated with / likely / linked to / related to<br>it appears that<br>it could be concluded/infered/speculated/assumed that …<br>it is conceivable …<br>it is evident<br>it is logical that<br>it is thought/believed that<br>plausible<br>suggesting<br>likely<br>may/might/perhaps<br>possibly/possiblity<br>potentially<br>presumably<br>probably<br>provide compelling evidence<br>tend to / tendency</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S9%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S9课上</a>
+              <a href="/tags/%E6%B2%9F%E9%80%9A%E4%BA%A4%E6%B5%81/" rel="tag"><i class="fa fa-tag"></i> 沟通交流</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/cf617ad0/" rel="prev" title="并行计算-并行原语">
+      <i class="fa fa-chevron-left"></i> 并行计算-并行原语
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/9925eca3/" rel="next" title="吃喝玩乐-三周年">
+      吃喝玩乐-三周年 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture"><span class="nav-text">Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-text">Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Revisit-the-Research-Aim-Exisiting-Research"><span class="nav-text">Revisit the Research Aim &#x2F; Exisiting Research</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#General-Overview-of-Results"><span class="nav-text">General Overview of Results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Invitation-to-View-Results"><span class="nav-text">Invitation to View Results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Special-Key-Results-in-Detail"><span class="nav-text">Special&#x2F;Key Results in Detail</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Objective-Description"><span class="nav-text">Objective Description</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Subjective-Description"><span class="nav-text">Subjective Description</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comparison-with-Other-Results"><span class="nav-text">Comparison with Other Results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Problems-with-Results"><span class="nav-text">Problems with Results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Possible-Implications-on-Results"><span class="nav-text">Possible Implications on Results</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

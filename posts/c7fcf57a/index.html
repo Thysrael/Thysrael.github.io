@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、构造控制流图（CFG） 关于优化，真的是一个令人生畏的事情，大致来说，一个优化分为两个部分：  分析 改写  但是在课程中大多只交第一个部分，而不讲第二个部分，这就导致一种“无意义性”，如果分析不能用于改造程序，那么就没有什么学习的动力。所以如果想要学好理论，那么必须要有一个宏观的角度去看发生的一切事情。 按照 《Engineering a Complier》的观点，按照优化的范围去给优化分类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译技术-优化理论">
+<meta property="og:url" content="https://thysrael.github.io/posts/c7fcf57a/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、构造控制流图（CFG） 关于优化，真的是一个令人生畏的事情，大致来说，一个优化分为两个部分：  分析 改写  但是在课程中大多只交第一个部分，而不讲第二个部分，这就导致一种“无意义性”，如果分析不能用于改造程序，那么就没有什么学习的动力。所以如果想要学好理论，那么必须要有一个宏观的角度去看发生的一切事情。 按照 《Engineering a Complier》的观点，按照优化的范围去给优化分类">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/c7fcf57a/DAG1.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/c7fcf57a/DAG2.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/c7fcf57a/image-20221129154012523.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c7fcf57a/image-20221129162711269.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c7fcf57a/image-20221129174148464.png">
+<meta property="article:published_time" content="2023-02-11T10:11:46.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.988Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S5假期">
+<meta property="article:tag" content="编译技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/c7fcf57a/DAG1.jpg">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/c7fcf57a/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>编译技术-优化理论 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c7fcf57a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译技术-优化理论
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-11 18:11:46" itemprop="dateCreated datePublished" datetime="2023-02-11T18:11:46+08:00">2023-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编译技术</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、构造控制流图（CFG）"><a href="#一、构造控制流图（CFG）" class="headerlink" title="一、构造控制流图（CFG）"></a>一、构造控制流图（CFG）</h2><blockquote>
+<p>关于优化，真的是一个令人生畏的事情，大致来说，一个优化分为两个部分：</p>
+<ul>
+<li>分析</li>
+<li>改写</li>
+</ul>
+<p>但是在课程中大多只交第一个部分，而不讲第二个部分，这就导致一种“无意义性”，如果分析不能用于改造程序，那么就没有什么学习的动力。所以如果想要学好理论，那么必须要有一个宏观的角度去看发生的一切事情。</p>
+<p>按照 《Engineering a Complier》的观点，按照优化的范围去给优化分类，大致可以分为以下四类</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>范围</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>局部优化</td>
+<td>限制在某个基本块中</td>
+<td>公共子表达式提取，局部值编号，树高平衡，窥孔优化</td>
+</tr>
+<tr>
+<td>区域性优化</td>
+<td>某几个有联系的基本块</td>
+<td>循环展开</td>
+</tr>
+<tr>
+<td>全局优化（过程内优化）</td>
+<td>组成一个完整过程的基本块</td>
+<td>图着色寄存器分配</td>
+</tr>
+<tr>
+<td>过程间优化</td>
+<td>多个过程</td>
+<td>函数内联，过程间常数传递</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>至于为什么有这么多分类，是因为优化是一个很严谨而且需求具有多样性的事情，不同的范围对应的条件和限制是不一样的，那么可以进行优化的力度和策略也就是不一样的。</p>
+<p>对于局部优化，因为它在一个基本块内，所以有两个极好的性质可以应用</p>
+<ul>
+<li>语句是顺序执行的。</li>
+<li>如果一条语句被执行，那么整个基本块的语句都会被执行。</li>
+</ul>
+<p>从某种意义上讲，基本块让人们不再直面指令，而是变成面对一个数据流图。</p>
+<p>而其他三种方法，都需要建立在对于 CFG 图上，也就是说，首先就是分析 CFG 图。另外还有一段话很有意思：</p>
+<p>在进行区域性优化的时候，我们可以考虑通过某种图论性质定义的 CFG 子集，比如说支配图或者强联通分量。</p>
+</blockquote>
+<p>通过一道题来介绍一下分法，不过介绍之前，还是说一下，此时的代码一定是 ir 了，但是对于课设用到的是那种 ir 呢？应该是某种神秘的四元式（这里插一嘴，llvm 也可以被认为成一种神秘四元式，即只有一小部分指令有大于 2 个的操作数）。</p>
+<p>有三条规则：</p>
+<ul>
+<li>程序入口第一条语句</li>
+<li>任何可以被当做跳转目标的语句</li>
+<li>跳转语句后面的一条语句</li>
+</ul>
+<p>当然不是人话，其实就两点，就是扫描的时候关注两个东西：</p>
+<ul>
+<li>标签前面：因为描述跳转目标必须需要标签。</li>
+<li>跳转后面，因为要在后面断掉。</li>
+</ul>
+<p>至此，开始实践：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">a = 0
+b = 10
+c = 100
+-------------------------
+label_begin_loop:
+cmp a, n
+bge label_end_loop 
+--------------------------
+t1 = n * n
+t2 = t1 + a
+t3 = n * t2
+t4 = t3 + b
+b = n * n
+t5 = b + a
+t6 = t5 + t4
+c = c + t6
+a = a + 1
+br label_begin_loop 
+--------------------------
+label_end_loop:
+return c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>轻松容易。</p>
+<h2 id="二、消除公共子表达式（DAG-图应用）"><a href="#二、消除公共子表达式（DAG-图应用）" class="headerlink" title="二、消除公共子表达式（DAG 图应用）"></a>二、消除公共子表达式（DAG 图应用）</h2><blockquote>
+<p>在实践之前，还是强调，这一步是在四元式 ir 的基础上进行的，所以里面的表达式也带有一定的某种 ir 的性质，可以看到，在 ir 中会产生一些临时变量，用于存放中间结果，而这些临时变量不会在进入块之前就被定义（临时变量一定被限制在了基本块内），同时这些临时变量也不会被重复定义（如果被重复定义，那么为什么不新作一个临时变量呢？这样看，临时变量满足了 SSA）。</p>
+<p>我们用表达式树来描述一个复杂的计算，但是这棵树上有一些部分是重复的，所以只要发现这些重复的地方，我们就可以只用一个部分即可。</p>
+<p>还是想说，其实这个东西依然是表达式数构建和导出的应用。比如说在构建的时候，要自底向上的构建，因为上层节点需要利用到下层节点的计算结果，而在导出的时候，也是应该先导出底部的。 一切对于有向无环图的理解，其实都是对于表达式树或者语法树的理解。是某种意义上树形 ir 和四元式 ir 的关系。</p>
+<p>这么看就更有意思了，本质上我们的工作是将一个线性的序列，一个在时间上流动的序列，压缩成了一个片一样的树或者图。</p>
+</blockquote>
+<p>以一道题为例：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">t1 <span class="token operator">=</span> n <span class="token operator">*</span> n<span class="token punctuation">;</span>
+t2 <span class="token operator">=</span> t1 <span class="token operator">+</span> a<span class="token punctuation">;</span>
+t3 <span class="token operator">=</span> n <span class="token operator">*</span> t2<span class="token punctuation">;</span>
+t4 <span class="token operator">=</span> t3 <span class="token operator">+</span> b<span class="token punctuation">;</span>
+b <span class="token operator">=</span> n <span class="token operator">*</span> n<span class="token punctuation">;</span>
+t5 <span class="token operator">=</span> b <span class="token operator">+</span> a<span class="token punctuation">;</span>
+t6 <span class="token operator">=</span> t5 <span class="token operator">+</span> t4<span class="token punctuation">;</span>
+c <span class="token operator">=</span> c <span class="token operator">+</span> t6<span class="token punctuation">;</span>
+a <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先先说明一件事，就是因为这个图是从底向上构建的，所以第一个节点不能写得太靠上，因为要逐渐往上生长，也不能写得太靠侧边，因为表达式树或者 DAG 是有序的，显然 <code>a - b</code> 和 <code>b - a</code> 是两个东西，所以必然是 <code>b</code> 是左孩子，而 <code>a</code> 是右孩子。所以最终结论就是，不要期望自己的 DAG 有多好看，因为好看不了。</p>
+<p>还有一些简单性质，比如说只有入度的节点（也就是某种意义上的“叶子节点”）一定是 <code>livein</code> 的变量，而这些变量在之后可能会被赋值，所以一个变量可以对应多个节点（可以看成每个节点就是一个版本，比如说在课程里明说 $var<em>{0}$ 就是第一个版本，之后每次定义 <code>var</code> 的时候，都可以看做是在当前版本 $var</em>{n - 1}$  上做迭代（因为此时在表达式树上留存着 $var_{n - 1}$  这个版本），更新了 $var_n$ 这个值）。</p>
+<p>所以就可以构建表了，在构建表的时候，因为一个中间节点，只能是一个运算符，所以没法比较直观的对应，所以采用了标号的举措，但是这种标号感觉增加了查表的时间，不如直接将符号写到树节点上去：</p>
+<p><img src="/posts/c7fcf57a/DAG1.jpg" alt=""></p>
+<p>这种形式大概要比普通的形式要快很多，主要是不用人为查表了，所有的信息都在点上，而且不用在“画图—登记”之间来回切换。但是依然有标准形式，就是给节点标号，然后用符号对应标号。</p>
+<p>画图的时候需要注意不要画错顺序，同时尽量规整。还有一定要<strong>先看操作符，然后再看结果</strong>，也就是 <code>c = c + 1</code> 要被翻译成  <code>c1 = c0 + 1</code> 。</p>
+<p><img src="/posts/c7fcf57a/DAG2.jpg" alt=""></p>
+<p>还需要搭配表</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>版本 0</th>
+<th>版本 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>t1</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>a</td>
+<td>3</td>
+<td>11</td>
+</tr>
+<tr>
+<td>t2</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>t3</td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>b</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr>
+<td>t4</td>
+<td>7</td>
+<td></td>
+</tr>
+<tr>
+<td>t5</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>t6</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>c</td>
+<td>9</td>
+<td>10</td>
+</tr>
+<tr>
+<td>a</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>可以看到，速度放慢了很多。</p>
+<p>然后就到了导出表达式的步骤，只有 3 点需要强调：</p>
+<ul>
+<li>教材中说的，利用拓扑排序存入队列，然后逆向输出，其实主要依赖的是表达式树的性质，这个性质其实可以被抽象成“将边反向后拓扑排序输出”，更加本质。</li>
+<li>对于用一个节点上有多个变量存在的情况，比如说 2 号节点对应了 <code>t1, b</code> 那么应当优先导出 <code>b</code> ，因为 <code>a, b, c</code> 这种是全局变量（这里的“全局”指的是优化中的全局，也就是跨基本块的变量），后面的基本块可能还会用到，所以优先更新全局变量。</li>
+<li>入队的只能是中间节点，说白了，排序排的是表达式，因为每个中间节点都代表一个表达式。</li>
+</ul>
+<p>按照规则入队</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>c</th>
+<th>t6</th>
+<th>t4</th>
+<th>t3</th>
+<th>t2</th>
+<th>b</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所以最后的结果就是</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">b = n * n;
+t2 = b + a;
+t3 = n * t2;
+t4 = t3 + b;
+t6 = t2 + t4;
+c = c + t6;
+a = a + 1;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>吐槽一句，费了半天劲，就消了俩，乐。</p>
+<h2 id="三、到达定义分析"><a href="#三、到达定义分析" class="headerlink" title="三、到达定义分析"></a>三、到达定义分析</h2><blockquote>
+<p>这是我们学的第一个全局数据流分析，但是只能说教材封装得太好了。</p>
+<p>肯定这些分析是全局数据流分析，但是以基本块为颗粒度是怎么一回事？即使分析出了基本块的 in 或者 out，对于实际的改写程序并没有办法起到指导意义，这是因为改写的颗粒度是指令级的。显然一个粗粒度的分析没办法指导一个细粒度的改写。</p>
+<p>其实实际的分析是分为两步的：</p>
+<ul>
+<li>进行块级颗粒度的数据流分析，这个部分具有全局性质，会统筹考虑 CFG 的数据流向问题。</li>
+<li>在每个块内进行指令级颗粒度的数据流分析，这个部分发生在局部，利用的是块级颗粒度分析的结果，不需要考虑全局信息。</li>
+</ul>
+<p>至于问什么要分步骤进行，这可能是因为涉及到具体的优化的时候，可能对于数据流分析有轻微的调整，这种调整一般只发生在块内，所以解耦可以更好的更改代码。比如说在后端，“全局寄存器分配”和“数据流窥孔优化”都采用了活跃性分析，两者的块级颗粒度分析是相似的，如下所示</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmBlock</span><span class="token punctuation">,</span> <span class="token class-name">BlockLiveInfo</span><span class="token punctuation">&gt;</span></span> <span class="token function">livenessAnalysis</span><span class="token punctuation">(</span><span class="token class-name">ArmFunction</span> func<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>最终是每个 <code>block</code> 对应一个活跃性分析 <code>BlockLiveInof</code> ，但是这个信息并不会被马上使用。而是需要根据不同的优化进行调整和分析。</p>
+<p>在全局寄存器分配的时候，需要精确到指令级获得冲突图，并且要维持倒序（原汁原味的活跃性分析）：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">build</span><span class="token punctuation">(</span><span class="token class-name">ArmFunction</span> function<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// 这是要倒序遍历 block,是为了确定 range 的范围</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">MyList<span class="token punctuation">.</span>MyNode</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmBlock</span><span class="token punctuation">&gt;</span></span> blockNode <span class="token operator">=</span> function<span class="token punctuation">.</span><span class="token function">getArmBlocks</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+             blockNode <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+             blockNode <span class="token operator">=</span> blockNode<span class="token punctuation">.</span><span class="token function">getPre</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token class-name">ArmBlock</span> block <span class="token operator">=</span> blockNode<span class="token punctuation">.</span><span class="token function">getVal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 这里假设他是出口活跃的,似乎还是不一样，但是似乎也是可以理解的，只要最后可以获得即可</span>
+            <span class="token comment">// live 是一个很有意思的东西，他看似一个 block 只有一个，但是因为每条指令都更新它，所以它本质是一个指令颗粒度的东西</span>
+            <span class="token comment">// 我们会根据 live 的内容去构建冲突图</span>
+            <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmReg</span><span class="token punctuation">&gt;</span></span> live <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span>liveInfoMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>block<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLiveOut</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">MyList<span class="token punctuation">.</span>MyNode</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmInstr</span><span class="token punctuation">&gt;</span></span> instrNode <span class="token operator">=</span> block<span class="token punctuation">.</span><span class="token function">getInstrs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                instrNode <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                instrNode <span class="token operator">=</span> instrNode<span class="token punctuation">.</span><span class="token function">getPre</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token class-name">ArmInstr</span> instr <span class="token operator">=</span> instrNode<span class="token punctuation">.</span><span class="token function">getVal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmReg</span><span class="token punctuation">&gt;</span></span> regDef <span class="token operator">=</span> instr<span class="token punctuation">.</span><span class="token function">getRegDef</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmReg</span><span class="token punctuation">&gt;</span></span> regUse <span class="token operator">=</span> instr<span class="token punctuation">.</span><span class="token function">getRegUse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+				<span class="token comment">// ....  </span>
+
+                regDef<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token class-name">ArmReg</span><span class="token operator">::</span><span class="token function">needsColor</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>live<span class="token operator">::</span><span class="token function">add</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 构建冲突边的时候，只是构建了 def 与 live 的冲突，这样似乎不够</span>
+                <span class="token comment">// 但是其实，是够得，因为在一个个指令的遍历中，能增加边的，只有 def 导致的活跃</span>
+                regDef<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token class-name">ArmReg</span><span class="token operator">::</span><span class="token function">needsColor</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>d <span class="token operator">-&gt;</span> live<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>l <span class="token operator">-&gt;</span> <span class="token function">addEdge</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+               	<span class="token comment">// ....</span>
+
+                <span class="token comment">// 这里的删除是为了给前一个指令一个交代（倒序遍历），说明这个指令不再存活了（因为在这个指令被遍历了）</span>
+                regDef<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token class-name">ArmReg</span><span class="token operator">::</span><span class="token function">needsColor</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>live<span class="token operator">::</span><span class="token function">remove</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment">// 这里代表着又活了一个指令</span>
+                regUse<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token class-name">ArmReg</span><span class="token operator">::</span><span class="token function">needsColor</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>live<span class="token operator">::</span><span class="token function">add</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>而在数据流窥孔中，只需要获得某种神秘的 def-use 链，甚至都不需要进行倒序。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token class-name">MyPair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">ArmOperand</span><span class="token punctuation">,</span> <span class="token class-name">ArmInstr</span><span class="token punctuation">&gt;</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">ArmInstr</span><span class="token punctuation">,</span> <span class="token class-name">ArmInstr</span><span class="token punctuation">&gt;</span><span class="token punctuation">&gt;</span></span> <span class="token function">getLiveRangeInBlock</span><span class="token punctuation">(</span><span class="token class-name">ArmBlock</span> armBlock<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// 这个记录的是每个操作数与它最后一次被写的指令之间的映射</span>
+        <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmOperand</span><span class="token punctuation">,</span> <span class="token class-name">ArmInstr</span><span class="token punctuation">&gt;</span></span> lastWriter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 这个记录的是 key = writer，value = reader 的映射</span>
+        <span class="token comment">// key -&gt; value 记录的是一个写了某个寄存器的指令到其后读了某个寄存器的指令之间的映射</span>
+        <span class="token comment">// 因为 writerToReader 会持续更新，所以本质是记录着写指令到最后一条相关的读指令之间的映射</span>
+        <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmInstr</span><span class="token punctuation">,</span> <span class="token class-name">ArmInstr</span><span class="token punctuation">&gt;</span></span> writerToReader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 开始遍历每一条指令</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">MyList<span class="token punctuation">.</span>MyNode</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmInstr</span><span class="token punctuation">&gt;</span></span> instrNode <span class="token operator">:</span> armBlock<span class="token punctuation">.</span><span class="token function">getInstrs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token class-name">ArmInstr</span> instr <span class="token operator">=</span> instrNode<span class="token punctuation">.</span><span class="token function">getVal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 不同于 use 和 def，write 和 read 的范围更加大</span>
+            <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmReg</span><span class="token punctuation">&gt;</span></span> writeRegs <span class="token operator">=</span> instr<span class="token punctuation">.</span><span class="token function">getWriteRegs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ArmReg</span><span class="token punctuation">&gt;</span></span> readRegs <span class="token operator">=</span> instr<span class="token punctuation">.</span><span class="token function">getReadRegs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 这里遍历每一个需要用到的寄存器，然后填写 writerToReader</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">ArmReg</span> readReg <span class="token operator">:</span> readRegs<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>lastWriter<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>readReg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    writerToReader<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>lastWriter<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>readReg<span class="token punctuation">)</span><span class="token punctuation">,</span> instr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">ArmReg</span> writeReg <span class="token operator">:</span> writeRegs<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                lastWriter<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>writeReg<span class="token punctuation">,</span> instr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment">// ...</span>
+
+            writerToReader<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>instr<span class="token punctuation">,</span> hasSideEffect <span class="token operator">?</span> instr <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">MyPair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span>lastWriter<span class="token punctuation">,</span> writerToReader<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里再提一嘴倒序和正序的问题，其实对于典型的块级颗粒度分析，倒序和正序是一样的，反正最后都会达到一个不动点，只不过是迭代次数的问题（实际实践也检验了，在 ayame 中活跃性分析是正序的），但是指令级的分析，必须遵循正序或者倒序，这是因为块内的分析，用的是线性扫描，而非不动点，所以只有一遍，如果顺序错了，那么可能徒劳无功。</p>
+<p>如果再说细一点，其实块级颗粒度只要保证是从入口块或者结尾块开始分析，那么连理论上都具有正确性。</p>
+<p>这里提到的到达定义分析，可以用于常数传播，其实现原理是改写一下 in，out 的性质，让其成为常数定义的集合，而不是所有定义的集合，十分好理解，这也揭示了另一个问题，就是活跃性分析是没法取代到达定义分析的，因为到达定义分析中集合的元素是定义，而活跃性分析集合的元素是操作数，显然没法完成常数传播。</p>
+<p>到达定义分析最终要的是 $in$ 集合，他表示着在这个块开始的时候，有哪些量已经被定义了，这是一个很关键的信息，到达语句力度的时候，就变成了在这个语句之前，有哪些量已经被定义了。</p>
+</blockquote>
+<p>以下题举例，对所有的局部变量和形参做“到达定义分析”。</p>
+<blockquote>
+<p>插一嘴，如果设计画 CFG 应该画成这样，因为前驱后继关系很明显，不能提前将多个前驱汇聚。</p>
+</blockquote>
+<p><img src="/posts/c7fcf57a/image-20221129154012523.png" alt="image-20221129154012523"></p>
+<p>首先考虑 <code>gen</code> 和 <code>kill</code> 两个集合，其中 <code>kill</code> 集合指的是只要定义了同一个变量，那么就是互相 kill 的，所以为了完成快速查表，可以考虑建立一个语句和变量的映射关系，如下所示</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>语句</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>d1, d5, d6</td>
+</tr>
+<tr>
+<td>y</td>
+<td>d2, d7</td>
+</tr>
+<tr>
+<td>i</td>
+<td>d3, d8</td>
+</tr>
+<tr>
+<td>z</td>
+<td>d4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于块语句去分析的时候，kill 就是多个块内语句的并集，但是对于 gen，因为一个块内可能对某个变量定义多次，所以只需要最后一次的定义语句。为了达到这种效果，应当从下往上遍历基本块内的指令。填表的时候，应当先填 gen，然后填 kill，移动速度更快。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>基本块</th>
+<th>gen[B]</th>
+<th>kill[B]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1</td>
+<td>d1, d2, d3</td>
+<td>d5, d6, d7, d8</td>
+</tr>
+<tr>
+<td>B2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>B3</td>
+<td>d4, d5</td>
+<td>d1, d6</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>d6</td>
+<td>d1, d5</td>
+</tr>
+<tr>
+<td>B5</td>
+<td>d7, d8</td>
+<td>d2, d3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>然后开始分析 in，out，应当按照如此顺序填写，同时需要维护前驱块来提高速度</p>
+<p>有方程（如果记不住谁需要被减，可以想象 <code>in</code> 是别人的，所以需要被减）。</p>
+<script type="math/tex; mode=display">
+out[B] = gen[B] \cup (in[B] - kill[B])</script><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>基本块</th>
+<th>前驱块</th>
+<th>in[B]</th>
+<th>out[B]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1</td>
+<td></td>
+<td></td>
+<td>d1, d2, d3</td>
+</tr>
+<tr>
+<td>B2</td>
+<td>B1, B5</td>
+<td>d1, d2, d3, d4, d5, d6, d7, d8</td>
+<td>d1, d2, d3, d4, d5, d6, d7, d8</td>
+</tr>
+<tr>
+<td>B3</td>
+<td>B2</td>
+<td>d1, d2, d3, d4, d5, d6, d7, d8</td>
+<td>d2, d3, d4, d5, d7, d8</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>B3</td>
+<td>d2, d3, d4, d5, d7, d8</td>
+<td>d2, d3, d4, d6, d7, d8</td>
+</tr>
+<tr>
+<td>B5</td>
+<td>B3, B4</td>
+<td>d2, d3, d4, d5, d6, d7, d8</td>
+<td>d4, d5, d6, d7, d8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在填写的时候会发现，只要过了第一轮，那么 <code>gen[B]</code> 是没有用处的，这是因为在第一轮的时候已经被加进去了。所以在之后迭代的时候，可以值考虑 <code>in[B]</code> 和 <code>kill[B]</code> 的作用就可以了。不过无论如何，都是一个极其复杂的查表过程。</p>
+<h2 id="四、活跃变量分析"><a href="#四、活跃变量分析" class="headerlink" title="四、活跃变量分析"></a>四、活跃变量分析</h2><blockquote>
+<p>与到达定义不同的是，它是需要倒序分析的，因为对于一个基本块而言，或者说一个语句而言，没有办法断定当前操作数是否在未来还“存活”，除非它在未来出现了（而且是以“使用”的方式出现了）。所以要采用倒序分析。</p>
+<p>所以方程变成了这样的两个，out 变成了决定 in 的变量</p>
+<script type="math/tex; mode=display">
+in[B] = use[B] \cup (out[B] - def[B]) \\
+out[B] = \bigcup_{B 的后继基本块P} in[P]</script><p>从上面这个式子也可以看出，真正的 live 是 use。</p>
+</blockquote>
+<p>计算 use 和 def，按照定义来说，就是“def 中的变量被定义先于他们的使用，use 中的变量被使用先于他们的定义”。在实际使用的时候，应该按照如下顺序遍历并且检查是否重复</p>
+<p><img src="/posts/c7fcf57a/image-20221129162711269.png" alt="image-20221129162711269"></p>
+<p>先 use 后 def（依然是上面的题）</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>基本块</th>
+<th>use[B]</th>
+<th>def[B]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1</td>
+<td>a, b</td>
+<td>x, y, i</td>
+</tr>
+<tr>
+<td>B2</td>
+<td>i</td>
+<td></td>
+</tr>
+<tr>
+<td>B3</td>
+<td>a, x, y</td>
+<td>z</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>x, y</td>
+<td></td>
+</tr>
+<tr>
+<td>B5</td>
+<td>y, i</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>然后按照上面的公式开始构造</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>基本块</th>
+<th>后继</th>
+<th>out</th>
+<th>in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1</td>
+<td>B2</td>
+<td>a, x, y, i</td>
+<td>a, b</td>
+</tr>
+<tr>
+<td>B2</td>
+<td>B3</td>
+<td>a, x, y, i</td>
+<td>a, x, y, i</td>
+</tr>
+<tr>
+<td>B3</td>
+<td>B4, B5</td>
+<td>a, x, y, i</td>
+<td>a, x, y, i</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>B5</td>
+<td>a, x, y, i</td>
+<td>a, x, y, i</td>
+</tr>
+<tr>
+<td>B5</td>
+<td>B2</td>
+<td>a, x, y, i</td>
+<td>a, x, y, i</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>其实这里依然是没有办法被使用的，这个分析太粗粒度，但是如果强行构造冲突图，也不是不行。</p>
+<h2 id="五、图着色寄存器分配"><a href="#五、图着色寄存器分配" class="headerlink" title="五、图着色寄存器分配"></a>五、图着色寄存器分配</h2><blockquote>
+<p>教材中的冲突图的定义仅先于“全局变量”，就是那些可以跨越基本块存活的变量才可以得到全局寄存器，也就是获得进入冲突图的资格。而且在教材用一共有两处介绍冲突图的构建，但是介绍的都不甚了了。</p>
+<p>第一种比较简单，是用两个变量只要都在某个入口块活着，那么就冲突了，所以只要比较 livein 就可以获得答案。</p>
+<p>第二种比较模糊，“如果一个变量在其定义处其他变量还存活，那么就冲突”，我不知道跟最本质的那个“生命周期存在重叠区间”是否等价，但是就需要变成一个指令级的活跃性分析了，这无疑是很困难的。</p>
+</blockquote>
+<p>不写了，似乎很容易，就是当出现出度大于等于 K 的情况，那么就不着色了，发生溢出，否则入栈，最后弹栈着色。</p>
+<p>3 着色</p>
+<p><img src="/posts/c7fcf57a/image-20221129174148464.png" alt="image-20221129174148464"></p>
+<h2 id="六、定义-使用链"><a href="#六、定义-使用链" class="headerlink" title="六、定义-使用链"></a>六、定义-使用链</h2><blockquote>
+<p>这个东西还有活跃性分析似乎和图着色寄存器分配绑定在一起了，而且对于“到底怎样判定冲突”一直众说纷纭。不过在我看来，只有 14.3.3 这节讲的东西，才是真正比较逻辑自洽的。</p>
+<p>首先说比较原始的东西是什么“在同一基本块入口处均活跃的变量”。这个很好理解，因为块级的活跃性分析就到这个程度。</p>
+<p>然后比较模棱两可的是“在程序任一执行点上同时活跃的变量之间存在冲突边”。那么其实已经到了指令级了。</p>
+<p>最后是“一个变量在另一个变量的定义点处活跃”，是最正确的。</p>
+</blockquote>
+<p>所谓的定义使用链，就是构造一个网，这个网的起点是定义点，而其他点是使用点，说白了，就是构造了一个直观分析的活跃性的数据流，然后用两个网去看是否冲突，就是看一张网的定义点，看另一张网的使用点是否重合。</p>
+<p>由链成网的过程，其实是将两个小的活跃周期合并成一个大的活跃周期。这其实是一个很自然的现象。</p>
+<hr>
+<h2 id="七、遍-pass"><a href="#七、遍-pass" class="headerlink" title="七、遍 (pass)"></a>七、遍 (pass)</h2><ul>
+<li>遍是指对源程序或源程序的中间形式从头到尾扫描一遍：所以其实词法分析也看成一遍，语法分析也可以看成一遍</li>
+<li>一遍扫描编译程序以<strong>语法分析程序</strong>为核心。</li>
+<li>分遍的优点：<ul>
+<li><strong>主要好处</strong>：减少编译程序对于内存容量的要求</li>
+<li>编译程序结构清晰，功能独立，联系简单</li>
+<li>将优化工作做得更多，更充分，更高指令</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>增加了不少重复性的工作，降低编译的效率</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S5%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S5假期</a>
+              <a href="/tags/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" rel="tag"><i class="fa fa-tag"></i> 编译技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/2fb034c4/" rel="prev" title="编译技术-语法理论">
+      <i class="fa fa-chevron-left"></i> 编译技术-语法理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/c699b1c8/" rel="next" title="编译技术-其他理论">
+      编译技术-其他理论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%9E%84%E9%80%A0%E6%8E%A7%E5%88%B6%E6%B5%81%E5%9B%BE%EF%BC%88CFG%EF%BC%89"><span class="nav-text">一、构造控制流图（CFG）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B6%88%E9%99%A4%E5%85%AC%E5%85%B1%E5%AD%90%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88DAG-%E5%9B%BE%E5%BA%94%E7%94%A8%EF%BC%89"><span class="nav-text">二、消除公共子表达式（DAG 图应用）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%88%B0%E8%BE%BE%E5%AE%9A%E4%B9%89%E5%88%86%E6%9E%90"><span class="nav-text">三、到达定义分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%B4%BB%E8%B7%83%E5%8F%98%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-text">四、活跃变量分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%9B%BE%E7%9D%80%E8%89%B2%E5%AF%84%E5%AD%98%E5%99%A8%E5%88%86%E9%85%8D"><span class="nav-text">五、图着色寄存器分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AE%9A%E4%B9%89-%E4%BD%BF%E7%94%A8%E9%93%BE"><span class="nav-text">六、定义-使用链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E9%81%8D-pass"><span class="nav-text">七、遍 (pass)</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

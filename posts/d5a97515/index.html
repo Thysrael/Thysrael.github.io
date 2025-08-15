@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、Vim 配置vim界面打开以后很丑就不提了，关键有很多基本功能没有办法实现，所以需要自己配置，如果是linux系统，那么应该找到  &#x2F;usr&#x2F;share&#x2F;vim&#x2F;.vimrc 如果是windows装完git以后会自动一个vim，此时应该找到 Git\etc\vimrc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux-Vim">
+<meta property="og:url" content="https://thysrael.github.io/posts/d5a97515/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、Vim 配置vim界面打开以后很丑就不提了，关键有很多基本功能没有办法实现，所以需要自己配置，如果是linux系统，那么应该找到  &#x2F;usr&#x2F;share&#x2F;vim&#x2F;.vimrc 如果是windows装完git以后会自动一个vim，此时应该找到 Git\etc\vimrc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/d5a97515/image-20220120115937889.png">
+<meta property="article:published_time" content="2022-01-20T01:53:03.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.830Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S3假期">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="工具总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/d5a97515/image-20220120115937889.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/d5a97515/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Linux-Vim | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/d5a97515/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux-Vim
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-20 09:53:03" itemprop="dateCreated datePublished" datetime="2022-01-20T09:53:03+08:00">2022-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、Vim-配置"><a href="#一、Vim-配置" class="headerlink" title="一、Vim 配置"></a>一、Vim 配置</h2><p>vim界面打开以后很丑就不提了，关键有很多基本功能没有办法实现，所以需要自己配置，如果是linux系统，那么应该找到 </p>
+<pre class="line-numbers language-none"><code class="language-none">/usr/share/vim/.vimrc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果是windows装完git以后会自动一个vim，此时应该找到</p>
+<pre class="line-numbers language-none"><code class="language-none">Git\etc\vimrc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>打开这个文件以后，进行以下配置</p>
+<pre class="line-numbers language-none"><code class="language-none">"语法高亮"
+syntax on
+"显示行号"
+set number
+"设置tab缩进"
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+"自动缩颈"
+set autoindent
+set cindent
+"显示匹配括号"
+set showmatch
+set matchtime=1
+"设置没有备份文件"
+set nobackup
+set noswapfile
+"括号自动补全"
+:inoremap ( ()&lt;ESC&gt;i
+:inoremap ) &lt;c-r&gt;=ClosePair(')')&lt;CR&gt;
+:inoremap { {&lt;CR&gt;}&lt;ESC&gt;O
+:inoremap } &lt;c-r&gt;=ClosePair('}')&lt;CR&gt;
+:inoremap [ []&lt;ESC&gt;i
+:inoremap ] &lt;c-r&gt;=ClosePair(']')&lt;CR&gt;
+:inoremap " ""&lt;ESC&gt;i
+:inoremap ' ''&lt;ESC&gt;i
+function! ClosePair(char)
+	if getline('.')[col('.') - 1] == a:char
+		return "\&lt;Right&gt;"
+	else
+		return a:char
+	endif
+endfunction
+filetype plugin indent on <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h2 id="二、Vim-操作"><a href="#二、Vim-操作" class="headerlink" title="二、Vim 操作"></a>二、Vim 操作</h2><h3 id="2-1-总论"><a href="#2-1-总论" class="headerlink" title="2.1 总论"></a>2.1 总论</h3><p>个人感觉Vim太神奇了，但是我确实使用的不太舒服，虽然可以完全脱离鼠标办公了，但是功能键和编辑模式的完全分离，还是让人感觉到很不舒服。而且因为我现在也不需要那么多的功能，所以很多功能用的是真的很不习惯。所以只是在这里简单记录一下。</p>
+<p>Vim 会涉及到很多个模式，但是我个人感觉模式之间并不是完全平等的关系，显然最开始进入的 Normal 模式为主模式，而其他模式就类似于卧房之于客厅，是从属关系，我们对文本的编辑主要依赖 Normal 模式。这也是我用不习惯 Vim 的原因。因为我没有很多的功能需求，我敲代码一个一个敲，用到的功能无非是复制粘贴，就好像有人买了台游戏机，却不打游戏一样，纯属浪费。所以为了符合 Vim的设计思想，我不打算一个模式一个模式的介绍，而是以功能分类进行介绍</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal</td>
+<td>就是初始模式，在这个模式下，所有的按键都是功能按键</td>
+</tr>
+<tr>
+<td>Command</td>
+<td>命令行模式，输入“：”后进入，在这个模式下可以输入各种命令，一般是文件操作或者是查找替换</td>
+</tr>
+<tr>
+<td>Insert</td>
+<td>编辑模式，输入“a，i，o”进入，就是所谓的编辑模式，可以码字的那种</td>
+</tr>
+<tr>
+<td>Visual</td>
+<td>可视化模式，输入“v”进入，就是可以选中一些字符，类似于复制粘贴之前要选中目标的操作</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>此外，在Normal模式下输入的功能键，会在右下角显示，我一开始一直以为没有显示（图里输入了z）</p>
+<p><img src="/posts/d5a97515/image-20220120115937889.png" alt="image-20220120115937889"></p>
+<h3 id="2-2-进入编辑模式"><a href="#2-2-进入编辑模式" class="headerlink" title="2.2 进入编辑模式"></a>2.2 进入编辑模式</h3><ul>
+<li>朴素进入：按 a 或者 i 都可进入，按a是在光标后插入，按i是在光标前插入，所以应该按a</li>
+<li>另起一行以后进入：按 o 进入</li>
+</ul>
+<h3 id="2-3-文件操作"><a href="#2-3-文件操作" class="headerlink" title="2.3 文件操作"></a>2.3 文件操作</h3><p>这些操作都需要进入命令行模式后进行</p>
+<ul>
+<li><code>w</code>：保存</li>
+<li><code>q</code>：退出</li>
+<li><code>wq</code>：保存后退出，但是因为还需要打一个：，所以不太方便，可以在Normal模式下用ZZ代替</li>
+<li><code>saveas + filename</code>：另存为</li>
+</ul>
+<h3 id="2-4-撤销-恢复"><a href="#2-4-撤销-恢复" class="headerlink" title="2.4 撤销 / 恢复"></a>2.4 撤销 / 恢复</h3><ul>
+<li><code>u</code>：撤销</li>
+<li><code>Ctrl + r</code>：恢复</li>
+</ul>
+<h3 id="2-5-选中"><a href="#2-5-选中" class="headerlink" title="2.5 选中"></a>2.5 选中</h3><p>选中操作都需要在可视化模式下进行，通过光标的移动进行配合</p>
+<ul>
+<li><code>o</code>：重新定位起始光标</li>
+</ul>
+<p>有三种进入块操作的方式：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v</code></td>
+<td>字符选择，会将光标经过的地方反白选择</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td>行选择，会将光标经过的行反白选择</td>
+</tr>
+<tr>
+<td><code>Ctrl + v</code></td>
+<td>可视区块，可以用矩形的方式选择数据（就像鼠标的框选一样）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="2-6-复制-粘贴-删除"><a href="#2-6-复制-粘贴-删除" class="headerlink" title="2.6 复制/粘贴/删除"></a>2.6 复制/粘贴/删除</h3><ul>
+<li><code>x</code>：删除（准确是<strong>剪切</strong>）光标后的一个字符</li>
+<li><code>y</code>：复制选中的内容（包括可视块中的数据）</li>
+<li><code>yy</code>：复制当前行</li>
+<li><code>行数 + yy</code>：从当前行开始赋值指定的行数</li>
+<li><code>y + 光标移动操作</code>：复制当前行到光标移动行中的所有内容，比如说 <code>ygg</code> 就是赋值从当前行到文首的内容</li>
+<li><code>dd</code>：删除（准确是<strong>剪切</strong>）一行，下一行会自动上移</li>
+<li><code>行数 + dd</code>：删除光标向下的 n 行</li>
+<li><code>d + 光标移动操作</code>：删除当前行到光标移动行中的所有内容，比如说 <code>d10G</code> 就是删除从当前行到第十行所有内容</li>
+<li><code>p</code>：粘贴，内容可以来自复制，也可以来自剪切</li>
+</ul>
+<p>从2.5、2.6两节可以看出，稍微复杂一点，功能强大一点的命令都是与<strong>光标的移动</strong>结合在一起的，可以说光标的移动构成了指令的<strong>执行范围</strong>。还有一种<strong>功能拓展方法</strong>就是 <code>n + 操作</code>表示一种重复操作。</p>
+<h3 id="2-7-查找替换"><a href="#2-7-查找替换" class="headerlink" title="2.7 查找替换"></a>2.7 查找替换</h3><ul>
+<li>替换：<ul>
+<li><code>:s/要替换的关键词/替换后的关键词</code>：替换光标所在行第一个</li>
+<li><code>:s/要替换的关键词/替换后的关键词/g</code>：替换光标所在行所有</li>
+<li><code>:%s/要替换的关键词/替换后的关键词</code>：替换全行第一个</li>
+<li><code>:%s/要替换的关键词/替换后的关键词/g</code>：替换全行所有</li>
+</ul>
+</li>
+<li>查找：直接在命令模式下输入 <strong>/查找内容</strong> 即可</li>
+<li><code>n</code>：表示向下再次执行查找内容</li>
+<li><code>N</code>：表示向上再次执行查找内容</li>
+</ul>
+<h3 id="2-8-光标移动"><a href="#2-8-光标移动" class="headerlink" title="2.8 光标移动"></a>2.8 光标移动</h3><ul>
+<li><code>0</code>：将光标移动到行首</li>
+<li><code>gg</code>：是跳转回开头（感觉多余记这个，用 <code>1G</code> 代替挺好的）</li>
+<li><code>G</code>（<strong>命令是区分大小写的</strong>）：移到最后一行</li>
+<li><code>行号+G</code>：移到指定行</li>
+<li><code>w</code>：按单词向后移动光标</li>
+<li><code>b</code>：按单词向前移动光标</li>
+</ul>
+<h3 id="2-9-多文件编辑"><a href="#2-9-多文件编辑" class="headerlink" title="2.9 多文件编辑"></a>2.9 多文件编辑</h3><ul>
+<li><p><code>vim filename1 filename2 …… filenamen</code> :在bash中输入这种命令，就可以同时打开多个文件</p>
+</li>
+<li><p><code>n</code>：可用于向下切换文件。</p>
+</li>
+<li><code>N</code>：可用于向上切换文件。</li>
+<li><code>:files</code>：提供一个打开的文件目录</li>
+</ul>
+<h3 id="2-10-多窗口"><a href="#2-10-多窗口" class="headerlink" title="2.10 多窗口"></a>2.10 多窗口</h3><ul>
+<li><code>:sp filename</code>：打开一个内容是filename的文件</li>
+<li>先按<code>Ctrl + w</code>可以松手按 <code>up</code>：移动到下方窗口</li>
+<li>先按<code>Ctrl + w</code> 可以松手按<code>down</code>：移动到上方窗口</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S3%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S3假期</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 工具总结</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/c3557f16/" rel="prev" title="吃喝玩乐-S3学期总结">
+      <i class="fa fa-chevron-left"></i> 吃喝玩乐-S3学期总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/ac261492/" rel="next" title="Linux-Git">
+      Linux-Git <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Vim-%E9%85%8D%E7%BD%AE"><span class="nav-text">一、Vim 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Vim-%E6%93%8D%E4%BD%9C"><span class="nav-text">二、Vim 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">2.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%BF%9B%E5%85%A5%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F"><span class="nav-text">2.2 进入编辑模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-text">2.3 文件操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%92%A4%E9%94%80-%E6%81%A2%E5%A4%8D"><span class="nav-text">2.4 撤销 &#x2F; 恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E9%80%89%E4%B8%AD"><span class="nav-text">2.5 选中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E5%A4%8D%E5%88%B6-%E7%B2%98%E8%B4%B4-%E5%88%A0%E9%99%A4"><span class="nav-text">2.6 复制&#x2F;粘贴&#x2F;删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-%E6%9F%A5%E6%89%BE%E6%9B%BF%E6%8D%A2"><span class="nav-text">2.7 查找替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8"><span class="nav-text">2.8 光标移动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-%E5%A4%9A%E6%96%87%E4%BB%B6%E7%BC%96%E8%BE%91"><span class="nav-text">2.9 多文件编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-%E5%A4%9A%E7%AA%97%E5%8F%A3"><span class="nav-text">2.10 多窗口</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

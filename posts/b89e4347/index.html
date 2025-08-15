@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我们引入条件概率，最重要的原因是因为在客观世界中，有的时候我们获得不了普通概率，只能获得条件概率。 条件概率就是限定了条件，然后再讨论在固定的条件下，某件事情发生的概率。 在引入了条件概率之后，我们才有了独立性的概念，这些都是可以直观化的。 之所以在这一章介绍马尔科夫链，因为马尔科夫链中出现了大量条件概率。而且十分体现条件概率的思想。 马尔可夫性是命运的凌迟。时齐性是历史的嘲弄。初始分布是预言的收">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率统计-相与命运">
+<meta property="og:url" content="https://thysrael.github.io/posts/b89e4347/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="我们引入条件概率，最重要的原因是因为在客观世界中，有的时候我们获得不了普通概率，只能获得条件概率。 条件概率就是限定了条件，然后再讨论在固定的条件下，某件事情发生的概率。 在引入了条件概率之后，我们才有了独立性的概念，这些都是可以直观化的。 之所以在这一章介绍马尔科夫链，因为马尔科夫链中出现了大量条件概率。而且十分体现条件概率的思想。 马尔可夫性是命运的凌迟。时齐性是历史的嘲弄。初始分布是预言的收">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-28T03:51:44.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.891Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S3复习">
+<meta property="article:tag" content="概率统计">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/b89e4347/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>概率统计-相与命运 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/b89e4347/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          概率统计-相与命运
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-28 11:51:44" itemprop="dateCreated datePublished" datetime="2021-12-28T11:51:44+08:00">2021-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">概率统计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我们引入条件概率，最重要的原因是因为在客观世界中，有的时候我们获得不了普通概率，只能获得条件概率。</p>
+<p>条件概率就是限定了条件，然后再讨论在固定的条件下，某件事情发生的概率。</p>
+<p>在引入了条件概率之后，我们才有了独立性的概念，这些都是可以直观化的。</p>
+<p>之所以在这一章介绍马尔科夫链，因为马尔科夫链中出现了大量条件概率。而且十分体现条件概率的思想。</p>
+<p>马尔可夫性是<strong>命运的凌迟</strong>。时齐性是<strong>历史的嘲弄</strong>。初始分布是<strong>预言的收官</strong>。<br><span id="more"></span></p>
+<h2 id="一、条件概率"><a href="#一、条件概率" class="headerlink" title="一、条件概率"></a>一、条件概率</h2><h3 id="1-1-分类讨论"><a href="#1-1-分类讨论" class="headerlink" title="1.1 分类讨论"></a>1.1 分类讨论</h3><p>条件概率公式：</p>
+<script type="math/tex; mode=display">
+P(A\mid B) = \frac{P(AB)}{P(B)}</script><p>这个公式就很常见，不过正是因为其<strong>普遍性</strong>，我才忽略了其正确的意义，我们<strong>从来不会计算条件概率，我们只会用条件概率计算其他概率</strong>。而这种定义很容易让人有一种计算它的冲动，那么就落了下乘。</p>
+<p>乘法公式：</p>
+<script type="math/tex; mode=display">
+P(AB) = P(B)P(A\mid B)</script><p>乘法公式其实体现的是一种分布思想，就是说同时计算 $AB$ 发生的概率有些困难，但是计算事件 $B$ 的概率和在事件 $B$ 发生的前提下 $A$ 发生的概率就较容易，那么利用这个公式就可以很好计算。这里同样体现了<strong>条件概率是客观存在的</strong>，而普通概率是需要计算的思想。</p>
+<p>全概率公式：</p>
+<script type="math/tex; mode=display">
+P(A) = \sum^{n}_{i = 1}P(B_i)P(A\mid B_i)</script><p>这里对事件组 ${B_i}$ 有要求，他们必须互斥，而且和事件是全集。可以看出，全概率公式就是乘法公式的拓展，它的<strong>分类讨论</strong>的思想更加明显，对于不同的条件事件 $B_i$ ，事件 $A$ 发生的概率。</p>
+<h3 id="1-2-破妄"><a href="#1-2-破妄" class="headerlink" title="1.2 破妄"></a>1.2 破妄</h3><p>贝叶斯公式：</p>
+<script type="math/tex; mode=display">
+P(B_i\mid A) = \frac{P(B_i)P(A\mid B_i)}{\sum^{n}_{j = 1}P(B_j)P(A\mid B_j)}</script><p> 如果只是数学推导的话，那么用乘法公式结合全概率公式就很容易就可以求出来，但是难点是在理解。所以我们把这个式子的变量换成一个更贴近实际的</p>
+<script type="math/tex; mode=display">
+P(H_i\mid E) = \frac{P(H_i)P(E\mid H_i)}{\sum^{n}_{j = 1}P(H_j)P(E\mid H_j)}</script><p>其中 $H_i$ 是 hypothesis 即假设的缩写，而 $E$ 是 evidence 的缩写。对于一场实验，我们首先会做出多个假设，然后推导在诸多假设中 evidence 发生的概率，那么当我们做实验的时候，最后的结果是 evidence，那么我们希望得知真的 evidence 发生的时候，到底各个假设发生的概率是多少，即<strong>我们有多能相信我们的实验结果</strong>。</p>
+<p>如果用医学检测做比较，我们在检测前就知道如果是病人真的有病的话（$hypothesis_1$），那么检查结果是阳性（$evidence$）的概率是多少，如果病人没有病的话（$hypothesis_2$），那么检测结果是阳性（$evidence$）的概率，那么当检测结果真的是阳性，我们现在想知道到的事情就是这个病人到底有没有病，我们应该做出怎样的判断。贝叶斯公式解决的就是这个问题。</p>
+<hr>
+<h2 id="二、马尔科夫链"><a href="#二、马尔科夫链" class="headerlink" title="二、马尔科夫链"></a>二、马尔科夫链</h2><h3 id="2-1-命运的凌迟"><a href="#2-1-命运的凌迟" class="headerlink" title="2.1 命运的凌迟"></a>2.1 命运的凌迟</h3><p>设随机过程 ${X(t),t\in T}$ 的状态空间 $S$ 是有限集或可列集，如果对任意正整数 $n$ ，对于 $T$ 内任意 $n + 1$ 个参数 $t<em>1&lt;t_2&lt;\cdots&lt;t_n&lt;t</em>{n + 1}$ 和 $S$ 内任意个状态 $j<em>1, j_2,\cdots,j_n, j</em>{n+1}$ <strong>条件概率</strong></p>
+<script type="math/tex; mode=display">
+P\{X(t_{n+1}) = j_\{n+1\}\mid X(t_1)=j_1,X(t_2) = j_2,\cdots,X(t_n) = j_n\} = 
+P\{X(t_{n+1}) = j_\{n+1\}\mid X(t_n) = j_n\}</script><p>则此过程称为<strong>马尔科夫链</strong>，这个等式反映出的性质称为<strong>马尔科夫性</strong>或者<strong>后无效性</strong>。</p>
+<p>马尔可夫性可以理解为在已知当前系统当前状态的条件下，系统将来的发展变化与系统的过去无关。这段话被各种励志书籍收录，说的意思都是“之前怎么样都无所谓，只要过好现在就好了”。但是我觉得这是不对的，后无效性的意思应该是影响下一状态的只能是当前状态，但是当前状态的取得却跟跟前一个状态有关，所以<strong>没有人可以摆脱过去</strong>。如果再说的详细写，我们得出的只是<strong>条件概率</strong>，但是条件概率不是真实的概率，我们还需要<strong>获得条件发生的概率</strong>，而这个概率是与过去息息相关的。我理解的马尔可夫性，是说，状态的转移是<strong>一步一步考虑的</strong>，换句话说，他是不可预料的，只有真的走到那一步，才能看到未来的下一步，而且仅仅能看到下一步的趋势，这不是一种幸运，而是一种不得不走下去的觉悟，是一种<strong>命运的凌迟</strong>。</p>
+<h3 id="2-2-转移概率"><a href="#2-2-转移概率" class="headerlink" title="2.2 转移概率"></a>2.2 转移概率</h3><p>为了方便后面的种种应用或者推导，我们需要先定义一下标记写法，有</p>
+<script type="math/tex; mode=display">
+P\{X(t_{m+n})=j \mid X(t_m) = i\} = p^{(n)}_{ij}(t_m)</script><p>称为 $X(t)$ 在时刻 $t_m$ 时由状态 $i$ 经 $n$ 步转移到状态 $j$ 的 $n$ 步<strong>转移概率</strong>。这个写法一定要记清，因为以后会经常用到。</p>
+<p>由这个概念可以引出<strong>科尔莫哥洛夫-查普曼方程</strong>，即</p>
+<script type="math/tex; mode=display">
+p_{ij}^{(n + l)}(t_m) = \sum_k p_{ik}^{(n)}(t_m)p_{kj}^{(l)}(t_{m+n})</script><p>这是一个极难看懂而且还没啥用的方程，意思是说，如果想状态 $i$ 经由 $(n+l)$ 步到状态 $j$ ，那么分为两步，先由状态 $i$ 经由 $(n)$ 步到状态 $k$，然后再由状态 $k$ 经由 $(l)$ 步到状态 $j$。因为中间状态 $k$ 有很多种，每一条路径都是由可能的，而且是互斥的，所以对其进行一个累加，$k$ 需要遍历状态空间。</p>
+<p>但是这个方程其实没法直接应用，毕竟我们不仅不知道 $p<em>{ij}^{(n + l)}(t_m)$，我们还不知道 $p</em>{ik}^{(n)}(t<em>m),\space p</em>{kj}^{(l)}(t_{m+n})$ 。所以其实这就是各<strong>递归的式子</strong>，只有将其递归到<strong>1步</strong>的情形，我们才方便计算。</p>
+<h3 id="2-3-历史的嘲弄"><a href="#2-3-历史的嘲弄" class="headerlink" title="2.3 历史的嘲弄"></a>2.3 历史的嘲弄</h3><p>如果对任意的 $m$ ，有</p>
+<script type="math/tex; mode=display">
+p^{(n)}_{ij}(t_m) = const = p^{(n)}_{ij}</script><p>那么就称此马尔可夫链具有<strong>齐次性</strong>或<strong>时齐性</strong>。也就是说，转移概率不再受时间参数的影响。就是说，这个状态无论发生在哪个时刻，决策都不会发生变化，就宛如那句名言 <strong>“人们能从历史中吸取的唯一教训，就是人们根本不会从历史吸取教训”</strong>。即使时间不同了，但是面对相同的境遇，人们还是会做出相同的选择，就好像没有记忆的金鱼一样。这就是<strong>历史的嘲弄</strong>。</p>
+<h3 id="2-4-预言的收官"><a href="#2-4-预言的收官" class="headerlink" title="2.4 预言的收官"></a>2.4 预言的收官</h3><p>首先定义<strong>绝对概率</strong>（或称为<strong>绝对概率</strong>）</p>
+<script type="math/tex; mode=display">
+p_j(t_n) = P\{X(t_n) = j\}</script><p>可以看到，这个概率不再是<strong>条件概率</strong>，而是真实的概率，其实我们需要的就是这种概率，毕竟我们希望的某个时间真实的发生，而不是在我们臆想出的某个条件下，才能发生。此外，需要强调的是，我们一般不认为这是一个常量，而是将多个状态组合在一起组成一个<strong>行向量</strong>，也就是在这个状态下的<strong>概率分布</strong>。</p>
+<p>当 $n = 0$ 的时候，此时称为初始分布，这里记为 $\pi_0$ 。由于马尔科夫链的诸多性质，<strong>初始分布与转移概率矩阵完全确定马尔科夫链的任何有限维分布</strong>，也就是</p>
+<script type="math/tex; mode=display">
+P\{X(t_1)=j_1, X(t_2) = j_2,\cdots,X(t_n) = j_n\} = \sum^s_{i=1}p_{i}(0)p_{ij_1}^{(t_1)}p_{j_1j_2}^{(t_2-t_1)}\cdots</script><p>也可以写作更本质的</p>
+<script type="math/tex; mode=display">
+\pi_n = \pi_0P^n</script><p>初始分布可以看做一个预言，而预言经过一步一步的前进，终于会迎来确定收官。</p>
+<h3 id="2-5-平稳分布"><a href="#2-5-平稳分布" class="headerlink" title="2.5 平稳分布"></a>2.5 平稳分布</h3><p>其实就是解一个方程</p>
+<script type="math/tex; mode=display">
+\pi_0 =\pi_0P</script><p>这个说明经过<strong>状态转移</strong>后，概率分布并不会发生改变，此时的 $\pi_0$ 称为<strong>平稳分布</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S3%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S3复习</a>
+              <a href="/tags/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> 概率统计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/5d6f5a0a/" rel="prev" title="补充数学-傅里叶变换">
+      <i class="fa fa-chevron-left"></i> 补充数学-傅里叶变换
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/95e7adb6/" rel="next" title="离散数学-图论">
+      离散数学-图论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87"><span class="nav-text">一、条件概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%88%86%E7%B1%BB%E8%AE%A8%E8%AE%BA"><span class="nav-text">1.1 分类讨论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%A0%B4%E5%A6%84"><span class="nav-text">1.2 破妄</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E9%93%BE"><span class="nav-text">二、马尔科夫链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%91%BD%E8%BF%90%E7%9A%84%E5%87%8C%E8%BF%9F"><span class="nav-text">2.1 命运的凌迟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%BD%AC%E7%A7%BB%E6%A6%82%E7%8E%87"><span class="nav-text">2.2 转移概率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%8E%86%E5%8F%B2%E7%9A%84%E5%98%B2%E5%BC%84"><span class="nav-text">2.3 历史的嘲弄</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E9%A2%84%E8%A8%80%E7%9A%84%E6%94%B6%E5%AE%98"><span class="nav-text">2.4 预言的收官</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%B9%B3%E7%A8%B3%E5%88%86%E5%B8%83"><span class="nav-text">2.5 平稳分布</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

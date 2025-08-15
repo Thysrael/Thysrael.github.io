@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="TCCL: 为 PCIe GPU 集群发现更好的通信路径论文地址：https:&#x2F;&#x2F;dl.acm.org&#x2F;doi&#x2F;10.1145&#x2F;3620666.3651362 项目地址：https:&#x2F;&#x2F;github.com&#x2F;mcrl&#x2F;tccl 一、背景1.1 计算集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海边拾贝-TCCL">
+<meta property="og:url" content="https://thysrael.github.io/posts/3e82a961/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="TCCL: 为 PCIe GPU 集群发现更好的通信路径论文地址：https:&#x2F;&#x2F;dl.acm.org&#x2F;doi&#x2F;10.1145&#x2F;3620666.3651362 项目地址：https:&#x2F;&#x2F;github.com&#x2F;mcrl&#x2F;tccl 一、背景1.1 计算集群">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/2024-06-02_14-20.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/2024-06-02_15-05.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/overview.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/profile.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/2024-06-01_10-46-28_screenshot.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/clusters.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/30e2f3013d50eb93abae86066be46f39_4_Table_1_154416043.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/compare1.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/red.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/3e82a961/compare2.png">
+<meta property="article:published_time" content="2024-06-03T03:11:57.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.928Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S8课上">
+<meta property="article:tag" content="海边拾贝">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/3e82a961/2024-06-02_14-20.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/3e82a961/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>海边拾贝-TCCL | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/3e82a961/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          海边拾贝-TCCL
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-06-03 11:11:57" itemprop="dateCreated datePublished" datetime="2024-06-03T11:11:57+08:00">2024-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" itemprop="url" rel="index"><span itemprop="name">海边拾贝</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="TCCL-为-PCIe-GPU-集群发现更好的通信路径"><a href="#TCCL-为-PCIe-GPU-集群发现更好的通信路径" class="headerlink" title="TCCL: 为 PCIe GPU 集群发现更好的通信路径"></a>TCCL: 为 PCIe GPU 集群发现更好的通信路径</h1><p>论文地址：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://dl.acm.org/doi/10.1145/3620666.3651362">https://dl.acm.org/doi/10.1145/3620666.3651362</a></p>
+<p>项目地址：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/mcrl/tccl">https://github.com/mcrl/tccl</a></p>
+<h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><h3 id="1-1-计算集群"><a href="#1-1-计算集群" class="headerlink" title="1.1 计算集群"></a>1.1 计算集群</h3><p>随着深度学习模型规模的增大，单一的 GPU 已经无法满足计算的需要了，人们使用计算集群（Computation Cluster），也就是一组相关的 CPU GPU 网卡和连接它们的数据通路组成。这样计算任务就可以被并行了，原本的计算也变成了”计算 + 传输”两个部分。</p>
+<p>从并行方式上划分，可以分为数据并行（data parallism）和算法并行（pipeline parallism）。数据并行指的是将一个主任务分成多个相互独立的子任务。而算法并行指的是将主任务划分出不同的阶段，形成流水线，各个阶段依次依赖。数据并行通信的对带宽要求并不高；算法并行通信的主要操作是传递，对带宽较为敏感。似乎这种分类并没有统一标准，有许多类似的概念。</p>
+<h3 id="1-2-集体通信"><a href="#1-2-集体通信" class="headerlink" title="1.2 集体通信"></a>1.2 集体通信</h3><p>集体通信（Collective Communication）是计算集群实现分布式并行计算的一个重要过程。代表操作有 <code>reduce, scatter, gather</code> 等。</p>
+<p>其中成环算法（Ring algorithm）在集体通信的实现中非常重要：成环算法将 GPU 组成一个环，方便进行数据的分发和采集。如图所示：</p>
+<p><img src="/posts/3e82a961/2024-06-02_14-20.png" alt=""></p>
+<p>成环算法在深度学习中有着广泛的应用，比如说数据并行（data parallelism），张量并行（tensor parallelism），序列并行（sequence parallelism），专家并行（Expert parallelism）中有着广泛应用。</p>
+<p>我个人感觉集体通信更服务于数据并行或者类似概念的并行，因为这些操作对数据并行的”将主任务环分为多个子任务，将子任务合并成主任务”的逻辑很像，而与算法并行所需要的传递通信关系并不大。</p>
+<h3 id="1-3-分类"><a href="#1-3-分类" class="headerlink" title="1.3 分类"></a>1.3 分类</h3><p>本文将目前的计算集群分成了两类，高带宽系统（high-bandwidth systems）和依赖 PCIe 的系统（PCIe-dependent systems）。</p>
+<p>高带宽系统如 NVIDIA DGX-1 是硬件厂商打造的”旗舰系统”，具有专有的高带宽通路，比如 NVLink ，高带宽的专用交换机，比如说 NVSwitch 和 PCIe Switch ，高效的通信机制，可以全功率无阻塞的传递数据。</p>
+<p>而许多研究院、初创公司和云服务厂商并没有足够的资金去购买这种高带宽集群，他们使用的是依赖 PCIe 的系统。这种系统没有高速数据通路，只能将 CPU 的 PCIe host bridge 和 NUMA 架构下的 CPU socket 当作交换通道，常常因为 GPU 间不支持直接传输功能，而需要借助 CPU 内存间接传输。这些特征说明了依赖 PCIe 的系统的本质是低带宽系统，为了方便行文，后续都称之为低带宽系统。</p>
+<p>两种系统的示意图如下：</p>
+<p><img src="/posts/3e82a961/2024-06-02_15-05.png" alt=""></p>
+<p>根据阿里巴巴的调查报告，大约 90.4% 的系统是低带宽系统。遗憾的是，现有的集体通信库在低带宽系统上表现远没有理论预估得好，出现了数据通路堵塞的现象，而在高带宽系统上则不存在这个问题。这是因为这些函数库都是针对高带宽系统设计的，忽略了低带宽系统的特殊性。</p>
+<h3 id="1-4-集群内部架构"><a href="#1-4-集群内部架构" class="headerlink" title="1.4 集群内部架构"></a>1.4 集群内部架构</h3><h4 id="1-4-1-集群设备"><a href="#1-4-1-集群设备" class="headerlink" title="1.4.1 集群设备"></a>1.4.1 集群设备</h4><p>在计算集群中，除了 CPU 和 GPU 这样的计算设备外，还有内存等设备也为计算任务的完成贡献了力量。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>设备</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>初始化数据传输、参与数据搬运，CPU 用 Bounce Buffer 表示</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>进行计算任务</td>
+</tr>
+<tr>
+<td>NVSwitch</td>
+<td>英伟达专用的交换机</td>
+</tr>
+<tr>
+<td>PCIe Switch</td>
+<td>PCIe 设备交换机</td>
+</tr>
+<tr>
+<td>IB NIC</td>
+<td>网卡，用于跨芯片通信</td>
+</tr>
+<tr>
+<td>Bounce Buffer</td>
+<td>CPU 内存中的临时缓冲区，用于在数据传输过程中存储中转数据</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="1-4-2-数据通路"><a href="#1-4-2-数据通路" class="headerlink" title="1.4.2 数据通路"></a>1.4.2 数据通路</h4><p>数据通路是连接集群设备的线路，他们有带宽的差别，种类如下（表中数据没有经过详细考证）：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>通路</th>
+<th>带宽（GB/s）</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVLink</td>
+<td>300 ~ 1800</td>
+<td>英伟达专用的通路</td>
+</tr>
+<tr>
+<td>PCIe</td>
+<td>30 ~ 120</td>
+<td>PCIe 设备使用的通路</td>
+</tr>
+<tr>
+<td>IB</td>
+<td>2 ~ 30</td>
+<td>IB NIC 使用的通路</td>
+</tr>
+<tr>
+<td>QPI</td>
+<td>8 ~ 20</td>
+<td>NUMA 节点中 CPU 间的通路</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="1-4-3-NUMA"><a href="#1-4-3-NUMA" class="headerlink" title="1.4.3 NUMA"></a>1.4.3 NUMA</h4><p>NUMA（Non-Uniform Memory Access）架构在计算集群中指的是集群中的设备（CPU，内存，网卡，GPU）被组成成了多个节点（Node）。当 GPU、网卡和 CPU 主内存属于同一 NUMA 节点时，它们之间的通信速度会更快。相反，如果它们属于不同的 NUMA 节点，则可能会产生较高的访问延迟和较低的带宽。</p>
+<p>抽象来看，一个计算集群可以被理解为一个具有多个子图的图，每个子图是一个 NUMA Node 。计算设备是图上的点，而数据通路是图上的边。</p>
+<p>成环问题就是在这个图上找到一个带宽最大的环的问题。</p>
+<hr>
+<h2 id="二、设计"><a href="#二、设计" class="headerlink" title="二、设计"></a>二、设计</h2><h3 id="2-1-Overview"><a href="#2-1-Overview" class="headerlink" title="2.1 Overview"></a>2.1 Overview</h3><p>TCCL 基于 NCCL 库（这是英伟达开发的一款集体通信库）构建。分为 Profiler 和 PathFinder, Profiler 用于测试带宽，PathFinder 用于成环路径生成，结构如图所示：</p>
+<p><img src="/posts/3e82a961/overview.png" alt=""></p>
+<p>在初始化阶段，Profiler 会测试实际带宽，PathFinder 会根据测试结果生成节点内环和节点内链，在调用阶段，PathFinder 会根据 Communicator 的要求返回节点内环，如果发生跨节点通信，PathFinder 会将节点内链组合起来形成跨节点环。</p>
+<h3 id="2-2-Profile"><a href="#2-2-Profile" class="headerlink" title="2.2 Profile"></a>2.2 Profile</h3><p>为了测试精准性，原有的 benchmark 需要运行多次，而每次的初始化时间不固定，所以最后测试出来的 transfer 开销也是不固定的，而且每次测试前都需要进行初始化，非常耗时。TCCL 改进了原有的测试实际带宽的形式，提供了一个进程池用于测量，只需要 spawn 和 init 一次即可，并且在测试前还需要进行同步，提高测试精读，如下所示：</p>
+<p><img src="/posts/3e82a961/profile.png" alt=""></p>
+<h3 id="2-3-PathFinder"><a href="#2-3-PathFinder" class="headerlink" title="2.3 PathFinder"></a>2.3 PathFinder</h3><p>路径可以分为节点内路径和跨节点路径。因为可能的路径太多了，所以没有办法枚举来获得最优解。所以 TCCL 先用一个类似 Dijkstra 的优先队列最短路径算法来求取节点内的最优路径，然后再用动态规划结合上一问的解来求解跨节点的最优路径。</p>
+<p>求解节点内最优路径的伪代码如下：</p>
+<p><img src="/posts/3e82a961/2024-06-01_10-46-28_screenshot.png" alt=""></p>
+<p>这个算法从两个数据结构开始：一个是需要访问的 GPU 集合 <code>G</code> （相当于点集），另一个是一个最大优先队列 <code>Q</code>，其中带宽是 key，transfer set 是 value （相当于边集）。这个队列里会包括所有已经 profiled 过了（也就是知道带宽了）但是还可以进一步加入（append） transfer 的所有 transfer set 。这和 dijkstra 算法很像，这是因为 dijkstra 算法可以用优先队列来选择出下一步要 append 的边（也就是最短的边），而这里用最大优先队列来选择最大带宽的边。带宽和边长有一定的相似性。</p>
+<p>和 dijkstra 原理类似，当 <code>T</code> 成环的时候，它一定是优先队列中带宽最大的，同时那些没有加入队列的路径，肯定不如 <code>T</code> 的带宽大。</p>
+<p>而节点间的求解，因为节点过多，所以用 dijkstra 算法复杂度（ $O((V+E)logV)$ ）会提高，先找到节点内的短链（使用 dijkstra 算法），再将这些短链在节点间连成环。</p>
+<hr>
+<h2 id="三、实验"><a href="#三、实验" class="headerlink" title="三、实验"></a>三、实验</h2><h3 id="3-1-环境设置"><a href="#3-1-环境设置" class="headerlink" title="3.1 环境设置"></a>3.1 环境设置</h3><p>实验采用了 3 种低带宽的计算集群，分别是 AMD-V100, AMD-3090, Intel-V100 ，其具体配置如下：</p>
+<p><img src="/posts/3e82a961/clusters.png" alt=""></p>
+<p>实验与 NCCL 和 MSCCL 进行对比。NCCL 在初始化阶段就确定了路径，所以不需要运行时 profile 。MSCCL（Multiple Schedulers for Collective Communication Library）是建立在 NCCL 之上的运行时系统。它利用 TACCL 产生的通信调度，并结合任务的执行计划，实现高效的集合通信。</p>
+<h3 id="3-2-拥塞模式"><a href="#3-2-拥塞模式" class="headerlink" title="3.2 拥塞模式"></a>3.2 拥塞模式</h3><p>TCCL 记录了当发生拥塞（也就是实际带宽与理想带宽出现严重不符）时的模式（congestion pattern），但是却没有详细分析这些拥塞的成因，也没有利用这些模式优化算法。</p>
+<p>TCCL 记录了 3 种模式：</p>
+<p><img src="/posts/3e82a961/30e2f3013d50eb93abae86066be46f39_4_Table_1_154416043.png" alt=""></p>
+<p>1，2，3 号实验说明，当 GPU 一边写 CPU 内存，一边写其他 NUMA Node GPU 内存时，会出现堵塞。</p>
+<p>从第 6 和第 9 组实验中可以看出，这里说得是如果不同 Node 间的 GPU 直接写内存，那么性能会出现不可解释地下降，所以不如改用 bounce buffer 。</p>
+<p>从 10 和 11，12 和 13 的对比中可以看出，由于 CPU 内存带宽有限，当太多的传输集中在同一 NUMA 节点的 CPU 内存上时，性能可能会下降。所以要更换为不同的 CPU。</p>
+<p>我个人觉得这里的意义只说说明了对于低带宽系统，会出现许多难以预料的拥塞，原本基于理论带宽构建的库并不适合低带宽系统。</p>
+<h3 id="3-3-集体通信原语"><a href="#3-3-集体通信原语" class="headerlink" title="3.3 集体通信原语"></a>3.3 集体通信原语</h3><p>我们测试了 5 种集体通信元语在 3 种库上的对比，结果如图：</p>
+<p><img src="/posts/3e82a961/compare1.png" alt=""></p>
+<p>可以看到 TCCL 相较于 baseline 具有 1 ~ 2 倍的提速。这是因为 TCCL 在路径规划是避开了带宽较小（因为发生了堵塞）的通路（红色所示）。</p>
+<p><img src="/posts/3e82a961/red.png" alt=""></p>
+<h3 id="3-4-深度学习模型"><a href="#3-4-深度学习模型" class="headerlink" title="3.4 深度学习模型"></a>3.4 深度学习模型</h3><p>深度学习训练模型结果对比如图：</p>
+<p><img src="/posts/3e82a961/compare2.png" alt=""></p>
+<p>与 TCCL 在单个原语中实现的加速相比，这种加速相对较小，因为在纯数据并行化配置中，通信仅占总执行时间的约 15%。</p>
+<p>DL 模型测试不乐观的原因是这些 DL 模型都是为高带宽集群设计的。如果希望低带宽集群和 TCCL 发挥作用，需要新的 DL 模型设计思路。</p>
+<hr>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>TCCL 在集体通信库上针对依赖 PCIe 的系统（低带宽系统）进行了优化。相较于原有的 NCCL 之类的库，有如下优势：</p>
+<ol>
+<li>考虑了不存在超高带宽（如 NVLink）的数据通路情况，超高带宽容易让算法开发难度降低。</li>
+<li>考虑了 NUMA Node 内部设备较少的情况，也就是考虑了更多跨节点通信的情况。</li>
+<li>考虑了包含 Bounce Buffer 或者 NIC 等设备的路径，这是因为低带宽系统中的 Direct Write 较弱。</li>
+<li>考虑了实际发生的并行传输时的拥塞现象，不再用理论带宽作为算法依据。</li>
+</ol>
+<p>我个人觉得 TCCL 的优化并不是仅针对于低带宽集群的特异性，有些优化是 general 的：</p>
+<ol>
+<li>dijkstra 算法配合动态规划降低算法复杂度。</li>
+<li>用拓扑双射优化 Cache 提高运行效率。</li>
+<li>维护进程池方便准确测量实际带宽</li>
+</ol>
+<p>这些举措放到高带宽系统上依然也有优化作用。</p>
+<p>此外，对于拥塞导致的带宽下降，本文只是在初始化阶段简单了规避了拥塞发生的通路。而拥塞控制如果是一个运行时动态调整的操作，我觉得可能会更好，实时检测各个数据通路的拥塞情况，并据此改变路径的选择。</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S8%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S8课上</a>
+              <a href="/tags/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" rel="tag"><i class="fa fa-tag"></i> 海边拾贝</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/dcaf34a0/" rel="prev" title="硬件平台-外存">
+      <i class="fa fa-chevron-left"></i> 硬件平台-外存
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/6a65902d/" rel="next" title="自由王国-字体">
+      自由王国-字体 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TCCL-%E4%B8%BA-PCIe-GPU-%E9%9B%86%E7%BE%A4%E5%8F%91%E7%8E%B0%E6%9B%B4%E5%A5%BD%E7%9A%84%E9%80%9A%E4%BF%A1%E8%B7%AF%E5%BE%84"><span class="nav-text">TCCL: 为 PCIe GPU 集群发现更好的通信路径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%83%8C%E6%99%AF"><span class="nav-text">一、背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E8%AE%A1%E7%AE%97%E9%9B%86%E7%BE%A4"><span class="nav-text">1.1 计算集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E9%9B%86%E4%BD%93%E9%80%9A%E4%BF%A1"><span class="nav-text">1.2 集体通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%88%86%E7%B1%BB"><span class="nav-text">1.3 分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E9%9B%86%E7%BE%A4%E5%86%85%E9%83%A8%E6%9E%B6%E6%9E%84"><span class="nav-text">1.4 集群内部架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-%E9%9B%86%E7%BE%A4%E8%AE%BE%E5%A4%87"><span class="nav-text">1.4.1 集群设备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF"><span class="nav-text">1.4.2 数据通路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3-NUMA"><span class="nav-text">1.4.3 NUMA</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AE%BE%E8%AE%A1"><span class="nav-text">二、设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Overview"><span class="nav-text">2.1 Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Profile"><span class="nav-text">2.2 Profile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-PathFinder"><span class="nav-text">2.3 PathFinder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E9%AA%8C"><span class="nav-text">三、实验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE"><span class="nav-text">3.1 环境设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%8B%A5%E5%A1%9E%E6%A8%A1%E5%BC%8F"><span class="nav-text">3.2 拥塞模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E9%9B%86%E4%BD%93%E9%80%9A%E4%BF%A1%E5%8E%9F%E8%AF%AD"><span class="nav-text">3.3 集体通信原语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B"><span class="nav-text">3.4 深度学习模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-text">四、总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

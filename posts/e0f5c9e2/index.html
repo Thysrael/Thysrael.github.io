@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="所有教材都是按照时间顺序介绍的，但是这样真的是认识量子力学的好方式吗？我觉得不一定，比如说介绍普朗克常量的时候，介绍了一大堆关于热辐射和黑体的概念，其实跟最关键的概念普朗克常量没有很明显的联系。再比如先介绍了波尔的原子模型，但是波尔做的很多理论都是假设，那么这些假设其实都是可以基于薛定谔方程得到推导。所以或许教材组织知识的方式存在一定的问题。 本章最大的阅读问题，就是有很多与量子力学理论体系毫不相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大学物理-波粒二象性">
+<meta property="og:url" content="https://thysrael.github.io/posts/e0f5c9e2/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="所有教材都是按照时间顺序介绍的，但是这样真的是认识量子力学的好方式吗？我觉得不一定，比如说介绍普朗克常量的时候，介绍了一大堆关于热辐射和黑体的概念，其实跟最关键的概念普朗克常量没有很明显的联系。再比如先介绍了波尔的原子模型，但是波尔做的很多理论都是假设，那么这些假设其实都是可以基于薛定谔方程得到推导。所以或许教材组织知识的方式存在一定的问题。 本章最大的阅读问题，就是有很多与量子力学理论体系毫不相">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/e0f5c9e2/image-20211223113910073.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e0f5c9e2/image-20211223120351164.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e0f5c9e2/3+康普顿效应（1922年）+S+D+C+R+康普顿实验原理如下图：+实验目的：入射与散射波长的比较。+R：X射线源+D：光栏+S：摄谱仪.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/e0f5c9e2/image-20211224084032728.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e0f5c9e2/image-20211224222257514.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e0f5c9e2/image-20211224222317462.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e0f5c9e2/image-20211224223227260.png">
+<meta property="article:published_time" content="2021-12-24T15:28:31.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.749Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S3复习">
+<meta property="article:tag" content="大学物理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/e0f5c9e2/image-20211223113910073.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/e0f5c9e2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>大学物理-波粒二象性 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/e0f5c9e2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          大学物理-波粒二象性
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-24 23:28:31" itemprop="dateCreated datePublished" datetime="2021-12-24T23:28:31+08:00">2021-12-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大学物理</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>7.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>所有教材都是按照<strong>时间顺序</strong>介绍的，但是这样真的是认识量子力学的好方式吗？我觉得不一定，比如说介绍普朗克常量的时候，介绍了一大堆关于热辐射和黑体的概念，其实跟最关键的概念<strong>普朗克常量</strong>没有很明显的联系。再比如先介绍了波尔的原子模型，但是波尔做的很多理论都是<strong>假设</strong>，那么这些假设其实都是可以基于<strong>薛定谔方程</strong>得到推导。所以或许教材组织知识的方式存在一定的问题。</p>
+<p>本章最大的阅读问题，就是有很多与量子力学理论体系毫不相干的东西，也必须要学，比如热辐射、光电效应、氢原子光谱。</p>
+<p>认为能开发出一套理论，使得所有的东西，包括微观粒子，光子，电磁波都适应，虽然之前我就是这么想波粒二象性的，但是这大概是一种狂妄的表现。所以这篇文章的思路是<strong>承认粒子和波有明显的界限</strong>，只是波粒二象性使其具有了彼此的一些性质。物质波与波的区别，就好像鲸鱼与鱼区别。</p>
+<p>这章主要分为两条线，一条是光的粒子性，包括</p>
+<ul>
+<li>热辐射现象，普朗克对黑体辐射的现象做出了自己的量子化解释，进而引入了普朗克常量。</li>
+<li>光电效应，爱因斯坦提出光也具有粒子性，应用了普朗克常量</li>
+<li>康普顿效应，爱因斯坦光子论的一个应用，至此，粒子性已经全部介绍完毕</li>
+</ul>
+<p>另一条线是微观粒子的波动性</p>
+<ul>
+<li>从德布罗意天才的构想开始，提出了物质具有波动性，并且给出了如何计算物质波的波长和频率</li>
+<li>薛定谔方程利用了德布罗意的思想和公式，提出了奠基公式，薛定谔方程，这个方程可以解出一个波函数，这个波函数就是波动性的体现</li>
+<li>不确定性原理，物质波具有了这个本应只在经典波中出现的现象</li>
+<li>氢原子的电子：在德布罗意提出物质具有波动性之前，波尔就做出了启发性的假设，解释了氢原子光谱，但是相应的理论不是很完善，在引入薛定谔方程以后，可以得到很好的理论诠释</li>
+</ul>
+<span id="more"></span>
+<h2 id="一、热辐射"><a href="#一、热辐射" class="headerlink" title="一、热辐射"></a>一、热辐射</h2><h3 id="1-1-热辐射现象的描述"><a href="#1-1-热辐射现象的描述" class="headerlink" title="1.1 热辐射现象的描述"></a>1.1 热辐射现象的描述</h3><p><strong>平衡热辐射</strong>：物体辐射出的能量恰好等于同一时间吸收的能量，那么此时物体的温度保持不变，称为平衡热辐射。我们只研究这种情况，是因为这样温度不会对研究造成干扰。相当于研究<strong>稳态</strong>。</p>
+<p><strong>单色辐出度</strong>：<strong>单位时间</strong>内从物体表面单位面积波长为 $\lambda$ 的辐射能，用 $M(\lambda, T)$ 表示，注意，对面积积完分之后，得到的是一个类似于功率的值。</p>
+<p><strong>单色吸收比</strong>：物体吸收波长为 $\lambda $  的辐射能与相应波长的入射电磁波能量之比，称为单色吸收比。这里需要明确概念，对于辐射能量，要经过<strong>入射 - 吸收 - 辐射</strong>的过程，所以我们说平衡热辐射，说的是吸收的能量与辐射的能量相等，而我们说吸收比，说的是入射与吸收的比值，平衡热辐射并没有要求这两者相等。</p>
+<p>如果吸收比（应该对应的是所有波长）为1的话，那么我们就得到理想模型<strong>黑体</strong>，也就是说，黑体可以吸收所有入射的能量。在黑体中，结合平衡热辐射条件，有 <strong>入射 = 吸收 = 辐射 </strong>。黑体的单色辐出度用 $M_0(\lambda, T)$ 表示。</p>
+<h3 id="1-2-黑体辐射实验定律"><a href="#1-2-黑体辐射实验定律" class="headerlink" title="1.2 黑体辐射实验定律"></a>1.2 黑体辐射实验定律</h3><p>我们研究的焦点就是绘制 $\lambda - M_0(\lambda, T)$ 图像，注意，在此时，$T$ 只是一个参数，我们的函数关系，是建立在 $\lambda $ 为自变量的基础上的。在这一节，我们会给出两个实验定律</p>
+<p><img src="/posts/e0f5c9e2/image-20211223113910073.png" alt="image-20211223113910073"></p>
+<h4 id="1-2-1-斯特藩-玻尔兹曼定律"><a href="#1-2-1-斯特藩-玻尔兹曼定律" class="headerlink" title="1.2.1 斯特藩-玻尔兹曼定律"></a>1.2.1 斯特藩-玻尔兹曼定律</h4><p>每一条曲线下的面积等于黑体在一定温度下的总辐出度，这是一个很显然的事情</p>
+<script type="math/tex; mode=display">
+M_0(T) = \int^{\infty}_0 M_0(\lambda, T)d\lambda</script><p>可以看到，当温度升高的时候，曲线下面积明显增大，有</p>
+<script type="math/tex; mode=display">
+M_0(T) = \sigma T^4</script><p>这就是<strong>斯特藩-玻尔兹曼定律</strong>。$\sigma$ 被称为斯特藩常量。</p>
+<h4 id="1-2-2-维恩位移定律"><a href="#1-2-2-维恩位移定律" class="headerlink" title="1.2.2 维恩位移定律"></a>1.2.2 维恩位移定律</h4><p>每个曲线都都有一个极大值，对应此时的 $\lambda$ 称为 $\lambda_m$ 。</p>
+<script type="math/tex; mode=display">
+\lambda_m = \frac b T</script><p>$b$ 被称为维恩常量。</p>
+<p>这两个定律反映出热辐射的功率随着温度的升高而迅速增加，而且热辐射的峰值波长，还随着温度的增加而向短波方向移动（没准是因为短波能量高）</p>
+<h3 id="1-3-推导-lambda-M-0-lambda-T-函数"><a href="#1-3-推导-lambda-M-0-lambda-T-函数" class="headerlink" title="1.3 推导 $\lambda - M_0(\lambda, T)$ 函数"></a>1.3 推导 $\lambda - M_0(\lambda, T)$ 函数</h3><p>前面两个公式只是对图像的性质给出了一些描述，最直接的方法是直接给出图像的函数关系（建立于科学理论，而不是单纯拟合），在经典理论下，有<strong>维恩公式</strong>和<strong>瑞利-金斯公式</strong>。但是都拟合的不太好</p>
+<p><img src="/posts/e0f5c9e2/image-20211223120351164.png" alt="image-20211223120351164"></p>
+<p>维恩公式长得有点像<strong>泊松分布</strong>，它模拟出了凸包的形状，但是在长波区衰减的太快。瑞利-金斯公式是一个负幂次函数，所以在短波区会趋于无穷，这被称为<strong>紫外灾难</strong>。</p>
+<p>后来普朗克利用内插法将两个公式衔接了起来获得了正确的公式</p>
+<script type="math/tex; mode=display">
+M_0(\lambda, T) = 2\pi c^2 \lambda^{-5} \frac{1}{e^{hc/\lambda kT}-1}</script><p>可以看到形式还是很像维恩公式的，但是内插法不是理论，这个正确的函数关系需要理论的支持，也就是我们熟悉的</p>
+<script type="math/tex; mode=display">
+\epsilon = h\nu</script><p>从这个公式开始，我们的噩梦开始了。</p>
+<hr>
+<h2 id="二、光子论"><a href="#二、光子论" class="headerlink" title="二、光子论"></a>二、光子论</h2><h3 id="2-1-光电效应"><a href="#2-1-光电效应" class="headerlink" title="2.1 光电效应"></a>2.1 光电效应</h3><p>因为高中已经学的很熟练了，所以就不耽误时间写了，唯一有一点需要补充的就是计算光子的质量和动量</p>
+<p>当计算质量的时候，有</p>
+<script type="math/tex; mode=display">
+m_{\phi} = \frac{\epsilon}{c^2} = \frac{h\nu}{c^2}</script><p>当计算动量的时候，有</p>
+<script type="math/tex; mode=display">
+p = m_{\phi}c = \frac{h\nu}{c} = \frac{h}{\lambda}</script><p>可以看到，在动量的推导中，用到了 $c = \lambda \nu$ 这个条件，但是在物质波中，这个条件没准是不成立的（就算成立，成立的也不太自然）。但是物质波中计算波长依然可以用这个式子。</p>
+<h3 id="2-2-康普顿效应"><a href="#2-2-康普顿效应" class="headerlink" title="2.2 康普顿效应"></a>2.2 康普顿效应</h3><h4 id="2-2-1-实验现象"><a href="#2-2-1-实验现象" class="headerlink" title="2.2.1 实验现象"></a>2.2.1 实验现象</h4><p><img src="/posts/e0f5c9e2/3+康普顿效应（1922年）+S+D+C+R+康普顿实验原理如下图：+实验目的：入射与散射波长的比较。+R：X射线源+D：光栏+S：摄谱仪.jpg" alt="第17章量子物理§17.1 热辐射,普朗克的量子假设§17.2 光的粒子性§17.3 氢原子光谱,玻尔的氢原子理论- ppt download"></p>
+<p>就是说有一个摄谱仪在旋转，然后当旋转到特定的角度的是时候，会发现有一个波长对应的射线的强度特别大。</p>
+<p>康普顿认为，是当 X 射线光子与原子外层电子发生碰撞的时候，由于外层电子与原子核束缚较弱，这些电子可以看为“自由电子”，当光子与这些电子碰撞时，自由电子吸收一个入射光子后发射一个波长较长的光子。注意，这里是吸收<strong>整个</strong>光子后再发射出一个波长较长的光子，此间是两个光子，没有违背<strong>光子不可分割</strong>的理论。</p>
+<h4 id="2-2-2-理论推导"><a href="#2-2-2-理论推导" class="headerlink" title="2.2.2 理论推导"></a>2.2.2 理论推导</h4><p>可以看做遵循能量守恒和动量守恒定律。</p>
+<p><img src="/posts/e0f5c9e2/image-20211224084032728.png" alt="image-20211224084032728"></p>
+<p>根据能量守恒，有</p>
+<script type="math/tex; mode=display">
+h\nu_0 + m_0 c^2 = h\nu + mc^2</script><p>其中 $m_0$ 是电子的静质量。</p>
+<p>根据动量守恒，在 x 方向上有</p>
+<script type="math/tex; mode=display">
+\frac{h\nu_0}{c} = \frac{h\nu}{c}\cos \phi + mv\cos\theta</script><p>在 y 方向上有</p>
+<script type="math/tex; mode=display">
+0 = \frac{h\nu}{c}\sin\phi - mv\sin\theta</script><p>最终可以解得</p>
+<script type="math/tex; mode=display">
+\Delta \lambda = \lambda - \lambda_0 = \frac{2h}{m_0c}\sin^2\frac{\phi}{2} = 2\lambda_C\sin^2\frac{\phi}{2}</script><p>其中 $\lambda_C = \frac{h}{m_0c}$ 被称为<strong>康普顿波长</strong>，在这道题里面没有实际意义。在其他的问题中，认为是测量粒子位置的基本限制，这里不做详细说明。</p>
+<hr>
+<h2 id="三、物质波"><a href="#三、物质波" class="headerlink" title="三、物质波"></a>三、物质波</h2><h3 id="3-1-总论"><a href="#3-1-总论" class="headerlink" title="3.1 总论"></a>3.1 总论</h3><p>物质波说的是<strong>实物粒子表现出了波动性</strong>的现象，这种<strong>波动性</strong>最后被解释为了概率波，概率波说的是事物可以在空间的任何地方出现，只不过需要服从一定的概率分布，而这种概率分布恰好表现出波的特性，所以我们说它是波，严格的讲，<strong>鲸鱼不是鱼，物质波不是波</strong>，我觉得太过于统一波粒二象性没啥好处，波粒二象性不是我用来<strong>混淆波和粒子</strong>的工具。</p>
+<p>正是因为<strong>物质波不是经典波</strong>，所以我们并不要求物质波具有波的一切特性，比如是说可以算波速（反正以我的学识，不觉得物质波如果加入波速以后体系还能自洽）。我们用的比较多的，就是干涉和不确定性原理（都不需要波速  ）。</p>
+<p>如果反过来说，我是不是也把光的粒子性看得太重了，因为如果太重的话，会跟光的波动性矛盾，只是之前我没有想过这个问题（也是因为对波的认识不多，所以矛盾不突出），毕竟一个弥散在空间中的波，是怎样变成一个粒子的呢？是很让人头疼的事情。我记得我之前看过一个说法，是光只有在传递能量的时候表现出粒子性，这个说法无论对错，度很好。</p>
+<h3 id="3-2-波函数"><a href="#3-2-波函数" class="headerlink" title="3.2 波函数"></a>3.2 波函数</h3><p>微观粒子运动的图景是这样的：粒子会出现在任何地方，也就是说，出现在哪个位置是一个概率问题，而这个概率问题，刚好可以用一个<strong>余弦函数</strong>来描述，这就是波函数的意义。这是第一个有趣的事情，而另一个巧合的事情是，这个余弦函数的参数，比如说频率，波长，恰好可以用德布罗意的理论计算出来：</p>
+<script type="math/tex; mode=display">
+\lambda = \frac{h}{p} ,\quad\quad\quad\quad\nu = \frac{E}{h}</script><p>但是还是要再次强调，我们只是<strong>恰好</strong>这样的，而不是说物质就是波了。我们不能基于得到频率和波长，做出其他有效推断。</p>
+<p>然后我们就会写出一个波函数，大概就是这个样子</p>
+<script type="math/tex; mode=display">
+\Psi(x, t) = \Psi_0 e^{-i\frac{2\pi}{h}(Et - px)}</script><p>其实这个式子就是个安慰剂，以后我们根本不会用到它，具体原因下一节解释。</p>
+<p>关键是我们有了波函数的表示符号 $\Psi$ ，这个式子的作用理论支持是<strong>在某个时间某一地点出现的概率正比于波函数与其共轭复数的成绩</strong>。 </p>
+<script type="math/tex; mode=display">
+\mid\Psi\mid^2 = \Psi\Psi^*</script><p>表示在某一时刻在某点处单位体积内粒子出现的概率，称为<strong>概率密度</strong>。也就是说，我们为了研究微观粒子的位置，就需要求解概率，而求解概率就需要求解波函数。当波函数给定的时候，我们对粒子已经有了很好的掌控。</p>
+<h3 id="3-3-薛定谔方程"><a href="#3-3-薛定谔方程" class="headerlink" title="3.3 薛定谔方程"></a>3.3 薛定谔方程</h3><p>上面已经总结出我们研究微观粒子的核心目的，就是<strong>求解波函数</strong>。其实我们已经给出了一种方法，那么就是给出粒子的动量和能量，然后根据德布罗意的两个方程，计算出波函数的频率和波长，波函数也就定下来了，但是我们并没有采用这种方法。这是因为实际上（我自己起码是这样理解的），我们没办法确定一个微观粒子的动量和能量（因为不确定性原理）。这就导致了一个很直接的后果，波函数对我们来说，就是一个参数没有任何物理意义的函数，我们必须开发其他方法来求解这个波函数。</p>
+<p>这个方法就是薛定谔方程。写成这样，其中 $U$ 是势能，$\hbar = \frac{h}{2\pi}$ 是<strong>约化普朗克常量</strong>。</p>
+<script type="math/tex; mode=display">
+-\frac{\hbar^2}{2m}\nabla^2\Psi + U\Psi = i\hbar\frac{\partial \Psi}{\partial t}</script><p>首先需要强调的是，<strong>薛定谔方程</strong>的地位跟<strong>牛顿力学三大定律</strong>是相似的，它是不需要证明的，只有以它为原理推导其他公式。</p>
+<p>其次分析一下这个方程的结构，有如下特征：</p>
+<ul>
+<li>它求解出来是一组波函数，这个波函数是一个<strong>复函数</strong></li>
+<li>这是一个二阶偏微方程，我们是没有办法在只学了数分的基础上求解的，反正我不会解</li>
+<li>在这个式子中，参数有粒子的质量和势能，这两个量都是相对较好获得的</li>
+<li>这个式子其实给出了，只要个给定了环境和粒子，也就是<strong>情景</strong>，那么理论上就是可解的。这么看，除了结构复杂一些，其中的思路跟牛二<strong>给定了受力情况，就知道了一切</strong>的思路相仿。</li>
+<li>解出的这组波函数，必须满足<strong>归一化、边界条件等</strong>多个约束，这是造成分立的原因</li>
+</ul>
+<p>正如上面的第二个特征，这个方程我们是解不了的，所以我们需要弱化一下条件，让其变成我们可以求解的状态。我们不能求解的原因在于里面是偏微分的，我们对 $x,y,z,t$ 都做了微分，所以我们不会了，所以为了让其转成我们会的微分方程，必须将微分量从4个减少至1个，那么如果<strong>限制运动为1维运动</strong>，那么 $y,z$ 就可以去掉了，那么如果再把 $t$ 去掉，就变成我们可以求的样子了。</p>
+<p>这时我们再对求解的情景加一个条件<strong>势能只是坐标的函数</strong>，那么经过繁复的数学推导，我们就可以得到<strong>定态薛定谔方程</strong>，写作</p>
+<script type="math/tex; mode=display">
+-\frac{\hbar^2}{2m}\nabla^2\psi + (U-E)\psi = 0</script><p>这个方程同样有很多特征：</p>
+<ul>
+<li>$\Psi = \psi e^{-\frac{i}{\bar{h}}Et}$ ，其中 $\psi$ 只是位置的函数，我们方程求解的对象由 $\Psi$ 变成了 $\psi$， $\psi$ 被称为<strong>空间坐标函数</strong> </li>
+<li>$E$ 只是一个我们<strong>设出来</strong>的参数，也就是说，我们解出来的空间坐标函数，里面会有 $E$ 这个参量。 $E$ 这个参量，我觉得，只是设出来的，虽然具有<strong>能量</strong>的量纲，但是是没有实际意义的，但是看上去后面的应用中，好像 $E$ 拥有了<strong>粒子能量</strong>的物理意义，所以就马马虎虎吧。此外，$E$ 也是会受到<strong>归一化、边界条件等</strong>多个约束，导致<strong>分立</strong>。</li>
+<li>$E$ 的取值会确定对应的 $\psi$。换句话说，当我们解出了一个确定的 $\psi$，我们同时也用了一个确定的 $E$ 。再说的明确写，我们不仅解出了例子的位置概率，还解出了此时粒子的能量。我们解出来的东西多了。</li>
+<li>计算概率的时候，有 $\mid\Psi\mid^2 = \Psi\Psi^{*} = \mid\psi\mid^2 e^{-\frac{i}{\hbar{}}Et} e^{+\frac{i}{\hbar{}}Et} = \mid\psi\mid^2$，所以计算概率的时候，直接使用 $\psi$ 就好了。</li>
+<li>如果 $E - U$ 是正数，那么才能解出一个三角函数，不然解出来就应该是一个指数函数了。从这个角度看，好像把 $\Psi$ 叫做波函数有点<strong>局限性</strong>了，比如说在势垒，如果出现<strong>隧道效应</strong>，粒子在势垒中应该就不是三角函数。</li>
+</ul>
+<p>如果我们只要将研究局限于<strong>一维定态</strong>，那么薛定谔方程对我们来说就是一个<strong>二阶常系数微分方程</strong>，就是可解的。</p>
+<h3 id="3-4-不确定性原理"><a href="#3-4-不确定性原理" class="headerlink" title="3.4 不确定性原理"></a>3.4 不确定性原理</h3><p>不确定性原理并非是<strong>物质波的特有现象</strong>，而是说，所有的波都是具有这个特征的。我们强调的是，物质波原来像经典的波一样，是具有不确定性的。</p>
+<p>对于经典波，其不确定性体现在<strong>频率和测量时间</strong>的<strong>不可得兼</strong>。这个可以由傅里叶变换很好的体现，因为我也不会，就放两张图吧：</p>
+<p><img src="/posts/e0f5c9e2/image-20211224222257514.png" alt="image-20211224222257514"></p>
+<p><img src="/posts/e0f5c9e2/image-20211224222317462.png" alt="image-20211224222317462"></p>
+<p>可以看到，当测量时间短的时候，那么频率对应的范围就会变大，换句话说，频率就测不准了，而当频率测得很准确的时候，测量时间就会变得很长。</p>
+<p>众所周知，频率与能量对应，所以有一个不确定原理还挺好理解的</p>
+<script type="math/tex; mode=display">
+\Delta E\Delta t\geq \frac{\hbar}{2}</script><p>另一个不确定原理在视频中也给出了解释，应该是应用了相对论，所以我就放弃了，所以记录下来就好了</p>
+<script type="math/tex; mode=display">
+\Delta x\Delta P_x \geq \frac{\hbar}{2}</script><p><img src="/posts/e0f5c9e2/image-20211224223227260.png" alt="image-20211224223227260"></p>
+<p>可以看到，一旦位置偏差大，那么相应的动量偏差就会减少，而动量偏差大的时候，位置就很确定。这种不确定关系并不是由测量造成的，而是物质本身的性质。</p>
+<h3 id="3-5-薛定谔方程应用"><a href="#3-5-薛定谔方程应用" class="headerlink" title="3.5 薛定谔方程应用"></a>3.5 薛定谔方程应用</h3><h4 id="3-5-1-一维无限深势阱"><a href="#3-5-1-一维无限深势阱" class="headerlink" title="3.5.1 一维无限深势阱"></a>3.5.1 一维无限深势阱</h4><p>都是一些无聊的数学推导，在这里摆上结论</p>
+<script type="math/tex; mode=display">
+\Psi(x, t) = \sqrt{\frac{2}{a}}\sin(\frac{n\pi}{a}x)e^{-i\frac{E}{\hbar}t}</script><script type="math/tex; mode=display">
+E_n = \frac{n^2\pi^2\hbar^2}{2m^2}</script><p>其中 $a$ 是势阱的宽度。唯一需要强调的就是粒子的物质波在阱中形成驻波。</p>
+<p>第一个式子很有意思，因为如果将其看为驻波的话，因为驻波的形式是</p>
+<script type="math/tex; mode=display">
+y = 2A\cos(\frac{2\pi}{\lambda}x)\cos\frac{2\pi}{T}t</script><p>可以看到空间角频率是 $\frac{n}{2a}$ 此时对应的波长满足 $a = n\frac{\lambda}2$ 。刚好是驻波的条件，而后面的 $\frac{E}{\hbar} = 2\pi\nu$ 刚好是角频率。    </p>
+<p>当然，还有一种更有意思而且更直观的理解，是这样的：一维无限深势阱中的粒子的波函数，在边界处为0，这种定态物质波相当于两端固定的弦中的驻波，因而势阱宽度 $a$ 必须等于德布罗意波半波长的整数倍，也就是说有如下等式成立</p>
+<script type="math/tex; mode=display">
+p = \frac{h}{\lambda},\quad a = \frac{n\lambda}{2},\quad E_n = \frac{p_n^2}{2m}</script><p>用这三个式子就可以解出来：</p>
+<script type="math/tex; mode=display">
+E_n = \frac{n^2h^2}{8ma^2}</script><h4 id="3-5-2-一维势垒"><a href="#3-5-2-一维势垒" class="headerlink" title="3.5.2 一维势垒"></a>3.5.2 一维势垒</h4><p>这个连波函数都没有给出来，可能因为解出来就不是个三角函数吧（我不确定）。</p>
+<p>在粒子总能量低于势垒壁高（$E&lt;U_0$）的情况下，粒子有一定概率穿透势垒。粒子能穿透比其他动能更高的势垒的现象，称为<strong>隧道效应</strong>。通常用<strong>贯穿系数</strong>表示粒子贯穿势垒的概率</p>
+<script type="math/tex; mode=display">
+T = Ce^{-a\frac{2}{\bar{h}}\sqrt{2m(U_0 -E)}}</script><p>可以看出，粒子的质量越小，势垒越窄，粒子的能量与势垒的高度差越小，穿透概率越大。</p>
+<h4 id="3-5-3-氢原子问题"><a href="#3-5-3-氢原子问题" class="headerlink" title="3.5.3 氢原子问题"></a>3.5.3 氢原子问题</h4><h5 id="3-5-3-1-实验定律"><a href="#3-5-3-1-实验定律" class="headerlink" title="3.5.3.1 实验定律"></a>3.5.3.1 实验定律</h5><p><strong>里德伯方程</strong></p>
+<script type="math/tex; mode=display">
+\frac{1}{\lambda} = R(\frac{1}{k^2} - \frac{1}{n^2})</script><p>其中的 $R$ 是<strong>里德伯常量</strong>。如果将 k 置 2 ，就得到了<strong>巴尔末公式</strong>。</p>
+<h5 id="3-5-3-2-薛定谔方程解氢原子问题"><a href="#3-5-3-2-薛定谔方程解氢原子问题" class="headerlink" title="3.5.3.2 薛定谔方程解氢原子问题"></a>3.5.3.2 薛定谔方程解氢原子问题</h5><p>因为不再是一维问题，所以我们是没有能力求解的，所以只有结论，主旨就是<strong>原子内电子的状态由四个量子数确定</strong>。</p>
+<ul>
+<li><p><strong>能量量子化</strong>，其中 $n$ 被称为<strong>主量子数</strong>，其中 $n$ 的取值是从 1 开始的，这个公式太难背了，所以还是记住 $E_1 = -13.6eV$ 吧。</p>
+<script type="math/tex; mode=display">
+E_n = -\frac{me^4}{8\varepsilon_0^2 h^2}\frac{1}{n^2}</script></li>
+<li><p><strong>轨道角动量量子化</strong>，决定了电子云的形状，其中 $l$ 称为<strong>角量子数</strong></p>
+<script type="math/tex; mode=display">
+L = \sqrt{l(l+1)}\hbar</script><p>其中 $l$ 的取值是从0到（n - 1），也就是说，一共有 n 个形状</p>
+</li>
+<li><p><strong>轨道角动量空间量子化</strong>，决定了电子云的方向，其中 $m_l$ 称为<strong>磁量子数</strong></p>
+<script type="math/tex; mode=display">
+L_z = m_l\hbar</script><p>其中 $m_l$ 的取值是 $0,\pm1,\cdots,\pm l$。也就是说，一个确定了角量子数的电子，最多有 $2l + 1$ 种取向。 我觉得更直观的是求夹角，有</p>
+<script type="math/tex; mode=display">
+\theta_z = \arccos(\frac{L_z}{L}) = \arccos(\frac{m_l}{\sqrt{l(l+1)}})</script></li>
+<li><p><strong>空间取向量子化</strong>，<strong>自旋磁量子数</strong> $m_s$ ，取值 $\pm\frac{1}{2}$，此外有公式</p>
+<script type="math/tex; mode=display">
+S = \sqrt{\frac{3}{4}}\hbar,\quad S_z = \pm\frac12 \hbar</script><p>其中 $S$ 是电子的<strong>自旋角动量</strong>，$S_z$ 是其在外磁场方向上的分量。</p>
+</li>
+</ul>
+<h5 id="3-5-3-3-能量最小原理"><a href="#3-5-3-3-能量最小原理" class="headerlink" title="3.5.3.3 能量最小原理"></a>3.5.3.3 能量最小原理</h5><p>这是偶尔看到的，高中的时候不知道，能级的高低以 $(n + 0.7l)$ 的值来取定，该值越大，那么能级越高。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S3%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S3复习</a>
+              <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" rel="tag"><i class="fa fa-tag"></i> 大学物理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/e09d69e5/" rel="prev" title="数学分析-数学分析基本功">
+      <i class="fa fa-chevron-left"></i> 数学分析-数学分析基本功
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/e538848a/" rel="next" title="吃喝玩乐-功德林素斋">
+      吃喝玩乐-功德林素斋 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%83%AD%E8%BE%90%E5%B0%84"><span class="nav-text">一、热辐射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%83%AD%E8%BE%90%E5%B0%84%E7%8E%B0%E8%B1%A1%E7%9A%84%E6%8F%8F%E8%BF%B0"><span class="nav-text">1.1 热辐射现象的描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E9%BB%91%E4%BD%93%E8%BE%90%E5%B0%84%E5%AE%9E%E9%AA%8C%E5%AE%9A%E5%BE%8B"><span class="nav-text">1.2 黑体辐射实验定律</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-%E6%96%AF%E7%89%B9%E8%97%A9-%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E5%AE%9A%E5%BE%8B"><span class="nav-text">1.2.1 斯特藩-玻尔兹曼定律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E7%BB%B4%E6%81%A9%E4%BD%8D%E7%A7%BB%E5%AE%9A%E5%BE%8B"><span class="nav-text">1.2.2 维恩位移定律</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%8E%A8%E5%AF%BC-lambda-M-0-lambda-T-%E5%87%BD%E6%95%B0"><span class="nav-text">1.3 推导 $\lambda - M_0(\lambda, T)$ 函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%85%89%E5%AD%90%E8%AE%BA"><span class="nav-text">二、光子论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%85%89%E7%94%B5%E6%95%88%E5%BA%94"><span class="nav-text">2.1 光电效应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%BA%B7%E6%99%AE%E9%A1%BF%E6%95%88%E5%BA%94"><span class="nav-text">2.2 康普顿效应</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E5%AE%9E%E9%AA%8C%E7%8E%B0%E8%B1%A1"><span class="nav-text">2.2.1 实验现象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E7%90%86%E8%AE%BA%E6%8E%A8%E5%AF%BC"><span class="nav-text">2.2.2 理论推导</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%89%A9%E8%B4%A8%E6%B3%A2"><span class="nav-text">三、物质波</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">3.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%B3%A2%E5%87%BD%E6%95%B0"><span class="nav-text">3.2 波函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E8%96%9B%E5%AE%9A%E8%B0%94%E6%96%B9%E7%A8%8B"><span class="nav-text">3.3 薛定谔方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%8E%9F%E7%90%86"><span class="nav-text">3.4 不确定性原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E8%96%9B%E5%AE%9A%E8%B0%94%E6%96%B9%E7%A8%8B%E5%BA%94%E7%94%A8"><span class="nav-text">3.5 薛定谔方程应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-%E4%B8%80%E7%BB%B4%E6%97%A0%E9%99%90%E6%B7%B1%E5%8A%BF%E9%98%B1"><span class="nav-text">3.5.1 一维无限深势阱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-%E4%B8%80%E7%BB%B4%E5%8A%BF%E5%9E%92"><span class="nav-text">3.5.2 一维势垒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-3-%E6%B0%A2%E5%8E%9F%E5%AD%90%E9%97%AE%E9%A2%98"><span class="nav-text">3.5.3 氢原子问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-3-1-%E5%AE%9E%E9%AA%8C%E5%AE%9A%E5%BE%8B"><span class="nav-text">3.5.3.1 实验定律</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-3-2-%E8%96%9B%E5%AE%9A%E8%B0%94%E6%96%B9%E7%A8%8B%E8%A7%A3%E6%B0%A2%E5%8E%9F%E5%AD%90%E9%97%AE%E9%A2%98"><span class="nav-text">3.5.3.2 薛定谔方程解氢原子问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-3-3-%E8%83%BD%E9%87%8F%E6%9C%80%E5%B0%8F%E5%8E%9F%E7%90%86"><span class="nav-text">3.5.3.3 能量最小原理</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

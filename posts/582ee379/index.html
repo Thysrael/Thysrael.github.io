@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、基本信息    条目 内容     姓名 提斯雷尔   学号 9527   学院 丽春院   班级    项目名 JSON++，json 文件的解析器   项目地址 https:&#x2F;&#x2F;github.com&#x2F;hjiang&#x2F;jsonxx      二、项目概览2.1 项目需求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPP设计-jsonxx">
+<meta property="og:url" content="https://thysrael.github.io/posts/582ee379/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、基本信息    条目 内容     姓名 提斯雷尔   学号 9527   学院 丽春院   班级    项目名 JSON++，json 文件的解析器   项目地址 https:&#x2F;&#x2F;github.com&#x2F;hjiang&#x2F;jsonxx      二、项目概览2.1 项目需求">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/582ee379/image-20220622151830696.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/582ee379/jsonxx.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/582ee379/jsonxx-16558832845451.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/582ee379/jsonxx-16558840754152.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/582ee379/writer.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/582ee379/重载维护.drawio.png">
+<meta property="article:published_time" content="2022-06-22T11:47:11.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:47.752Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="CPP设计">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S4复习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/582ee379/image-20220622151830696.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/582ee379/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CPP设计-jsonxx | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/582ee379/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CPP设计-jsonxx
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-22 19:47:11" itemprop="dateCreated datePublished" datetime="2022-06-22T19:47:11+08:00">2022-06-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPP%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">CPP设计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、基本信息"><a href="#一、基本信息" class="headerlink" title="一、基本信息"></a>一、基本信息</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>姓名</td>
+<td>提斯雷尔</td>
+</tr>
+<tr>
+<td>学号</td>
+<td>9527</td>
+</tr>
+<tr>
+<td>学院</td>
+<td>丽春院</td>
+</tr>
+<tr>
+<td>班级</td>
+<td></td>
+</tr>
+<tr>
+<td>项目名</td>
+<td>JSON++，json 文件的解析器</td>
+</tr>
+<tr>
+<td>项目地址</td>
+<td><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/hjiang/jsonxx">https://github.com/hjiang/jsonxx</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="二、项目概览"><a href="#二、项目概览" class="headerlink" title="二、项目概览"></a>二、项目概览</h2><h3 id="2-1-项目需求"><a href="#2-1-项目需求" class="headerlink" title="2.1 项目需求"></a>2.1 项目需求</h3><p>这个项目可以实现读取一个 Json 文件并进行解析，在解析后可以形成一个抽象表达式树（AST），然后可以考虑直接处理这棵表达式树整体或者部分，也可以考虑将这棵树按照 <code>XML</code> 或者 <code>JSON</code> 格式输出。</p>
+<p>这个项目的重要特点是<strong>轻量级</strong>，也就是说，相对于市面上的其他 <code>JSON</code> 解析器，这个项目的代码量要更少（2000 多行），运行速度要更快（大量的内存优化），项目架构要更加简单（仅有几个文件）。但是<strong>轻量级</strong>跟<strong>简单</strong>并不可以划等号，相反，以“轻量级”为开发目的项目，其架构设计上有更多别出心裁的设计，这些亮点会在之后介绍。</p>
+<h3 id="2-2-项目架构"><a href="#2-2-项目架构" class="headerlink" title="2.2 项目架构"></a>2.2 项目架构</h3><p>整个项目的架构可以用如下图示（原创）进行概括</p>
+<p><img src="/posts/582ee379/image-20220622151830696.png" alt="image-20220622151830696"></p>
+<p>可以看到项目可以分为如下这几个部分：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>功能</th>
+<th>组件</th>
+<th>所在文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>解析器</td>
+<td>实现对源文件的读入和解析</td>
+<td></td>
+<td><code>jsonxx_test.cpp, jsonxx.cpp</code></td>
+</tr>
+<tr>
+<td>AST</td>
+<td>实现对于解析好的信息的存储和管理</td>
+<td>数组，对象，多种变量</td>
+<td><code>jsonxx.cpp, jsonxx.h</code></td>
+</tr>
+<tr>
+<td>输出器</td>
+<td>将 <code>AST</code> 部分按照固定格式写入文件</td>
+<td><code>JSON</code> 输出器，<code>XML</code> 输出器</td>
+<td><code>jsonx.cpp</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="三、OOP-分析"><a href="#三、OOP-分析" class="headerlink" title="三、OOP 分析"></a>三、OOP 分析</h2><h3 id="3-1-UML-类图分析"><a href="#3-1-UML-类图分析" class="headerlink" title="3.1 UML 类图分析"></a>3.1 UML 类图分析</h3><h4 id="3-1-1-整体-UML-图"><a href="#3-1-1-整体-UML-图" class="headerlink" title="3.1.1 整体 UML 图"></a>3.1.1 整体 UML 图</h4><p><img src="/posts/582ee379/jsonxx.png" alt="jsonxx"></p>
+<p>整体位于 <code>jsonxx</code> 的命名空间中，里面有多个类。</p>
+<h4 id="3-1-2-解析器-UML-图"><a href="#3-1-2-解析器-UML-图" class="headerlink" title="3.1.2 解析器 UML 图"></a>3.1.2 解析器 UML 图</h4><p><img src="/posts/582ee379/jsonxx-16558832845451.png" alt="jsonxx"></p>
+<p>主要包括两个部分</p>
+<ul>
+<li>解析类 <code>Parser</code> ：主要包括所有的解析函数和解析可行性检验函数，是用户直接接触的接口。其中的函数大多是“包装函数”，即并不在这里实现具体的解析功能，而是调用</li>
+<li>枚举设置类 <code>Setting</code>：用于设置解析时的功能状态</li>
+</ul>
+<p>必须承认，虽然在 UML 图上是一个工具类，但是在项目中呈现的形式却是一组函数（并不属于类），这里如此表达，是为了读者更好得理解（在类图上无法显示函数），之后的输出器依然有相似情况。</p>
+<h4 id="3-1-3-AST-UML-图"><a href="#3-1-3-AST-UML-图" class="headerlink" title="3.1.3 AST UML 图"></a>3.1.3 AST UML 图</h4><p><img src="/posts/582ee379/jsonxx-16558840754152.png" alt="jsonxx"></p>
+<p>该架构有较好的数学<strong>递归特性</strong>：</p>
+<ul>
+<li><code>Value</code>：这个类是所有 AST 节点必须实现，它包括最基本的构造函数、设置函数、解析函数、字符串转化函数。但是其实现更像是一种“抽象类”。</li>
+<li><code>Array</code>：这个类用来表现 <code>Json</code> 中的数组，其底层实现是一个 <code>Vector</code> 动态数组，每个元素都是一个 <code>Value</code></li>
+<li><code>Object</code>：这个类用来表示 <code>Json</code> 中的对象，其底层实现是一个 <code>map</code>，可以通过 <code>string</code> 的 <code>key</code> 查找 <code>Value</code> 的 <code>value</code>。</li>
+<li><code>Number</code> ：这个类用来表示 <code>Json</code> 中的整型数，不存在递归结构</li>
+<li><code>String</code>：这个类用来表示 <code>Json</code> 中的字符串，不存在递归结构</li>
+<li><code>Bool</code>：这个类用来表示 <code>Json</code> 中的字符串，不存在递归结构</li>
+<li><code>Null</code>：这个类用来表示 <code>Json</code> 中的空指针，不存在递归结构</li>
+</ul>
+<p>正是因为 <code>Array</code> 的元素和 <code>Object</code> 的属性可以是 <code>Value</code> ，使得整个数据结构呈现一种递归的树结构。</p>
+<h4 id="3-1-4-输出器-UML-图"><a href="#3-1-4-输出器-UML-图" class="headerlink" title="3.1.4 输出器 UML 图"></a>3.1.4 输出器 UML 图</h4><p><img src="/posts/582ee379/writer.png" alt="writer"></p>
+<ul>
+<li><code>Writer</code>：一个工具类，用于实现写入格式化文件的管理</li>
+<li><code>Json</code>：一个工具类，用于实现 <code>Json</code> 格式的输出</li>
+<li><code>Xml</code>：一个工具类，用于实现 <code>Xml</code> 格式的输出</li>
+<li><code>Format</code>：枚举类，用于控制写入文件的格式</li>
+</ul>
+<h3 id="3-2-封装性"><a href="#3-2-封装性" class="headerlink" title="3.2 封装性"></a>3.2 封装性</h3><p>这个项目的封装性实现的极好，这是因为其“轻量级”的需求所需求的，因为轻量，所以必须易懂，而易懂的前提就是暴露的结构要少，接口要简单，这两点该项目都实现的很好。</p>
+<h4 id="3-2-1-文件的封装"><a href="#3-2-1-文件的封装" class="headerlink" title="3.2.1 文件的封装"></a>3.2.1 文件的封装</h4><p>我从项目结构可以看出，因为只有两个文件，所以用户并不需要了解多个复杂的文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">E:.
+└─jsonxx
+        .gitignore
+        .travis.yml
+        circle.yml
+        jsonxx.cc
+        jsonxx.h
+        jsonxx_test.cc
+        Makefile
+        README.md<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于项目的编译和使用，也是有专门的 Makefile 和演示代码，极大的方便了用户的使用，代码示例如下</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">CXXFLAGS<span class="token operator">=</span>-Werror -Wall -g -std<span class="token operator">=</span>c++11
+
+<span class="token symbol">jsonxx_test</span><span class="token punctuation">:</span> jsonxx_test.cc jsonxx.o
+
+<span class="token symbol">jsonxx.o</span><span class="token punctuation">:</span> jsonxx.h jsonxx.cc
+
+<span class="token symbol">test</span><span class="token punctuation">:</span> jsonxx_test
+	./jsonxx_test
+
+<span class="token builtin">.PHONY</span><span class="token punctuation">:</span> clean
+<span class="token symbol">clean</span><span class="token punctuation">:</span>
+	rm -f jsonxx_test *.o *~<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-2-2-匿名命名空间的封装"><a href="#3-2-2-匿名命名空间的封装" class="headerlink" title="3.2.2 匿名命名空间的封装"></a>3.2.2 匿名命名空间的封装</h4><p>整个项目提供的接口都是用函数的形式提供的，并没有涉及到内部 <code>AST</code> 的数据结构，使用户可以在不了解解析的实现原理的情况下，很方便的使用这个程序。</p>
+<p>以下是该项目提供的接口：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">bool</span> <span class="token function">parse_array</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Array <span class="token operator">&amp;</span>array<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_bool</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Boolean <span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_comment</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_null</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_number</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Number <span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_object</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Object <span class="token operator">&amp;</span>object<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_string</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> String <span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_identifier</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> String <span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">parse_value</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Value <span class="token operator">&amp;</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>之所以有这种效果，除了与 <code>OOP</code> 的设计有关，这个项目还利用了命名空间的方法，利用<strong>匿名命名空间</strong>来实现不同文件间的屏蔽，其示例如下</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 匿名命名空间的意思是外部文件无法访问, 类似于全局 + static</span>
+<span class="token keyword">namespace</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">typedef</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span> byte<span class="token punctuation">;</span>
+
+    std<span class="token double-colon punctuation">::</span>string <span class="token function">escape_string</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">bool</span> quote <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">namespace</span> xml
+    <span class="token punctuation">{</span>
+
+        std<span class="token double-colon punctuation">::</span>string <span class="token function">escape_attrib</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>input<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token punctuation">}</span>
+
+        std<span class="token double-colon punctuation">::</span>string <span class="token function">escape_tag</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> format<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token punctuation">}</span>
+
+        std<span class="token double-colon punctuation">::</span>string <span class="token function">tag</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> format<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> depth<span class="token punctuation">,</span> <span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>name<span class="token punctuation">,</span> <span class="token keyword">const</span> jsonxx<span class="token double-colon punctuation">::</span>Value <span class="token operator">&amp;</span>t<span class="token punctuation">,</span> <span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>attr <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token function">string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// order here matches jsonxx::Format enum</span>
+        <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>defheader<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> 
+        <span class="token punctuation">{</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token comment">// namespace jsonxx::anon::xml</span>
+
+<span class="token punctuation">}</span> <span class="token comment">// namespace jsonxx::anon</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>被匿名命名空间包裹的代码段，只是本文件可见的，所以这个空间里有大量繁复而且命名方式不易于用户理解的函数和数据，都可以被隐藏起来。</p>
+<h4 id="3-2-3-类的封装"><a href="#3-2-3-类的封装" class="headerlink" title="3.2.3 类的封装"></a>3.2.3 类的封装</h4><p>类的封装的要点在于隐藏其中的数据细节，这点也在这个项目中有很好的的体现</p>
+<p>对于 <code>Array</code> 和 <code>Object</code> 来说，其主要的数据结构就是 <code>vector</code> 和 <code>map</code> ，如下所示</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Array</span>
+<span class="token keyword">typedef</span> std<span class="token double-colon punctuation">::</span>vector<span class="token operator">&lt;</span>Value <span class="token operator">*</span><span class="token operator">&gt;</span> container<span class="token punctuation">;</span>
+container values_<span class="token punctuation">;</span>
+
+<span class="token comment">// Object</span>
+<span class="token keyword">typedef</span> std<span class="token double-colon punctuation">::</span>map<span class="token operator">&lt;</span>std<span class="token double-colon punctuation">::</span>string<span class="token punctuation">,</span> Value <span class="token operator">*</span><span class="token operator">&gt;</span> container<span class="token punctuation">;</span>
+container value_map_<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>类方法并没有暴露这些数据结构的实现细节，而是面向用户的，提供用户方便理解的接口（比如将数据转换成特定格式的字符串，或者解析输入生成数据），示例如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 将数据转换成 json 格式</span>
+std<span class="token double-colon punctuation">::</span>string <span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token punctuation">;</span>
+<span class="token comment">// 将数据装转换成 xml 格式</span>
+std<span class="token double-colon punctuation">::</span>string <span class="token function">xml</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> format <span class="token operator">=</span> JSONx<span class="token punctuation">,</span> <span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>header <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token function">string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>attrib <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token function">string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token punctuation">;</span>
+<span class="token comment">// 将数据转换成规定格式</span>
+std<span class="token double-colon punctuation">::</span>string <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> format<span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token punctuation">;</span>
+<span class="token comment">// 解析输入流生成数据</span>
+<span class="token keyword">bool</span> <span class="token function">parse</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 解析字符串生成数据</span>
+<span class="token keyword">bool</span> <span class="token function">parse</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3-继承性"><a href="#3-3-继承性" class="headerlink" title="3.3 继承性"></a>3.3 继承性</h3><h4 id="3-3-1-自己构造的继承机制"><a href="#3-3-1-自己构造的继承机制" class="headerlink" title="3.3.1 自己构造的继承机制"></a>3.3.1 自己构造的继承机制</h4><p><strong>继承</strong>的特性主要体现在 <code>AST</code> 上，复杂的树结构可以抽象出公共的部分，这样达到化简代码，方便管理的目的。</p>
+<p>但是，我们的项目要求”轻量级“，继承会导致大量的函数重写（因为本质上 <code>Value</code> 发挥的是一个抽象类的作用），而为了实现函数的动态绑定，那么就会需要虚函数，而虚函数的实现依赖于虚函数表，这是一个很浪费内存和时间的结构，所以为了实现的更加轻巧，这个项目做了一个创新的设置，就是不直接利用 <code>CPP</code> 内置的继承机制，而是使用一种自己构造的方式来实现继承的功能。</p>
+<p>其实现方式如下，<code>Value</code> 维护两个变量，一个变量用于说明“子类”的种类，另一个变量用于指向具体工作的类。</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// type_ 应该是一个属性，这是一个匿名的枚举量，他有一个变量名为 type_</span>
+<span class="token keyword">enum</span>
+<span class="token punctuation">{</span>
+    NUMBER_<span class="token punctuation">,</span>
+    STRING_<span class="token punctuation">,</span>
+    BOOL_<span class="token punctuation">,</span>
+    NULL_<span class="token punctuation">,</span>
+    ARRAY_<span class="token punctuation">,</span>
+    OBJECT_<span class="token punctuation">,</span>
+    INVALID_
+<span class="token punctuation">}</span> type_<span class="token punctuation">;</span>
+<span class="token comment">// 指针，用于调用不同的类</span>
+<span class="token keyword">union</span>
+<span class="token punctuation">{</span>
+    Number number_value_<span class="token punctuation">;</span>
+    String <span class="token operator">*</span>string_value_<span class="token punctuation">;</span>
+    Boolean bool_value_<span class="token punctuation">;</span>
+    Array <span class="token operator">*</span>array_value_<span class="token punctuation">;</span>
+    Object <span class="token operator">*</span>object_value_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中 <code>type_</code> 用于说明“子类”的种类，而联合体 <code>union</code> 则负责指向对应的类的具体实现，<code>Value</code> 的方法大多呈现 <code>switch-case</code> 结构，这是因为需要根据 <code>type_</code> 来实现具体的函数调用（其本质是实现了一个高效的<strong>虚函数表</strong>）。示例如下</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token keyword">const</span> Value <span class="token operator">&amp;</span>other<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token operator">!=</span> <span class="token operator">&amp;</span>other<span class="token punctuation">)</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>other<span class="token punctuation">.</span>type_<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> NULL_<span class="token operator">:</span>
+                <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token function">Null</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> BOOL_<span class="token operator">:</span>
+                <span class="token keyword">import</span><span class="token punctuation">(</span>other<span class="token punctuation">.</span>bool_value_<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> NUMBER_<span class="token operator">:</span>
+                <span class="token keyword">import</span><span class="token punctuation">(</span>other<span class="token punctuation">.</span>number_value_<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> STRING_<span class="token operator">:</span>
+                <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token operator">*</span>other<span class="token punctuation">.</span>string_value_<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> ARRAY_<span class="token operator">:</span>
+                <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token operator">*</span>other<span class="token punctuation">.</span>array_value_<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> OBJECT_<span class="token operator">:</span>
+                <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token operator">*</span>other<span class="token punctuation">.</span>object_value_<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> INVALID_<span class="token operator">:</span>
+                type_ <span class="token operator">=</span> INVALID_<span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token operator">:</span>
+                <span class="token function">JSONXX_ASSERT</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token string">"not implemented"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-3-2-利用宏实现代码生成"><a href="#3-3-2-利用宏实现代码生成" class="headerlink" title="3.3.2 利用宏实现代码生成"></a>3.3.2 利用宏实现代码生成</h4><p>但是这样实现依然逃不开另一个问题，就是代码量会变多，相同的代码，对于 <code>Number</code> 需要实现一次，而对于 <code>String</code> 又需要实现一次，这样就会导致代码的冗余和不好维护，我们可以利用宏实现代码生成，示例如下</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token expression">$<span class="token function">number</span><span class="token punctuation">(</span>TYPE<span class="token punctuation">)</span>                                	 </span><span class="token punctuation">\</span>
+		<span class="token expression"><span class="token keyword">void</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token keyword">const</span> TYPE <span class="token operator">&amp;</span>n<span class="token punctuation">)</span>                       </span><span class="token punctuation">\</span>
+		<span class="token expression"><span class="token punctuation">{</span>                                                </span><span class="token punctuation">\</span>
+			<span class="token expression"><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                                     </span><span class="token punctuation">\</span>
+			<span class="token expression">type_ <span class="token operator">=</span> NUMBER_<span class="token punctuation">;</span>                             </span><span class="token punctuation">\</span>
+			<span class="token expression">number_value_ <span class="token operator">=</span> <span class="token generic-function"><span class="token function">static_cast</span><span class="token generic class-name"><span class="token operator">&lt;</span><span class="token keyword">long</span> <span class="token keyword">double</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span> </span><span class="token punctuation">\</span>
+		<span class="token expression"><span class="token punctuation">}</span></span></span>
+	$<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">long</span> <span class="token keyword">long</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">char</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">int</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">long</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span>
+    $<span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">long</span> <span class="token keyword">double</span><span class="token punctuation">)</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">undef</span> <span class="token expression">$number</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-4-多态性"><a href="#3-4-多态性" class="headerlink" title="3.4 多态性"></a>3.4 多态性</h3><h4 id="3-4-1-利用可重入实现多态性"><a href="#3-4-1-利用可重入实现多态性" class="headerlink" title="3.4.1 利用可重入实现多态性"></a>3.4.1 利用可重入实现多态性</h4><p>多态性指的是指为不同数据类型的实体提供统一的接口。 这里的方法大多都是由 <code>Value</code> 定义的，由于是<strong>自己实现的继承机制</strong>，所以就要求对于多态性也是提供自己的实现机制，即上文介绍过的 <code>switch-case</code> 模拟虚函数表。除了这种方法，还可以采用<strong>遍历</strong>和<strong>可重入</strong>结合的方法实现多态</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 这个方法会调用 value 各自的 parse，即多态</span>
+<span class="token keyword">bool</span> <span class="token function">parse_value</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Value <span class="token operator">&amp;</span>value<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">return</span> value<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 这里对每一种 value 都尝试解析，如果解析成功，那么就将结果存在 value 中</span>
+<span class="token comment">// 这是多态的实现</span>
+<span class="token keyword">bool</span> <span class="token class-name">Value</span><span class="token double-colon punctuation">::</span><span class="token function">parse</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Value <span class="token operator">&amp;</span>value<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    value<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    std<span class="token double-colon punctuation">::</span>string string_value<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_string</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> string_value<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>string_value_ <span class="token operator">=</span> <span class="token keyword">new</span> std<span class="token double-colon punctuation">::</span><span class="token function">string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        value<span class="token punctuation">.</span>string_value_<span class="token operator">-&gt;</span><span class="token function">swap</span><span class="token punctuation">(</span>string_value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> STRING_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_number</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> value<span class="token punctuation">.</span>number_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> NUMBER_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_bool</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> value<span class="token punctuation">.</span>bool_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> BOOL_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_null</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> NULL_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>input<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'['</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>array_value_ <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_array</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token operator">*</span>value<span class="token punctuation">.</span>array_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> ARRAY_<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">delete</span> value<span class="token punctuation">.</span>array_value_<span class="token punctuation">;</span>
+        value<span class="token punctuation">.</span>array_value_ <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    value<span class="token punctuation">.</span>object_value_ <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_object</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token operator">*</span>value<span class="token punctuation">.</span>object_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> OBJECT_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">delete</span> value<span class="token punctuation">.</span>object_value_<span class="token punctuation">;</span>
+    value<span class="token punctuation">.</span>object_value_ <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这一组 <code>parse_*</code> 函数都是<strong>可重入</strong>的函数，因为对于输入流，都有 <code>putback</code> 的操作：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">input<span class="token punctuation">.</span><span class="token function">putback</span><span class="token punctuation">(</span><span class="token operator">*</span>cur<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>所以经过多次遍历尝试，一定会完成合适的解析。</p>
+<hr>
+<h2 id="四、其他亮点"><a href="#四、其他亮点" class="headerlink" title="四、其他亮点"></a>四、其他亮点</h2><h3 id="4-1-函数重载与项目维护"><a href="#4-1-函数重载与项目维护" class="headerlink" title="4.1 函数重载与项目维护"></a>4.1 函数重载与项目维护</h3><p>函数重载指的是同名的函数因为参数不同所以可以被区分。我觉得函数重载的好处在于降低了用户的理解难度，增加了程序对于用户的鲁棒性（方便用户操作），比如说在下面的函数中：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">bool</span> <span class="token class-name">Value</span><span class="token double-colon punctuation">::</span><span class="token function">parse</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">parse</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">bool</span> <span class="token class-name">Value</span><span class="token double-colon punctuation">::</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>input<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    std<span class="token double-colon punctuation">::</span>istringstream <span class="token function">is</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">parse</span><span class="token punctuation">(</span>is<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">bool</span> <span class="token class-name">Value</span><span class="token double-colon punctuation">::</span><span class="token function">parse</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Value <span class="token operator">&amp;</span>value<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    value<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    std<span class="token double-colon punctuation">::</span>string string_value<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_string</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> string_value<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>string_value_ <span class="token operator">=</span> <span class="token keyword">new</span> std<span class="token double-colon punctuation">::</span><span class="token function">string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        value<span class="token punctuation">.</span>string_value_<span class="token operator">-&gt;</span><span class="token function">swap</span><span class="token punctuation">(</span>string_value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> STRING_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_number</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> value<span class="token punctuation">.</span>number_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> NUMBER_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_bool</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> value<span class="token punctuation">.</span>bool_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> BOOL_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_null</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> NULL_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>input<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">'['</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>array_value_ <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_array</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token operator">*</span>value<span class="token punctuation">.</span>array_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> ARRAY_<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">delete</span> value<span class="token punctuation">.</span>array_value_<span class="token punctuation">;</span>
+        value<span class="token punctuation">.</span>array_value_ <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    value<span class="token punctuation">.</span>object_value_ <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">parse_object</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token operator">*</span>value<span class="token punctuation">.</span>object_value_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        value<span class="token punctuation">.</span>type_ <span class="token operator">=</span> OBJECT_<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">delete</span> value<span class="token punctuation">.</span>object_value_<span class="token punctuation">;</span>
+    value<span class="token punctuation">.</span>object_value_ <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>三个 <code>parse</code> 函数可以接受一个参数或者两个参数，而且既可以接受字符流，也可以接受字符串。</p>
+<p>有意思的是，这三个函数呈现以下特征：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Wrapper</span>
+<span class="token keyword">bool</span> <span class="token class-name">Value</span><span class="token double-colon punctuation">::</span><span class="token function">parse</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">parse</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Wrapper</span>
+<span class="token keyword">bool</span> <span class="token class-name">Value</span><span class="token double-colon punctuation">::</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token keyword">const</span> std<span class="token double-colon punctuation">::</span>string <span class="token operator">&amp;</span>input<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    std<span class="token double-colon punctuation">::</span>istringstream <span class="token function">is</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">parse</span><span class="token punctuation">(</span>is<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">bool</span> <span class="token class-name">Value</span><span class="token double-colon punctuation">::</span><span class="token function">parse</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>istream <span class="token operator">&amp;</span>input<span class="token punctuation">,</span> Value <span class="token operator">&amp;</span>value<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token comment">// ... 具体实现</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只有一个函数涉及了具体的实现，其他函数只是这个函数的包装函数。这大大增加了项目的易维护性。结合示意图说明：</p>
+<p><img src="/posts/582ee379/重载维护.drawio.png" alt="重载维护.drawio"></p>
+<p>如果按照 <code>Bad Mode</code> 所示，那么每次维护都需要维护 3 个实现，而且三个实现都有几率出 bug，这就不利用程序的正常功能，而按照 <code>Good Mode</code> 所示，只需要维护 1 个实现。这就是 《Effective cpp》中说的</p>
+<blockquote>
+<p>要控制对原始资源的访问。</p>
+</blockquote>
+<h3 id="4-2-泛型与类型参数"><a href="#4-2-泛型与类型参数" class="headerlink" title="4.2 泛型与类型参数"></a>4.2 泛型与类型参数</h3><p>泛型可以大大提高代码生成的效率，他实际实现的是将数据结构和算法解偶联的一个功能。但是在这个项目里，它提供了另一种应用形式，就是将类型视为一个参数，通过这个参数调用不同的处理函数，也是十分有趣，可以看做是多态的一种补充，也可以看做是类型的一种传参，示例如下</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token operator">&gt;</span> <span class="token keyword">inline</span> <span class="token keyword">bool</span> Value<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">is</span><span class="token generic class-name"><span class="token operator">&lt;</span>Null<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> type_ <span class="token operator">==</span> NULL_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token operator">&gt;</span> <span class="token keyword">inline</span> <span class="token keyword">bool</span> Value<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">is</span><span class="token generic class-name"><span class="token operator">&lt;</span>Boolean<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> type_ <span class="token operator">==</span> BOOL_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token operator">&gt;</span> <span class="token keyword">inline</span> <span class="token keyword">bool</span> Value<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">is</span><span class="token generic class-name"><span class="token operator">&lt;</span>String<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> type_ <span class="token operator">==</span> STRING_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token operator">&gt;</span> <span class="token keyword">inline</span> <span class="token keyword">bool</span> Value<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">is</span><span class="token generic class-name"><span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> type_ <span class="token operator">==</span> NUMBER_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token operator">&gt;</span> <span class="token keyword">inline</span> <span class="token keyword">bool</span> Value<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">is</span><span class="token generic class-name"><span class="token operator">&lt;</span>Array<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> type_ <span class="token operator">==</span> ARRAY_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token operator">&gt;</span> <span class="token keyword">inline</span> <span class="token keyword">bool</span> Value<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">is</span><span class="token generic class-name"><span class="token operator">&lt;</span>Object<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> type_ <span class="token operator">==</span> OBJECT_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-3-运算符重载"><a href="#4-3-运算符重载" class="headerlink" title="4.3 运算符重载"></a>4.3 运算符重载</h3><p>其实运算符可以看做一种函数，只要稍微有点离散基础的人，都可以很好的理解这件事情。说一下声明格式：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">returnType <span class="token keyword">operator</span> <span class="token function">op</span><span class="token punctuation">(</span>argument<span class="token operator">-</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当对象使用重载运算符的时候，其实就是在使用第二行这个函数。</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">object op arguments<span class="token punctuation">;</span>
+ogject<span class="token punctuation">.</span><span class="token function">op</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在这个项目中，有如下示例</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 为了 Array 有一个特殊的输出函数</span>
+std<span class="token double-colon punctuation">::</span>ostream <span class="token operator">&amp;</span><span class="token keyword">operator</span><span class="token operator">&lt;&lt;</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>ostream <span class="token operator">&amp;</span>stream<span class="token punctuation">,</span> <span class="token keyword">const</span> jsonxx<span class="token double-colon punctuation">::</span>Array <span class="token operator">&amp;</span>v<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    stream <span class="token operator">&lt;&lt;</span> <span class="token string">"["</span><span class="token punctuation">;</span>
+    jsonxx<span class="token double-colon punctuation">::</span>Array<span class="token double-colon punctuation">::</span>container<span class="token double-colon punctuation">::</span>const_iterator
+        it <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        end <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>it <span class="token operator">!=</span> end<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        stream <span class="token operator">&lt;&lt;</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span>it<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token operator">++</span>it<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>it <span class="token operator">!=</span> end<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            stream <span class="token operator">&lt;&lt;</span> <span class="token string">", "</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> stream <span class="token operator">&lt;&lt;</span> <span class="token string">"]"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CPP%E8%AE%BE%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> CPP设计</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S4%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S4复习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/727e723/" rel="prev" title="吃喝玩乐-社文作业">
+      <i class="fa fa-chevron-left"></i> 吃喝玩乐-社文作业
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/8b373749/" rel="next" title="面向对象-大宗师">
+      面向对象-大宗师 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-text">一、基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%A7%88"><span class="nav-text">二、项目概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82"><span class="nav-text">2.1 项目需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84"><span class="nav-text">2.2 项目架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81OOP-%E5%88%86%E6%9E%90"><span class="nav-text">三、OOP 分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-UML-%E7%B1%BB%E5%9B%BE%E5%88%86%E6%9E%90"><span class="nav-text">3.1 UML 类图分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-%E6%95%B4%E4%BD%93-UML-%E5%9B%BE"><span class="nav-text">3.1.1 整体 UML 图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E8%A7%A3%E6%9E%90%E5%99%A8-UML-%E5%9B%BE"><span class="nav-text">3.1.2 解析器 UML 图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-AST-UML-%E5%9B%BE"><span class="nav-text">3.1.3 AST UML 图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-%E8%BE%93%E5%87%BA%E5%99%A8-UML-%E5%9B%BE"><span class="nav-text">3.1.4 输出器 UML 图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%B0%81%E8%A3%85%E6%80%A7"><span class="nav-text">3.2 封装性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E6%96%87%E4%BB%B6%E7%9A%84%E5%B0%81%E8%A3%85"><span class="nav-text">3.2.1 文件的封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E5%8C%BF%E5%90%8D%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E5%B0%81%E8%A3%85"><span class="nav-text">3.2.2 匿名命名空间的封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E7%B1%BB%E7%9A%84%E5%B0%81%E8%A3%85"><span class="nav-text">3.2.3 类的封装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%BB%A7%E6%89%BF%E6%80%A7"><span class="nav-text">3.3 继承性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-%E8%87%AA%E5%B7%B1%E6%9E%84%E9%80%A0%E7%9A%84%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6"><span class="nav-text">3.3.1 自己构造的继承机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-%E5%88%A9%E7%94%A8%E5%AE%8F%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90"><span class="nav-text">3.3.2 利用宏实现代码生成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E5%A4%9A%E6%80%81%E6%80%A7"><span class="nav-text">3.4 多态性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-%E5%88%A9%E7%94%A8%E5%8F%AF%E9%87%8D%E5%85%A5%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%80%81%E6%80%A7"><span class="nav-text">3.4.1 利用可重入实现多态性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%85%B6%E4%BB%96%E4%BA%AE%E7%82%B9"><span class="nav-text">四、其他亮点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E9%A1%B9%E7%9B%AE%E7%BB%B4%E6%8A%A4"><span class="nav-text">4.1 函数重载与项目维护</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E6%B3%9B%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0"><span class="nav-text">4.2 泛型与类型参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-text">4.3 运算符重载</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

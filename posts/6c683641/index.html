@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、一致性一致性（consistency）这个概念应该是来自于分布式理论的 CAP 理论  我觉得用人话来说就是对于多个观察者观察同一个事物，每个观察者观察到的现象是“相同的”，那么我们就认为这个设计具有“一致性”。“盲人摸象”就是一个非一致性的例子，对于同一个事物，盲人们分别给出了“柱子、山、石头”等描述，就是不具有一致性的案例。 一致性和并行编程联系紧密，因为一致性保证了多个并行的实体，他们看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成-内存一致性">
+<meta property="og:url" content="https://thysrael.github.io/posts/6c683641/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、一致性一致性（consistency）这个概念应该是来自于分布式理论的 CAP 理论  我觉得用人话来说就是对于多个观察者观察同一个事物，每个观察者观察到的现象是“相同的”，那么我们就认为这个设计具有“一致性”。“盲人摸象”就是一个非一致性的例子，对于同一个事物，盲人们分别给出了“柱子、山、石头”等描述，就是不具有一致性的案例。 一致性和并行编程联系紧密，因为一致性保证了多个并行的实体，他们看">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/0.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/2024-03-19_16-11.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency1.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency2.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency3.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/image-20240319223411641-17108588532272.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency4.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/v2-e9d42741df9e3e37d9322c8fcb686747_720w.webp">
+<meta property="og:image" content="https://thysrael.github.io/posts/6c683641/consistency5.png">
+<meta property="article:published_time" content="2024-03-19T02:14:56.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.056Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S8课上">
+<meta property="article:tag" content="计算机组成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/6c683641/0.jpg">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/6c683641/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>计算机组成-内存一致性 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/6c683641/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机组成-内存一致性
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-03-19 10:14:56" itemprop="dateCreated datePublished" datetime="2024-03-19T10:14:56+08:00">2024-03-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">计算机组成</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、一致性"><a href="#一、一致性" class="headerlink" title="一、一致性"></a>一、一致性</h2><p>一致性（consistency）这个概念应该是来自于分布式理论的 CAP 理论</p>
+<p><img src="/posts/6c683641/0.jpg" alt="CAP 理论"></p>
+<p>我觉得用人话来说就是对于<strong>多个观察者观察同一个事物</strong>，每个观察者观察到的现象是“相同的”，那么我们就认为这个设计具有“一致性”。“盲人摸象”就是一个非一致性的例子，对于同一个事物，盲人们分别给出了“柱子、山、石头”等描述，就是不具有一致性的案例。</p>
+<p>一致性和并行编程联系紧密，因为一致性保证了多个并行的实体，他们看到的共享资源是相同的。只有这样才能保证并行实体间的协作，如果实体看到的资源都是不一样的，比如说线程 A 给资源加了个锁，但是 B 没有看到这个锁，那么就会导致数据竞争的发生。盲人摸象的结局不正是因为盲人们对于大象的看法各执己见，最终大打出手吗？</p>
+<p>不过一致性中要求的“相同”，也并不意味着“完全一样”，因为“完全一样”并不好达到，比如说正常人去看大象，其实看到的同一个大象也是不同的，比如有人会看见大象的正脸，而有人看见了大象的屁股，白天去看的人和晚上去看的人看到的也不同，追求大家看到的都一样，其实是很困难的。但是大家却能根据看到的不同的大象确定那是同一个大象，这就足够了。</p>
+<p>在并行编程也是一样，“一致性”并非一个定性的概念，而是一个“定量”概念，有些设计是“严格一致性”的，那么大家看到的现象就是非常一致的，而“宽松一致性”会使得大家看到的现象不那么一致。不过并非在“宽松一致性”下就完全没法编程了，而只是说编程时要考虑的问题更多了，更容易出现 bug 了。</p>
+<p>“宽松一致性”的优点在于其他方面会更加有优势，也就是 CAP 中如果牺牲掉 C 这个特性，那么 AP 特性就都会得到增强。在并行编程方面，如果一致性弱的话，那么并行程度就会高，性能就会提升。</p>
+<hr>
+<h2 id="二、内存一致性模型"><a href="#二、内存一致性模型" class="headerlink" title="二、内存一致性模型"></a>二、内存一致性模型</h2><p>内存一致性指的是当内存成为共享资源时，也就是存在多个实体读取同一个内存时，每个实体所看到的内存具有一定的相似特征，使得这些实体之间可以进行协作，不至于产生数据竞争。</p>
+<p>上文提到的实体，其实有两种，一种是软件实体，他们由函数库提供，也就是“软件线程”；另一种是硬件实体，也就是共享内存的多个处理器核。软件线程可以看作是对应硬件多核的封装（当然即使是单核硬件也可以有软件多线程），它相比硬件多核的概念要更加简单和好理解，二者的关系如图：</p>
+<p><img src="/posts/6c683641/2024-03-19_16-11.png" alt="联系"></p>
+<p>我们这次的讨论主要集中于硬件多核处理器所面对的内存一致性模型。</p>
+<p>所以到底什么是“一致性模型”？我觉得它是一组规范或者说协议，它规定了多核处理器面对共享内存时可能出现的现象，软件开发者需要根据规范中的所有“一致”的情况，编写出正常运行的软件。需要强调的是，这里说的“一致”是在一致性模型中定义的“一致”，而不是完全符合直觉的“一致”。一致性模型中定义的“一致”，往往是比直觉中的“一致”要更加弱一些。</p>
+<p>为什么会存在这种差异呢？因为直觉中的“一致”过于理想了，这种理想就类似于让每个人看见的大象都是一模一样的，一致性越是符合直觉，硬件的开销就会越大，性能就会降低；但是如果一致性稍微弱一些，那么硬件的开销就会减少，性能就会提高，但是也会因为不符合人的直觉，导致软件的开销增大。</p>
+<p>我们将内存一致性模型问题定义得更形式化一点，也就是每一个处理器核都在向共享内存进行读写操作，我们需要给这些所有的读写操作线性排序，这个排好的序列对于每个处理器核应该是具有一致性的，也就是应该“差不多”。</p>
+<p>需要强调的是，内存一致性的一些概念和 CAP 一致性中的概念并不兼容，可能是由于他们分别是从不同的场景中演化出来的，所以有一些差异，但是核心是为了理解一致性本身。</p>
+<hr>
+<h2 id="三、严格模型"><a href="#三、严格模型" class="headerlink" title="三、严格模型"></a>三、严格模型</h2><h3 id="3-1-严格一致性"><a href="#3-1-严格一致性" class="headerlink" title="3.1 严格一致性"></a>3.1 严格一致性</h3><p>严格一致性（strict memory）是最为严格的一致性模型，它具有如下特点（也可能还有别的）：</p>
+<ul>
+<li>每个操作都是原子的</li>
+<li>操作在时间上满足全序关系，而且全序关系对每个核心都相同</li>
+<li>每个写操作都立刻对所有核心可见</li>
+<li>线程内操作保持原本的顺序，多个核心的操作可以相互交叉</li>
+</ul>
+<p>这个模型是超级理想的，其实实现起来非常困难。原子性实际实际上在说不允许有两个操作同时发生，全序关系完全相同就是对于“一致性”的描述。而每个写操作都需要同步到其他核心，这要求有一个强大的全局时钟和一个强大的通知机制，这也会导致开销超级大。</p>
+<p>它的示意图如下：</p>
+<p><img src="/posts/6c683641/consistency1.drawio.png" alt=""></p>
+<p>这个模型由于过于理想，所以在硬件层面并没有对应的实现。不过这个模型我个人觉得非常接近软件编程的中的内存一致性模型，只要有了这个模型，我们就可以基于此构造软件所，保证软件线程的协同工作。</p>
+<p>另外需要强调的是，这个模型虽然很理想了，但是看上去也很无序，比如所有核心可以随机交替运行，这一次的运行结果是 $A1 \rightarrow A2 \rightarrow B1 \rightarrow A3 \rightarrow B2 \rightarrow B3$ ，下一次的结果也可能是 $A1 \rightarrow B1 \rightarrow A2 \rightarrow B2 \rightarrow A3 \rightarrow B3$ 。并不能能说这种无序性是一种“不一致性”的体验</p>
+<h3 id="3-2-序列一致性"><a href="#3-2-序列一致性" class="headerlink" title="3.2 序列一致性"></a>3.2 序列一致性</h3><p>序列一致性（sequence memory，SC）相比于严格一致性较为宽松，相比于严格一致性，它不再要求“所有操作立刻可见”的特性，这就不需要全局时钟和通知机制了。其他要求和严格一致性相同，示意图如下：</p>
+<p><img src="/posts/6c683641/consistency2.png" alt=""></p>
+<p>“不再要求所有操作立刻全局可见”意味着不存在全局时钟，那么就会发生上图所描述的行为。明明实际上 $B1$ 先于 $A2$ ，但是在全局视角下，$A2$ 是先于 $B1$ 的。</p>
+<p>这种模型在现实中有一个很好的对照，那就是 Git，最终云端的提交记录历史中，并不是在本地的提交时间靠前，在云端的提交历史中就靠前，可能有的本地提交在时间上较晚，但是和云端同步较早，这样再最终的提交历史中就是比较靠前的。</p>
+<p>虽然放松了限制，但是这种模型依然是“过于理想”了，所以在现实的硬件中并没有这样的实现。这两种模型都被成为严格模型，基本上只出现在理论分析中。</p>
+<p>我们在分析中一般只讨论序列一致性，严格一致性都比较少提及，这是因为序列一致性相比于严格一致性，基本上只有优点而没有缺点，缺少全局时钟导致的核心间无序交织现象，在严格一致性中同样存在，严格一致性在内存模型中变得没有讨论的必要，但是这并不意味着在其他背景下二者没有分别。</p>
+<hr>
+<h2 id="四、宽松模型"><a href="#四、宽松模型" class="headerlink" title="四、宽松模型"></a>四、宽松模型</h2><h3 id="4-1-宽松"><a href="#4-1-宽松" class="headerlink" title="4.1 宽松"></a>4.1 宽松</h3><p>模型的宽松指的是有序性再度减少，这样的好处在于当有序性减少时，并行程度就会提高，性能就会提升，但是就需要软件编程人员更加耗费心力的编程。</p>
+<p>其实在严格模型中核心间已经是无序的了，如果更加无序，那么就是核心内的顺序发生更改，如图所示：</p>
+<p><img src="/posts/6c683641/consistency3.png" alt=""></p>
+<p>但是这其实有些反直觉了，因为我们都知道一个核心即使是乱序的，但是在提交的时候也要顺序提交，为什么这里却可以乱序呢？这是因为这里并不是提交而是访存，即使是顺序提交的，但是在访存的时候却可以是乱序的。</p>
+<p>而事实上，访存的时候真的是乱序的。因为在处理器内部，为了提高并行度，在 cache 之上增设了一层 store buffer 的结构，用于缓存 store 指令（也就是内存 write 指令），store buffer 作为一个 buffer，会在合适的时机将其中的指令应用到内存系统中，对于对同一地址的多次写操作可以合并，对于 load 指令可以先让它在 store buffer 中查找，如果没找到再去 cache 中查找，而且还不阻塞处理器流水线，是非常有用的结构。CPU 只需要保证，当 store 指令 commit 的时候，它已经被写入到 cache 中就可以了。如下所示：</p>
+<p><img src="/posts/6c683641/image-20240319223411641-17108588532272.png" alt="image-20240319223411641"></p>
+<p>Store buffer 结构的存在就真的会导致从观察者视角去看，访存出现了乱序。因为观察者只能看到 cache 和内存。我们举个例子，按照时间顺序：</p>
+<ol>
+<li>CPU 先执行一条 <code>store X</code> 被放在了 store buffer 中</li>
+<li>CPU 执行了一条 <code>load Y</code> 指令，因为在 store buffer 中没有找到，所以它在 cache 中查找</li>
+<li>放在 store buffer 中的 <code>store X</code> 指令写入了 cache</li>
+<li><code>store X</code> 指令被 commit</li>
+<li><code>load Y</code> 指令被 commit</li>
+</ol>
+<p>那么在这个 CPU 的视角下，是先 store 后 load，因为这是以 CPU 判断顺序时，是以 commit 顺序去看的。而如果是一个观察者去看，那么就会发现是先 load 后 store，因为观察者只能查看 cache 或者 memory，然后它就会发现这个 CPU 是先读了 cache，后写了 cache，所以是先 load 后 store。这里就会出现一个 $Write \rightarrow Read$ 的乱序，这都是因为 store buffer 会导致 store 并不能及时“落盘”到 cache 中。</p>
+<p>我突然意识到，其实“全局”或者“观察者”这个说法不是很好，应该说是其他 CPU，这样更具备实践意义。上面这个乱序的例子，就是 CPU A 告诉 CPU B，我执行的代码是：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">store X
+load Y<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>但是在其他 CPU 眼中看到的，却是：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">load Y
+store X<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这就很恐怖，因为编程人员习惯的是，如果代码是一行行写的，那么就应该一行行执行。</p>
+<p>总之，引入 store buffer 会出现了 4 种乱序形式（为了表达的方便，我们用 $X \rightarrow Y$ 来表示应该先 $X$ 后 $Y$）：</p>
+<ul>
+<li>乱序 $Write \rightarrow Read$：也就是原本应该先写后读，现在读指令提前了。这就是上文讲的例子，write 指令被 buffer 了。</li>
+<li>乱序 $Write \rightarrow Write$：写写乱序，这是因为 buffer 中可以有多个 write 指令，而落盘顺序和 commit 顺序不一致导致的。</li>
+<li>乱序 $Read \rightarrow Write$</li>
+<li>乱序 $Read \rightarrow Read$</li>
+</ul>
+<p>还需要强调的是，这里的乱序指令都是不存在数据依赖关系的，而且即使乱序，在单个核心上也不会出现乱序执行的效果（因为依然是顺序 commit）。程序员只会在多核编程的时候，感觉到其他核上跑的代码，是乱序执行的。</p>
+<h3 id="4-2-TSO-模型"><a href="#4-2-TSO-模型" class="headerlink" title="4.2 TSO 模型"></a>4.2 TSO 模型</h3><p>完全存储定序模型（Total Store Order）指的是仅可以进行  $Write \rightarrow Read$ 乱序，这种乱序基本上已经是最为严格的宽松模型了，但是依然会出现违反直觉的现象，如下所示：</p>
+<p><img src="/posts/6c683641/consistency4.png" alt=""></p>
+<p>上面这幅图画错了，TCO 中操作的顺序应该是 <code>B2 -&gt; A1 -&gt; A2 -&gt; B1</code> 。为什么 <code>A1</code> 和 <code>B1</code> 会移动到后面，是因为他们被放到了 store buffer 中，导致了他们分别在 <code>B2</code> 和 <code>A2</code> 之后。</p>
+<p>如果按照 SC 模型，那么 <code>data1, data2</code> 都会被读出一到二个会为 <code>NEW</code>，但是如果是 TCO 模型，那么很容易发生两个 <code>data</code> 都被读出 <code>INIT</code> 的情况。</p>
+<p>这种模型在实现上非常有意义，这意味着，如果 <code>READ</code> 了 <code>INIT</code> 值后，等待提交（commit）时，此时有一个来自其他 CPU Core 的 <code>WRITE</code> 指令更新了值为 <code>NEW</code>，按照 SC 模型，应该取消那条 <code>READ</code> 指令并重新执行，但是这样就会导致开销过大，所以我们如果不取消，那么就得到了 TSO 模型。</p>
+<h3 id="4-3-PSO-模型"><a href="#4-3-PSO-模型" class="headerlink" title="4.3 PSO 模型"></a>4.3 PSO 模型</h3><p>部分存储定序模型（Partial Store Order）指的是可以进行 $Write \rightarrow Read$ 和 $Write \rightarrow Write$ 乱序。如果进一步放松，会得到其他模型。</p>
+<h3 id="4-4-屏障指令"><a href="#4-4-屏障指令" class="headerlink" title="4.4 屏障指令"></a>4.4 屏障指令</h3><p>宽松模型会导致编程难度极具增加，不过其实也不是那么危险，我们保证不发生数据竞争，并不需要在编程的时候时时刻刻注意，我们只需要在一些关键部位小心即可，如下所示，只要在进入和退出临界区的时候注意一下，基本上我们就可以享受宽松模型带来的高效率了。</p>
+<p><img src="/posts/6c683641/v2-e9d42741df9e3e37d9322c8fcb686747_720w.webp" alt="img"></p>
+<p>不过临界区的多线程协作怎么实现呢？硬件其实提供了一种指令来避免乱序行为，也就是“屏蔽指令”。它就像是不可逾越的屏障，后面的read/write 绝不允许越过屏障指令前执行。当然面前的 read/write 也不能越界到它的后面执行。但是屏蔽指令前面的 read/write 操作怎么乱序就管不着了，同样屏蔽指令后面的 read/write 操作也管不着。</p>
+<p><img src="/posts/6c683641/consistency5.png" alt=""></p>
+<p>屏障指令就像是一种保障，它告诉其他 CPU 核心，在 barrier 指令执行之前，我已经将 store buffer 中的指令都“落盘”啦，你们不用担心呀</p>
+<p>此外，屏障指令也可以被理解成同步指令，所谓的同步，就是让每个核心的看到的共享内存都变得一致（事实上是不一定的，这是因为每个核心都有私有缓存，可能有些写操作还没有作用到内存）。至于为什么屏障有这个能力，这是因为屏障要求所有在屏障指令前的指令都必须在屏障指令前发生作用，这使的屏障指令可以起到强制更新的作用。</p>
+<p>我们用 Java 来举个例子（JVM 怎么不能算是一种硬件架构呢？）：</p>
+<p>如果一个变量由 <code>volatile</code> 修饰，Java 内存模型（JMM）将在对这个变量的写操作后插入一个写屏障指令（同步到共享内存），在读操作前插入一个读屏障指令。这意味着如果你对一个 <code>volatile</code> 变量进行写操作，你必须知道：</p>
+<ol>
+<li>一旦你完成写入，任何访问这个字段的线程将会得到最新的值。</li>
+<li>在你写入前，会保证所有之前发生的事已经发生，并且任何更新过的数据值也是可见的，因为内存屏障会把之前的写入值都刷新到缓存。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S8%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S8课上</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" rel="tag"><i class="fa fa-tag"></i> 计算机组成</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/680ca445/" rel="prev" title="语言高阶-转义字符">
+      <i class="fa fa-chevron-left"></i> 语言高阶-转义字符
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/52d3ca8/" rel="next" title="硬件平台-Trampoline">
+      硬件平台-Trampoline <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">一、一致性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%86%85%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-text">二、内存一致性模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%9E%8B"><span class="nav-text">三、严格模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%B8%A5%E6%A0%BC%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">3.1 严格一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%BA%8F%E5%88%97%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">3.2 序列一致性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%AE%BD%E6%9D%BE%E6%A8%A1%E5%9E%8B"><span class="nav-text">四、宽松模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%AE%BD%E6%9D%BE"><span class="nav-text">4.1 宽松</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-TSO-%E6%A8%A1%E5%9E%8B"><span class="nav-text">4.2 TSO 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-PSO-%E6%A8%A1%E5%9E%8B"><span class="nav-text">4.3 PSO 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E5%B1%8F%E9%9A%9C%E6%8C%87%E4%BB%A4"><span class="nav-text">4.4 屏障指令</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

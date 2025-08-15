@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、寄存器与内存1.1 字节与字关于对字（word）的理解，我又有了新的认识，word是一种操作单位，而且是最常见的操作单位（不是最小的），内存的地址是用一个字（32位二进制数）来表示的，一条指令的长度是一个字，寄存器的大小也是一个字，立即数的大小也是一个字，甚至对于那些不足一个字长度的数据，我们都需要给它补齐，然后再对它进行操作。所以字最大的特点就是它的通用性。 那么什么是字节（byte）呢？字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成-MIPS汇编">
+<meta property="og:url" content="https://thysrael.github.io/posts/43a376bd/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、寄存器与内存1.1 字节与字关于对字（word）的理解，我又有了新的认识，word是一种操作单位，而且是最常见的操作单位（不是最小的），内存的地址是用一个字（32位二进制数）来表示的，一条指令的长度是一个字，寄存器的大小也是一个字，立即数的大小也是一个字，甚至对于那些不足一个字长度的数据，我们都需要给它补齐，然后再对它进行操作。所以字最大的特点就是它的通用性。 那么什么是字节（byte）呢？字">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/43a376bd/image-20211007213120086.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/43a376bd/image-20211007214104034.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/43a376bd/image-20211007214531391.png">
+<meta property="article:published_time" content="2022-01-15T16:39:46.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.052Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S3课上">
+<meta property="article:tag" content="计算机组成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/43a376bd/image-20211007213120086.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/43a376bd/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>计算机组成-MIPS汇编 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/43a376bd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机组成-MIPS汇编
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 00:39:46" itemprop="dateCreated datePublished" datetime="2022-01-16T00:39:46+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">计算机组成</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、寄存器与内存"><a href="#一、寄存器与内存" class="headerlink" title="一、寄存器与内存"></a>一、寄存器与内存</h2><h3 id="1-1-字节与字"><a href="#1-1-字节与字" class="headerlink" title="1.1 字节与字"></a>1.1 字节与字</h3><p>关于对<strong>字</strong>（word）的理解，我又有了新的认识，word是一种操作单位，而且是最常见的操作单位（不是最小的），内存的地址是用一个字（32位二进制数）来表示的，一条指令的长度是一个字，寄存器的大小也是一个字，立即数的大小也是一个字，甚至对于那些不足一个字长度的数据，我们都需要给它<strong>补齐</strong>，然后再对它进行操作。所以字最大的特点就是它的<strong>通用性</strong>。</p>
+<p>那么什么是<strong>字节</strong>（byte）呢？字节是<strong>指令集</strong>的<strong>最小单位</strong>。这个观点是花了很久才意识到的，因为我知道数据是按二级制表示的，那么如果把<strong>位</strong>（bit）作为最小单位，岂不是理所当然。但其实就是不是的，这可能是因为我们需要<strong>更简洁更优雅</strong>的指令抽象，所以就舍弃了对单独一个位的操作，就好像数字电路舍弃了<strong>异步</strong>和<strong>连续</strong>一样。注意，字节不但是操作的最小单位（可能不准确，我还没想到太明显的操作字节的指令），而且是指令集的最小单位，比如我们说<strong>0x00000000</strong>和<strong>0x00000001</strong>这两个地址差1，那么这个1就是“1个字节”，也就是这两个地址之间差了8个bit。而不是1个bit。再比如说，我们都说int是4字节，char是1字节，我们从来不说int是32位，char是8位，可见更高层次抽象的高级语言，就更不把位当回事请了。</p>
+<p>然后我们还需要一些直观的认识，一个字节是8bit，也就是说，他的能表示256个不同的状态，如果写成一个十六进制数，那么他可以表示任何一个<strong>两位</strong>的十六进制数，也就是长成这个样子 <strong>XX</strong>。在MIPS中，一个word是由四个字节组成的，也就是说，我们去写一个十六进制数，它应该长成这个样子 <strong>0x XX_XX_XX_XX</strong> 。一个word的大小是跟一个int一样大的，同时，它跟MIPS中的立即数是一样大的，也就是说，一个word刚好能存一个数字（开数组的时候会用到）。但是可以存4个字符，这是因为字符只占一个字节。</p>
+<p>因为字符是四分之一word，所以就造成数据存储的时候可能就会不规整了，就好像原本严丝合缝的砖之间突然了一堆碎石子，就没办法规整了。没有办法规整导致的后果就是我们极可能错误操作，所以一定要把字符串留到最后写（先写数组，这样就相当于先砌墙，后堆沙子），甚至需要多打几个空格。</p>
+<h3 id="1-2-大端与小端"><a href="#1-2-大端与小端" class="headerlink" title="1.2 大端与小端"></a>1.2 大端与小端</h3><p>所谓的<strong>大端模式（Big-endian）</strong>，是指数据的高字节，保存在内存的低地址中，而数据的低字节，保存在内存的高地址中。所谓的<strong>小端模式（Little-endian）</strong>，是指数据的高字节保存在内存的高地址中，而数据的低字节保存在内存的低地址中，这种存储模式将地址的高低和数据位权有效地结合起来，高地址部分权值高，低地址部分权值低，和我们的<strong>逻辑方法一致</strong>。</p>
+<p>那么MIPS中是怎样的呢？首先我们需要明白MARS中地址的显示方法。我们运行下面的代码：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.data
+str: .ascii "12345678"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>得到的结果是这样的</p>
+<p><img src="/posts/43a376bd/image-20211007213120086.png" alt="image-20211007213120086"></p>
+<p>也就是说，MARS对地址的显示方式，在一个字内是逆序的，在字之间是顺序的，如下图</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>一</th>
+<th>0x00000003</th>
+<th>0x00000002</th>
+<th>0x00000001</th>
+<th>0x00000000</th>
+<th>二</th>
+<th>0x00000007</th>
+<th>0x00000006</th>
+<th>0x00000005</th>
+<th>0x00000004</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>然后我们运行下面代码来检测MIPS的大小端问题</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.data
+num: .space 4
+
+.text
+li $t1, 0x11223344
+sw $t1, num<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>得到的结果如图</p>
+<p><img src="/posts/43a376bd/image-20211007214104034.png" alt="image-20211007214104034" style="zoom:200%;"></p>
+<p>也就是说，高位的11，被存在了0x00000003，低位的44被存在了0x00000000。所以MIPS是小端存储。</p>
+<p>小端存储对于数字来说是自然的，但是对于字符串，就是逆序的。比如储存 “love”，会得到如下结果：</p>
+<p><img src="/posts/43a376bd/image-20211007214531391.png" alt="image-20211007214531391" style="zoom: 200%;"></p>
+<h3 id="1-3-寄存器为主"><a href="#1-3-寄存器为主" class="headerlink" title="1.3 寄存器为主"></a>1.3 寄存器为主</h3><p><strong>寄存器为主</strong>是一种MIPS指令集给我的直观感受。第一、有很多指令都是以寄存器为<strong>对象</strong>的，比如<strong>lw</strong>，就是将内存的内容加载到<strong>寄存器</strong>中，<strong>sw</strong>就是将<strong>寄存器</strong>中的数据存到内存中，<strong>li</strong>就是将立即数加载到<strong>寄存器</strong>中。第二、对寄存器的<strong>操作最多</strong>，我们可以复制一个寄存器中的值到另一个寄存器，可以给寄存器一个立即数，可以运算寄存器中的值，这些都是内存实现不了的。所以在设计的时候，不仅在速度上，寄存器更加占优势，而且在指令集完备性上，寄存器也远远优于内存。</p>
+<hr>
+<h2 id="二、汇编语言细节"><a href="#二、汇编语言细节" class="headerlink" title="二、汇编语言细节"></a>二、汇编语言细节</h2><h3 id="2-1-寄存器的数字表示"><a href="#2-1-寄存器的数字表示" class="headerlink" title="2.1 寄存器的数字表示"></a>2.1 寄存器的数字表示</h3><p>在MIPS中，寄存器都是用5位二进制数表示的，刚好对应<strong>32个通用寄存器</strong>。还是十分合理的。</p>
+<h3 id="2-2-首地址"><a href="#2-2-首地址" class="headerlink" title="2.2 首地址"></a>2.2 首地址</h3><p>当我们进行load和store操作的时候，操作的都是一个数据段，但是这些语句的操作数都是一个<strong>地址</strong>，那么数据<strong>段</strong>和地址对应的<strong>点</strong>是怎样对应起来的呢？是这样的，以lw为例，他修改的以address到address+4的地址，也就是说，address是数据段的<strong>首地址</strong>。</p>
+<p>在lh，lb指令中，加载的数据段是半个或者四分之一个word，那么就会涉及拓宽数据的问题，这些拓宽都是<strong>符号拓展</strong>。</p>
+<h3 id="2-3-变量的作用范围"><a href="#2-3-变量的作用范围" class="headerlink" title="2.3 变量的作用范围"></a>2.3 变量的作用范围</h3><p>汇编的所有变量都是<strong>全局可见</strong>的，从这个角度讲，无论这个变量是存在寄存器，还是内存，都是符合<strong>全局变量</strong>概念的。我在这里不想讨论高级语言的<strong>全局变量</strong>和<strong>局部变量</strong>在MIPS上与内存，栈之类结构的对应关系。我想要讨论的是我们在实现算法的时候，需要的变量的不同特点。我们既需要那种对全局可见的，很稳定的（比如图的顶点个数，数据的组数和大小）变量，算法意义上的 <strong>“全局变量”</strong>。又需要生命周期很短的，随叫随到的，不会对其他值造成影响的变量（比如迭代变量i），算法意义上的 <strong>局部变量</strong>。这些东西，现在感觉还是都放在寄存器中吧。太过于微妙的把握我还不太清楚。</p>
+<p>对于“局部变量”，一定要注意每次使用前，初值对不对，就好像要每次使i的时候都要赋初值一样。</p>
+<hr>
+<h2 id="三、汇编流控制"><a href="#三、汇编流控制" class="headerlink" title="三、汇编流控制"></a>三、汇编流控制</h2><h3 id="3-1-总论"><a href="#3-1-总论" class="headerlink" title="3.1 总论"></a>3.1 总论</h3><p>流控制有两个我认为比较重要的特点，一个是<strong>标签</strong>的使用，因为<strong>汇编的流控制</strong>本质上没有循环，分支判断、函数调用，所以<strong>跳转</strong>就是唯一控制流的方法，<strong>跳转</strong>最重要的参数就是地址，进而就是<strong>标签</strong>，我们把常见的高级语言翻译成汇编的时候，一定要注意需要<strong>设置几个标签</strong>，<strong>标签设置的位置</strong>。而不是局限于跳转的指令是哪一个。</p>
+<p>另一个是对<strong>高级语言的抽象</strong>。有时候，其实用汇编直接写，要比翻译高级语言要好（在函数调用方面很明显），但是我们还是要翻译，这就是<strong>抽象简洁性原则</strong>。</p>
+<h3 id="3-2-if-结构"><a href="#3-2-if-结构" class="headerlink" title="3.2 if 结构"></a>3.2 if 结构</h3><p>if结构只有一个需要打标签的地方，就是在if语句的结尾，这不难理解，因为跳转的目的是跳过if的内容，实现<strong>满足条件则执行</strong></p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.text
+li $t0 1
+li $t1 2
+
+slt $t2, $t0, $t1
+beqz $t2 if_end #如果t0 &lt; t1，执行if语句 
+nop
+#if_statement
+li $v0, 1
+move $a0, $t0
+syscall
+
+if_end:<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，只有一个标签，就是if_end，5-7行是if表达式的判断，9-11行是if执行的内容。</p>
+<h3 id="3-3-if-else-结构"><a href="#3-3-if-else-结构" class="headerlink" title="3.3 if-else 结构"></a>3.3 if-else 结构</h3><p>if-else与if不同，它除了分支语句（b打头的指令），还需要跳转指令（j打头的指令），是因为执行完if的内容后，还需要跳过else的内容。下面是一个求绝对值并输出的程序。</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.text
+li $t0 1
+li $t1 2
+
+slt $t2, $t0, $t1
+beqz $t2 else  #如果t0 &lt; t1，执行if语句 
+nop
+
+#if_statement
+sub $t3, $t1, $t0
+j if_end #这里比单纯的if多了一个跳转
+
+#else_statement
+else:
+sub $t3, $t0, $t1
+
+if_end:
+li $v0, 1
+move $a0, $t3
+syscall<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，一共需要两个标签。else标签用于分支到else语句，if_end标签用于在执行完if_statement以后，跳过else_statement，所以一共是两个标签，不可以忘记一个。</p>
+<h3 id="3-4-for-循环"><a href="#3-4-for-循环" class="headerlink" title="3.4 for 循环"></a>3.4 for 循环</h3><p>关于for循环，还是有很多易错点的，让我们先看一个简单的for循环，用于计算1-10累加求和。</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.text
+#i = 1
+li $t0, 1
+for_begin:
+sle $t1, $t0, 10
+beqz $t1, for_end
+#for_statement
+add $s0, $s0, $t0
+
+#i++
+addi $t0, $t0, 1
+j for_begin
+
+for_end:
+li $v0, 1
+move $a0, $s0
+syscall<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们看到，这里用了for_begin、for_end两个标签，一个分支指令，一个跳转指令。需要注意的是，for_begin的位置要在给迭代变量赋初值之后，不然的话，就会每次都给i赋初值，无法走出循环。</p>
+<p>当程序变得复杂的时候，比如计算1-10中偶数累加的时候：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.text
+li $t0, 1
+for_begin:
+sle $t1, $t0, 10
+beqz $t1, for_end
+#for_statement
+andi $t2, $t0, 1 #偶数t2就是0，奇数t2就是1
+bgtz $t2, if_end #这个bgtz可以用来跟beqz对比，是逻辑判断的对照
+nop
+#if_statement
+add $s0, $s0, $t0
+
+if_end:
+#i++
+addi $t0, $t0, 1
+j for_begin
+
+for_end:
+li $v0, 1
+move $a0, $s0
+syscall<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里要思考的就是，if_end应该出现在哪里，是跟for_end重合吗？不是，而是要出现在i++之前。道理很简单，但是我经常记不住。</p>
+<h3 id="3-5-函数调用"><a href="#3-5-函数调用" class="headerlink" title="3.5 函数调用"></a>3.5 函数调用</h3><h4 id="3-5-1-块思想"><a href="#3-5-1-块思想" class="headerlink" title="3.5.1 块思想"></a>3.5.1 块思想</h4><p>我们首先来一个简单的sum函数，并且用<strong>最快捷</strong>（不是最规范）的方法实现它。</p>
+<p>C语言原型如下：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">int</span> tmp <span class="token operator">=</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+	<span class="token keyword">return</span> tmp<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> ans <span class="token operator">=</span> <span class="token function">sum</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> ans<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>错误的汇编代码如下:</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.text
+#main
+li $s0, 2
+li $s1, 3
+
+jal sum
+
+li $v0, 1
+move $a0, $s2
+syscall
+
+sum:
+add $s2, $s0, $s1 
+jr $ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因为代码是<strong>顺序执行</strong>的，所以如果把sum写在下面的话，在执行完main以后，还会自动执行sum，然后就陷入死循环了。</p>
+<p>我们又两种解决办法，一个是把sum提到main之前，但是这种方法不本质，因为造成bug的原因是我们默认程序结束是在最后一行代码，这在编程中是不太方便的，不如我们自己调用命令使程序结束，这样才本质，修改如下：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.macro end
+li $v0, 10
+syscall
+.end_macro
+
+.text
+li $s0, 2
+li $s1, 3
+#函数调用过程
+jal sum
+
+li $v0, 1
+move $a0, $s2
+syscall
+
+end
+
+sum:
+add $s2, $s0, $s1 
+jr $ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样的18-20行，才是真正的函数体，我们规定了入口和出口，只有按照我们规定的方法才能进入和出去的<strong>程序块</strong>（不会因为顺序执行而进入）。</p>
+<h4 id="3-5-2-复用思想"><a href="#3-5-2-复用思想" class="headerlink" title="3.5.2 复用思想"></a>3.5.2 复用思想</h4><p>但是写好了<strong>程序块</strong>，是不是就意味着写好了函数的功能了呢？其实没有，因为我们没有办法实现<strong>代码的复用</strong>，比如C程序</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">int</span> tmp <span class="token operator">=</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+	<span class="token keyword">return</span> tmp<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> d <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">int</span> ans1 <span class="token operator">=</span> <span class="token function">sum</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d\n"</span><span class="token punctuation">,</span> ans1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> ans2 <span class="token operator">=</span> <span class="token function">sum</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d\n"</span><span class="token punctuation">,</span> ans2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>按道理，这个是可以复用sum的代码的，这也是函数最大的功能，但是我们原来的那个函数操作的是s0，s1，s2，显然没有办法操作其他寄存器，所以为了复用代码，就必须引入<strong>传参</strong>的技术，也就是函数能用的数都是形参寄存器（a0-a3）传给他的。</p>
+<p>有完整代码：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.macro end
+li $v0, 10
+syscall
+.end_macro
+
+.macro printStr(%str)
+la $a0, %str
+li $v0, 4
+syscall
+.end_macro
+
+.data
+space: .asciiz " "
+
+.text
+li $s0, 2
+li $s1, 3
+li $s2, 4
+li $s3, 5
+
+move $a0, $s0 #传参
+move $a1, $s1
+jal sum
+move $s4, $v0 #获得返回值
+
+li $v0, 1
+move $a0, $s4
+syscall
+
+printStr(space)
+
+move $a0, $s2
+move $a1, $s3
+jal sum
+move $s5, $v0
+
+li $v0, 1
+move $a0, $s5
+syscall
+
+end
+
+sum:
+#传参过程
+move $t0, $a0
+move $t1, $a1
+#函数过程
+add $v0 $t0, $t1
+jr $ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，这样就实现了代码的复用，另外，a0-a3只是我们规定的，用其他的寄存器或者内存存，都可以，当超过4个参数的时候，我们就用栈空间内存存，这是因为相比于普通内存，栈是有寿命的，我们希望形参是个有寿命的变量。</p>
+<h4 id="3-5-1-恢复思想"><a href="#3-5-1-恢复思想" class="headerlink" title="3.5.1 恢复思想"></a>3.5.1 恢复思想</h4><p>那么这样是不是函数功能就完善了呢，我们说不是的，因为函数还有一个重要的功能是不对函数体外的变量造成不必要的影响，比如我们有这样一个C程序</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">int</span> tmp <span class="token operator">=</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+	<span class="token keyword">return</span> tmp<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> sum1 <span class="token operator">=</span> <span class="token function">sum</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> sum2 <span class="token operator">=</span> <span class="token function">sum</span><span class="token punctuation">(</span>sum1<span class="token punctuation">,</span> c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> sum2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码如果翻译成汇编，有可能会造成错误，以下是错误代码</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.macro end
+li $v0, 10
+syscall
+.end_macro
+
+.text
+li $s0, 2
+li $s1, 3
+li $t0, 4
+
+move $a0, $s0 #传参
+move $a1, $s1
+jal sum
+move $s4, $v0 #获得返回值
+
+move $a0, $s4
+move $a1, $t0
+jal sum
+move $s5, $v0
+
+li $v0, 1
+move $a0, $s5
+syscall
+
+end
+
+sum:
+#传参过程
+move $t0, $a0 #t0被修改了
+move $t1, $a1
+#函数过程
+add $v0 $t0, $t1
+jr $ra
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出的答案是7，而不是9，这是因为我们储存c的寄存器是t0，而t0在sum函数中被修改了，所以就不行了。所以我们需要保证函数不会对外部造成影响，方法就是应用栈。</p>
+<p><strong>栈的作用是保存和恢复函数使用的寄存器，函数应该计算返回值，但不应该产生其他的负面影响。</strong></p>
+<p>那么其实有两种使用栈的位置，第一种是在调用函数前，这种被称为<strong>调用者保存</strong>（在这里就是在main里面出入栈）：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.macro end
+li $v0, 10
+syscall
+.end_macro
+
+.text
+li $s0, 2
+li $s1, 3
+li $t0, 4
+
+move $a0, $s0 #传参
+move $a1, $s1
+sw $t0, 0($sp) #入栈
+addi $sp, $sp, -4
+jal sum
+addi $sp, $sp, 4 #出栈
+lw $t0, 0($sp) 
+move $s4, $v0 #获得返回值
+
+move $a0, $s4
+move $a1, $t0
+sw $t0, 0($sp) #入栈
+addi $sp, $sp, -4
+jal sum
+addi $sp, $sp, 4 #出栈
+lw $t0, 0($sp)
+move $s5, $v0
+
+li $v0, 1
+move $a0, $s5
+syscall
+
+end
+
+sum:
+#传参过程
+move $t0, $a0
+move $t1, $a1
+#函数过程
+add $v0 $t0, $t1
+jr $ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另一种是<strong>被调用者保存</strong>（在sum里出入栈）</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.macro end
+li $v0, 10
+syscall
+.end_macro
+
+.text
+li $s0, 2
+li $s1, 3
+li $t0, 4
+
+move $a0, $s0 #传参
+move $a1, $s1
+jal sum
+move $s4, $v0 #获得返回值
+
+move $a0, $s4
+move $a1, $t0
+jal sum
+move $s5, $v0
+
+li $v0, 1
+move $a0, $s5
+syscall
+
+end
+
+sum:
+#入栈过程
+sw $t0, 0($sp)
+addi $sp, $sp, -4
+#传参过程
+move $t0, $a0
+move $t1, $a1
+#函数过程
+add $v0 $t0, $t1
+#出栈过程
+addi $sp, $sp, 4
+lw $t0, 0($sp)
+#return
+jr $ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>关于这两种方法哪一个更好，其实是涉及对寄存器种类的划分的，是更加严谨的编程思想，有的时候是两种方法都需要用的，但是现在作为一个初学者，我觉得被调用者保存更好，因为这样的代码的复用率更高，而且只有在编写<strong>被调用函数</strong>体的时候，才能判断哪些寄存器需要保存和恢复，在写<strong>调用者函数</strong>的时候，是没办法判断哪些寄存器要保存和恢复。</p>
+<h3 id="3-6-嵌套函数调用"><a href="#3-6-嵌套函数调用" class="headerlink" title="3.6 嵌套函数调用"></a>3.6 嵌套函数调用</h3><p>嵌套函数调用最重要的技术就是<strong>用栈保存跳转地址</strong>。我们来看一段C程序</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">return</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">cal</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">return</span> a <span class="token operator">-</span> <span class="token function">sum</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> ans <span class="token operator">=</span> <span class="token function">cal</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> and<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们按原来的理解将其翻译为汇编，会得到错误代码</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.macro end
+li $v0, 10
+syscall
+.end_macro
+
+.text
+li $s0, 2
+li $s1, 3
+
+move $a0, $s0
+move $a1, $s1
+jal cal
+move $s5, $v0
+
+li $v0, 1
+move $a0, $s5
+syscall
+
+end
+
+sum:
+#传参过程
+move $t0, $a0
+move $t1, $a1
+#函数过程
+add $v0 $t0, $t1
+#return
+jr $ra
+
+cal:
+#传参过程
+move $t0, $a0
+move $t1, $a1
+#调用sum的过程
+move $a0, $t1
+move $a1, $t0
+jal sum
+move $t2, $v0
+#运算a-sum(b, a)
+sub $v0, $t0, $t2 
+#return
+jr $ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码会陷入死循环，是因为寄存器ra中存在的值，在调用完sum以后会变为指向第38行，然后第42行跳转的时候，就会跳到38行，然后到了42行又跳回38行，如此循环，所以我们发现，一旦一个函数不是<strong>叶子函数</strong>，就需要保存和恢复ra。所以有正确代码：</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.macro end
+li $v0, 10
+syscall
+.end_macro
+
+.text
+li $s0, 2
+li $s1, 3
+
+move $a0, $s0
+move $a1, $s1
+jal cal
+move $s5, $v0
+
+li $v0, 1
+move $a0, $s5
+syscall
+
+end
+
+sum:
+#将t0和t1入栈
+sw $t0, 0($sp)
+addi $sp, $sp, -4
+sw $t1, 0($sp)
+addi $sp, $sp, -4
+#传参过程
+move $t0, $a0
+move $t1, $a1
+#函数过程
+add $v0 $t0, $t1
+#将t0和t1出栈
+addi $sp, $sp, 4
+lw $t1, 0($sp) 
+addi $sp, $sp, 4
+lw $t0, 0($sp) 
+#return
+jr $ra
+
+cal:
+#将ra入栈
+sw $ra, 0($sp)
+addi $sp, $sp, -4
+#传参过程
+move $t0, $a0
+move $t1, $a1
+#调用sum的过程
+move $a0, $t1
+move $a1, $t0
+jal sum
+move $t2, $v0
+#运算a-sum(b, a)
+sub $v0, $t0, $t2
+#将ra出栈
+addi $sp, $sp, 4
+lw $ra, 0($sp) 
+#return
+jr $ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-7递归函数调用"><a href="#3-7递归函数调用" class="headerlink" title="3.7递归函数调用"></a>3.7递归函数调用</h3><p>之前我用高级语言的时候，自己写栈将递归程序转换为非递归程序的时候，关于什么东西要存入栈，什么不要，我都是想哪些变量是<strong>状态变量</strong>，现在用汇编的角度看，其实只要把发生变化而且跟调用者有关的的寄存器都保存和恢复就好了，是很简单的。</p>
+<p>当我们有了整个第三章前面的知识以后，就会发现递归函数是没有什么特别的，没有任何写法是递归函数独有的，只不过是一个<strong>调用自己的嵌套函数</strong>而已。</p>
+<hr>
+<h2 id="四、写在后面的话"><a href="#四、写在后面的话" class="headerlink" title="四、写在后面的话"></a>四、写在后面的话</h2><p>学习这个汇编教程花费了我三整天的时间。与之形成对比的，就是我的同学们一般都是在一天或者一天半完成的，慢一点的用两整天。然后我就觉得肯定是我的学习出了问题，毕竟我与计院大部分同学的区别就是我笨。当然其实没对我造成啥影响，我学啥都是这么慢（早就习惯了），但是有的时候想到没准也有一个倒霉蛋，笨吧考得还好，来了计院，肯定会比我还纠结难受焦虑。所以我就花了些时间重新梳理了一下我的思路，尽量把文章写的能让像我一样的笨孩子能看懂，但愿有缘人不要焦虑。    </p>
+<p>我个人感觉，学校推出的教程肯定是个天才写的，天才在写东西的时候就很容易跳步，毕竟他当时学的时候属于<strong>先知先觉</strong>，很多点自然而然就会了，更加随心所欲不逾矩，所以不太喜欢讲规范（规范对聪明人是枷锁，可是对我这种笨蛋是拐杖）。窃以为，教程有以下不足，总的来说，就是在讲解<strong>函数</strong>部分的时候有一个很大的<strong>跨度</strong>。当然，人拉不出屎不能怨茅房，我知道我这属于要饭的嫌饭馊。确实多有得罪，抱歉抱歉。</p>
+<p>具体的体现有如下几点：</p>
+<p>第一、一般的函数调用是在一个复杂的排序函数讲的，这样就不太适合我这种特别笨的学生，容易被排序算法迷惑，而忽略了函数调用的规范。尤其是处理成视频讲解，更是让我这种跟不上别人语速的学生十分焦灼。</p>
+<p>第二、而完全没有涉及嵌套函数的讲解，这样就会让我这种特别笨的学生将<strong>嵌套函数的特征</strong>当成<strong>递归函数的特征</strong>，就容易头晕，不容易把握本质（可能也不是本质，总之就是让我挺迷糊的）。</p>
+<p>第三、在递归事例中用的斐波那契数列中，有两个不规范的地方（只是相对于我来说），其中一个是关于work标签的命名，容易让人觉得是递归函数的独有特征，其实只是<strong>非基准情况</strong>，也就是说，应该属于if-else结构，那么按照教程的规范，标签应该改为<strong>if_1_else</strong>（不是我这篇的规范，按照我这篇，应该改为<strong>else_1</strong>）。另一个就是教程中使用的是<strong>调用者保存</strong>的方式，我现在感觉是不太对得起<strong>代码复用率</strong>的（当然我感觉可能不准哈，也没有大量写过程序），比较容易理解方式应该是<strong>被调用者保存</strong>，我看论坛里面大佬的帖子大部分都是<strong>被调用者保存</strong>，可能这个点对大佬来说不是啥难点吧，但是我确实是今天为了写文章，才把这两个概念区分清楚的，之前过challenge的时候，就套模板，好多都不知道为啥这么写。</p>
+<p>当然，肯定还是要感谢写教程的小哥哥小姐姐，真的写的很棒了，我这属于是鸡蛋里挑骨头了。实在对不起。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S3%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S3课上</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" rel="tag"><i class="fa fa-tag"></i> 计算机组成</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/f4bb53f7/" rel="prev" title="离散数学-函数">
+      <i class="fa fa-chevron-left"></i> 离散数学-函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/4c542040/" rel="next" title="计算机组成-支持中断的CPU">
+      计算机组成-支持中断的CPU <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98"><span class="nav-text">一、寄存器与内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%AD%97%E8%8A%82%E4%B8%8E%E5%AD%97"><span class="nav-text">1.1 字节与字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%A4%A7%E7%AB%AF%E4%B8%8E%E5%B0%8F%E7%AB%AF"><span class="nav-text">1.2 大端与小端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%BA%E4%B8%BB"><span class="nav-text">1.3 寄存器为主</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%BB%86%E8%8A%82"><span class="nav-text">二、汇编语言细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%AF%84%E5%AD%98%E5%99%A8%E7%9A%84%E6%95%B0%E5%AD%97%E8%A1%A8%E7%A4%BA"><span class="nav-text">2.1 寄存器的数字表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E9%A6%96%E5%9C%B0%E5%9D%80"><span class="nav-text">2.2 首地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="nav-text">2.3 变量的作用范围</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%B1%87%E7%BC%96%E6%B5%81%E6%8E%A7%E5%88%B6"><span class="nav-text">三、汇编流控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">3.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-if-%E7%BB%93%E6%9E%84"><span class="nav-text">3.2 if 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-if-else-%E7%BB%93%E6%9E%84"><span class="nav-text">3.3 if-else 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-for-%E5%BE%AA%E7%8E%AF"><span class="nav-text">3.4 for 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-text">3.5 函数调用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-%E5%9D%97%E6%80%9D%E6%83%B3"><span class="nav-text">3.5.1 块思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-%E5%A4%8D%E7%94%A8%E6%80%9D%E6%83%B3"><span class="nav-text">3.5.2 复用思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-%E6%81%A2%E5%A4%8D%E6%80%9D%E6%83%B3"><span class="nav-text">3.5.1 恢复思想</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-text">3.6 嵌套函数调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-text">3.7递归函数调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2%E7%9A%84%E8%AF%9D"><span class="nav-text">四、写在后面的话</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

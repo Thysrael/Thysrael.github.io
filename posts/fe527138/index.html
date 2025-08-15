@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、快速编辑1.1 普通快捷键IDEA提供了功能强大的快捷键，可以通过 setting -&gt; keymap 进行查询设置，这里列举一些我常用到的，并不能保证涵盖所有。   alt+insert：生成固定代码 Ctrl+d：删除一整行，好像是我自己设置的，原来是复制一整行 Ctrl+alt+下：复制一整行 alt + &#x2F;，选中内容加注释 Ctrl + 鼠标左键：查看类名 Ctrl + alt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象-IDEA使用">
+<meta property="og:url" content="https://thysrael.github.io/posts/fe527138/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、快速编辑1.1 普通快捷键IDEA提供了功能强大的快捷键，可以通过 setting -&gt; keymap 进行查询设置，这里列举一些我常用到的，并不能保证涵盖所有。   alt+insert：生成固定代码 Ctrl+d：删除一整行，好像是我自己设置的，原来是复制一整行 Ctrl+alt+下：复制一整行 alt + &#x2F;，选中内容加注释 Ctrl + 鼠标左键：查看类名 Ctrl + alt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304141209858.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304142700949.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304141623258.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304143330620.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304143500760.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304143818498.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304144156435.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304144247325.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304144903651.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304144824813.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304145019177.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304145306875.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304145416635.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304150451161.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304150016897.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304151151621.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304151327348.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304151612009.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe527138/image-20220304151639183.png">
+<meta property="article:published_time" content="2022-03-04T07:19:08.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.111Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S4课上">
+<meta property="article:tag" content="工具总结">
+<meta property="article:tag" content="面向对象">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/fe527138/image-20220304141209858.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/fe527138/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>面向对象-IDEA使用 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/fe527138/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面向对象-IDEA使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-04 15:19:08" itemprop="dateCreated datePublished" datetime="2022-03-04T15:19:08+08:00">2022-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、快速编辑"><a href="#一、快速编辑" class="headerlink" title="一、快速编辑"></a>一、快速编辑</h2><h3 id="1-1-普通快捷键"><a href="#1-1-普通快捷键" class="headerlink" title="1.1 普通快捷键"></a>1.1 普通快捷键</h3><p>IDEA提供了功能强大的快捷键，可以通过 <code>setting -&gt; keymap</code> 进行查询设置，这里列举一些我常用到的，并不能保证涵盖所有。</p>
+<p><img src="/posts/fe527138/image-20220304141209858.png" alt="image-20220304141209858"></p>
+<ul>
+<li><code>alt+insert</code>：生成固定代码</li>
+<li><code>Ctrl+d</code>：删除一整行，好像是我自己设置的，原来是复制一整行</li>
+<li><code>Ctrl+alt+下</code>：复制一整行</li>
+<li><code>alt + /</code>，选中内容加注释</li>
+<li><code>Ctrl + 鼠标左键</code>：查看类名</li>
+<li><code>Ctrl + alt + L</code>：格式化代码，这个具体什么风格可以自己设置。比如我就把默认的大括号形式改为上下对齐，在 <code>setting -&gt; Code Style -&gt; Java</code> 中设置<img src="/posts/fe527138/image-20220304142700949.png" alt="image-20220304142700949"></li>
+<li><code>shift + F6</code> ：重命名，可以一键修改</li>
+</ul>
+<h3 id="1-2-live-template"><a href="#1-2-live-template" class="headerlink" title="1.2 live template"></a>1.2 live template</h3><p>live template的意思是通过敲击较少的字符，来生成一个固定的代码模板，可以在 <code>setting -&gt; editor -&gt; Live Templates</code> 中查询和自定义。</p>
+<p><img src="/posts/fe527138/image-20220304141623258.png" alt="image-20220304141623258"></p>
+<p>列举我经常使用的 ：</p>
+<ul>
+<li><code>main</code>：可以直接生成公有，静态，void 的 main 方法</li>
+<li><code>sout</code>：直接生成 <code>System.out.println()</code></li>
+<li><code>/*</code> 敲完回车可以开启多行注释，<code>/**</code>敲完回车课可以开启文档注释</li>
+<li><code>ifn</code>：可以生成一个 <code>if (object == null)</code> 的代码块</li>
+<li><code>inn</code>：可以生成一个 <code>if (object != null)</code> 的代码块</li>
+</ul>
+<h3 id="1-3-后缀快捷键"><a href="#1-3-后缀快捷键" class="headerlink" title="1.3 后缀快捷键"></a>1.3 后缀快捷键</h3><p>我不知道是不是叫这个名字哈，就是敲一段代码以后可以后面加一个 <code>.something</code> 。就可以生成一些固定的代码了。比如我经常用的：</p>
+<ul>
+<li>生成一个对象： <code>new Object().var</code> 。可以直接生成代码 <code>Object object = new Object();</code></li>
+<li>生成一个循环：对于一个可以遍历的东西，可以是数组，可以是某些特定的容器，可以这样 <code>数组名.for</code> 就会生成一个 for 循环来遍历</li>
+<li>生成一个条件语句：<code>condtion.if</code> 会生成一个 <code>if (condition){}</code> 的代码块</li>
+<li>生成一个 try 语句：<code>statement.try</code> 会生成一个 <code>try{}catch{}</code> 代码块</li>
+</ul>
+<hr>
+<h2 id="二、绘制UML"><a href="#二、绘制UML" class="headerlink" title="二、绘制UML"></a>二、绘制UML</h2><p> IDEA是可以根据写完的代码自己绘制UML图的，具体方法是按鼠标右键选择 <code>Diagrams -&gt; show Diagrams...</code></p>
+<p><img src="/posts/fe527138/image-20220304143330620.png" alt="image-20220304143330620"></p>
+<p>然后就会打开一个新的文件，相当的简洁</p>
+<p><img src="/posts/fe527138/image-20220304143500760.png" alt="image-20220304143500760"></p>
+<p>为了让其显示的信息更多，我们可以操作最上面的操作条，比如我现在选择了那个粉红色（我定义它为粉红色）的 m。就可以显示所具有的方法，如图，其他操作类似：</p>
+<p><img src="/posts/fe527138/image-20220304143818498.png" alt="image-20220304143818498"></p>
+<p>为了调出其泛化关系，可以在所选择的类或接口上右键进行选择 <code>Show Implementations</code> 或者 <code>Show Parents</code></p>
+<p><img src="/posts/fe527138/image-20220304144156435.png" alt="image-20220304144156435"></p>
+<p>效果如下：</p>
+<p><img src="/posts/fe527138/image-20220304144247325.png" alt="image-20220304144247325"></p>
+<hr>
+<h2 id="三、调试"><a href="#三、调试" class="headerlink" title="三、调试"></a>三、调试</h2><h3 id="3-1-断点调试"><a href="#3-1-断点调试" class="headerlink" title="3.1 断点调试"></a>3.1 断点调试</h3><p>我特别喜欢 IDEA 的断点调试功能，因为真的超级漂亮。</p>
+<p>我个人对断点调试的看法是，如果是自己的代码，采用输出法进行调试似乎是更快一些，可是如果是别人的代码，那么断点调试可以让我快速了解算法的执行流程。断点调试可以让我们在阅读别人（包括小姑娘和 JDK ）的是时候快速理解提供了强大的工具支持。</p>
+<p>断点调试需要先下断点，下断点的方法就是点击侧边栏</p>
+<p><img src="/posts/fe527138/image-20220304144903651.png" alt="image-20220304144903651"></p>
+<p>然后点击上面这个瓢虫形状的按钮，</p>
+<p><img src="/posts/fe527138/image-20220304144824813.png" alt="image-20220304144824813"></p>
+<p>就进入调试模式了</p>
+<p><img src="/posts/fe527138/image-20220304145019177.png" alt="image-20220304145019177"></p>
+<p>这个比 Codeblocks 的优点就是不用自己添加需要观测的变量，他会自动显示在右下方，而且其实在代码区也会有显示，真的超级好看，如图</p>
+<p><img src="/posts/fe527138/image-20220304145306875.png" alt="image-20220304145306875"></p>
+<p>浅灰色就是显示，实在是很方便。</p>
+<p>步进有以下几种形式：</p>
+<p><img src="/posts/fe527138/image-20220304145416635.png" alt="image-20220304145416635"></p>
+<ul>
+<li>step over：就是到下一行</li>
+<li>step into：就是进入到方法内部</li>
+<li>force step into：就是强行进入方法内部，可以看 JDK 源码</li>
+<li>drop frame：就是到达下一个断点</li>
+</ul>
+<h3 id="3-2-Junit调试"><a href="#3-2-Junit调试" class="headerlink" title="3.2 Junit调试"></a>3.2 Junit调试</h3><p>先打出 <code>@Test</code> 然后按 <code>alt + enter</code> 然后选择如图，就可以了：</p>
+<p><img src="/posts/fe527138/image-20220304150451161.png" alt="image-20220304150451161"></p>
+<p>这个方法我不会用，比如说有参数的函数。</p>
+<hr>
+<h2 id="四、阅读代码"><a href="#四、阅读代码" class="headerlink" title="四、阅读代码"></a>四、阅读代码</h2><h3 id="4-1-快速跳转"><a href="#4-1-快速跳转" class="headerlink" title="4.1 快速跳转"></a>4.1 快速跳转</h3><p>当按住 <code>Ctrl</code> 键的时候，就可以用鼠标点击方法或者类，找到源码，像这样</p>
+<p><img src="/posts/fe527138/image-20220304150016897.png" alt="image-20220304150016897"></p>
+<h3 id="4-2-结构"><a href="#4-2-结构" class="headerlink" title="4.2 结构"></a>4.2 结构</h3><p>有的时候一个类太长，一个一个找方法很麻烦，可以在侧边栏发现 <code>Structure</code> ，点开以后就类似于这个类的一个索引目录结构，如图：</p>
+<p><img src="/posts/fe527138/image-20220304151151621.png" alt="image-20220304151151621"></p>
+<hr>
+<h2 id="五、Git-使用"><a href="#五、Git-使用" class="headerlink" title="五、Git 使用"></a>五、Git 使用</h2><p>首先要让项目使用git进行版本控制</p>
+<p><img src="/posts/fe527138/image-20220304151327348.png" alt="image-20220304151327348"></p>
+<p>当点完上面的按钮以后，就可以使用了git了</p>
+<p>可以设置一下远端库：</p>
+<p><img src="/posts/fe527138/image-20220304151612009.png" alt="image-20220304151612009"></p>
+<p>也可以进行提交</p>
+<p><img src="/posts/fe527138/image-20220304151639183.png" alt="image-20220304151639183"></p>
+<p>我觉得很好用。</p>
+<p>涉及到具体的git，我一开始初学的时候写过一个小玩意：<a href="https://thysrael.github.io/posts/ac261492/">https://thysrael.github.io/posts/ac261492/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S4%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S4课上</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 工具总结</a>
+              <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag"><i class="fa fa-tag"></i> 面向对象</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/3a4ac657/" rel="prev" title="数学建模-美赛论文结构">
+      <i class="fa fa-chevron-left"></i> 数学建模-美赛论文结构
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/6feda75c/" rel="next" title="Linux-Shell脚本">
+      Linux-Shell脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BF%AB%E9%80%9F%E7%BC%96%E8%BE%91"><span class="nav-text">一、快速编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%99%AE%E9%80%9A%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">1.1 普通快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-live-template"><span class="nav-text">1.2 live template</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%90%8E%E7%BC%80%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">1.3 后缀快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BB%98%E5%88%B6UML"><span class="nav-text">二、绘制UML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%B0%83%E8%AF%95"><span class="nav-text">三、调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95"><span class="nav-text">3.1 断点调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Junit%E8%B0%83%E8%AF%95"><span class="nav-text">3.2 Junit调试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%98%85%E8%AF%BB%E4%BB%A3%E7%A0%81"><span class="nav-text">四、阅读代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%BF%AB%E9%80%9F%E8%B7%B3%E8%BD%AC"><span class="nav-text">4.1 快速跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E7%BB%93%E6%9E%84"><span class="nav-text">4.2 结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81Git-%E4%BD%BF%E7%94%A8"><span class="nav-text">五、Git 使用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、总论内存管理的本质是资源管理，也就是很多程序最为重要的功能。 但是不同于 Python 或者 Java 这样有着很好内存抽象和比较大条的内存管理方式（动不动就在堆上分配空间），C++ 在更加“荒蛮”的内存上进行更加精细化的甚至还很有 C 特色的内存管理（并非 C++ 希望如此，只不过脱胎于 C 必然受到 C 的影响），是一件非常难的事情。 所以 C++ 内存管理看上去总是呈现一种“似乎解决了一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPP 设计-内存管理">
+<meta property="og:url" content="https://thysrael.github.io/posts/374bc41e/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、总论内存管理的本质是资源管理，也就是很多程序最为重要的功能。 但是不同于 Python 或者 Java 这样有着很好内存抽象和比较大条的内存管理方式（动不动就在堆上分配空间），C++ 在更加“荒蛮”的内存上进行更加精细化的甚至还很有 C 特色的内存管理（并非 C++ 希望如此，只不过脱胎于 C 必然受到 C 的影响），是一件非常难的事情。 所以 C++ 内存管理看上去总是呈现一种“似乎解决了一">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-08T11:53:40.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:47.755Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="CPP设计">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S7课上">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/374bc41e/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CPP 设计-内存管理 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/374bc41e/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CPP 设计-内存管理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-12-08 19:53:40" itemprop="dateCreated datePublished" datetime="2023-12-08T19:53:40+08:00">2023-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CPP%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">CPP设计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>内存管理的本质是资源管理，也就是很多程序最为重要的功能。</p>
+<p>但是不同于 Python 或者 Java 这样有着很好内存抽象和比较大条的内存管理方式（动不动就在堆上分配空间），C++ 在更加“荒蛮”的内存上进行更加精细化的甚至还很有 C 特色的内存管理（并非 C++ 希望如此，只不过脱胎于 C 必然受到 C 的影响），是一件非常难的事情。</p>
+<p>所以 C++ 内存管理看上去总是呈现一种“似乎解决了一个根本不会在 Java 中发生的问题”的模式。</p>
+<h2 id="二、RAII"><a href="#二、RAII" class="headerlink" title="二、RAII"></a>二、RAII</h2><p>RAII 是 Resource Acquisition Is Initialization 的缩写，意为“资源获取即初始化”。它并不是一种特殊的 C++ 语法设计，只是一种<strong>设计理念</strong>或者<strong>编程范式</strong>，充分利用了 C++ 在内存管理上的特性，也就是在栈上的局部变量总是随着栈的消失而自动析构的特性。</p>
+<p>我们在内存管理上面临的主要问题就是“内存泄漏”，而就是如果一个内存资源不再会被关注了，那么它就应该被释放。这个问题在 C++ 中很难实现，是因为 C++ 没有一个很好的“守护者”来做这件事情。RAII 主张用栈来做这个“守护者”角色。</p>
+<p>具体来说，就是将资源封装到类的内部，在构造类的时候申请资源，在析构类的时候释放资源。在栈上声明实例化类，这样当栈消亡的时候，析构函数会自动触发，进而释放资源。也就是说，不要在过程中申请和释放资源，而是一定要将资源封装成类。<strong>用局部对象来表示资源，把管理资源的任务转化为管理局部对象的任务</strong>，这就是 RAII 的真谛。</p>
+<p>同时，资源类一般是要禁止拷贝的，这是因为拷贝可能是“浅拷贝”，这种浅拷贝会导致存在两个指针指向实际的资源，而这两个指针都会在栈消亡的时候调用析构函数，而资源只有一份，析构函数会调用两次，就会导致 bug 。所以往往我们还需要将拷贝函数私有化，总结成代码就是：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Resource</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">Resource</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token operator">~</span><span class="token function">Resource</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">delete</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+    <span class="token function">Resource</span><span class="token punctuation">(</span>Resource <span class="token keyword">const</span><span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Resource<span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">=</span> <span class="token punctuation">(</span>Resource <span class="token keyword">const</span><span class="token operator">&amp;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> <span class="token operator">*</span>arr<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="三、智能指针"><a href="#三、智能指针" class="headerlink" title="三、智能指针"></a>三、智能指针</h2><h3 id="3-1-shared-ptr"><a href="#3-1-shared-ptr" class="headerlink" title="3.1 shared_ptr"></a>3.1 shared_ptr</h3><p>指针作为内存管理的 handler ，如果它能够智能一些，我们对于内存或者说资源管理就会轻松很多。</p>
+<p><code>shared_ptr</code> 就是这样的一种东西，因为我们衡量一片内存有没有用的标准就是“它还会不会被用”，而退一步，就是“有没有指针还指向它”，如果没有指针指向它了，那么它就一定不会被使用了，那么就是可以被释放的了。</p>
+<p>在使用上，<code>shared_ptr</code> 并不和普通指针兼容，这是因为 <code>shared_ptr</code> 本质上是对于普通指针和计数器的封装，所以即使两者用某种手段进行类型转换的话，即使成功，也会因为不修改计数器而导致智能管理失效。换句话说，智能指针不是一个功能增强，而是一个功能体系，这个体系和普通指针体系是<strong>互斥</strong>的。</p>
+<p>声明一个智能指针：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token operator">*</span>pr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">Resource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+std<span class="token double-colon punctuation">::</span>shared_ptr<span class="token operator">&lt;</span>Resource<span class="token operator">&gt;</span> <span class="token operator">*</span>spr <span class="token operator">=</span> <span class="token generic-function"><span class="token function">make_shared</span><span class="token generic class-name"><span class="token operator">&lt;</span>Resource<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>可以看到智能指针抛弃了 <code>new</code> ，这是因为 <code>new</code> 的结果是一个普通指针，所以智能指针使用 <code>make_shared&lt;typename&gt;(Initialize_args)</code> 进行代替。</p>
+<p>在使用上，智能指针重载了 <code>*</code> 和 <code>-&gt;</code> ，所以用法上和普通指针保持一致。也可以用 <code>if(p)</code> 判断是否为空指针。</p>
+<h3 id="3-2-weak-ptr"><a href="#3-2-weak-ptr" class="headerlink" title="3.2 weak_ptr"></a>3.2 weak_ptr</h3><p>但是仔细思考就会得知，并非一片内存有指针指向，那么就可以说明它还会被使用，两个没有外界引用的资源可以分别指向对方，这样两个实体都不会被释放。C++ 提出了一种新的指针 <code>weak_ptr</code> 来解决这个问题。</p>
+<p><code>weak_ptr</code> 是与 <code>shared_ptr</code> 搭配出现的，它更像是一种“指向” <code>shared_ptr</code> 的指针而并非一种指向资源的指针，它的存在不会让资源的计数器增加。</p>
+<p>在初始化方面， <code>weak_ptr</code> 接受一个 <code>shared_ptr</code> 作为构造参数：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token double-colon punctuation">::</span>weak_ptr<span class="token operator">&lt;</span>Class<span class="token operator">&gt;</span> wp <span class="token operator">=</span> sp<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在使用上，<code>weak_ptr</code> 并没有重载 <code>*</code> 和 <code>-&gt;</code> ，所以它基本上没有指针的行为，它可以 <code>lock()</code> 方法先获得它“指向”的 <code>shared_ptr</code> 再进行处理，如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span> sp <span class="token operator">=</span> wp<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>sp<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    sp<span class="token operator">-&gt;</span><span class="token function">DoSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>所以对于此节最开始形容的困境，我们可以用如下代码来解决：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">ClassB</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ClassA</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">ClassA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"ClassA Constructor..."</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token operator">~</span><span class="token function">ClassA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"ClassA Destructor..."</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    weak_ptr<span class="token operator">&lt;</span>ClassB<span class="token operator">&gt;</span> pb<span class="token punctuation">;</span>  <span class="token comment">// 在 A 中弱引用 B ，原先为 shared_ptr&lt;ClassB&gt; pb</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">ClassB</span>
+<span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">ClassB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"ClassB Constructor..."</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token operator">~</span><span class="token function">ClassB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"ClassB Destructor..."</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    weak_ptr<span class="token operator">&lt;</span>ClassA<span class="token operator">&gt;</span> pa<span class="token punctuation">;</span>  <span class="token comment">// 在 B 中弱引用 A ，原先为 shared_ptr&lt;ClassA&gt; pa</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    shared_ptr<span class="token operator">&lt;</span>ClassA<span class="token operator">&gt;</span> spa <span class="token operator">=</span> <span class="token generic-function"><span class="token function">make_shared</span><span class="token generic class-name"><span class="token operator">&lt;</span>ClassA<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    shared_ptr<span class="token operator">&lt;</span>ClassB<span class="token operator">&gt;</span> spb <span class="token operator">=</span> <span class="token generic-function"><span class="token function">make_shared</span><span class="token generic class-name"><span class="token operator">&lt;</span>ClassB<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    spa<span class="token operator">-&gt;</span>pb <span class="token operator">=</span> spb<span class="token punctuation">;</span>
+    spb<span class="token operator">-&gt;</span>pa <span class="token operator">=</span> spa<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在执行完 <code>main</code> 后，<code>classA, classB</code> 的引用数都是 0 ，自然可以安全释放。</p>
+<p>那么具体该何时使用 <code>weak_ptr</code> 而何时使用 <code>shared_ptr</code> ： <strong>一切应该不具有对象所有权，又想安全访问对象的情况，都是应该使用 <code>weak_ptr</code> 的</strong> 。</p>
+<p>举个例子：一个公司类可以拥有员工，那么这些员工就使用 <code>shared_ptr</code> 维护。另外有时候我们希望员工也能找到他的公司，所以也是用 <code>shared_ptr</code> 维护，这个时候问题就出来了。但是实际情况是，员工并不拥有公司，所以应该用 <code>weak_ptr</code> 来维护对公司的指针。</p>
+<h3 id="3-3-unique-ptr"><a href="#3-3-unique-ptr" class="headerlink" title="3.3 unique_ptr"></a>3.3 unique_ptr</h3><p>当然，除了共享资源的释放问题外，如何确保资源是独占性（如果需要的话），也是一个问题（就好像我们在 RAII 这一章提出的私有化拷贝函数一样），我们发明了 <code>unique_ptr</code> 来满足这件事情。</p>
+<p>在初始化方面，如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token double-colon punctuation">::</span>unique_ptr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> up <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">make_unique</span><span class="token generic class-name"><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>一旦我们初始化完成，那么就会避免其拷贝：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token double-colon punctuation">::</span>unique_ptr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> up2 <span class="token operator">=</span> up<span class="token punctuation">;</span> <span class="token comment">// 非法</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>我们可以用 <code>std::move</code> 完成所有权的转移：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token double-colon punctuation">::</span>unique_ptr<span class="token operator">&lt;</span>Foo<span class="token operator">&gt;</span> <span class="token function">p2</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span><span class="token function">move</span><span class="token punctuation">(</span>p1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="四、用引用减少不必要拷贝"><a href="#四、用引用减少不必要拷贝" class="headerlink" title="四、用引用减少不必要拷贝"></a>四、用引用减少不必要拷贝</h2><h3 id="4-1-都怪引用"><a href="#4-1-都怪引用" class="headerlink" title="4.1 都怪引用"></a>4.1 都怪引用</h3><p>对于一个庞大的资源，我们要避免它无意义的拷贝，但是在函数传参的时候，资源作为参数常常会造成拷贝，如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>Resource r<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>此时只要调用 <code>foo(r)</code> 就会导致 <code>r</code> 的拷贝。</p>
+<p>在 C 和 C++ 中，可以用指针解决这个问题：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>Resource <span class="token operator">*</span>pr<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以说，只要用指针解决这个问题（再搭配上智能指针，连内存管理都不会出问题），后面这一整节都是不需要阅读的（这也让我想不明白为啥非得用引用这个东西）。</p>
+<p>但是人们可能就是喜欢用<strong>引用</strong>解决这个问题吧，所以还诞生了一个引用版的解决办法：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>Resource <span class="token operator">&amp;</span>rr<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但是这种方法就会出现一个反人类的 bug ，就是如下调用是会报错的：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">foo</span><span class="token punctuation">(</span><span class="token function">Resource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这里报错是因为我们并不允许这样的代码出现</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">Resource <span class="token operator">&amp;</span>rr <span class="token operator">=</span> <span class="token function">Resource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>因为引用的对象必须是一个<strong>左值</strong> ，也就是一个有地址的值，在上例中，<code>Resource()</code> 并没有地址，是一个右值，所以会报错。至于为什么必要要求引用的对象是一个<strong>左值</strong> ，这可能与引用的设计目标有关，引用常被用在参数修饰中，是为了给用户一种“原变量名”的使用体验，不像指针那样摆明了就是不一样。</p>
+<p>如果一个引用的对象是一个右值，那么我们很容易写出这样的代码：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token operator">&amp;</span>ri <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+ri <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token comment">// error! 3 = 4</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>但是如果引用不能兼容 <code>foo(Resource())</code> 这种表达，那么我们很容易就意识到，这个 <code>foo()</code> 没有那么好用，很莫名其妙，引用模拟原变量的目的就不能实现了（相比之下指针就没有这个目的）。</p>
+<p>所以原来的 C++ 就又利用了“常量引用”来解决这个问题，因为常量引用要求只读，所以即使对象是一个右值，那么也不会导致什么坏现象，所以编译器就允许这种特例的存在：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">const</span> <span class="token keyword">int</span> <span class="token operator">&amp;</span>cri <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span> <span class="token comment">// ok</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>利用这个性质，我们就完成了引用版本的 <code>foo()</code> 函数，它需要写两个函数</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>Resource <span class="token operator">&amp;</span>rr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token keyword">const</span> Resource <span class="token operator">&amp;</span>crr<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这样 <code>Resource &amp;rr = Resource();</code> 就会调用第 2 个函数。唯一的缺点就是第 2 个函数里不能有对于引用的修改，功能会受到一定的限制。</p>
+<h3 id="4-2-引用的必要性"><a href="#4-2-引用的必要性" class="headerlink" title="4.2 引用的必要性"></a>4.2 引用的必要性</h3><p>虽然在前面 3 种方法对比中，我指出引用法简直就是指针法的丐版，但是这种说法是有失偏颇的。当我们使用指针的时候，我们有一种倾向让其指向一个堆中的资源，如果指针指向一个栈中的资源的话，随着栈的消解，指针就变成空指针了，这当然是我们不想看到的，所以我们总是喜欢用堆的。而不加节制地使用堆的资源，就会造成性能的损失，没准还有内存的泄漏。</p>
+<p>而引用因为和普通变量很像，所以它本身就代表着一种像管理普通变量一样管理资源的思路，通过拷贝或者移动来减少堆上空间的分配，并不是一无是处的。</p>
+<h3 id="4-3-右值引用"><a href="#4-3-右值引用" class="headerlink" title="4.3 右值引用"></a>4.3 右值引用</h3><p>为了让上面的引用功能更加强大一些，我们提出了右值引用的概念，它可以代替原先的常量左值引用</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">const</span> <span class="token keyword">int</span> <span class="token operator">&amp;</span>clri <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span> <span class="token comment">// ok</span>
+<span class="token keyword">int</span> <span class="token operator">&amp;&amp;</span>rri <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span> <span class="token comment">// ok</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在本质上，右值引用更像是一个语法糖，它为原来不能寻址的右值提供了一个地址，然后让右值引用指向它，所以右值引用是可以被修改的。</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> tmp <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token operator">&amp;&amp;</span>rri <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token function">move</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+rri<span class="token operator">++</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这样我们就可以定义两个新的函数来解决之前提出的问题了，相比于常量左值引用的解决思路，它使得函数可以摆脱“常量只读”的困扰，提高表达能力，如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>Resource <span class="token operator">&amp;</span>lrr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>Resource <span class="token operator">&amp;&amp;</span>rrr<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这样 <code>Resource &amp;rr = Resource();</code> 就会调用第 2 个函数。</p>
+<h3 id="4-4-右值移动——将亡未亡"><a href="#4-4-右值移动——将亡未亡" class="headerlink" title="4.4 右值移动——将亡未亡"></a>4.4 右值移动——将亡未亡</h3><p>我相信一开始人们使用这个新的特性的时候，就是把 <code>void foo(Resource &amp;lrr)</code> 的函数实现一模一样拷贝到 <code>void foo(Resource &amp;&amp;rrr)</code> 种，有了新的语法糖，使得原本指针法一个函数就可以实现的事情，非得用两个一模一样的引用法函数实现，也不是太亏。</p>
+<p>但是人们估计立刻就会发现很奇妙的地方，那就是 <code>void foo(Resource &amp;&amp;rrr)</code> 的实参非常有特点，是 <code>Resource()</code> ，这意味着，<code>Resource()</code> 这个代码，除了完成 <code>rrr = Resource()</code> 这个功能外，啥都没干，就没了（也叫亡了）。而我们在执行 <code>foo(Resource())</code> 这个代码的时候，在函数外调用了一次 <code>Resource()</code> ，如果恰巧，我们希望在实现中拿到一个 <code>Resource</code> 的副本，就必须再次调用一下构造器，也就是需要调用 2 次。这种需求是非常常见的，比如说 <code>vector.push_back(3)</code> 我们模拟一下这个过程：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+
+<span class="token keyword">class</span> <span class="token class-name">Resource</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">Resource</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Constructing..."</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">Resource</span><span class="token punctuation">(</span><span class="token keyword">const</span> Resource<span class="token operator">&amp;</span> r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Copy Constructing..."</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+
+<span class="token keyword">void</span> <span class="token function">addResource</span><span class="token punctuation">(</span>Resource <span class="token operator">&amp;&amp;</span>rrr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Resource r <span class="token operator">=</span> rrr<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">addResource</span><span class="token punctuation">(</span><span class="token function">Resource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码会输出：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">Constructing<span class="token punctuation">..</span>.
+Copy Constructing<span class="token punctuation">..</span>.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>可如果仔细思考这件事，就会发现这么做完全没有必要，右值最大的特点就是它的生命只有写出表达式一瞬间，所以对于右值而言，我们没必要拷贝啊，我们如果可以直接用就好了，也就是将这个右值的生命周期延长就好了，这样就可以毫无负担的继承它的资源了。与之相对的，如果希望获得一个左值的资源，那通常就得拷贝了，因为左值意味着这个资源的生命周期本身就很长，要想拿到副本，就得复制一份资源。</p>
+<p>换句话说，正是在右值这种<strong>亡</strong>的性质下，具有右值引用参数的函数相比于具有左值引用的函数，性能更加好，因为它可以使用“移动”策略而非“拷贝”策略。举例如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Array</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token function">Array</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">size_</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        data_ <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>size_<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 复制构造函数，深拷贝构造</span>
+    <span class="token function">Array</span><span class="token punctuation">(</span><span class="token keyword">const</span> Array<span class="token operator">&amp;</span> temp_array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        data_ <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>temp_array<span class="token punctuation">.</span>size_<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        size_ <span class="token operator">=</span> temp_array<span class="token punctuation">.</span>size_<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> size_<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            data_<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> temp_array<span class="token punctuation">.</span>data_<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"time wasting!\n"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 移动构造函数，浅拷贝构造</span>
+    <span class="token function">Array</span><span class="token punctuation">(</span>Array<span class="token operator">&amp;&amp;</span> temp_array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        data_ <span class="token operator">=</span> temp_array<span class="token punctuation">.</span>data_<span class="token punctuation">;</span>
+        size_ <span class="token operator">=</span> temp_array<span class="token punctuation">.</span>size_<span class="token punctuation">;</span>
+        <span class="token comment">// 为防止 temp_array 析构时 delete data，提前置空其 data_</span>
+        temp_array<span class="token punctuation">.</span>data_ <span class="token operator">=</span> <span class="token keyword">nullptr</span><span class="token punctuation">;</span>
+        std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"time saved!\n"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token operator">~</span><span class="token function">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">delete</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> data_<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> <span class="token operator">*</span>data_<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> size_<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-5-求死"><a href="#4-5-求死" class="headerlink" title="4.5 求死"></a>4.5 求死</h3><p>当<strong>右值引用参数函数</strong>发生开始利用右值性质进行转移以后，我们发现其实我们可以<strong>利用“利用了右值引用性质的函数”</strong>，也就是说，即使有些资源是左值，但是我们为了节约性能，希望它们进行资源转移而非拷贝，但是左值的生命周期并不是一瞬间，所以我们需要将其主动转换为右值，可以用如下函数来实现：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">rval <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token function">move</span><span class="token punctuation">(</span>lval<span class="token punctuation">)</span> <span class="token comment">// std::move { static_cast&lt;T&amp;&amp;&gt;(lvalue) }</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这是一种主动结束生命周期的声明，但是注意 2 点：</p>
+<ul>
+<li>单纯的 <code>move</code> 不会造成所有权的转移</li>
+<li>单纯的 <code>move</code> 不会造成生命周期缩短</li>
+</ul>
+<p>这两个效果都是通过右值引用参数函数来实现的，如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">Array</span><span class="token punctuation">(</span>Array<span class="token operator">&amp;&amp;</span> temp_array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    data_ <span class="token operator">=</span> temp_array<span class="token punctuation">.</span>data_<span class="token punctuation">;</span> <span class="token comment">// 所有权转移</span>
+    size_ <span class="token operator">=</span> temp_array<span class="token punctuation">.</span>size_<span class="token punctuation">;</span>
+    temp_array<span class="token punctuation">.</span>data_ <span class="token operator">=</span> <span class="token keyword">nullptr</span><span class="token punctuation">;</span> <span class="token comment">// 生命周期缩短</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是因为往往<strong>右值引用参数函数</strong>都会有这些实现，所以 <code>std::move</code> 也都会有很好的效果。当我们希望通过献祭所有权的方式来获得高性能的时候，我们就可以主动为左值套上 <code>std::move</code> 来达到目的，比如说这样：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    Array a <span class="token operator">=</span> <span class="token function">Array</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Array b <span class="token operator">=</span> a<span class="token punctuation">;</span> <span class="token comment">// 不献祭 time wasting!</span>
+    Array c <span class="token operator">=</span> std<span class="token double-colon punctuation">::</span><span class="token function">move</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 献祭 time saved!</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另一个很好玩的应用就是关于 <code>emplace_back</code> 的实现，下边两种方法是等价的：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">std<span class="token double-colon punctuation">::</span>string str1 <span class="token operator">=</span> <span class="token string">"aacasxs"</span><span class="token punctuation">;</span>
+std<span class="token double-colon punctuation">::</span>vector<span class="token operator">&lt;</span>std<span class="token double-colon punctuation">::</span>string<span class="token operator">&gt;</span> vec<span class="token punctuation">;</span>
+vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span><span class="token function">move</span><span class="token punctuation">(</span>str1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span><span class="token string">"axcsddcas"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-6-求死不能"><a href="#4-6-求死不能" class="headerlink" title="4.6 求死不能"></a>4.6 求死不能</h3><p>当然有的时候也不是那么方便求死的，比如说如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+
+<span class="token keyword">void</span> <span class="token function">reference</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">&amp;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"called left value"</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">reference</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">&amp;&amp;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"called right value"</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">pass</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">&amp;&amp;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">reference</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 始终调用 reference(int&amp;)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">pass</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>嵌套函数非常常见，但是因为实际上 <code>int&amp;&amp;</code> 本身是左值，所以他会调用第 1 个 <code>reference()</code> ，这就非常恼人了。当然这个问题可以用 <code>std::move()</code> 来解决，但是总是感觉有些愚蠢。</p>
+<p>那有没有更加优雅的方法呢，有的，叫做 <code>std::forward&lt;&gt;()</code> ，其原理依然是类型转换，但是涉及了元编程知识和引用塌陷规律，规则非常复杂，不过效果非常优雅，看一个乐子就好了，如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;utility&gt;</span></span>
+
+<span class="token keyword">void</span> <span class="token function">reference</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">&amp;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"called left value"</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">reference</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">&amp;&amp;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"called right value"</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">&gt;</span>
+<span class="token keyword">void</span> <span class="token function">pass</span><span class="token punctuation">(</span>T<span class="token operator">&amp;&amp;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">reference</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span><span class="token generic-function"><span class="token function">forward</span><span class="token generic class-name"><span class="token operator">&lt;</span>T<span class="token operator">&gt;</span></span></span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"use right value"</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+    <span class="token function">pass</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"use left value"</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> v <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token function">pass</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其输出如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">use right value
+called right value
+use left value
+called left value<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也就是说，如果实参是一个左值，那么就会调用左值引用处理函数，如果实参是一个右值，那么就会调用一个右值处理函数。实现了所谓的“完美转发”。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CPP%E8%AE%BE%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> CPP设计</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S7%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S7课上</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/665eae38/" rel="prev" title="CPP设计-滥觞">
+      <i class="fa fa-chevron-left"></i> CPP设计-滥觞
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/80ff4241/" rel="next" title="补充数学-圆周率计算">
+      补充数学-圆周率计算 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81RAII"><span class="nav-text">二、RAII</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="nav-text">三、智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-shared-ptr"><span class="nav-text">3.1 shared_ptr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-weak-ptr"><span class="nav-text">3.2 weak_ptr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-unique-ptr"><span class="nav-text">3.3 unique_ptr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%94%A8%E5%BC%95%E7%94%A8%E5%87%8F%E5%B0%91%E4%B8%8D%E5%BF%85%E8%A6%81%E6%8B%B7%E8%B4%9D"><span class="nav-text">四、用引用减少不必要拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E9%83%BD%E6%80%AA%E5%BC%95%E7%94%A8"><span class="nav-text">4.1 都怪引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%BC%95%E7%94%A8%E7%9A%84%E5%BF%85%E8%A6%81%E6%80%A7"><span class="nav-text">4.2 引用的必要性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">4.3 右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E5%8F%B3%E5%80%BC%E7%A7%BB%E5%8A%A8%E2%80%94%E2%80%94%E5%B0%86%E4%BA%A1%E6%9C%AA%E4%BA%A1"><span class="nav-text">4.4 右值移动——将亡未亡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-%E6%B1%82%E6%AD%BB"><span class="nav-text">4.5 求死</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-%E6%B1%82%E6%AD%BB%E4%B8%8D%E8%83%BD"><span class="nav-text">4.6 求死不能</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="应该说，我们去看随机过程的时候，具有两条线索，一条是纵向来看，即给定事件 $e_0$ ，获得的是样本函数；另一条是横向来看，即给定参数 $t_1$ ，获得是在 $t_1$ 时刻的一个随机变量。我觉得随机变量比较好理解。但是我同时也觉得，对于样本函数要是能有一个更加深入的理解，那么对随机过程的理解才能更上一层楼。 我觉得，样本函数也可以看做一个特殊的随机变量。随机变量的观测值本来应该是一个实数，但是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率统计-随机过程">
+<meta property="og:url" content="https://thysrael.github.io/posts/ccab838a/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="应该说，我们去看随机过程的时候，具有两条线索，一条是纵向来看，即给定事件 $e_0$ ，获得的是样本函数；另一条是横向来看，即给定参数 $t_1$ ，获得是在 $t_1$ 时刻的一个随机变量。我觉得随机变量比较好理解。但是我同时也觉得，对于样本函数要是能有一个更加深入的理解，那么对随机过程的理解才能更上一层楼。 我觉得，样本函数也可以看做一个特殊的随机变量。随机变量的观测值本来应该是一个实数，但是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/ccab838a/1.png">
+<meta property="article:published_time" content="2021-12-27T09:04:15.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.893Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S3复习">
+<meta property="article:tag" content="概率统计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/ccab838a/1.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/ccab838a/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>概率统计-随机过程 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/ccab838a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          概率统计-随机过程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-27 17:04:15" itemprop="dateCreated datePublished" datetime="2021-12-27T17:04:15+08:00">2021-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">概率统计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>应该说，我们去看随机过程的时候，具有两条线索，一条是纵向来看，即给定事件 $e_0$ ，获得的是样本函数；另一条是横向来看，即给定参数 $t_1$ ，获得是在 $t_1$ 时刻的一个随机变量。我觉得随机变量比较好理解。但是我同时也觉得，对于样本函数要是能有一个更加深入的理解，那么对随机过程的理解才能更上一层楼。</p>
+<p>我觉得，样本函数也可以看做一个特殊的<strong>随机变量</strong>。随机变量的观测值本来应该是一个实数，但是我们的随机过程的观测结果是一个函数，也可以理解为一个过程。</p>
+<p>我在做题的时候，还是横切应用的多一些，比方说分析数字特征的时候，自相关函数和自协方差函数都是选定了 $t_1,t_2$ 类似于选定了两个横切面研究性质。但是话还没说满，感觉还有进一步理解的可能，比如没有给定 $t_1,t_2$ 的值。</p>
+<p>或许达到一种 “涵虚混太清” 的感觉才是正解。有言道：<strong>“随机过程随机过，实变函数学十遍，计组原理成组寄，汇编语言不会编。”</strong><br><span id="more"></span></p>
+<h2 id="一、随机过程总论"><a href="#一、随机过程总论" class="headerlink" title="一、随机过程总论"></a>一、随机过程总论</h2><h3 id="1-1-直观理解"><a href="#1-1-直观理解" class="headerlink" title="1.1 直观理解"></a>1.1 直观理解</h3><p>我找到一段话，用来从纵切的角度解释随机过程，我觉得非常有道理：</p>
+<blockquote>
+<p>​    自然界中事物的变化过程可以大致分成为两类。一类是其 变化过程具有确定的形式，或者说具有必然的变化规律，用 数学语言来说，其变化过程可以用一个或几个时间t的确定函数来描述，这类过程称为确定性过程。例如，电容器通过电阻放电时，电容两端的电位差随时间的变化就是一个确定性函数。而另一类过程没有确定的变化形式，也就是说，每次对它的测量结果没有一个确定的变化规律，用数学语言来说， 这类事物变化的过程不可能用一个或几个时间t的确定函数来描述，这类过程称为随机过程。</p>
+</blockquote>
+<p>下面它给出了一个例子：</p>
+<blockquote>
+<p>​    设有n台性能完全相同的接收机。我们在相同的工作环境和测试条件下记录各台接收机的输出噪声波形（这也可以理解为对一台接收机在一段时间内持续地进行n次观测）。测试结果将表明，尽管设备和测试条件相同，记录的n条曲线中找不到两个完全相同的波形。这就是说，接收机输出的噪声电压随 时间的变化是不可预知的，因而它是一个随机过程。</p>
+</blockquote>
+<p>我觉得上面的话很好的体现了纵切的特点，我们用图再加深一下理解：</p>
+<p><img src="/posts/ccab838a/1.png" alt="1"></p>
+<p>可以视为，每次取样，观测结果都是一个<strong>过程</strong>，而这个过程具有随机性。</p>
+<h3 id="1-2-基本概念"><a href="#1-2-基本概念" class="headerlink" title="1.2 基本概念"></a>1.2 基本概念</h3><p>对于样本空间中的每个 $e_0$ ，$X(e_0,t)=x(t)$ 是仅依赖于 $t$ 的函数（注意这里是小写，说明是<strong>观测结果</strong>），称为随机过程的样本函数，它是随机过程的一次物理实现或对应 $e_0$ 的轨道。</p>
+<p>对于任意给定的<strong>参数集</strong>中的 $t_1$ ，$X(e,t_1) = X(t_1)$ 是一个随机变量（注意这里是大写，说明依然是一个随机变量），称为随机过程在 $t = t_1$ 时的<strong>状态变量</strong>，简称<strong>状态</strong>。这个用的确实多，在后面马尔科夫链的讨论中，这个也是一个很基本的概念。</p>
+<p>函数值集合 ${X(e, t) \mid e\in S, t\in T}$ 称为随机过程的<strong>状态空间</strong>，记作 $S$ 。可以看出，这个概念是基于上面<strong>状态</strong>的概念提出的。</p>
+<p>我们对随机过程进行分类，可以按照随机过程的<strong>参数集</strong>和<strong>状态空间</strong>来分类。当 $T$ 是离散的时候，随机过程就是<strong>随机变量序列</strong>，简称<strong>随机序列</strong>。一般记为 $X(t_n) = X_n$。这里给出了从随机过程角度理解<strong>随机序列</strong>的定义。</p>
+<h3 id="1-3-概率分布"><a href="#1-3-概率分布" class="headerlink" title="1.3 概率分布"></a>1.3 概率分布</h3><p>这个方面我没有理解的太好，所以只能记住了。</p>
+<script type="math/tex; mode=display">
+F(x_1, \cdots,x_n;t_1,\cdots,t_n) = P\{X(t_1)\leq x_1,\cdots,X(t_n)\}</script><p>称为随机过程 $X(t)$ 的 n 维状态分布。当参数趋于无限的时候，可以完全确定随机过程的统计特征。但是我们显然不能取无数个值，所以我们如果想要完全了解一个随机过程，下面提出了一种<strong>独立过程</strong>的思路，<strong>马尔科夫链的关于状态转移</strong>的研究，应该也算一种超越。</p>
+<p>如果对任何正整数 $n$ ，随机过程的任意 $n$ 个状态都是都是相互独立的，则称这个过程为<strong>独立过程</strong>，独立过程的 n 维分布有</p>
+<script type="math/tex; mode=display">
+F(x_1, \cdots,x_n;t_1,\cdots,t_n) = \prod^{n}_{i = 1}F(x_i;t_i)</script><p>对于独立过程，<strong>由过程的一维分布函数就能确定该过程的统计特征</strong>。</p>
+<h3 id="1-4-数字特征"><a href="#1-4-数字特征" class="headerlink" title="1.4 数字特征"></a>1.4 数字特征</h3><p><strong>数学期望</strong></p>
+<script type="math/tex; mode=display">
+\mu_X(t)=E[X(t)]</script><p>这个特别x有意思，是因为输出不再是一个常数，而变成了一个<strong>函数</strong>，其实挺有意思的，对<strong>随机过程</strong>取期望，得出的应该还是一个<strong>过程</strong>，直观地看，表示随机过程的 n 个样本函数曲线的<strong>摆动中心</strong>。</p>
+<p><strong>二阶原点矩</strong></p>
+<script type="math/tex; mode=display">
+\Psi_X^2(t) = E[X^2(t)]</script><p>称为随机过程 $X(t)$ 的<strong>均方值函数</strong>，简称<strong>均方值</strong>。其实也可以看作在<strong>过程</strong>中的一个反映。</p>
+<p><strong>二阶中心距</strong></p>
+<script type="math/tex; mode=display">
+\sigma^2_X(t) = \Psi_X^2(t) - \mu_X^2(t)</script><p>称为随机过程 $X(t)$ 的<strong>均方差函数</strong>，简称<strong>均方差</strong>。它表示随机过程在时刻 t 对于均值 $\mu_X(t)$ 的<strong>偏离程度</strong>。 均值和方差都只与随机过程的一维概率密度函数有关，因而它们描述了随机过程在<strong>各个孤立时刻</strong>的特征。为了描述随机过程在两个不同时刻状态之间的联系，还需利用<strong>二维概率密度</strong>引入新的数字特征。</p>
+<p><strong>自相关函数</strong></p>
+<script type="math/tex; mode=display">
+R_X(t_1,t_2) = E[X(t_1)\cdot E(t_2)] = 
+\int^{+\infty}_{-\infty}\int^{+\infty}_{-\infty}x_1x_2f(x_1,x_2;t_1,t_2)dx_1dx_2</script><p><strong>自协方差函数</strong></p>
+<script type="math/tex; mode=display">
+C_X(t_1, t_2) = E\{[X(t_1) - EX(t_1)]\cdot[X(t_2) - EX(t_2)]\} =
+R_X(t_1, t_2) - \mu_X(t_1)\cdot \mu_X(t_2)</script><hr>
+<h2 id="二、平稳过程"><a href="#二、平稳过程" class="headerlink" title="二、平稳过程"></a>二、平稳过程</h2><p>关于这个部分，感觉虽然<strong>平稳</strong>这个词听起来很直观，但是确实这一章<strong>很不直观</strong>。所以大部分的知识都是<strong>记忆</strong>，题型感觉也都是利用<strong>判定定理</strong>去做判定。所以重点在于掌握和记忆各个判定定理，还有简单的性质。</p>
+<p><strong>所谓平稳随机过程，是指它的统计特性不随时间的推移而变化。</strong></p>
+<h3 id="2-1-严平稳过程"><a href="#2-1-严平稳过程" class="headerlink" title="2.1 严平稳过程"></a>2.1 严平稳过程</h3><p>对任意 $t_1,t_2, \cdots, t_n \in T$ ，任意实数 $\epsilon$ ，有 $t_1 + \epsilon,t_2 + \epsilon, \cdots  t_n+\epsilon \in T$ ，对任意 n 维分布函数都成立：</p>
+<script type="math/tex; mode=display">
+F(x_1, x_2,\cdots,x_n;t_1, t_2,\cdots ,t_n) = F(x_1, x_2,\cdots,x_n;t_1 + \epsilon,t_2 + \epsilon, \cdots  t_n+\epsilon)</script><p>则称 $X(t)$ 为<strong>严平稳过程</strong>。严平稳过程的含义是：过程的任何有限维概率分布与参数 t 的原点选取无关。</p>
+<p>严平稳过程的一维分布函数与参数 t 无关，二维分布函数仅依赖于参数间距 $\tau = t_2 - t_1$，与参数本身无关。除此之外，严平稳过程还有如下性质：</p>
+<ul>
+<li>严平稳过程的 $\mu_X,\Psi_X^2,\sigma_X^2$ 均为常数</li>
+<li>严平稳过程的 $R_X,C_X$ 均为参数间距 $\tau = t_2 - t_1$ 的函数。</li>
+</ul>
+<p>上述的这两条性质又被称为<strong>平稳性</strong>。但是需要强调的是，这些性质可以用于否定非严平稳过程。但是并不能作为判定定理判定一个随机过程是严平稳过程。能判定是严平稳过程只能用定义，但是定义里<strong>“任意”</strong>的字样，显然不太好实践，也就是说，我们很难判定一个过程是<strong>严平稳过程</strong>，所以我们放宽松了条件，以此产生了<strong>广义平稳过程</strong>的概念。</p>
+<p><strong>伯努利序列</strong>：独立重复地进行某项试验，每次试验成功的概率为 $p$ ，以 $X_n$ 表示第 $n$ 次实验成功的次数，则 ${X_n}$ 是严平稳过程。</p>
+<h3 id="2-2-广义平稳过程"><a href="#2-2-广义平稳过程" class="headerlink" title="2.2 广义平稳过程"></a>2.2 广义平稳过程</h3><p>我们判定广义平稳过程就简单的多，只有条件：</p>
+<ul>
+<li>$\Psi^2(t)$ 存在且有限</li>
+<li>$\mu_X$ 是一个常数</li>
+<li>自相关函数 $R_X$ 仅依赖于 $\tau$</li>
+</ul>
+<p>这里详细说一下为什么会有一个<strong>不太自然</strong>二阶矩存在且有限的条件，这个其实是一种条件的简化，他可以被翻译成“期望和方差都存在且有限”。这是因为我们有广义距离不等式（我自己起的名字）</p>
+<script type="math/tex; mode=display">
+EX \leq \sqrt{EX^2}</script><p>所以如果二阶矩存在，那么一阶矩就存在，进而方差也存在。这是一个很巧妙的条件化简。</p>
+<p>广义平稳过程简称<strong>平稳过程</strong>，有以下很良好的性质：</p>
+<ul>
+<li><p>自相关函数 $R_X$ 仅依赖于 $\tau$（定义）</p>
+</li>
+<li><p>$\mu_X,\Psi_X^2,\sigma_X^2$ 均为常数，这是因为</p>
+<script type="math/tex; mode=display">
+\Psi^2_X = E[X^2(t)]=E[X(t)\cdot X(t+0)]=R_X(0) = const</script><script type="math/tex; mode=display">
+\sigma_X^2 = \Psi^2_X - \mu_X^2 = const</script></li>
+<li><p>$C_X(t, t+\tau) = R_X(\tau)-\mu_X^2 = C_X(\tau)$ 只与 $\tau$ 有关。</p>
+</li>
+</ul>
+<p>广义平稳过程的实例就很多了，比如说<strong>泊松过程</strong>、<strong>白噪声</strong>，<strong>通信系统的加密序列</strong>。</p>
+<p>广义平稳过程不一定是严平稳过程，严平稳过程也不一定是广义平稳过程。<strong>存在二阶矩</strong>的严平稳过程才必定是广义平稳过程。</p>
+<h3 id="2-3-各态遍历性"><a href="#2-3-各态遍历性" class="headerlink" title="2.3 各态遍历性"></a>2.3 各态遍历性</h3><p>首先对<strong>各态遍历性</strong>这个性质由一个直观的认识：它的数字特征（均为统计平均）完全可由随机过程中的任一实现的数字特征（均为时间平均）来替代。也就是说，通过一次试验获得的一个样本函数就可确定过程的数字特征。</p>
+<p>尽管我们把遍历过程放在平稳过程这一章去讲，但是并不是所有的平稳过程都是遍历过程。遍历过程具有自己的判定条件，我们首先先介绍几个新的函数：</p>
+<p><strong>时间均值</strong></p>
+<script type="math/tex; mode=display">
+\bar{X(t)} = \lim_{l\rightarrow+\infty}\frac{1}{2l}\int^l_{-l}X(e,t)dt</script><p>当存在 $\bar{X(t)} = \mu_X$ 的时候，就说 $X(t)$ 的均值具有<strong>各态遍历性</strong>。</p>
+<p><strong>时间相关函数</strong></p>
+<script type="math/tex; mode=display">
+\bar{X(t)X(t + \tau)} = \lim_{l\rightarrow+\infty}\frac{1}{2l}\int^l_{-l}X(e,t)X(e,t + \tau)dt</script><p>当存在 $\bar{X(t)X(t + \tau)} = R_X(\tau)$ 的时候，则说 $X(t)$ 的自相关函数具有<strong>各态遍历性</strong>。</p>
+<p>只有同时具有均值和自相关函数的各态遍历性的随机过程，我们才成为该平稳过程是<strong>遍历过程</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S3%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S3复习</a>
+              <a href="/tags/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> 概率统计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/e538848a/" rel="prev" title="吃喝玩乐-功德林素斋">
+      <i class="fa fa-chevron-left"></i> 吃喝玩乐-功德林素斋
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/5d6f5a0a/" rel="next" title="补充数学-傅里叶变换">
+      补充数学-傅里叶变换 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E6%80%BB%E8%AE%BA"><span class="nav-text">一、随机过程总论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3"><span class="nav-text">1.1 直观理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">1.2 基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83"><span class="nav-text">1.3 概率分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E6%95%B0%E5%AD%97%E7%89%B9%E5%BE%81"><span class="nav-text">1.4 数字特征</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%B9%B3%E7%A8%B3%E8%BF%87%E7%A8%8B"><span class="nav-text">二、平稳过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E4%B8%A5%E5%B9%B3%E7%A8%B3%E8%BF%87%E7%A8%8B"><span class="nav-text">2.1 严平稳过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%B9%BF%E4%B9%89%E5%B9%B3%E7%A8%B3%E8%BF%87%E7%A8%8B"><span class="nav-text">2.2 广义平稳过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%90%84%E6%80%81%E9%81%8D%E5%8E%86%E6%80%A7"><span class="nav-text">2.3 各态遍历性</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

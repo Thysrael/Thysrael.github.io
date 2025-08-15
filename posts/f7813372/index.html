@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、总论1.1 直观理解Unit2 的问题以电梯作为题目背景出题，刚做题的时候很容易就把这个单元的任务当成了处理多线程，当我全部完成这些作业以后，发现仅仅将 U2 概括为多线程，是一个十分片面的直观理解。 我觉得应该这么理解，U2 要完成的东西有（当然可以不完成）：  多线程设计：这比原来的处理多线程要难一些，处理多线程类似于能跑就行了，但是多线程设计偏向于跑的好，除了比较基础的生产者消费者模型，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象-电梯">
+<meta property="og:url" content="https://thysrael.github.io/posts/f7813372/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、总论1.1 直观理解Unit2 的问题以电梯作为题目背景出题，刚做题的时候很容易就把这个单元的任务当成了处理多线程，当我全部完成这些作业以后，发现仅仅将 U2 概括为多线程，是一个十分片面的直观理解。 我觉得应该这么理解，U2 要完成的东西有（当然可以不完成）：  多线程设计：这比原来的处理多线程要难一些，处理多线程类似于能跑就行了，但是多线程设计偏向于跑的好，除了比较基础的生产者消费者模型，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/f7813372/线程与类的关系.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/f7813372/线程与类的错误关系.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/f7813372/需求与设计.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/f7813372/Elevator-Elevator_Sequence.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/f7813372/线程流程图.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/f7813372/Main.png">
+<meta property="article:published_time" content="2022-04-30T00:52:40.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.116Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S4课上">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="面向对象">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/f7813372/线程与类的关系.drawio.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/f7813372/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>面向对象-电梯 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/f7813372/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面向对象-电梯
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-30 08:52:40" itemprop="dateCreated datePublished" datetime="2022-04-30T08:52:40+08:00">2022-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>19k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>18 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><h3 id="1-1-直观理解"><a href="#1-1-直观理解" class="headerlink" title="1.1 直观理解"></a>1.1 直观理解</h3><p>Unit2 的问题以电梯作为题目背景出题，刚做题的时候很容易就把这个单元的任务当成了处理多线程，当我全部完成这些作业以后，发现仅仅将 U2 概括为多线程，是一个十分片面的直观理解。</p>
+<p>我觉得应该这么理解，U2 要完成的东西有（当然可以不完成）：</p>
+<ul>
+<li>多线程设计：这比原来的处理多线程要难一些，处理多线程类似于能跑就行了，但是多线程设计偏向于跑的好，除了比较基础的生产者消费者模型，如果能再次基础上应用 Furture 、Balk、Work-Thread 等模式，可以做到一个更好的优化，此外，限制线程的种类，优化资源管理，这些东西都要比“抄一个多线程模型”要难很多。</li>
+<li>面向对象设计：面向对象是一种管理代码的方式，只有代码量激增的时候，面向对象对代码的管理能力才能超越面向过程。因此这个其实是一个可选项，因为如果采用一些思路的话，代码量很少，只有采用及其牛逼的调度器策略的时候，才有代码量激增的情况。</li>
+<li>数据结构设计：这是这次新题目的新难题，因为虽然题还是那个题，但是原来只有一栋楼，现在是 15 栋楼或者是 50 个坐标，总之如何处理这些请求的位置，就成了一个难题。我个人做的就极其繁复，会把每一层每一个方向单独作为一个集合，但是其实把所有请求不加分类的放进一个一维的集合中，似乎可维护性和可拓展性都会强很多。</li>
+<li>运筹：这回的题目最大的特点就是优化是永无止境的，而且是没有方向的，我们只知道一件事：我们不知道怎么优化。电梯调度算法其实是一个研究很深的问题，在运筹学上专门有一章去讲这个，似乎叫“电梯群控理论”。我翻了一些论文，感觉不仅我不知道怎么优化，似乎写论文的人也不知道怎么优化。但是估计他们也有ddl，所以估计应付应付就交了。</li>
+</ul>
+<p>虽然要完成的东西这么多，但是 U2 还有一个明显的特点就是其门槛极低，不同于 U1 最后带入表达式的时候，要是不对表达式树有一个深刻的理解，或者对深克隆有一个很深的理解，作业是完成不了的。U2 不同，因为 U2 的基础实现即为简单，我不止一次看到有人不到一个半天就完成了作业，甚至一两个小时就写完了。</p>
+<p>跟令人难受的是，U2 的上限是极高的，如果写一个普通调度器策略（比方说RoundRobin调度），那么至少会比自由竞争多大约 300 行代码，期间还要有一个对线程管理一个更加深刻的理解。如果是比较贪心（局部最优）的调度器策略（比如影子电梯调度），那么可能一个调度器部分就需要写 1 天（我个人是两天都没有写完）。换乘也是类似，如果是基准策略，那么大概就是 30 行不到的控制代码，如果想用图论知识做的话，一个简单的无权图 BFS 就需要写很长时间（我个人是 1 天），如果考虑到是加权多重图，采用遍历所有路径去做，那么只会更复杂（我个人是 1 天没写完）。量子电梯运行策略，我尝试理解了 1 天，卒。</p>
+<p>最最痛苦的是，尽管电梯继承了影子电梯调度策略，量子电梯运行策略，加权多重路径换乘策略。这个的性能可能还是没有普普通通基准策略加自由竞争要好。也就是说，会出现这种情况，当一个人花费了远超于其他人很多倍的时间，但是其回报不成正比，甚至是负数，这是经常发生的。</p>
+<p>在考虑到时间点的问题，在 U2 的后期刚好是冯如杯交稿子，操作系统 lab2，lab3，期中考试，CPP、UNIX结课，航概大作业等一系列 DDL，所以有可能会发生即使有一颗想优化的心，但是没有优化的时间的情况发生。这都是有可能的。</p>
+<h3 id="1-2-架构解释"><a href="#1-2-架构解释" class="headerlink" title="1.2 架构解释"></a>1.2 架构解释</h3><p>我一直觉得这个单元一直有两个问题，一个是对于要干什么的模糊，一个是对是什么的模糊。对于第一个问题，我一直觉得 U2 把多线程搞好就完事了，哪里想到搞多线程只是其中一个很基础的步骤，到了后期，谁都不会在上面花时间。所以我用 1.1 记录了一下大致要干些啥。</p>
+<p>对于第二个问题，主要是看往年博客、听老师讲课、与同学讨论的时候遇到的，一个“自由竞争”的理解就可以有 800 个。有人管 look 叫做电梯调度策略，有人管自由竞争叫做电梯调度策略，这显然都不是一类东西。概念的差异其实并不可怕，就好像各个地区的语言不同一样，可怕的是，有可能因为概念不同，在学习的过程中导致概念的丢失，这就是很恐怖的事情了。</p>
+<p>这里给出一些概念的释义，概念的名字不重要，重要的是对应的概念应当得到认识：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>电梯运行策略</td>
+<td>指一个电梯面对多个请求时的工作策略</td>
+<td>als，look，环形不换向，环形模拟</td>
+</tr>
+<tr>
+<td>电梯调度策略</td>
+<td>指多个存在竞争关系的电梯进行请求分配的策略</td>
+<td>自由竞争，调度器（包括很多种）</td>
+</tr>
+<tr>
+<td>电梯换乘策略</td>
+<td>指的是如何将一个需要换乘的请求处理成多个电梯可以处理的不需换乘的请求的策略</td>
+<td>静态换乘、动态换乘（均包括很多种）</td>
+</tr>
+<tr>
+<td>多线程设计模式</td>
+<td>解决的是多线程中容易出现的问题</td>
+<td>生产者消费者模型，Fulture 模式，流水线模式</td>
+</tr>
+<tr>
+<td>设计模式</td>
+<td>解决的是面向对象中容易出现的问题</td>
+<td>单例模式，工厂模式</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>三次作业大概对应需要完成的任务</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hw5</th>
+<th>hw6</th>
+<th>hw7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>线程设计</td>
+<td>单向的线程交互</td>
+<td>自由竞争需要考虑共享候车表的问题</td>
+<td>双向的线程交互</td>
+</tr>
+<tr>
+<td>面向对象设计</td>
+<td>无，有人用到了策略模式，但是我不了解</td>
+<td>调度器法需要考虑用面向对象来管理代码，自由竞争不需要。电梯种类增加，需要考虑是否继承或者接口或者组合</td>
+<td>封装请求，图算法需要封装图类</td>
+</tr>
+<tr>
+<td>数据结构设计</td>
+<td>考虑是平面化结构还是立体结构</td>
+<td>考虑是平面化结构还是立体结构</td>
+<td>考虑是平面化结构还是立体结构</td>
+</tr>
+<tr>
+<td>运筹</td>
+<td>垂直电梯运行策略，评测机</td>
+<td>环形电梯运行策略，电梯调度策略，评测机</td>
+<td>电梯换乘策略，评测机</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="1-3-做作业思路"><a href="#1-3-做作业思路" class="headerlink" title="1.3 做作业思路"></a>1.3 做作业思路</h3><p>我对于 U2 的特性分析在 1.1 已经阐述过了，我觉得真的挺有意思的，因为这种特点是我第一次接触，而且我相信以后接触的会更多。<strong>没有前进方向，摆烂（其实不能叫摆烂，就是佛系）没有代价，机关算尽误性命，其他DDL重如泰山</strong>，这样的事情到底应该怎么办？虽然有些夸张，但是其实很多事情都是这个样子的。</p>
+<p>其实我个人觉得尽兴就好了。</p>
+<hr>
+<h2 id="二、线程设计"><a href="#二、线程设计" class="headerlink" title="二、线程设计"></a>二、线程设计</h2><h3 id="2-1-线程种类的确定"><a href="#2-1-线程种类的确定" class="headerlink" title="2.1 线程种类的确定"></a>2.1 线程种类的确定</h3><h4 id="2-1-1-线程与面向对象的联系与区别"><a href="#2-1-1-线程与面向对象的联系与区别" class="headerlink" title="2.1.1 线程与面向对象的联系与区别"></a>2.1.1 线程与面向对象的联系与区别</h4><p>这个也是我发生了很大误区的地方，因为我一直有一种感觉是线程就是<strong>特殊的一种类</strong>，它实现了 <code>runnable</code> 接口或者继承了 <code>Thread</code> 类。线程是一个过程，而不是一个对象。</p>
+<p>怎么论证这个观点呢？有一种朴素的认识，<code>Printer</code> 是一个类，因为听到这个单词我脑子就能反映出一个像打印机一样的东西，<code>Elevator</code> 也是一个类，因为听见这个词我就可以联想到那个方方的可以进人出人满楼层乱窜的东西，哪怕是抽象一点的 <code>TreeNode</code>，我也知道这是一个二叉树的节点，它有两个孩子之类的。但是 <code>Main</code> 是什么？我反正反映不出来 <code>Main</code> 长什么样子，因为 <code>Main</code> 发挥的功能就不是一个类该干的事情，而是一个线程该干的事情。</p>
+<p>类或者对象干什么的？把数据封装到一起，把用这些数据做参数的函数也封装到一起。然后呢？然后就什么都不干，等着别人调用或者访问。那么谁来做调用者，其实就是 <code>Main</code> ，只有一切有了 <code>Main</code> ，一切封装好的代码才有了工作的指令。说到底，只用面向对象是没有办法解决任何问题的。我们需要 <code>Main</code> 来让一切对象合理的运作起来。</p>
+<p>那么为什么 <code>Main</code> 就有这么神奇的作用，因为 <code>Main</code> 是一个线程，他是一个过程，只有过程可以调用对象。当我们进行多线程的时候，思考线程的安排的时候，不应该思考这个类应不应该动起来，而是应该该思考这里该不该多一个过程。</p>
+<p>可以这么说，线程和类完全是两个不相关的东西，正是因为这种不相关性，才使得程序得以运行。线程与类的关系，应该是这样的</p>
+<p><img src="/posts/f7813372/线程与类的关系.drawio.png" alt="线程与类的关系.drawio"></p>
+<p>而不应该是这样的</p>
+<p><img src="/posts/f7813372/线程与类的错误关系.drawio.png" alt="线程与类的错误关系.drawio"></p>
+<p>我们常写的电梯类，是这样的：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Elevator</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> UP <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">char</span> building<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> capacity<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">LinkedList</span><span class="token punctuation">&lt;</span><span class="token class-name">PersonRequest</span><span class="token punctuation">&gt;</span><span class="token punctuation">&gt;</span></span> inside<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> insideCnt<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Building</span> outside<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> direction<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">PersonRequest</span> targetRequest<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> floor<span class="token punctuation">;</span>
+    
+    <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是严格地讲，应该是这样的</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ElevatorThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Building</span> outside<span class="token punctuation">;</span>
+	<span class="token keyword">private</span> <span class="token class-name">Elevator</span> elevator<span class="token punctuation">;</span>
+    
+    <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Elevator</span> 
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> UP <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">char</span> building<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">int</span> capacity<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">LinkedList</span><span class="token punctuation">&lt;</span><span class="token class-name">PersonRequest</span><span class="token punctuation">&gt;</span><span class="token punctuation">&gt;</span></span> inside<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> insideCnt<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Building</span> outside<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> direction<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">PersonRequest</span> targetRequest<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> floor<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-1-2-分析需求"><a href="#2-1-2-分析需求" class="headerlink" title="2.1.2 分析需求"></a>2.1.2 分析需求</h4><p>确定我们需要使用的线程的种类及其个数了。我们这样考虑线程的数目，那就是每一个对象一定属于一个或者多个线程，不然就就没人实例化，调用它，它就没有作用。其次，让线程的种类数目尽量减少，这是因为能由一个线程能干完的事情，两个线程也一定能干完，但是这就相当于凭空创造了需求（也不是不行，比如并行计算就经常创造需求，但是电梯没有这回事），只有以不断减少线程为目标，才能明晰我们的需求。换句话说，决定线程数目的是需求，而不是设计者设计的类。即下面这张图：</p>
+<p><img src="/posts/f7813372/需求与设计.drawio.png" alt="需求与设计.drawio"></p>
+<p>对于每个线程，我们都需要思考有没有必要开启这个线程，思考的标准就是仅用现有的线程有没有办法完成任务，对于每个类，我们需要确定他的方法会被哪些线程调用，数据会被哪些线程读写。    </p>
+<p>比较好确定的，我们一定需要一个主线程，因为程序入口设置在这里了，没有这个线程就没有办法启动其他线程，所以一定需要一个主线程。</p>
+<p>那么输入类要不要单独开一个线程进行管理呢？这个其实很灵活，因为其实输入类在 Main 这个线程中被调用也能实现，但是考虑到不在 Main 里面干不是 Main 的事情，我们可以另开一个线程，作为调用输入对象的过程。</p>
+<p>电梯所在的线程可不可以是输入线程或者是主线程，我们说是不行的，因为电梯的方法的调用要求是与输入是并行的，如果等所有输入完了再运行电梯，显然是要完蛋的。所以电梯一定要有自己的线程，多个电梯可不可以共用一个线程？是不可以的，这是因为电梯之间也需要是并行的，不然这个电梯睡了，那个电梯还不能动，这显然不合理。</p>
+<p>还有其他需要并行的东西吗？没有了，我们看一下剩下的类能不能找到线程，<code>WaitQueue</code>，在输入线程和电梯线程上均有调用和读写，<code>Dispatcher</code> ，分发器，定位于输入线程，负责将一部分与分发有关的函数封装起来，并且管理 <code>WaitQueue</code>，<code>Scheduler</code> 调度器，负责将 <code>WaitQueue</code> 中请求分给各个电梯，属于多个电梯线程的。</p>
+<p>不过多说一句，往届有人一个线程一个请求，我觉得是可行的。</p>
+<h3 id="2-2-线程安全"><a href="#2-2-线程安全" class="headerlink" title="2.2 线程安全"></a>2.2 线程安全</h3><h4 id="2-2-1-临界区的复杂度"><a href="#2-2-1-临界区的复杂度" class="headerlink" title="2.2.1 临界区的复杂度"></a>2.2.1 临界区的复杂度</h4><p>线程刚上手可能会觉得很难，但是其实很大一部分难度是线程协作带来的，真正的线程安全问题，用 <code>synchronized</code> 语句块可以很好的解决。优化方向有：</p>
+<ul>
+<li>用 <code>lock</code> 解决同步问题</li>
+<li>减少临界区的大小</li>
+</ul>
+<p>第一个我没有做，是因为懒。但是据小道消息，似乎没有太好的表现（包括读写锁）。第二个我就是积极践行者，我的临界区设置的奇小无比，精确到了每个楼层的每个方向。而且这是有对比的，我有两个朋友，他们的临界区都是整个候车表，也就是说有的请求一块锁。这样我们在 hw5 和 hw6 的效果都是很类似的（甚至他们可能因为其他方面，比我还要好一些）。</p>
+<p>至于为什么没有效果呢？我觉得是因为计算机运算速度在处理电梯问题上是很快的，所以即使锁住了全部的请求，但是没多一会儿就遍历完了，所以把临界区设置小了是没有效果的。</p>
+<p>而且设置小的临界区意味着多维的数据结构，这种复杂的数据结构是不利于调度器策略实现的，严格地说，是不利于任何创新策略的实现的。</p>
+<p>平面化的结构本来应该具有检索速度慢之类的缺点，但是测试数据规定请求数目最多就是 70 个，70 个请求遍历和拿哈希似乎差不过。所以基本上复杂的数据结构应该是一个坑点了。</p>
+<h4 id="2-2-2-查必删"><a href="#2-2-2-查必删" class="headerlink" title="2.2.2 查必删"></a>2.2.2 查必删</h4><p>这个只的是在自由竞争策略下，多个电梯共享一个候车表，那么必然就会有抢夺现象。所谓的查必删，可以看做是操作系统课程中 <code>Test and set</code> 的一个异化版本。因为有多个电梯都可以修改候车表，如果一个电梯查询候车表后不立刻把想要搭载的请求立刻删去，而只是记录了一下，那么等到需要删除的时候，可能这个请求已经被别人删掉了。</p>
+<p>现在写起来这个问题似乎很简单，我也不知道当时为啥想了好久。</p>
+<h3 id="2-3-线程协作"><a href="#2-3-线程协作" class="headerlink" title="2.3 线程协作"></a>2.3 线程协作</h3><p>线程安全只能保证没啥错误，但是 CPU 还是可能会轮询的。所谓轮询指的就是因为某个线程卡在临界区外或者没有拿到想要的资源，他会不断的去运算，去检验能不能进入临界区或者拿到某一个资源。这其实没啥毛病，就是比较耗 CPU。那么有没有什么解决办法呢？是有的，就是一旦一个线程拿不到资源（或者说运行条件），我们就不让他运行了（之前是他一直在运行来检测条件），直到这个条件成熟了，才让他运行。</p>
+<p>所谓的 <code>wait</code>，其实描述的就是当一个线程拿不到资源的时候应该做的事情，就是歇会，那么 <code>notify</code> 描述的就是当资源被制造出来以后，通知正在 <code>wait</code> 的线程可以运行了。就是这样一个事情。</p>
+<p>上面描述的过程被称为 <strong>Guard Suspension</strong> 模式，在《图解Java多线程设计模式》中可以找到。往届学长一直称呼其为生产者消费者模式，其实还是有一些问题的。 <strong>Guard Suspension</strong> 模式更偏向于单向的通信，生产者消费者模式更加偏向于双方的协调，实现上比这次作业需要的更加复杂一些。如果只是为了表示一个“输入可以看做生产者，电梯可以看做消费者”这种意思，其实两种说法并无差异。我记在这里的原因只是为了满足一下我的虚荣心，并没有卫道的意思。</p>
+<p>学完 OS 发现 OS 的生产者消费者模型的涵盖面更广一些，似乎学长们一直这么说，也无可厚非。</p>
+<h3 id="2-4-线程终止"><a href="#2-4-线程终止" class="headerlink" title="2.4 线程终止"></a>2.4 线程终止</h3><p>这个东西其实是需要很好的理解的，因为大部分的线程基础知识介绍性的博客都没有涉及。这个东西最快的理解途径是看《图解Java多线程设计模式》中的 <strong>Two Phase Termination</strong> 这一章。如果不想看，其实看实验代码也能看懂。大致意思就是说，当输入结束的时候，电梯把乘客运送完了，整个程序就该停了。那么怎么让线程知道自己该停了呢？其实就是结束 <code>run</code> 方法。</p>
+<p>为了使 <code>run</code> 方法结束，我们先思考他为啥没结束，这是因为 <code>run</code> 一般长这样</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>里面是一个死循环，至于为啥一定要有个死循环（或者循环），是以为如果不是循环的话，说明执行一会就完了，那就没必要开始一个线程了，多少语句啊，还执行不完了（并不严谨）。所谓的线程终止，就是修改 <code>run</code> 方法如下</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">needTerminate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token punctuation">{</span>
+			<span class="token keyword">return</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当到达需要终止的条件的时候，就把这个线程终止了。在诸多的终止条件里，有一个是<strong>输入结束了</strong>，这个条件是一个需要传递的条件，也就是说，这个条件需要通过输入线程传递给电梯线程。具体的示例在实验代码中给出。</p>
+<h3 id="2-5-多线程调试"><a href="#2-5-多线程调试" class="headerlink" title="2.5 多线程调试"></a>2.5 多线程调试</h3><p>这个虽然 IDEA 提供了调试方法，我还好好学了学，但是感觉真的没有 <code>printf</code> 方便。emmmm，我真的好好学了，但是输出调试它真的太香了。老师讲到可能输出调试会干扰线程运作，但是我觉得还行，我个人没有遇到那种一 <code>printf</code> bug 就复现不来的问题。</p>
+<p>而且真的 <code>printf</code> 可以细致的发现诸如轮询的问题，而且还可以观察 <code>wait-notify</code> 机制，虽然多线程调试也可以，但是有啥比屏幕上出现一串 <code>alouha</code> 更能说明我轮询的办法呢？</p>
+<h3 id="2-6-线程时序图"><a href="#2-6-线程时序图" class="headerlink" title="2.6 线程时序图"></a>2.6 线程时序图</h3><p><img src="/posts/f7813372/Elevator-Elevator_Sequence.png" alt="Elevator-Elevator_Sequence"></p>
+<hr>
+<h2 id="三、运行策略"><a href="#三、运行策略" class="headerlink" title="三、运行策略"></a>三、运行策略</h2><h3 id="3-1-策略类与状态机"><a href="#3-1-策略类与状态机" class="headerlink" title="3.1 策略类与状态机"></a>3.1 策略类与状态机</h3><p>我们首先思考电梯要干哪些事情，应该是两件事情，一件事情是决定自己该干嘛，第二件事情是落实自己的决策。如果这两件事情都放到一个类去处理，那么就会变得很复杂。而且这两件事情具有很好的解偶联性。有一个很好的比喻，就是把电梯从一个正常人的结构变成一个“瞎子背瘸子”的结构。瞎子一般对应残缺功能的电梯，它负责改变自身状态和输出信息。瘸子对应策略类，负责收集获取外界信息，结合电梯的自身状态信息，做出决策，将这些信息提供给电梯。</p>
+<p>我在作业中一直没有实现这种“瞎子背瘸子”的结构，这是因为从一开始我就没有意识到“线程是线程，类是类”这个基本的事实。一直觉得电梯是个线程，如果有一个策略类，那么策略类会不会没有电梯那么活泼啊。确实挺可笑的，但是确实是我当时的想法。但是其实比较正确的态度是电梯类和策略类都是一些代码和一些数据的集合体，他们运行在电梯线程上，我们提出策略类是为了分担解偶联的功能，而不是其他原因。</p>
+<p>在说完了电梯的策略类的正确性和可行性以后，我们讨论一下状态机问题。状态机是根据当前状态和输入进行决策确定下一状态的数学模型。我们的电梯的当前状态包括位置坐标和运行状态，输入是请求，所以是可以抽象出一个状态机模型的。这里我依然是没有实现的。这是因为电梯在空闲的时候需要 <code>wait</code> ，而 <code>wait</code> 不能看做一个电梯的自发动作，而是一个被动的，因为托盘里没有东西而导致的行为。所以状态机会变得不那么纯粹。为了这篇文章的严谨性，我还特意询问了三个写状态机的大佬，感觉虽然他们确实已经做得很好了，用状态机大幅简化了运行的逻辑，但是我依然感觉失去了状态机的纯粹性。如果要保有这种纯粹性，就会让代码变得繁复不堪。</p>
+<p>失去状态机的纯粹性虽然在实现上没有啥差别，但是我想要的是状态机的数学结构借助离散数学数学的形式完成一种转化，毕竟跟状态机等价的数学结构又很多，这样是不是可以有一种新奇的体验呢？因为我愚笨的智商，就没有办法在此讨论了。</p>
+<p>我个人是用的一个复杂的判断结构，这个决策分支结构其实有很多状态机的影子，可以说为了数学上的纯粹性，我将不纯粹的状态机转化成了纯粹且繁琐的分支条件判断，真是一种任性啊。</p>
+<p><img src="/posts/f7813372/线程流程图.drawio.png" alt="线程流程图.drawio"></p>
+<p>哈哈哈哈，画完这一张突然想明白了，我之所以觉得状态机行不通，是因为对于电梯来说，是没有等待行为的，等待是线程的等待，而不是电梯对象的等待，这样一切都说的通了，线程需要判断自己是<strong>等待，工作还是终止</strong>。而电梯则需要判断自己是<strong>移动还是开关门</strong>。只有电梯是状态机。这样就可以完美解释了。</p>
+<p>并不是我的数学能力不行导致的状态机架构的不纯粹性，而是强行把等待纳入电梯的状态就是一种数学上错误的东西。想起楠哥在实现的时候，尽管有停止状态，但是停止状态里的函数是空函数，而且停止状态的状态转换也颇为诡异，一切都得到了应验。</p>
+<p>上面是线程的工作分支判断图，对于电梯的状态，其实没必要了，因为只有两个状态了，没有必要运用状态机去理清思路了。成功达到了数学的最高境界：不用数学。（\doge）</p>
+<h3 id="3-2-垂直运行策略"><a href="#3-2-垂直运行策略" class="headerlink" title="3.2 垂直运行策略"></a>3.2 垂直运行策略</h3><p>我个人采用的是 look 哈，其实啥都行，但是似乎大家都在采用 look，没有什么选择空间。</p>
+<p>这里稍微记录一下 look 是啥。它脱胎于 SCAN 扫描策略，就是这个电梯就往上走到顶楼，图中如果有向上的请求，那么就捎带上，到了顶楼以后就改变方向向下走，如果图中有向下的请求，那么就捎带上，到了最底层就改变方向。如此循环。</p>
+<p>look 策略比 SCAN 好一些的地方是，比如说向上的时候中，电梯里已经没有人了，而且更高层也都没有人了，那么电梯就转向就可以了，没必要到了顶楼再转向。就是把扫描的范围变得动态化了。而且还是挺好实现的。</p>
+<h3 id="3-3-环形运行策略"><a href="#3-3-环形运行策略" class="headerlink" title="3.3 环形运行策略"></a>3.3 环形运行策略</h3><p>在说策略之前，我先说一个事实，就是我有一个大冤种好朋友，她做题的时候没有审清题，在第六次作业的时候把电梯的移动速度看成了 0.4，但是其实是 0.2 ，也就是说她的电梯比别人慢一倍，但是强测性能分依然高的离谱。所以感觉似乎运行策略没啥可以卷的。</p>
+<p>我在 hw6 和 hw7 分别采用过两种策略。一种是不区分乘客的方向（环形电梯可以区分方向，比如由 <code>A-&gt;C</code> ，由于 <code>A-&gt;B-&gt;C</code>比 <code>A-&gt;E-&gt;D-&gt;C</code> 要短，所以可以按照这种规则把请求分出方向来），然后电梯每次运行的时候，都先判断一次方向，判断的依据是，尝试两种不同的方向，比较哪次可以在更短的路径下运完所有的内部乘客。这种的好处是可以避免强行区分方向，导致该拉的乘客要到换完向以后再拉的低效事情。然后第七次作业我就改成了区分乘客方向，电梯捎带乘客，必须满足乘客的方向与电梯的方向一致，然后人为规定最高层和最底层，将环形展开，然后采用 ALS，最后两者效果相似（想想我的冤种朋友都很好，就知道这个东西卷不起来）。</p>
+<p>当然还可以让电梯一直沿一个方向工作，据说也可以 98 分，emmmm，也挺好的。</p>
+<h3 id="3-4-解释量子电梯"><a href="#3-4-解释量子电梯" class="headerlink" title="3.4 解释量子电梯"></a>3.4 解释量子电梯</h3><p>往届学长的智慧遗产，但是我领悟到的时候已经是 U2 结束的时候了。这里再解释一下（还要感谢楠哥带我）。</p>
+<p>延续之前所说的，电梯的行为是电梯的行为，线程的行为是线程的行为。所以等待不是电梯的行为。</p>
+<p>那么我们看一下比较普通的电梯移动是怎么写的，其实普通的电梯就是错误的电梯</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">updatePosition</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> hasUpdate<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hasUpdate<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">try</span>
+        <span class="token punctuation">{</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>direction <span class="token operator">==</span> UP<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            floor<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            floor<span class="token operator">--</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token class-name">Printer</span><span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ARRIVE-"</span> <span class="token operator">+</span> building <span class="token operator">+</span>
+                        <span class="token string">"-"</span> <span class="token operator">+</span> floor <span class="token operator">+</span>
+                        <span class="token string">"-"</span> <span class="token operator">+</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因为电梯是 0.4 秒一层，所以我就先让他睡 0.4s，但是这对吗？不对，这是因为电梯的 0.4s 指的是到达某一层楼与到达下一层楼的时间间隔（或者在某层关门与到达下一层之间的时间间隔），也就是说这个</p>
+<pre class="line-numbers language-none"><code class="language-none">[time1] ARRIVE-floor1
+[time2] ARRIVE-floor2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>移动速度的限制是 <code>time2 - time1 &gt; 0.4</code> 。但是如果考虑电梯在floor1等待，那么运行的时候其实是这样的</p>
+<pre class="line-numbers language-none"><code class="language-none">[time1] ARRIVE-floor1
+[time3] begin wait
+[time4] end wait
+[time2] ARRIVE-floor2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>按照上面的写法，其实满足的约束是 <code>time2 - time4 &gt; 0.4</code> 这显然是不正确的（不正确指的是没有正确的表达题目的要求）。我们知道，如果按照我这样处理，会有</p>
+<script type="math/tex; mode=display">
+time2 = time4 + 0.4 = time1 + waitTime + 0.4 \\
+waitTume = time4 - time1</script><p>而实际上应该是</p>
+<script type="math/tex; mode=display">
+time2 = time1 + 0.4</script><p>我浪费了<code>waitTime</code> 的时间。想要完成正确的做法是在电梯中维护一个属性，用来记录最后一次到达或者关门的时间（因为移动前可能是到达，也可能是关门，要挑最新的记录），然后在移动的时候判断还需要移动多少秒，就是这样</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">updatePosition</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> hasUpdate<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hasUpdate<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">long</span> currentTime <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>currentTime <span class="token operator">-</span> <span class="token keyword">this</span><span class="token punctuation">.</span>lastTime <span class="token operator">&lt;</span> <span class="token number">400</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">400</span> <span class="token operator">-</span> currentTime <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>lastTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>direction <span class="token operator">==</span> UP<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            floor<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            floor<span class="token operator">--</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token class-name">Printer</span><span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ARRIVE-"</span> <span class="token operator">+</span> building <span class="token operator">+</span>
+                        <span class="token string">"-"</span> <span class="token operator">+</span> floor <span class="token operator">+</span>
+                        <span class="token string">"-"</span> <span class="token operator">+</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我没有实际跑过，上面代码可能有bug，但是还是很漂亮的一个结构，更加的接近题目的要求，而我的那个原版就比较的错误。而且这个实现起来也很好实现。</p>
+<p>唯一需要吐槽的是这个名字太装逼了，瞬间吓傻了智商本就不富裕的孩子（当然还有一种可能是我依然没有理解啥是量子电梯）。其实叫做计时电梯或者就叫做一次电梯优化都还挺好的。</p>
+<hr>
+<h2 id="四、调度策略"><a href="#四、调度策略" class="headerlink" title="四、调度策略"></a>四、调度策略</h2><h3 id="4-1-概念说明"><a href="#4-1-概念说明" class="headerlink" title="4.1 概念说明"></a>4.1 概念说明</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>英文</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>公共资源</td>
+<td>public source</td>
+<td>会被多个线程访问的数据结构</td>
+</tr>
+<tr>
+<td>私有资源</td>
+<td>private source</td>
+<td>只会被一个线程访问的数据结构</td>
+</tr>
+<tr>
+<td>电梯</td>
+<td>elevator</td>
+<td>为了让它更合理一些，我们认为只有垂直运动的电梯叫做电梯</td>
+</tr>
+<tr>
+<td>摆渡车</td>
+<td>ferry</td>
+<td>即横向的环形电梯，我给它起名叫做摆渡车，因为它的行为与摆渡车更加类似。</td>
+</tr>
+<tr>
+<td>轨道</td>
+<td>rail</td>
+<td>指电梯工作位置，一个运行在 A 楼座的电梯，他的轨道就是 A 楼座（怎么这么废话）。一个轨道上存着所有出发于该位置的请求</td>
+</tr>
+<tr>
+<td>等候队列</td>
+<td>outside</td>
+<td>每个电梯或者摆渡车都拥有一个等候队列，这是它们的私有资源</td>
+</tr>
+<tr>
+<td>调度器</td>
+<td>scheduler</td>
+<td>一种将请求直接发送到电梯或者摆渡车等待队列</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所谓的电梯调度，指的是将每一个从输入读入或者换乘的请求，以某种规则，分配个具体的某个电梯的过程。</p>
+<h3 id="4-2-自由竞争"><a href="#4-2-自由竞争" class="headerlink" title="4.2 自由竞争"></a>4.2 自由竞争</h3><h4 id="4-2-1-基本介绍"><a href="#4-2-1-基本介绍" class="headerlink" title="4.2.1 基本介绍"></a>4.2.1 基本介绍</h4><p>这里先给出自由竞争的定义，自由竞争指的是，在同一轨道上的电梯可以竞争投放到这个轨道上的所有请求。也就是说，如果一个轨道上有两个电梯，电梯 A 在1楼，电梯 B 在 8 楼，这时候来了一个 6 楼的请求，那么电梯 A B都会向着 6 楼一栋，最后的结果可能是电梯 B 接到了这个请求，然后电梯 A 大约会在 3 楼。</p>
+<p>在 hw5 的基础上改进出自由竞争策略很容易，只需要在电梯接人的时候注意一下同步问题，不要出现一个乘客被两个电梯接走的问题就可以了。此外，还需要在各个地方打一下补丁，比如可能会出现“空开门”的现象，也就是开了门，但是没有乘客进去。这类的问题可以在开关门之前，先用同步语句把乘客抢到手（用一个临时容器储存），然后看抢到的乘客数量，如果大于 0 个，然后才进行开关门操作。除了这些问题，因为“抢到 0 个人”还会有一些其他的补丁，需要根据每个人的具体设计来看。</p>
+<h4 id="4-2-2-性能分析"><a href="#4-2-2-性能分析" class="headerlink" title="4.2.2 性能分析"></a>4.2.2 性能分析</h4><p>自由竞争是一个很好的算法，是因为他实现了一个类似于自然选择的过程，能够接到乘客的电梯一定是离乘客近的电梯，如果涉及到速度的话，那么经常接客的电梯一定是速度快的电梯。而且实现起来真的很简单，不容易出 bug。</p>
+<p>我在 hw6 和 hw7 都是实现了自由竞争和某些调度器分配，但是最后提交的时候都是自由竞争策略。因为从中测来看，自由竞争的性能要远高于某些调度器分配。因为没有完成号称最牛逼的影子电梯，所以被自由竞争比下去的只有均分调度器，状态调度器。千万不要因为这个结论就不敢用于尝试。</p>
+<h3 id="4-3-调度器分配"><a href="#4-3-调度器分配" class="headerlink" title="4.3 调度器分配"></a>4.3 调度器分配</h3><h4 id="4-3-1-基本介绍"><a href="#4-3-1-基本介绍" class="headerlink" title="4.3.1 基本介绍"></a>4.3.1 基本介绍</h4><p>这里给出调度器的定义，调度器指的是，每个轨道拥有一个调度器，这个轨道上的请求对于调度器是可见的，由调度器负责直接将请求投放给电梯的等候队列。电梯无法看见位于轨道上的请求队列，它只能处理自己内部的请求和请求队列中的请求。</p>
+<p>有一个有意思的比喻，调度器为电梯提供了这样的一种抽象，让每个电梯都认为自己都是轨道的唯一的电梯。</p>
+<p>因为要向电梯传递请求，那么按照什么规则分配请求就成了调度器设计的重中之重。优秀的调度器，应当结合所要分配的请求的性质和当前电梯的状态去进行决策。</p>
+<h4 id="4-3-2-准备工作"><a href="#4-3-2-准备工作" class="headerlink" title="4.3.2 准备工作"></a>4.3.2 准备工作</h4><p>决定做调度器，其实整体的架构就需要发生一个大的改变，这个改变严格讲不是必须的，但是因为调度器的复杂性，导致如果不对其他架构进行修正，那么后期复杂性一定会爆炸到无法落笔的地步（当然也可能跟我个人的缺点有关）。</p>
+<p>首先就是所有存放请求的容器的结构一定要简单，电梯内部的容器也是。这是因为调度器决策的时候，有可能需要遍历所有的相关请求去做决策，过于复杂的结构有利于检索，但是不利于遍历。想一想遍历一个图的难度和遍历一个链表的难度。</p>
+<p>其次是要在调度器里建立管理电梯的容器，自由竞争的电梯不需要管理，跑就行了</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Elevator</span><span class="token punctuation">(</span>elevatorRequest<span class="token punctuation">,</span> outside<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但是调度器必须可以获得所以的状态，所以是一个这样的过程</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Elevator</span> elevator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Elevator</span><span class="token punctuation">(</span>elevatorRequest<span class="token punctuation">,</span> outside<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>elevators<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>elevator<span class="token punctuation">)</span><span class="token punctuation">;</span>
+elevator<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>最后是可能对评测机的要求会更高一些，因为设计调度器的有一种思路就是调参，通过随便乱调来获得优化，那么调参方向就得靠评测机来反馈。即使不是调参思路，调度器架构一旦形成，其实更换调度策略并不困难，所以很少有人只用一种调度策略。那既然写出了多种调度策略，不测一测怎么知道哪种好呢？</p>
+<h4 id="4-3-3-均分策略"><a href="#4-3-3-均分策略" class="headerlink" title="4.3.3 均分策略"></a>4.3.3 均分策略</h4><p>这个就是基准策略，这种策略不需要考虑待分配请求的性质，也不需要考虑电梯的运行状态。所以实现起来并不困难，甚至我们这届实验课代码都给了一个超级相似的。</p>
+<p>这种性能不太好，我有一个好朋友采用了这种策略，我记得在 hw6 有五个 85 分，而我用自由竞争那次分是 98.7 多来着。</p>
+<h4 id="4-3-4-人数策略"><a href="#4-3-4-人数策略" class="headerlink" title="4.3.4 人数策略"></a>4.3.4 人数策略</h4><p>这个采用的分配评判标准是按照电梯还有多少个请求待执行，调度器会将请求分配给待执行请求最少的电梯。</p>
+<p>这种策略考虑了一定的电梯情况，但是利用的信息太少了，只考虑了人数，其实人数多的电梯不一定不适合。我有一个同学在 hw6 采用这个策略，获得了 95 分左右的分数。</p>
+<h4 id="4-3-5-调参策略"><a href="#4-3-5-调参策略" class="headerlink" title="4.3.5 调参策略"></a>4.3.5 调参策略</h4><p>电梯的状态包括与该请求的距离，电梯的负荷，速度，容量等一系列指标，请求也有出发地，目的地，方向等指标。用这些指标结合参数可以给每个电梯打分（这里认为分数高的电梯适合），然后调度器将请求分配给分数最高的电梯。因为分数受到参数的影响，所以可以通过调节参数来实现最大可能的优化。</p>
+<p>我在 hw6 实现了一个评测指标比较少的调度器，但是因为没啥调参的想法，写完以后才发现自己完全不知道咋调参，然后跑了跑，没有自由竞争快，然后就扔了。因为这个其实本质上也不难写，电梯的位置坐标，或者各种属性，获得的难度也不大。</p>
+<h4 id="4-3-6-影子电梯"><a href="#4-3-6-影子电梯" class="headerlink" title="4.3.6 影子电梯"></a>4.3.6 影子电梯</h4><p>这是一种完全模拟的方法，调参还是对应了数学计算的方法，而影子电梯说的是，我模拟电梯的运行，来计算每部电梯到运行终止需要花费的时间，然后调度器会把请求发给最早结束工作的电梯。</p>
+<p>这个方法应该是白箱调度的极限了（调参策略或许可以形成某种黑箱的极限并超越这个方法），它会让电梯尽量保持工作状态，形成一种局部的最优解。</p>
+<p>影子电梯的实现需要电梯的等候队列和内部请求容器，然后进行模拟。模拟的方法就是把所有的运行函数重写一遍，里面所有的 <code>sleep(400)</code> 都换成 <code>time += 400</code> 之类的，然后得出运行时间。这种方法需要克隆内外部请求容器，或者直接克隆一个电梯。这也是“影子电梯” 的名称由来。</p>
+<p>因为我的内外部容器极其复杂，我去克隆的时候不堪重负，最终无疾而终。所以想看比较详细的，还是找大佬的博客吧。</p>
+<h4 id="4-3-7-退化版影子电梯"><a href="#4-3-7-退化版影子电梯" class="headerlink" title="4.3.7 退化版影子电梯"></a>4.3.7 退化版影子电梯</h4><p>其实没必要进行完全的模拟，我们计算模拟的时间只需要确定电梯在那些楼层会停下，运行的最高楼层是哪里，运行的最低楼层是哪里，就可以计算出花费时间，就是路程时间加上开关门时间。这样就可以避免克隆的复杂性了。</p>
+<p>我在 hw6 实现了这种方法，但是因为有一些情况计算并不准确（有准确的计算的可能性，但是那就分类讨论太多了），所以应该没有达到局部最优的效果。用自己的评测机做测试，与自由竞争输多赢少（但是起码不是一面倒了）。而且因为实现这个的时候是迭代开发，所以代码极其臃肿。最后交的时候怂了，改为了交自由竞争的版本。</p>
+<h3 id="4-4-评测机"><a href="#4-4-评测机" class="headerlink" title="4.4 评测机"></a>4.4 评测机</h3><p>一般评测机由三部分组成：</p>
+<ul>
+<li>数据生成器</li>
+<li>正确性检验器</li>
+<li>控制器</li>
+</ul>
+<p>这个单元的数据生成器比较容易做，基本上随机就可以覆盖所有的情况。但是正确性检验器比较难做，比较好的方法就是采用模拟的方法，所有作业中出现的类都做一遍，先解析输入信息，然后解析输出信息，然后一项一项的去核实。</p>
+<p>我自己是写了 hw6 的测评机，那个测评机依然是有无数bug，最后就是给测评机de出了无数的bug，然后用好的测评机去测试，发现一个bug都没有，这里感谢陈同学的不厌其烦和曾大哥的友情合作。</p>
+<p>到了 hw7 以后我被加权多重图的换乘策略搞死，然后就没有空写测评机，最后导致 WA 点。不得不说，无论是优化还是测评机，都是一个奢侈的东西啊。</p>
+<hr>
+<h2 id="五、换乘策略"><a href="#五、换乘策略" class="headerlink" title="五、换乘策略"></a>五、换乘策略</h2><h3 id="5-1-总论"><a href="#5-1-总论" class="headerlink" title="5.1 总论"></a>5.1 总论</h3><p>当涉及到换乘问题的时候，其实考虑的是三个问题：</p>
+<ul>
+<li>怎么把一个请求拆分成多个请求</li>
+<li>啥时候进行拆分</li>
+<li>拆分的请求怎么融入到架构设计里</li>
+</ul>
+<p>对于第一点，有基准策略提供的很规律的拆除（基本上就跟把一个请求放到一个拆除模具一样，拆除的很规范），还有用图算法拆出来的。对于第二点，有当请求出现的时候就拆好了，有先拆出一个可以让电梯运送的，等到了地方再次进行拆解。对于第三点，有利用一个任务完成计数器的，再借鉴流水线模式。还有我自己提的一种订单式处理。</p>
+<h3 id="5-2-基准策略"><a href="#5-2-基准策略" class="headerlink" title="5.2 基准策略"></a>5.2 基准策略</h3><p>我最后采用的就是这个策略，怎么说呢，可能大家都差不多，然后大家分都挺高的。</p>
+<h3 id="5-3-图策略"><a href="#5-3-图策略" class="headerlink" title="5.3 图策略"></a>5.3 图策略</h3><p>图就很复杂，因为图有很多种。我一开始实现了一种以速度为边的权重的，然后采用最短路径算法去计算，后来发现换乘太多了。当时我并不知道这件事情，就立刻开始了用电梯状态去修正边的权的方法。然后实现不了。我开始对第一个方法做测试，发现换乘太多了。没有办法，我就换成了无权图，每条边就相当于一层楼或者一栋楼的距离，但是这样的话，就变成了多重图。两个节点间会有多条边，原来的最短路径算法没有办法用了，然后我换成了BFS，然后发现依然是换乘太多了。没有办法，只要是一个电梯可以直达，那么两个节点间的距离就是1，这样终于解决了换乘问题。</p>
+<p>当做完图方法后，有一个新的东西就可以尝试了，那么就是动态换乘，图是随着电梯状态变化的（牛逼的图），这样考虑可以每走一步或者每送到一个终点站，就重新规划。但是我实现不了。</p>
+<p>最后去做测试，依然是没有基准策略快。最后依然是没有提交。</p>
+<h3 id="5-4-电梯订单"><a href="#5-4-电梯订单" class="headerlink" title="5.4 电梯订单"></a>5.4 电梯订单</h3><p>对于一般的拆分请求，都是将这个请求里面加入一个链表，然后将链表第一个元素投入候车表，等第一步处理完了以后，那么就将链表第二个元素投入候车表，这样循环到链表为空，就说明这个请求处理完了。这样的话，需要一个计数器去记录有多少个请求完成了，同时电梯也担任了一部分投递请求的工作。这样原来的终止信号就改成了请求处理完成，而不是end信号了。</p>
+<p>但是考虑到，如果请求是在进入的时候就拆分好了，那么其实我们就已经获得了一到三个简单请求了，只不过是第一个请求现在可以被运送，而后面的请求是没有办法被运送的，只有等前一个请求运送完，第二个简单请求才会被投到候车表里。我们可以做这样的优化，就是在一开始的时候就把所有拆分好的简单请求都投入候车表里，只是对于第一个请求可以被处理，而后面的请求只能被看见，而无法被处理。只有第一个请求处理好了，才会设置第二个请求为可处理状态，以此类推。</p>
+<p>这样的好处就是在复杂请求开始的时候，后面请求就可以吸引电梯来处理它了。即使现在不可以处理，但是确可以使电梯停在后面请求的起始坐标上。后面的请求就好像一个订单，虽然订单不是实物，但是电梯已经可以根据订单去调整自己的状态了。等订单变成实物的时候，可以立刻处理。</p>
+<p>在完成了这个效果以后，我没有 WA 的点好像只有两个在99分一下，其他都是在99分以上，应该有几个是满的。但是考虑到pyq好像大家都99以上，似乎大家就算不采用这个策略，也挺好的。</p>
+<hr>
+<h2 id="六、自我分析"><a href="#六、自我分析" class="headerlink" title="六、自我分析"></a>六、自我分析</h2><h3 id="6-1-类设计"><a href="#6-1-类设计" class="headerlink" title="6.1 类设计"></a>6.1 类设计</h3><p>我的类设计糟糕透顶，因为采用了复杂的请求容器结构，导致横向电梯和纵向电梯因为内部的数据结构不同，导致最关键的部分没有办法提出抽象基类，也没有办法利用工厂类去组装，就导致我有大量的重复代码没有办法抽象，一有bug就需要改两遍。十分的失败。我针对这个问题进行过了重构，然后意识到了重构的难点在于我的复杂容器结构。但是已经没有时间再次重构了。</p>
+<p>只能说引以为戒，当时使用这种结构是因为觉得检索会更快，而且更加符合逻辑。但是我没有认真审题观察到最多 70 个请求，遍历和哈希的速度差不多。属于是没有分清主次矛盾。这是这次作业最失败的地方。就是因为这个复杂的结构，导致了拓展性低下，各种补丁困难，逻辑混乱。这种情况必须反思。</p>
+<p>UML图如下：</p>
+<p><img src="/posts/f7813372/Main.png" alt="Main"></p>
+<h3 id="6-2-复杂度分析"><a href="#6-2-复杂度分析" class="headerlink" title="6.2 复杂度分析"></a>6.2 复杂度分析</h3><p>因为每次作业严格的讲，都是完全的增量开发，所以就分析最后的作业的复杂度。</p>
+<p>方法复杂度</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>CogC</th>
+<th>ev(G)</th>
+<th>iv(G)</th>
+<th>v(G)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Building.addRequest(MyRequest)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Building.Building()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Building.close()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Building.findTarget(int, boolean, boolean)</td>
+<td>22.0</td>
+<td>10.0</td>
+<td>6.0</td>
+<td>10.0</td>
+</tr>
+<tr>
+<td>Building.findTargetFloor(int, boolean, boolean)</td>
+<td>6.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Building.findTargetRequest(int, boolean)</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Building.grabRequests(int, boolean, int)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Building.isEmpty(boolean)</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Building.noMoreRequests()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Building.transfer(MyRequest, int)</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>2.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>Controller.check(char, char, int)</td>
+<td>4.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Controller.checkBit(int, char)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Controller.close()</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>Controller.Controller(HashMap, HashMap)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Controller.dealElevatorRequest(ElevatorRequest)</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Controller.dealPersonRequest(PersonRequest)</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>Controller.findSuitableFloor(char, char, int, int)</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Controller.transfer(MyRequest)</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Elevator.checkIn(ArrayList)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Elevator.checkOut()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Elevator.Elevator(char, int, Building, Controller)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Elevator.Elevator(ElevatorRequest, Building, Controller)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Elevator.needTerminate()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Elevator.needWait()</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>Elevator.run()</td>
+<td>7.0</td>
+<td>3.0</td>
+<td>5.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>Elevator.updateContent()</td>
+<td>12.0</td>
+<td>1.0</td>
+<td>7.0</td>
+<td>9.0</td>
+</tr>
+<tr>
+<td>Elevator.updatePosition(boolean)</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Elevator.work()</td>
+<td>6.0</td>
+<td>3.0</td>
+<td>5.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>Ferry.backMove()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>Ferry.checkIn(ArrayList)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Ferry.checkOut()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Ferry.Ferry(ElevatorRequest, Floor, Controller)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Ferry.Ferry(Floor, Controller)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Ferry.forwardMove()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>Ferry.getDistance(char, char)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Ferry.needTerminate()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Ferry.needWait()</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>Ferry.run()</td>
+<td>7.0</td>
+<td>3.0</td>
+<td>5.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>Ferry.updateContent()</td>
+<td>12.0</td>
+<td>1.0</td>
+<td>7.0</td>
+<td>9.0</td>
+</tr>
+<tr>
+<td>Ferry.updateDirection()</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>Ferry.updatePosition(boolean)</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>4.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Ferry.work()</td>
+<td>5.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>Floor.addRequest(MyRequest)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Floor.checkBit(int, char)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Floor.close()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Floor.findTarget(char, int, boolean)</td>
+<td>6.0</td>
+<td>4.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Floor.findTargetRequest(char, int)</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Floor.Floor()</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Floor.grabRequests(char, int, int)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Floor.initClock()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Floor.isEmpty(int, boolean)</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>Floor.noMoreRequests(int)</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>Floor.transfer(MyRequest, char)</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>Listener.getController()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Listener.Listener(HashMap, HashMap)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Listener.run()</td>
+<td>5.0</td>
+<td>3.0</td>
+<td>5.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>Main.main(String[])</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>4.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>MyRequest.getDirection(boolean)</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>MyRequest.getFromBuilding()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.getFromFloor()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.getId()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.getToBuilding()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.getToFloor()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.isReady()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.MyRequest(int, int, char, char, int, boolean)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.MyRequest(PersonRequest, boolean)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MyRequest.setReady(boolean)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Printer.println(String)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>WaitQueue.addRequest(MyRequest)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>WaitQueue.checkBit(int, char)</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>WaitQueue.getHeadRequest(boolean)</td>
+<td>7.0</td>
+<td>4.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>WaitQueue.grabRequests(int)</td>
+<td>6.0</td>
+<td>4.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>WaitQueue.grabRequests(int, int)</td>
+<td>7.0</td>
+<td>4.0</td>
+<td>5.0</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>WaitQueue.size(boolean)</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>WaitQueue.transfer(MyRequest)</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>WaitQueue.WaitQueue()</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>类复杂度：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>class</th>
+<th>OCavg</th>
+<th>OCmax</th>
+<th>WMC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Building</td>
+<td>2.8</td>
+<td>10.0</td>
+<td>28.0</td>
+</tr>
+<tr>
+<td>Controller</td>
+<td>2.75</td>
+<td>5.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>Elevator</td>
+<td>2.5</td>
+<td>5.0</td>
+<td>25.0</td>
+</tr>
+<tr>
+<td>Ferry</td>
+<td>3.0714285714285716</td>
+<td>7.0</td>
+<td>43.0</td>
+</tr>
+<tr>
+<td>Floor</td>
+<td>2.0</td>
+<td>4.0</td>
+<td>22.0</td>
+</tr>
+<tr>
+<td>Listener</td>
+<td>2.3333333333333335</td>
+<td>5.0</td>
+<td>7.0</td>
+</tr>
+<tr>
+<td>Main</td>
+<td>4.0</td>
+<td>4.0</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>MyRequest</td>
+<td>1.1</td>
+<td>2.0</td>
+<td>11.0</td>
+</tr>
+<tr>
+<td>Printer</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>WaitQueue</td>
+<td>2.75</td>
+<td>4.0</td>
+<td>22.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>感觉数据和感觉挺近的。确实方法普遍复杂度不高，这得益于复杂的数据结构，基本上不需要循环遍历就可以获得符合要求的请求。唯一稍微复杂一点的方法，都是需要把复杂结构的所有元素都遍历。</p>
+<p>在类复杂度方面，比较大的就是轨道类，这是因为这是复杂的数据结构，里面有很多的方法，可以说是很失败的设计了。</p>
+<h3 id="6-3-bug"><a href="#6-3-bug" class="headerlink" title="6.3 bug"></a>6.3 bug</h3><p>在 hw5 有一个笔误的bug，强测占便宜了，没有测出来，被互测出来了，hw6 十分完美，hw7 检查条件设置不足，导致有的人不该进电梯反而进了，强测 WA 了 4 个点。</p>
+<p>第七次作业是 C 房，所以完成了一刀 5 个人的体验，还挺爽的。对于怎么 hack 别人，确实没有实质性进展，就是下载下来，开始用评测机并行着跑，出错了就扔上去。我看往届有好多名词我也不太懂，我也没看别人代码，主要是时间挺急的，周日冯如杯没啥空看别人代码。</p>
+<p>我自己除了那个 bug 外，写的时候 bug 并不多，基本上写完了就能跑（指自由竞争策略），但是调度器写的时候就经常需要重构，但是这种重构是一种无效重构，每次只是改一些细节的部分，对于最大的架构问题，总是舍不得改。感觉就好像喜欢了一个渣男一样，明知道他渣，但是总觉得他能回心转意（为什么是渣男不是渣女，六系啊六系）</p>
+<h3 id="6-3-心得体会"><a href="#6-3-心得体会" class="headerlink" title="6.3 心得体会"></a>6.3 心得体会</h3><p>这篇文章终于是快写完了。这次写的完全没有第一单元那么势如破竹，期间磕磕绊绊的，甚至写的时候还要去跟各种大佬去讨论，然后反应过来自己之前三周写了个什么东西。画图也是，完全没有想要画图的欲望，硬逼着自己画了几张，也是画的牛头不对马嘴。</p>
+<p>emmm，我前两次作业分数都还说的过去，第三次作业 WA 点了，最后是 79 分。但是这期间确实没有什么理论性的成果诞生。我对于面向对象的看法基本上第一单元就形成了，这个单元只不过是重新印证了一遍。多线程设计可以说就很草草的就了事了，大概就学了个基础水平，没有很好的体悟。写评测机的本事也没有长进，顶多是用python做了一个自动一点的评测机，用了面向对象的思想，但是理论没有提高，还有对于解决如何de评测机bug这件事情没有实质性进展。在作业方面，尝试倒是不少，就是真正牛逼的影子电梯和量子电梯都没有写出来，动态加权多重图也没有实现，可以说我最想拥有的东西一个都没有实现。而且我的 bug 居然是没有检查上门情况。一个电梯我没有TLE 我居然 WA。混了一次研讨课，其实那次研讨课我最想讲怎么读写博客，但是要求是讲作业，虽然挺尽心的准备了，但是我在台上就想抬手抽我几个嘴巴子。</p>
+<p>总结下来，这次的 U2 是一次谁都不可否认的失败。<strong>不过这也是我最愿意接受的一种失败</strong>。我知道人都是要面对失败的，那么导致失败的原因是什么，我觉得这次单元的原因是最好的。我失败在了对面向对象权威的怀疑上，我失败在了其他的责任上，我失败在了不愿意接受安逸的方法上，我失败在了想要控制一切的狂妄上，我失败在了偏激与固执上，我失败在了最初的设想上，我失败在了想得太多做的太少上。</p>
+<p>不过或许我这么失败，是因为<strong>我从一开始就在渴望这样的失败，甚至胜过了对于成功的渴望</strong>。那种对于轻轻松松成功的天然反感，或许是我在软件设计中最大的弱点。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S4%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S4课上</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag"><i class="fa fa-tag"></i> 面向对象</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/74e05380/" rel="prev" title="CPP设计-C高阶">
+      <i class="fa fa-chevron-left"></i> CPP设计-C高阶
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/deea4832/" rel="next" title="Linux-简易shell">
+      Linux-简易shell <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3"><span class="nav-text">1.1 直观理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%9E%B6%E6%9E%84%E8%A7%A3%E9%87%8A"><span class="nav-text">1.2 架构解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%81%9A%E4%BD%9C%E4%B8%9A%E6%80%9D%E8%B7%AF"><span class="nav-text">1.3 做作业思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BA%BF%E7%A8%8B%E8%AE%BE%E8%AE%A1"><span class="nav-text">二、线程设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E7%BA%BF%E7%A8%8B%E7%A7%8D%E7%B1%BB%E7%9A%84%E7%A1%AE%E5%AE%9A"><span class="nav-text">2.1 线程种类的确定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-%E7%BA%BF%E7%A8%8B%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%81%94%E7%B3%BB%E4%B8%8E%E5%8C%BA%E5%88%AB"><span class="nav-text">2.1.1 线程与面向对象的联系与区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-%E5%88%86%E6%9E%90%E9%9C%80%E6%B1%82"><span class="nav-text">2.1.2 分析需求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-text">2.2 线程安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E4%B8%B4%E7%95%8C%E5%8C%BA%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">2.2.1 临界区的复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E6%9F%A5%E5%BF%85%E5%88%A0"><span class="nav-text">2.2.2 查必删</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%BA%BF%E7%A8%8B%E5%8D%8F%E4%BD%9C"><span class="nav-text">2.3 线程协作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E7%BA%BF%E7%A8%8B%E7%BB%88%E6%AD%A2"><span class="nav-text">2.4 线程终止</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%B0%83%E8%AF%95"><span class="nav-text">2.5 多线程调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E7%BA%BF%E7%A8%8B%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="nav-text">2.6 线程时序图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%BF%90%E8%A1%8C%E7%AD%96%E7%95%A5"><span class="nav-text">三、运行策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%AD%96%E7%95%A5%E7%B1%BB%E4%B8%8E%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="nav-text">3.1 策略类与状态机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%9E%82%E7%9B%B4%E8%BF%90%E8%A1%8C%E7%AD%96%E7%95%A5"><span class="nav-text">3.2 垂直运行策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%8E%AF%E5%BD%A2%E8%BF%90%E8%A1%8C%E7%AD%96%E7%95%A5"><span class="nav-text">3.3 环形运行策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E8%A7%A3%E9%87%8A%E9%87%8F%E5%AD%90%E7%94%B5%E6%A2%AF"><span class="nav-text">3.4 解释量子电梯</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="nav-text">四、调度策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%A6%82%E5%BF%B5%E8%AF%B4%E6%98%8E"><span class="nav-text">4.1 概念说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E8%87%AA%E7%94%B1%E7%AB%9E%E4%BA%89"><span class="nav-text">4.2 自由竞争</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="nav-text">4.2.1 基本介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-text">4.2.2 性能分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E8%B0%83%E5%BA%A6%E5%99%A8%E5%88%86%E9%85%8D"><span class="nav-text">4.3 调度器分配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-1-%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="nav-text">4.3.1 基本介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-2-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">4.3.2 准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-3-%E5%9D%87%E5%88%86%E7%AD%96%E7%95%A5"><span class="nav-text">4.3.3 均分策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-4-%E4%BA%BA%E6%95%B0%E7%AD%96%E7%95%A5"><span class="nav-text">4.3.4 人数策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-5-%E8%B0%83%E5%8F%82%E7%AD%96%E7%95%A5"><span class="nav-text">4.3.5 调参策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-6-%E5%BD%B1%E5%AD%90%E7%94%B5%E6%A2%AF"><span class="nav-text">4.3.6 影子电梯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-7-%E9%80%80%E5%8C%96%E7%89%88%E5%BD%B1%E5%AD%90%E7%94%B5%E6%A2%AF"><span class="nav-text">4.3.7 退化版影子电梯</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E8%AF%84%E6%B5%8B%E6%9C%BA"><span class="nav-text">4.4 评测机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%8D%A2%E4%B9%98%E7%AD%96%E7%95%A5"><span class="nav-text">五、换乘策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">5.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E5%9F%BA%E5%87%86%E7%AD%96%E7%95%A5"><span class="nav-text">5.2 基准策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E5%9B%BE%E7%AD%96%E7%95%A5"><span class="nav-text">5.3 图策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E7%94%B5%E6%A2%AF%E8%AE%A2%E5%8D%95"><span class="nav-text">5.4 电梯订单</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E8%87%AA%E6%88%91%E5%88%86%E6%9E%90"><span class="nav-text">六、自我分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E7%B1%BB%E8%AE%BE%E8%AE%A1"><span class="nav-text">6.1 类设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-text">6.2 复杂度分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-bug"><span class="nav-text">6.3 bug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E5%BF%83%E5%BE%97%E4%BD%93%E4%BC%9A"><span class="nav-text">6.3 心得体会</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、总论当我们提起 git 的时候，我们总说它是版本控制工具。但是版本控制工具到底是什么？我觉得是一种特化的数据库，我们根据版本号去查询对应的项目内容，这种特殊数据库用于进行代码管理。而对于 git，我愿意定义它为“分布式、并发、无锁数据库”。 Git 是 Linus 写出来的版本控制工具，其诞生的直接原因是原来为 Linux 进行版本控制的工具 BitKeeper 不再免费了。也就是说，git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux-再谈Git">
+<meta property="og:url" content="https://thysrael.github.io/posts/946388a1/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、总论当我们提起 git 的时候，我们总说它是版本控制工具。但是版本控制工具到底是什么？我觉得是一种特化的数据库，我们根据版本号去查询对应的项目内容，这种特殊数据库用于进行代码管理。而对于 git，我愿意定义它为“分布式、并发、无锁数据库”。 Git 是 Linus 写出来的版本控制工具，其诞生的直接原因是原来为 Linux 进行版本控制的工具 BitKeeper 不再免费了。也就是说，git">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926141608669.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926142112988.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926155725043.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926170323126.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926171517776.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926205029560.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926210408110.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926210657685.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926213308389.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230926213744683.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230927110720649.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928163238878.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928163354364.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230927222017819.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230927222334583.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928092345330.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928095737895.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928100041302.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928100908405.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928100945533.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928101828325.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928103726078.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928104014545.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928110014129.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928112317528.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928112413834.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928114046025.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230928114131115.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/two-way.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/three-way.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230929095712148.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/three-way-result.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230929103711811.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/Dec-30-2020-rebase-example.gif">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230930111522596.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230930111541180.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230930111556890.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/946388a1/image-20230930160916139.png">
+<meta property="article:published_time" content="2023-09-30T09:47:20.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:47.788Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S7课上">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/946388a1/image-20230926141608669.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/946388a1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Linux-再谈Git | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/946388a1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux-再谈Git
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-09-30 17:47:20" itemprop="dateCreated datePublished" datetime="2023-09-30T17:47:20+08:00">2023-09-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>19k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>18 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>当我们提起 git 的时候，我们总说它是版本控制工具。但是版本控制工具到底是什么？我觉得是一种特化的数据库，我们根据版本号去查询对应的项目内容，这种特殊数据库用于进行代码管理。而对于 git，我愿意定义它为“分布式、并发、无锁数据库”。</p>
+<p>Git 是 Linus 写出来的版本控制工具，其诞生的直接原因是原来为 Linux 进行版本控制的工具 BitKeeper 不再免费了。也就是说，git 的直接需求是 Linux 的版本控制，而 Linux 是世界上最复杂的开源项目之一，所以 git 的设计是较为彪悍的，它支持最为复杂的分布式并发开发，并且可以促进这种集市一般的开发文化。</p>
+<p>正因为如此，我个人觉得 git 并不用户友好，它迫使每一个希望更好地利用 git 的用户，都需要去了解 git 的底层实现理解和 git 面临的现实需求。光是“指针分离”这一个常见的现象，如果希望合理的解释，那么就必须深入 git 的底层实现，在了解了指针引用，版本快照，追踪分支和版本快照等一系列实现知识后，还需要了解频繁切换分支，生成分支，并行开发，分布式开发等多个版本管理需求，才可以明白它为啥不把这种直接暴露底层实现的功能更好的封装一下。</p>
+<p>总的来说，git 不够友好，不够简洁，并不是开发者的开发水平不行，而是其需求过于强了，所以不得不将工具设计得这么复杂。而如vscode 或者 IDEA 将 git 封装成更为易用的状态，但是这种方式往往限制了 git 的功能，其本质其实是限制了需求的强度。而一旦面对更高强度的需求，不得不承认 git 做得已经很“友好简洁”了。</p>
+<p>这种观点其实会贯穿全文，工具可以优化效率、解决问题，但并不是以削减需求的方式。当一个需求很明显存在的（比如用人脑产生一个 idea），工具也无能为力，工具又不是我们自己。</p>
+<p>将 git 视为一种特殊数据库的观点会贯彻全文，分别对应 git 的不同功能。为了行文更加自然，会将这种探讨分散在各个章节。大致如下所示：</p>
+<ul>
+<li>版本库要存什么东西：用 SHA1 作为数据库条目主键。</li>
+<li>变化还是快照：维护数据库操作事务还是数据库快照。</li>
+<li>合并冲突的本质：并发访问时的无锁设计，MVCC 模型。</li>
+</ul>
+<hr>
+<h2 id="二、底层实现"><a href="#二、底层实现" class="headerlink" title="二、底层实现"></a>二、底层实现</h2><h3 id="2-1-基于-diff-的版本库"><a href="#2-1-基于-diff-的版本库" class="headerlink" title="2.1 基于 diff 的版本库"></a>2.1 基于 diff 的版本库</h3><p>版本库的最基础要求，就是给定版本，就可以取出特定的版本的项目。那么最直观的想法，就是建立一个 <code>版本号 -&gt; 版本源码</code> 的映射。实现起来也很简单，就是开发到一定程度后，就把整个项目作为一个归档文件去归档，然后继续开发，开发到一定阶段，再次归档。</p>
+<p>不过这样就会有一个问题，就是造成了大量的空间浪费。这是代码的有些部分是长时间不会发生变化的，但是我们却每次都重复归档了。对于一个有 16000 行代码的项目，一个关键版本可能只用在之前的版本上修改 3，4 行代码，难道就要复制 16000 行代码吗？</p>
+<p>那么比较自然的想法就是，我们可以不再每个版本都保存一整份源码，而是可以每个版本只保存相对于上个版本的变化，也就是 $\Delta$ 或者说是 diff 或者 patch 或者补丁。这种方法不仅在空间上是最优的，同时在逻辑上也是很直观的：我们去说一个版本的时候，并不是再说完整的一个项目，而更倾向是在这个版本做出了哪些变更。</p>
+<p>其实这种记录变更的思想和数据库更加贴近，如果将项目内容看成数据库的内容，那么哪里有每次对于数据库的操作就生成一个略有不同的数据库的道理（当然后面会说，在 MVCC 思路下，是有可能的）。当然是记录数据库的增删改查了。这就对应着上面这种 diff 的思想，我们去编辑源码，本质是就是对版本数据库进行增删改查。</p>
+<p>上面这种基于 diff 的示意图如下，可以看到是非常紧凑的。</p>
+<p><img src="/posts/946388a1/image-20230926141608669.png" alt="image-20230926141608669"></p>
+<h3 id="2-2-Git-的快照设计"><a href="#2-2-Git-的快照设计" class="headerlink" title="2.2 Git 的快照设计"></a>2.2 Git 的快照设计</h3><p>虽然基于 diff 的设计很简洁和直观，但是 git 并没有采用这种方式，他用的是一种基于快照的设计，说白了，就是最开始提出的那种“一个版本对应一个完整的项目内容”的思路，如下所示：</p>
+<p><img src="/posts/946388a1/image-20230926142112988.png" alt="image-20230926142112988"></p>
+<p>这种看似蠢笨的方法相比于 diff 方式也是有优势的，其优势就在于分支管理上。分支管理的本质是并行开发，所以采用这种设计本身也是为了服务 linux 这种高强度并行开发项目。</p>
+<p>按照 progit，他说之前的版本管理工具在创建分支的时候会重新复制一遍代码（相当于也是快照），在合并分支的时候很难考虑清楚分支应该如何合并，因为 diff 保留的信息很少。我倒觉得这并不是因为这个原因，虽然这确实是之前版本管理工具的缺点，高昂的快照代价让分支操作变慢，但是这更像是 git 的另一个特性，即<strong>分支引用模型</strong>可以解决的问题，而非<strong>快照设计</strong>解决的问题。</p>
+<p>我觉得基于快照的方式相比于基于 diff 的优势在这里：</p>
+<ul>
+<li>各种操作速度更快：因为基于 diff 的设计，在恢复版本的时候，需要累积运算，当版本历史拉的很长时，就会导致效率极低。而给予快照的方式，其实并不关心中间版本的状态，而只需要关注两端的状态即可，无疑是极快的（就像积分一样）。</li>
+<li>在某些意义上更直观：正如上面举例的，我们最先想到的就是的版本控制设计思路就是基于快照的，在理解上，意识到每个版本都是对应一个项目的，也是一件比较直观的事情。</li>
+<li>空间占有上并非一无是处：比如说如果一个文件反复的增删同一行 100 次，那么就有 100 次 diff，而实际上这个文件只有两个状态，记录 100 次 diff 空间要更多。不过虽然构造了这种特殊的例子，但是也不得不说基于 diff 的方式就是省空间的，而快照的优势，正是一种“空间换时间”的设计思路。</li>
+<li>对于二进制文件，diff 不太好进行。</li>
+</ul>
+<p>当然 git 也没有傻傻的消耗空间，它提出了两个举措来解决这个问题：</p>
+<ul>
+<li><p>当文件没有发生更改时，是归档记录的还是原来的文件。这样减少了重复文件的空间。但是需要注意，即使文件只改了一个换行符，都会重新生成一份文件。</p>
+</li>
+<li><p>定期将文档库打包，被打包后的版本，就也变成了基于 diff 的形式了。而且 diff 的基准版并非最开始的版本，而是打包时最新的版本，这样多次打包就会形成多个基准版，这些基准版不会导致 diff 的大量累加，而是在固定几个基准版累加（这个优化已经很像是差分和前缀和的高难度算法优化了）。这个过程涉及的命令如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> gc <span class="token comment"># 主动对版本库打包</span>
+.git/objects/pack/ <span class="token comment"># 存储打包文件的路径</span>
+<span class="token function">git</span> verify-pack -v .git/objects/pack/pack-<span class="token punctuation">[</span>xxx<span class="token punctuation">]</span>.idx <span class="token comment"># 查看打包文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<p>在谈完二者的对比后，还是要强调，其实这两种方式都是人们逻辑上需要的：当我们去想要某个特定版本的项目时，我们会用快照的方式去思考版本管理；当我们去思考某个特定版本造成的影响时，我们会用 diff 的思路去思考。所谓的设计思路，只是底层的实现思路，在更靠近用户的一侧，基于 diff 的工具会用累加来模拟出快照功能，给予快照的工具会用差分来模拟出 diff 功能。</p>
+<h3 id="2-3-总体结构"><a href="#2-3-总体结构" class="headerlink" title="2.3 总体结构"></a>2.3 总体结构</h3><p>git 的结构被称为“三棵树”，示意图如下：</p>
+<p><img src="/posts/946388a1/image-20230926155725043.png" alt="image-20230926155725043"></p>
+<p>我觉得这幅图最好的就是它明确强调了这三个部分的结构并不相同：</p>
+<ul>
+<li>左侧是工作目录（working directory），也就是我们平时的项目区域。</li>
+<li>中间是缓存区（staged area），担任左右两侧的缓冲区，下次个版本就在这里生成。</li>
+<li>右侧是版本库，里面储藏着很多个版本。分支功能和远程功能都是在这里实现的，可以说只有这里储存的东西具有永久性。</li>
+</ul>
+<h3 id="2-4-版本库结构"><a href="#2-4-版本库结构" class="headerlink" title="2.4 版本库结构"></a>2.4 版本库结构</h3><p>版本库结构涉及两个部分：</p>
+<ul>
+<li>提交（commit）：也就是版本的文件实体组成，主要在 <code>.git/objects</code> </li>
+<li>引用（reference）：构成了靠近用户侧的分支模型，主要在 <code>.git/refs</code></li>
+</ul>
+<p>在这一节我只打算介绍提交的内部，因为其实这个部分和使用 git 关系不大，因为它过于底层了，而且封装的很好（只是这一层）。从上层看上去，一个提交就是一个版本，也就是一个项目的快照。而至于这个快照内部的结构，其实了解了也不能更好的使用 git。</p>
+<p><strong>git 其实自己实现了一个特化的文件系统</strong>，这个文件系统可以方便实现“相同内容相同路径的文件只缓存一次”的进阶版思路的。</p>
+<p>为了达成这个目的，那么我们必须有办法快速比较两个文件是否是相同文件。我们采用的方式是用文件内容生成一个 SHA-1 散列数，只要内容不同，那么生成出来的散列数就不会相同。我们进行比较的时候，就可以通过比较散列数（40 个 16 进制数）来比较文件的内容。本质上是一种压缩过的比较。这种思路下，我们构建了 SHA-1 到文件内容的映射。这种普通文件，在 Git 中称为 Blob，类似于普通文件系统中的文件。</p>
+<p>更进一步，这样只是可以区分文件的相同与否，并不完全实现了快照功能，我们还需要一种类似目录的实现来记录项目结构。我们并不能使用原来的文件系统功能，虽然现在想来似乎可以使用链接的手段组织文件，但是这和 SHA-1 又有了差别，所以 Git 自己构造了自己的“目录文件”，被称为 Tree，Tree 负责记录一组“文件名 -&gt; SHA-1 Number”键值对。可以看到，这基本上和 Ext 文件系统的目录实现类似了，Ext 文件系统记录的就是 “文件名 -&gt; Inode Number” 键值对。当然了，为了嵌套目录的要求，Tree 必须也可以被 SHA-1 Number 检索，就像目录文件也要对应 Inode Number 一样。</p>
+<p>当有了 Blob 和 Tree 以后，我们就已经可以构造出一个项目结构了，比如说对于这样的一个项目结构</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">.</span>
+├── bak
+│   └── test.txt
+├── new.txt
+└── test.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们构造出来的结构就是这样的（基本上就是一模一样）</p>
+<p><img src="/posts/946388a1/image-20230926170323126.png" alt="image-20230926170323126"></p>
+<p>但是这种结构还缺少一些一些地方储存版本的元信息（比如说“提交时间”，“提交者”，“作者”），同时也很难记录分支信息，所以我们又实现了一个 Commit 结构，来储存上面我说的信息，同样的，他们也是可以被用 SHA-1 Number 检索到的。最终的结构就像这样</p>
+<p><img src="/posts/946388a1/image-20230926171517776.png" alt="image-20230926171517776"></p>
+<p>我知道我说得有些快了，所以再来重新梳理一遍。</p>
+<p>版本库维护了一个根据内容寻址的数据库，其中 key 是 SHA-1 Number，value 是 Object，如下所示</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">objects <span class="token operator">=</span> map<span class="token operator">&lt;</span>SHA<span class="token punctuation">,</span> Object<span class="token operator">&gt;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Object 可以分成三类：Commit（版本库元数据和分支信息），Tree（目录文件），Blob（普通文件）</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">type Object <span class="token operator">=</span> Commit <span class="token operator">|</span> Tree <span class="token operator">|</span> Blob<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在具体介绍这三种文件前，我想介绍一下如下命令，他可以打印出 Object 的内容，因为所有的 Object 都是压缩二进制文件（为了节省空间），所以需要这条命令当做阅读器，其中的 <code>-p</code> 选项是 <code>--pretty</code> 的意思，自动识别 Object 类型</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> cat-file -p <span class="token operator">&lt;</span>SHA-1 Number<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>我们之后会用这条命令查看 Object 内容。</p>
+<p>Blob 就是普通文件的意思，我们用 <code>cat-file</code> 查看，可以得到如下内容</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4
+<span class="token builtin class-name">test</span> content <span class="token comment"># 就是文件内容</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>它的抽象结构如下所示：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">type Blob <span class="token operator">=</span> array<span class="token operator">&lt;</span>byte<span class="token operator">&gt;</span> <span class="token comment">// 二进制文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Tree 用 <code>cat-file</code> 查看，可以看到如下内容</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> cat-file -p <span class="token string">"master^{tree}"</span> <span class="token comment"># 查看 master 对应的根树</span>
+<span class="token number">100644</span> blob a906cb2a4a904a152e80877d4088654daad0c859      README
+<span class="token number">100644</span> blob 8f94139338f9404f26296befa88755fc2598c289      Rakefile
+040000 tree 99f1a6d12cb4b6f19c8655fca46c3ecf317074e0      lib<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>前面的部分 <code>10644, 040000</code> 似乎是一些权限元数据，后面的则是 <code>filename -&gt; SHA-1 Number</code> 的映射。</p>
+<p>它的抽象结构如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 一个包含文件和目录的目录</span>
+type Tree <span class="token operator">=</span> map<span class="token operator">&lt;</span>SHA<span class="token punctuation">,</span> Tree <span class="token operator">|</span> Blob<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>Commit 用 <code>cat-file</code> 查看，可以看到如下内容：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> cat-file -p 559bf47
+tree 5a82eeca5c9c745be2d8a32681a0fa123a504d47
+parent 55f900dc51104b73b0fed8d5e1f6b59c98d44231
+parent b0376e80fbd945c25273600a0907f4a8a87aa92f
+author Thysrael <span class="token operator">&lt;</span><span class="token number">2470583476</span>@qq.com<span class="token operator">&gt;</span> <span class="token number">1685070332</span> +0800
+committer Thysrael <span class="token operator">&lt;</span><span class="token number">2470583476</span>@qq.com<span class="token operator">&gt;</span> <span class="token number">1685070332</span> +0800<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到里面有记录作者和提交者元数据，同时对应某个项目的根目录 Tree，同时还有两个 parent 数据用于记录分支数据，2 个 parent 说明这是一个合并点。</p>
+<p>它的抽象结构如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// 每个提交都包含一个父辈，元数据和顶层树</span>
+type Commit <span class="token operator">=</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    parent<span class="token operator">:</span> array<span class="token operator">&lt;</span>Commit<span class="token operator">&gt;</span>
+    author<span class="token operator">:</span> SHA
+    message<span class="token operator">:</span> SHA
+    snapshot<span class="token operator">:</span> Tree
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此外，所有的 object 都会以 SHA 为索引存储在 <code>.git/objects</code> 中。</p>
+<h3 id="2-5-缓存区结构"><a href="#2-5-缓存区结构" class="headerlink" title="2.5 缓存区结构"></a>2.5 缓存区结构</h3><p>在开始介绍之前，不得不说，最让人困惑的其实是名字，这个中间的结构其实有很多个名字，比如说 staged，index，buffer。都是指向这个结构。</p>
+<p>在实现上，缓存区只依靠二进制文件 <code>.git/index</code> 。，我们可以用入下命令来查看这个文件的结构</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> ls-files --stage<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>我们查出来以后是这样的</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token number">100644</span> 83baae61804e65cc73a7201a7252750c76066a30 <span class="token number">0</span>       bak/test.txt
+<span class="token number">100644</span> 25da366300d98fba739b1912fd91cd267ee644fb <span class="token number">0</span>       g.txt
+<span class="token number">100644</span> fa49b077972391ad58037050f2a75f74e3671e92 <span class="token number">0</span>       new.txt
+<span class="token number">100644</span> 40207989ba26423b2d8ac4bd3dab5d69cb60e49e <span class="token number">0</span>       repo.rb
+<span class="token number">100644</span> a4cfb9c22dbd7aa74e6cceb7a95b884e605460b7 <span class="token number">0</span>       s.txt
+<span class="token number">100644</span> 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a <span class="token number">0</span>       test.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个结构会记录所有的 Blob 文件，也就是在加入缓冲区的时候（<code>git add</code>）就已经回在版本库里生成（不知道如果撤销的话会不会删去）。这其实有一些反直觉，我还以为 index 中也会维护一个 Tree 结构的快照呢，但是并没有。</p>
+<p>缓存区有两个作用，第一个是可以使工作目录可以分批次提交。如果工作目录中做了多个目的的更改，那么可以分配次提交到缓存区，再分批次提交到版本库。虽然我平时每次都是 <code>git add .</code> 一股脑提交，但是不可否认，这种设计会使得 Commit 变得更加细粒度，从原来的“项目整体有了很大的改变”到“项目的某个功能有了改变”。这种方式更加方便了之后的 <code>cherry-pick, rebase</code> 等改写历史或者检入检出操作。</p>
+<p>不过我一直对这种想法嗤之以鼻，因为缓存结构并不必须，在之前的版本控制工具中都没有，而且提出它对于工具的使用引入很大的难度：开始出现 working dirctory 和 starged area 的一致性问题。后来我在网上看到了一种解释，我觉得说得还算有道理。</p>
+<p>它是这样说的，当我们去查看版本库时（比如说 diff），我们实际上是在进行了一个 $O(n)$ 的查找，其中 $n$ 是项目最深的目录层级，比如说 <code>a/b/c/d.txt</code> 这个文件，我们去版本库里查找的时候，就需要先找 <code>a</code> 对应的 tree，读出 <code>a</code> 中的 <code>b</code> 的 SHA，然后再去找 <code>b</code> ，在 <code>b</code> 中查找 <code>c</code> 的 SHA，如此循环，一共需要查找四次才能读出 <code>d.txt</code> 中的内容，考虑到这些 Object 都是被压缩了，所以读取会比较慢。</p>
+<p>index 像是一个 cache 一样，会记录所有修改的文件的路径，和其对应的 Blob SHA，这样查找操作的时间复杂度就会被降到 $O(1)$ 。在上面的命令中也可以看出这样的效果。这也是 index 没有维护树状结构，而是维护一个“路径 -&gt; SHA”键值对组的原因。</p>
+<hr>
+<h2 id="三、对三棵树进行管理"><a href="#三、对三棵树进行管理" class="headerlink" title="三、对三棵树进行管理"></a>三、对三棵树进行管理</h2><p>这章和前一章联系联系比较大，主要涉及关于 Git 三个区的相互作用和变换。说白了就是“将工作区新写的版本检入（checkin）到版本库中“和将写好的版本检出（checkout）到工作区中“两件事情。也就是如下图所示：</p>
+<p><img src="/posts/946388a1/image-20230926205029560.png" alt="image-20230926205029560"></p>
+<h3 id="3-1-锁"><a href="#3-1-锁" class="headerlink" title="3.1 锁"></a>3.1 锁</h3><p>这里有一个很有趣的事情，就是在 git 中，是有 <code>checkout</code> 操作，但是没有 <code>checkin</code> 操作的，其实 <code>chekin</code> 应该是被 <code>git add, git commit</code> 代替了。</p>
+<p>我个人觉得因为检入和检出操作是非常 old fashion 的，它应该是用于描述一种“单源并发”的数据库，每个人检出某个文件进行修改，在修改前需要先给这个文件（或者某个版本）加锁来确保其他开发者不会修改它，然后在修改完成检入的时候再释放锁。所以检入和检出操作都伴随着锁的争夺和释放，那么就是两个很对称的操作。</p>
+<p>但是 git 是无锁的结构，所以这两个操作就并没有那么对称了。</p>
+<h3 id="3-2-HEAD"><a href="#3-2-HEAD" class="headerlink" title="3.2 HEAD"></a>3.2 HEAD</h3><p>虽然我希望在之后统一介绍分支模型，但是这里还是需要先介绍一下 HEAD 这个特殊的引用，他被记录在 <code>.git/HEAD</code> 中，这是一个文本文件，我们用 <code>cat</code> 就可以查看它</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">cat</span> .git/HEAD  
+ref: refs/heads/main<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>可以看到，它指向了 <code>main</code> 这个引用（引用就是 commit 的指针），但是如果考虑指针分离的情况，他也可以是 commit 的 SHA</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">cat</span> .git/HEAD         
+2882470dab805f981534776ae607e01710bc251c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>也就是一个直接引用。</p>
+<p>HEAD 可以看做我们当前聚焦的版本库中的版本，如果我们选择检入，那么新的版本就会成为当前版本的孩子，并且 HEAD 会指向新的版本，当检出时，我们可以根据 HEAD 所在的版本进行相对寻址。</p>
+<p>HEAD 的相对寻址有两种方式，其实本质就是在描述一个有向无环图的感觉，其中两个标志，一个是 <code>~n</code> 表示第 n 重父版本，也就是纵向关系，比如 <code>~2</code> 就是祖父提交，<code>~3</code> 就是曾祖父提交。另一个是 <code>^m</code> 表示第 m 个父版本，也就是横向关系，比如 <code>^1</code> 就是父版本，<code>^3</code> 就是三叔版本。这两种方式也可以结合起来，比如说 <code>~2^5</code> 就是五曾爷爷。有了这种方式，我们就可以寻找到与 HEAD 有亲缘关系的所有祖先。</p>
+<h3 id="3-3-reset"><a href="#3-3-reset" class="headerlink" title="3.3 reset"></a>3.3 reset</h3><p>reset 其实是分为三个模式，三个模式分别表示修改的范围：</p>
+<ul>
+<li>soft，只会修改 HEAD 指针的指向。</li>
+<li>mixed，修改 HEAD 和 index。</li>
+<li>hard，修改  HEAD，index，Working Directory</li>
+</ul>
+<p>我们来举一个例子，下面是没有运行 reset 时的情况：</p>
+<p><img src="/posts/946388a1/image-20230926210408110.png" alt="image-20230926210408110"></p>
+<p>如果我们运行 <code>soft</code>，那么效果如图：</p>
+<p><img src="/posts/946388a1/image-20230926210657685.png" alt="image-20230926210657685"></p>
+<p>可以看到此时 HEAD 回退了一个版本，如果此时再 <code>git commit</code>，那么就可以重新提交一遍 V3 了，这个功能相当于可以刚刚提交的版本不太满意时（或者需要压缩提交时），可以用这个，类似于一个更加本质的</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> commit --amend<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>另外还有一种应用，是当提交错分支时，我们可以进行如下操作</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> reset --soft HEAD~ <span class="token comment"># 在版本库中撤销之前的错误提交，但是保留了 index 和 work dict 的修改</span>
+<span class="token function">git</span> stash <span class="token comment"># 将 index 和 work dict 的修改压栈</span>
+<span class="token function">git</span> stash pop branch name-of-the-correct-branch 在正确的分支上弹栈
+<span class="token comment"># 在正确分支上提交</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> 
+<span class="token function">git</span> commit -m <span class="token string">"your message here"</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果我们运行 <code>mixed</code>，这也是默认模式，那么效果如图：</p>
+<p><img src="/posts/946388a1/image-20230926213308389.png" alt="image-20230926213308389"></p>
+<p>这个我没有想好太典型的应用。</p>
+<p>如果我们运行 <code>hard</code>，那么效果如图：</p>
+<p><img src="/posts/946388a1/image-20230926213744683.png" alt="image-20230926213744683"></p>
+<p>大部分教程都会强调 <code>hard</code> 的危险性，这是因为在前两种模式下，我们总是保留着项目的 V3 版本的，但是如果是 <code>hard</code>，那么就会导致 V3 版本的彻底丢失。不过依然是可以使用 reflog 进行找回的。</p>
+<p>当然没人要求必须采用相对寻址的方式，也可以直接使用 SHA 进行寻址。</p>
+<p>reset 除了整个版本回退，也可以完成部分文件的回退，其指令格式如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> reset <span class="token punctuation">[</span>commit<span class="token punctuation">]</span> <span class="token punctuation">[</span>file-path<span class="token punctuation">]</span> <span class="token punctuation">[</span>-p<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这里需要强调，此时不能指定格式，只能是 <code>mixed</code> 模式。</p>
+<p>这种方式下，我们并不会改变 HEAD 指针的指向（因为 Commit 是最小的版本控制单位），我们只会修改 index，所以这个命令在我看来约等于没有用，因为它并不修改工作目录，我并不太习惯这种东西，而且似乎如果希望让 index 覆盖 working dirctory，我没有找到对应的 git 命令，非常遗憾。后面还会讲一个基于 <code>git checkout</code> 的方式，会修改 index 和 working dirctory，感觉较为自然，不过似乎也可以用 <code>git show</code> 来手动记录。</p>
+<p><code>-p</code> 参数如果指定，那么就可以按照 diff hunk 来 reset，是比文件更小的粒度。</p>
+<h3 id="3-4-checkout"><a href="#3-4-checkout" class="headerlink" title="3.4 checkout"></a>3.4 checkout</h3><p>同样，<code>checkout</code> 也有改变 Git 三棵树的能力，在版本粒度上，<code>git checkout &lt;commit&gt;</code> 的效果和 <code>git reset --hard &lt;commit&gt;</code> 对于三棵树的效果类似，都会修改 HEAD，Index 和 Working Dirctory。</p>
+<p>但是 <code>checkout</code> 还有有两点重要区别的：</p>
+<p>首先，<code>checkout</code> 只会移动 HEAD，而 <code>reset</code> 不止会移动 HEAD，还会移动 HEAD 指向的引用，在上面的例子中，HEAD 指向 <code>master</code>，<code>master</code> 指向 <code>38eb96</code> 这个版本，当使用 <code>reset</code> 时，不仅 HEAD 指向了 <code>9e5e6a4</code> ，而且 <code>master</code> 也指向了这个版本。效果示意图如下所示：</p>
+<p><img src="/posts/946388a1/image-20230927110720649.png" alt="image-20230927110720649"></p>
+<p>这也是 <code>checkout</code> 会造成指针分离的原因（因为它不带着分支指针移动）。正是因为不带着分支移动，所以 <code>checkout</code> 并不会丢失其子版本信息（因为这时的子版本会被原来的分支指针指向）。当然并不是“安全”就是好的，“安全”同时也意味着操作会更加受限制，比如这里的 <code>checkout</code> 就不再能随心所欲的移动分支指针了。</p>
+<p>其次，<code>checkout</code> 对于 Working Dirctory 是“安全“的。在 Git 中的安全指的是不会不加确认地丢失已经做出的修改（无论修改在哪里），我们说 <code>reset --hard</code> 是不安全的，是因为他会丢失目标子孙版本（因为 commit 只记录 parent，不记录 child），同时还会丢弃 Working Dirctory，但是 <code>checkout</code> 并不会这样，他会检查工作区的文件，并不会强行替换。</p>
+<p>后来又看了看如何在文件级别实现检出，如下图所示（似乎命令中的 <code>--</code> 可以省略）：</p>
+<p><img src="/posts/946388a1/image-20230928163238878.png" alt="image-20230928163238878"></p>
+<p>当有了新版本的 <code>restore</code> 之后，格式如下</p>
+<p><img src="/posts/946388a1/image-20230928163354364.png" alt="image-20230928163354364"></p>
+<p>不过似乎也没有办法指定版本还原（或者说比较自然的做到）。</p>
+<h3 id="3-5-stash"><a href="#3-5-stash" class="headerlink" title="3.5 stash"></a>3.5 stash</h3><p>stash 给我感觉像是一种对于当前 index 和 working dirctory 的打包，而且是极其快速的打包，他会将所有被追踪的文件都打包了然后将 index 和 working dirctory 还原成和 HEAD 一致的状态。所用的命令如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当然如果希望也打包进未被追踪的文件，那么可以用</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash -u<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>更加具体的选项如下图所示：</p>
+<p><img src="/posts/946388a1/image-20230927222017819.png" alt="image-20230927222017819"></p>
+<p>打包好的文件会被存放到一个栈中，我们可以用如下命令查看栈中内容</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token function">git</span> stash list                                                                                           
+stash@<span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span>: WIP on main: 07169fb Gorgeous
+stash@<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">}</span>: WIP on main: 07169fb Gorgeous<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>我们可以用 <code>stash@{n}</code> 来描述特定的打包。</p>
+<blockquote>
+<p>另外介绍一下 git 中的 <code>@{}</code> 语法：</p>
+<p>在Git中，<code>@{}</code> 是一种特殊的语法，用于引用不同的Git引用（如分支或标签）的历史位置。这个语法通常与一些Git命令一起使用，以便更轻松地引用不同的提交和引用。</p>
+<ol>
+<li><strong><code>HEAD@{n}</code></strong>：这个语法用于引用相对于当前<code>HEAD</code>的历史位置。例如，<code>HEAD@{1}</code> 表示 <code>HEAD</code> 指针的上一个位置，而 <code>HEAD@{2}</code> 表示 <code>HEAD</code> 指针的上两个位置。</li>
+<li><strong><code>&lt;branch&gt;@{n}</code></strong>：这个语法用于引用特定分支（或其他引用）相对于其历史位置的提交。例如，<code>mybranch@{1}</code> 表示 <code>mybranch</code> 分支的上一个位置。</li>
+<li><strong><code>&lt;refname&gt;@{date}</code></strong>：您可以使用日期来引用特定日期之前的提交。例如，<code>mybranch@{yesterday}</code> 表示 <code>mybranch</code> 分支在昨天的位置。</li>
+<li><strong><code>&lt;refname&gt;@{&lt;time&gt;}</code></strong>：这个语法用于引用特定时间之前的提交，时间的格式可以是绝对时间（如<code>2022-01-01</code>）或相对时间（如<code>2.days.ago</code>）。例如，<code>mybranch@{2022-01-01}</code> 表示 <code>mybranch</code> 分支在指定日期的位置。</li>
+</ol>
+</blockquote>
+<p>正因为是栈结构，所以我们可以 <code>pop</code> 来在当前分支上应用打包文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash pop<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这种方式甚至可以有更加高级的玩法，比如说可以将 pop 指定分支（即使这个分支并不存在），其写法如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash branch <span class="token operator">&lt;</span>new-branch<span class="token operator">&gt;</span> <span class="token punctuation">[</span>stash-id<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这就很符合我的习惯，我一般都会在 <code>main</code> 上改一下，之所以不新开一个分支修改，是因为不确定某个 feat 能否写出来，而已经写出来的 feat，又懒得再换一个分支写一遍了，这就导致经常搞乱 <code>main</code>。现在可以现在 <code>main</code> 上写，然后并不提交，然后换一个分支提交。</p>
+<p>当然上面这两种方法会导致弹栈，如果不希望弹栈，那么可以用如下命令选择 stash 包</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash apply stash@<span class="token punctuation">{</span>n<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果希望丢弃某个版本，那么也可以使用如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash drop stash@<span class="token punctuation">{</span>n<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个命令也很有用，还是上面的场景，如果我在 main 上开发一个分支并且搞乱了，那么我可以这样干进行 index 和 working dirctory 的还原：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash
+<span class="token function">git</span> stash drop<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>如果希望清除所有的是打包，可以使用如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> stash <span class="token function">clear</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在实现原理上，git stash 本质也是利用当前的修改构造出一些版本，并且记录下来，如图所示：</p>
+<p><img src="/posts/946388a1/image-20230927222334583.png" alt="image-20230927222334583"></p>
+<h3 id="3-6-rm"><a href="#3-6-rm" class="headerlink" title="3.6 rm"></a>3.6 rm</h3><p><code>git rm</code> 这个命令的效果有两个：</p>
+<ul>
+<li>在 working dirctory 中删除这个文件</li>
+<li>在 index 中删除这个文件（之后提交的版本就没有这个文件了）</li>
+</ul>
+<p>基本上这个命令是没有作用的，因为在删除完了以后直接 <code>git add .</code> 就可以完成了，没必要特地用这个命令。</p>
+<p>但是下面的命令很有用</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> <span class="token function">rm</span> --cached <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个命令可以只在 index 中删除文件而不在 working dirctory 中删除文件。</p>
+<p>考虑这样的场景，我 commit 的一个本应在 <code>.gitignore</code> 中忽略的文件 <code>file.txt</code>，在下一次 commit 中我不希望在包含这个文件，但是我依然希望它出现在 working dirctory 中。</p>
+<p>正常考虑就是在 <code>.gitignore</code> 加入 <code>file.txt</code>，但是 <code>.gitignore</code> 只能保证 untrack 的文件不会被 track，并不能将已经被 track 的文件（也就是情景里的 <code>file.txt</code>）自动 untrack，所以这个时候就可以使用命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">vim</span> file.txt <span class="token comment"># 确保 git add 不会自动追踪</span>
+<span class="token function">git</span> <span class="token function">rm</span> --cached file.txt <span class="token comment"># 确保 index 中有删除</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>就可以满足效果。</p>
+<h3 id="3-7-clean"><a href="#3-7-clean" class="headerlink" title="3.7 clean"></a>3.7 clean</h3><p><code>git clean</code> 可以清除从 working dirctory 移除未被追踪的文件，如果考虑想要移除的内容是可以不在工作区保留的（比如说编译产物），那么这个命令可以和</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">make</span> clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>类似，但是很可惜，有些未被追踪的文件是需要长久在工作区存在的（比如私人配置文件），如果移除了就不能正常工作了，所以这个命令也不是很好用。</p>
+<hr>
+<h2 id="四、分支"><a href="#四、分支" class="headerlink" title="四、分支"></a>四、分支</h2><h3 id="4-1-引用"><a href="#4-1-引用" class="headerlink" title="4.1 引用"></a>4.1 引用</h3><p>引用（reference）模型是 Git 分支模型的底层实现。引用模型不仅实现了分支模型，还实现了诸如 tag，stash，remote 等功能，都是利用了引用来描述实现的。引用是在 <code>.git/refs/</code> 文件夹下，里面有许多子文件夹和文本文件。</p>
+<p>引用的本质是指针，这个指针可以指向 Commit，也可以指向另一个引用（比如 HEAD 在指针未分离的状态下，就是指向分支引用或者 tag 的）。其具体的实现方式就是利用一个文本文件 <code>refname</code> 去记录其指向的 Commit 的 SHA Number 或者另一个 <code>refname</code>，其实现跟符号链接有异曲同工之处。</p>
+<p>因为功能的不同，引用也被分为了很多种：</p>
+<ul>
+<li>本地分支引用</li>
+<li>远端分支引用</li>
+<li>HEAD 引用</li>
+<li>tag 引用</li>
+<li>stash 引用</li>
+</ul>
+<p>在这里，我们主要聚焦于本地分支引用的介绍。在分支的实现上，<strong>“居然用一个指针表示一个分支”</strong>，指针是“一个”，而分支是“一串”。在我刚刚了解这个模型的时候，对于下图这种结构，充满了不解：</p>
+<p><img src="/posts/946388a1/image-20230928092345330.png" alt="image-20230928092345330"></p>
+<p>这个图上明明只有一个“分支”（没有分开的枝条），但是却有两个分支引用，也就是说，在 Git 看来，这是两个分支。</p>
+<p>如果是之前的一些版本控制软件，并不会发生困惑，这是因为生成分支的方式是直接复制一份项目内容，然后再新复制好的内容上开发。这就是真的“分支了”，有一种 fork 的感觉。</p>
+<p>但是 Git 并没有采用这种方式，这种复制一个镜像的方式无疑是低效的。Git 为了鼓励分支，提出了这一种分支就是一个引用的设计。那么这样是否合理呢？我个人觉得细想下来是合理的。用一个指针描述一组数据结构的现象并非不可理喻，比如说数据结构中的链表，就是用一个头指针代表整个链表，其中头指针发挥着 handler 的作用。事实上，很多复杂的数据结构，直接表示全体是不切实际的，往往都是用一个 handler 来表示结构的。</p>
+<p>那么分支引用时候可以作为一个分支的 handler 呢？如果要讨论这个问题，必须要思考一下啥是分支。我个人觉得，分支一条独立的、线性的版本链，说白了，就是一个链表结构。所以用一个指针指向这个链表的最新节点，同时保证每个提交都可以追溯他的父版本，那么这个指针就等价于链表的头指针了，用头指针表示链表结构，并无不妥。</p>
+<p>说得更加玄学一点，分支诞生是为了一个开发的需求，分支的意义在于记录这个开发需求上的所有编辑操作。Git 构造出的有向无环图在最新子代（也就是分支引用指向的地方）处进行图搜索，搜出来的版本集合对应且仅对应了造成当前版本的所有编辑操作。没有搜索到的版本就是对当前版本的存在没有贡献的版本，搜索到的版本都对当前版本有贡献。这个很美妙的性质确保了分支引用的合理性。</p>
+<h3 id="4-2-branch-checkout-commit"><a href="#4-2-branch-checkout-commit" class="headerlink" title="4.2 branch, checkout, commit"></a>4.2 branch, checkout, commit</h3><p>虽然分支操作都是很好理解的，但是还是回顾一下来体会 Git 分支模型的奇妙。</p>
+<p>首先创建一个分支本质上就是创建一个引用，并不会进行复制，如下所示</p>
+<p><img src="/posts/946388a1/image-20230928095737895.png" alt="image-20230928095737895"></p>
+<p>当执行 </p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> branch crazy-experiment<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/posts/946388a1/image-20230928100041302.png" alt="image-20230928100041302"></p>
+<p>就会变成上面这样。</p>
+<p>新建一个分支引用还可以发生在将版本库中的内容取出放到工作区</p>
+<p>然后我们来看删除操作，对于一个常见的分支图</p>
+<p><img src="/posts/946388a1/image-20230928100908405.png" alt="image-20230928100908405"></p>
+<p>如果我们执行</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> branch -d some-feature<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>那么紫色的分支引用就会被删除，看上去似乎并没有起到删除靠上的整条分支的作用，但是实际上我们已经没有比较方便的办法去查阅靠上的分支上的版本了，这是因为 Commit 只记录 parent 的特性，分支引用就是头结点，删掉头结点，那么其对应的链表就丢失了。</p>
+<p>当然也不是完全抢救不回来，我们可以用靠上的分支上版本 Commit SHA 直接检索版本，但是说到底，已经不再优雅了。</p>
+<p>所以在删除分支前，需要确定能否还能通过其他分支引用（当然 tag 引用也行）检索它所对应的版本。常规的来说，在分支合并后，就可以删除了，因为合并的本质是这样的：</p>
+<p><img src="/posts/946388a1/image-20230928100945533.png" alt="image-20230928100945533"></p>
+<p>此时即使删除了紫色引用，我们依然是可以通过 <code>main</code> 这个分支引用查询到上方分支版本的。</p>
+<p>分支切换的本质是 HEAD 指针的移动，比如说我们有这样的版本库</p>
+<p><img src="/posts/946388a1/image-20230928101828325.png" alt="image-20230928101828325"></p>
+<p>当我们使用命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> checkout master<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>会发生如下变化：</p>
+<p><img src="/posts/946388a1/image-20230928103726078.png" alt="image-20230928103726078"></p>
+<p>HEAD 指针会从“指向 testing” 变成了“指向 master”。</p>
+<p>当发生 commit 的时候，本质是 HEAD 和其指向的分支一起向前移动，在上图的基础上继续操作，在 master 上提交一个版本，效果如下：</p>
+<p><img src="/posts/946388a1/image-20230928104014545.png" alt="image-20230928104014545"></p>
+<p>这里吐槽一句，<code>checkout</code> 这个名字起得并不好，因为 checkout 应该指的是“将版本库中的内容取出放到工作区”这个行为，在 git 中其实对应的是 <code>reset --hard</code> 或者 <code>checkout &lt;file&gt;</code> ，而移动 HEAD 分支并不算是 checkout，所以在 Git 较新的版本中，将“移动 HEAD”的行为也绑定到了 <code>git switch</code> 上。</p>
+<h3 id="4-3-diff"><a href="#4-3-diff" class="headerlink" title="4.3 diff"></a>4.3 diff</h3><p>接下来我们要介绍分支合并，在介绍分支合并之前，我希望介绍一下 diff。因为基于快照是不太好理解分支合并的。虽然 Git 在分支模型上使用的是快照模型，但是在分支合并的时候，其实现和原理都是 diff 模型。</p>
+<p>diff 说的是，将一个个版本视为对前一个版本的差异，或者说一个版本，就是记录一些在原版本基础上的编辑操作。一个分支就是一串操作，通过累加应用这一串操作，就可以使得项目获得某个新的 feature。</p>
+<p>diff 之所以适合分支合并，是因为分支合并的本质是将不同分支所代表的不同 feature 融合在一起。如果按照快照的思路，那么其实是很难实现的，两个不同版本是很难合并成一个版本的（这种设计思路对应的是两路合并，会在下文进行讨论）。相反，diff 的粒度更细，而且更合理，我们可以总结对比出为了开发这些 feature 都需要进行那些 diff，这些 diff 是否冲突，然后就可以将所有的 diff 一起应用，就获得了融合版本。</p>
+<p>diff 这个需求并不是 git 的独创，git 借助了外部工具的帮助，不过 git diff 的结构还是有的一说。我们将对于一个文件中的某个区域的修改称为一个补丁（patch），这是一种比文件颗粒度更小的修改：</p>
+<p><img src="/posts/946388a1/image-20230928110014129.png" alt="image-20230928110014129"></p>
+<p>diff 针对就是这种补丁，它用一个 diff hunk 来描述这种补丁，其示例如下</p>
+<pre class="line-numbers language-diff" data-language="diff"><code class="language-diff">index 5360b42..bd126d3 100644
+<span class="token coord">--- "a/public/static/docs/\345\274\200\345\217\221\346\227\245\345\277\227.md"</span>
+<span class="token coord">+++ "b/public/static/docs/\345\274\200\345\217\221\346\227\245\345\277\227.md"</span>
+<span class="token coord">@@ -72,17 +72,3 @@</span>
+<span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">
+</span><span class="token prefix unchanged"> </span><span class="token line">- beta 阶段冲刺稳定版本 - UI 细节调整-
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">### v0.2.1
+</span><span class="token prefix deleted">-</span><span class="token line">
+</span><span class="token prefix deleted">-</span><span class="token line">**发布时间：**2023.06.21
+</span><span class="token prefix deleted">-</span><span class="token line">
+</span><span class="token prefix deleted">-</span><span class="token line">**简介：** beta 版本迭代更新-
+</span><span class="token prefix deleted">-</span><span class="token line">**功能速览：**
+</span><span class="token prefix deleted">-</span><span class="token line">
+</span><span class="token prefix deleted">-</span><span class="token line">- beta 阶段优化跳转
+</span><span class="token prefix deleted">-</span><span class="token line">- 支持记忆化窗口
+</span><span class="token prefix deleted">-</span><span class="token line">- 优化 Vditor 复制操作
+</span><span class="token prefix deleted">-</span><span class="token line">- 解决latex补全、链接路径补全bug
+</span><span class="token prefix deleted">-</span><span class="token line">- 在所见即所得模式下, 当生成新的代码块时，自动聚焦到lang输入框中</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>解释如下：</p>
+<pre class="line-numbers language-diff" data-language="diff"><code class="language-diff">index 5360b42..bd126d3 100644<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>上面的 index 说明了参与比较的双方 SHA 值</p>
+<pre class="line-numbers language-diff" data-language="diff"><code class="language-diff"><span class="token coord">--- "a/public/static/docs/\345\274\200\345\217\221\346\227\245\345\277\227.md"</span>
+<span class="token coord">+++ "b/public/static/docs/\345\274\200\345\217\221\346\227\245\345\277\227.md"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这两行表示分别用 <code>-a</code> 和 <code>+b</code> 来区分参与比较的两个文件的不同内容</p>
+<pre class="line-numbers language-diff" data-language="diff"><code class="language-diff"><span class="token coord">@@ -72,17 +72,3 @@</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个结构被称为 hunk header，这里的意思是，对于 <code>a</code> 版本（也就是 <code>-</code> 版本），参与的区域是从第 72 行开始的 17 行内容；对于 <code>b</code> 版本（也就是 <code>+</code> 版本），参与的区域是从 72 行开始的 3 行内容。之所以两者的内容不一样，是因为 <code>b</code> 版本做出的 diff 本来就是删掉 <code>a</code> 版本的一些行（也就是删除了 14 行内容）。</p>
+<pre class="line-numbers language-diff" data-language="diff"><code class="language-diff"><span class="token unchanged"><span class="token prefix unchanged"> </span><span class="token line">
+</span><span class="token prefix unchanged"> </span><span class="token line">- beta 阶段冲刺稳定版本 - UI 细节调整-
+</span></span><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line">
+</span><span class="token prefix deleted">-</span><span class="token line">### v0.2.1
+</span><span class="token prefix deleted">-</span><span class="token line">
+</span><span class="token prefix deleted">-</span><span class="token line">**发布时间：**2023.06.21
+</span><span class="token prefix deleted">-</span><span class="token line">
+</span><span class="token prefix deleted">-</span><span class="token line">**简介：** beta 版本迭代更新-
+</span><span class="token prefix deleted">-</span><span class="token line">**功能速览：**
+</span><span class="token prefix deleted">-</span><span class="token line">
+</span><span class="token prefix deleted">-</span><span class="token line">- beta 阶段优化跳转-- 支持记忆化窗口
+</span><span class="token prefix deleted">-</span><span class="token line">- 优化 Vditor 复制操作
+</span><span class="token prefix deleted">-</span><span class="token line">- 解决latex补全、链接路径补全bug
+</span><span class="token prefix deleted">-</span><span class="token line">- 在所见即所得模式下, 当生成新的代码块时，自动聚焦到lang输入框中</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以 <code>-</code> 开头的行表示 <code>a</code> 版本有而 <code>b</code> 版本没有的，如果有 <code>+</code> 开头的行，则是 <code>b</code> 有 <code>a</code> 无的行。也可以理解为，将 <code>a</code> 版本删掉（用 <code>-</code> 表示）以 <code>-</code> 开头的行，增加（用 <code>+</code> 表示）以 <code>+</code> 开头的行，就获得了 <code>b</code> 版本。原来只是用来表示不同版本的 <code>+, -</code> 符号，也就有了语义。</p>
+<p>总结一下</p>
+<p><img src="/posts/946388a1/image-20230928112317528.png" alt="image-20230928112317528"></p>
+<p>关于 git diff 的命令，有如下示意图：</p>
+<p><img src="/posts/946388a1/image-20230928112413834.png" alt="image-20230928112413834"></p>
+<p>如果希望比较单个文件，似乎可以在版本比较命令后加上文件名即可。</p>
+<h3 id="4-4-merge"><a href="#4-4-merge" class="headerlink" title="4.4 merge"></a>4.4 merge</h3><p>merge 可以分为两大类，一种是快进式的，在这种模式下，只有一个分支做出了改变，如下所示：</p>
+<p><img src="/posts/946388a1/image-20230928114046025.png" alt="image-20230928114046025"></p>
+<p>我希望合并 <code>hotfix</code> 和 <code>master</code>，那么本质只是将 <code>master</code> 移动到 <code>hotfix</code> 指向的版本，如下所示：</p>
+<p><img src="/posts/946388a1/image-20230928114131115.png" alt="image-20230928114131115"></p>
+<p>另一个就是三路合并（3-ways）式，也就是待合并的两个分支真的做出了不同的改变，那么就需要思考如何处理这个问题了。</p>
+<p>我们首先考虑较为简单的两方合并，如下图所示：</p>
+<p><img src="/posts/946388a1/two-way.png" alt=""></p>
+<p>参与合并的一共有两个版本，在第 30 行出现了差异，那么应该如何去办呢？</p>
+<p>实际情况有如下几种：</p>
+<ol>
+<li><code>Mine</code>版本没有修改，<code>Yours</code> 版本修改了内容（从<code>Print("bye")</code> 修改 <code>Print("hello")</code>)</li>
+<li><code>Yours</code>版本没有修改，<code>Mine</code>版本修改了内容（从<code>Print("hello")</code> 修改 <code>Print("bye")</code>）</li>
+<li><code>Yours</code>和<code>Mine</code>都修改了内容，（<code>Yours</code>从<code>???</code>修改成<code>Print("hello")</code>；<code>Mine</code>从<code>???</code>修改成<code>Print("bye")</code></li>
+<li><code>Yours</code>和<code>Mine</code>都增加了一行</li>
+</ol>
+<p>那么对应的策略就有如下几种：</p>
+<ol>
+<li><code>Mine</code>版本没有修改，<code>Yours</code>版本修改了内容 =&gt; 应该选<code>Yours</code>版本</li>
+<li><code>Yours</code>版本没有修改，<code>Mine</code>版本修改了内容 =&gt; 应该选<code>Mine</code>版本</li>
+<li><code>Yours</code>和<code>Mine</code>都修改了内容 =&gt; 需要手动解决冲突</li>
+<li><code>Yours</code>和<code>Mine</code>都增加了一行 =&gt; 需要手动解决冲突</li>
+</ol>
+<p>但是非常不幸的是，仅仅比较两个快照，是根本得不出具体的情况的。</p>
+<p>所以说以“2 个快照”为实现基础的两路合并并不现实，而三路合并，本质上是“2 个 diff”，则可以完美解决问题，其设计思路如下：</p>
+<p><img src="/posts/946388a1/three-way.png" alt="img"></p>
+<p>这时 merging 算法发现：</p>
+<ul>
+<li>修改前的<code>Base</code>版本里的内容是：<code>Print("bye")</code></li>
+<li>在<code>Yours</code>的版本里内容是：<code>Print("hello")</code></li>
+<li>在<code>Mine</code>的版本里内容是：<code>Print("bye")</code></li>
+</ul>
+<p>说明<code>Yours</code>对这一行做了修改，而<code>Mine</code>对这行没有做修改，因此对<code>Yours</code>和<code>Mine</code>进行merge后的结果应该采用<code>Yours</code>的修改，于是就变成<code>Print("hello")</code>。</p>
+<p>如果在版本库中表示，则示意图如下：</p>
+<p><img src="/posts/946388a1/image-20230929095712148.png" alt="image-20230929095712148"></p>
+<p>我们举一个例子：</p>
+<p><img src="/posts/946388a1/three-way-result.png" alt=""></p>
+<p>至此，关于 merge 的部分就介绍完毕了。不过需要强调的是，三路合并并不是 merge 的专属原理，cherry-pick 和 rebase 甚至是 stash apply 等操作都会导致三路合并的发生。</p>
+<hr>
+<h2 id="五、重写版本库"><a href="#五、重写版本库" class="headerlink" title="五、重写版本库"></a>五、重写版本库</h2><h3 id="5-1-cherry-pick"><a href="#5-1-cherry-pick" class="headerlink" title="5.1 cherry-pick"></a>5.1 cherry-pick</h3><p>cherry-pick 指的是在版本库中挑选一个版本，然后“重播”到当前 HEAD 版本之后，这样的效果就是，cherry-pick 会生成一个子版本，这个版本既有被 pick 版本的特征，也有 HEAD 版本的特征，相当于一次“繁殖”。示意图如下所示：</p>
+<p><img src="/posts/946388a1/image-20230929103711811.png" alt="image-20230929103711811"></p>
+<p>从这个描述上说，cherry-pick 发生了一次“合并”，而事实也确实如此。所以我们可以用三路合并的模板去思考一下这次合并的原理（用上面这张图）：</p>
+<p>当我们在 HEAD 指向 E 时执行 <code>git cherry-pick D</code> ，则参与方如下</p>
+<ul>
+<li>ours：变更的接收者，是 E</li>
+<li>theirs：变更本身，是 D</li>
+<li>base：祖先，是 C</li>
+</ul>
+<p>这里对于 base 是谁，还是有一个很有趣的认识的。因为从直观上来说，base 应该是 ours 和 theirs 的共同祖先，在上图中应该是 B，而 C 只是 D 的祖先，与 E 属于是兄弟关系，看上去并不能作为 base 来用。</p>
+<p>如果 B 真的是 base 的话，那么考虑 $Diff<em>{DB}$ 就是 $Diff</em>{CB} + Diff<em>{DC}$，而不是 $Diff</em>{DC}$ 了，这与 cherry-pick 的设计就不符合了（我们只挑选指定 commit 做出来的 diff），所以为了获得单个版本的变更，所以我们认为 <code>base = theirs~</code> 。</p>
+<p>严格意义上讲，cherry-pick 是安全的，因为被 pick 的版本并不会被删除。</p>
+<h3 id="5-2-rebase"><a href="#5-2-rebase" class="headerlink" title="5.2 rebase"></a>5.2 rebase</h3><p>rebase 可以看做是 cherry-pick 的多次循环。证据就是如果执行 <code>rebase -i</code> 的话，就会看到 rebase 的流程</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">pick c50221f commit B
+pick 73deeed commit C
+pick d9623b0 commit D
+pick e7c7111 commit E
+pick 74199ce commit F
+
+<span class="token comment"># 变基 ef13725..74199ce 到 ef13725（5 个提交）</span>
+<span class="token comment">#</span>
+<span class="token comment"># 命令:</span>
+<span class="token comment"># p, pick &lt;提交&gt; = 使用提交</span>
+<span class="token comment"># r, reword &lt;提交&gt; = 使用提交，但修改提交说明</span>
+<span class="token comment"># e, edit &lt;提交&gt; = 使用提交，进入 shell 以便进行提交修补</span>
+<span class="token comment"># s, squash &lt;提交&gt; = 使用提交，但融合到前一个提交</span>
+<span class="token comment"># f, fixup &lt;提交&gt; = 类似于 "squash"，但丢弃提交说明日志</span>
+<span class="token comment"># x, exec &lt;命令&gt; = 使用 shell 运行命令（此行剩余部分）</span>
+<span class="token comment"># b, break = 在此处停止（使用 'git rebase --continue' 继续变基）</span>
+<span class="token comment"># d, drop &lt;提交&gt; = 删除提交</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到 git 会依次执行 <code>git cherry-pick B, git cherry-pick C, git cherry-pick D, ...</code>  。</p>
+<p>在实际应用中，<code>rebase</code> 一般和 <code>merge</code> 去做对比，如果我们希望让某个 feature 分支并入主分支 master，可以执行如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> checkout feature
+<span class="token function">git</span> rebase master
+<span class="token function">git</span> checkout master
+<span class="token function">git</span> merge feature
+<span class="token function">git</span> branch -d feature<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/posts/946388a1/Dec-30-2020-rebase-example.gif" alt=""></p>
+<p>可以看到有两点和 cherry-pick 不同：</p>
+<ul>
+<li>rebase 的 ours 不是 HEAD，而是 rebase 的参数分支。</li>
+<li>rebase 在变基完成后，会将原来的提交删去。</li>
+</ul>
+<h3 id="5-3-amend"><a href="#5-3-amend" class="headerlink" title="5.3 amend"></a>5.3 amend</h3><p>amend 是修正的意思，相比于 <code>rebase</code> 尤其是 <code>rebase -i</code> 可能没有那么强大的功能，但是却是一个很方便的功能。</p>
+<p>如下命令可以将 index 中的修改添加到当前 HEAD 指向的版本中（默认行为是添加到 HEAD 的子版本中），同时修改当前版本的 commit message。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> commit --amend <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当然如果希望修改 commit message，也可以使用上面的命令。</p>
+<h3 id="5-4-reflog"><a href="#5-4-reflog" class="headerlink" title="5.4 reflog"></a>5.4 reflog</h3><p>正因为重写操作充满了风险，所以 <code>reflog</code> 就可以很好的缓解这个问题，reflog 可以显示某个引用（默认是 HEAD）的历史。</p>
+<hr>
+<h2 id="六、远端协作"><a href="#六、远端协作" class="headerlink" title="六、远端协作"></a>六、远端协作</h2><h3 id="6-1-远端库和本地库"><a href="#6-1-远端库和本地库" class="headerlink" title="6.1 远端库和本地库"></a>6.1 远端库和本地库</h3><p>在合作开发方面，git 也是别出心裁。它又了本地库的设置，也就是和其他人的同步并不需要发生在每次提交中，而是可以考虑在本地库中先存储，然后在有网络的情况下在提交到中心库。</p>
+<p>查看当前的 remote</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> remote -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>增加 remote</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> remote <span class="token function">add</span> <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>url<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>删除 remote</p>
+<pre class="line-numbers language-none"><code class="language-none">git remote rm &lt;name&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>重命名 remote</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> remote <span class="token function">rename</span> <span class="token operator">&lt;</span>old-name<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>new-name<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>http 是一种只可以读取的远端，没法进行推送。</p>
+<h3 id="6-2-中心仓库"><a href="#6-2-中心仓库" class="headerlink" title="6.2 中心仓库"></a>6.2 中心仓库</h3><p>中心仓库就是共用的版本库，是开发协作的中心。就是部署在服务器上的版本，有几点很有趣的：</p>
+<p>中心仓库往往是 <code>bare</code> 的，也就是只有一个 <code>.git</code> 文件，这样可以避免 working dirctory 和 index 的冲突。</p>
+<p>中心仓库的分支移动正常情况下只能通过 merge，而 merge 只能是快进式的。分支移动是通过 git push 实现的，当无法满足上面的条件时，就会发生 push 失败的情况。</p>
+<h3 id="6-3-pull"><a href="#6-3-pull" class="headerlink" title="6.3 pull"></a>6.3 pull</h3><p>git pull 的原理是这样的</p>
+<p><img src="/posts/946388a1/image-20230930111522596.png" alt="image-20230930111522596"></p>
+<p>如果执行 merge 方式，则会得到：</p>
+<p><img src="/posts/946388a1/image-20230930111541180.png" alt="image-20230930111541180"></p>
+<p>如果执行 rebase 方式，则会得到：</p>
+<p><img src="/posts/946388a1/image-20230930111556890.png" alt="image-20230930111556890"></p>
+<p>我觉得虽然 <code>git fetch, git merge</code> 的方式更加本质，</p>
+<h3 id="6-4-rebase-的问题"><a href="#6-4-rebase-的问题" class="headerlink" title="6.4 rebase 的问题"></a>6.4 rebase 的问题</h3><p>其实这里讨论的并不只是 rebase 的问题，而是一个很有趣的因为并行开发造成的一致性问题。正如前所述，中心化仓库的引用只能向前合并，所以是不支持删除提交操作的，除非提交时使用 <code>--force</code>（这是常见的，因为确实有的时候没办法干净利落解决）。</p>
+<p>当使用 <code>--force</code> 时，如果删除了中心仓库的一些提交，而当其他人基于这些提交有一些新的提交的时候，事情就会变得很混乱，因为被删除的提交又会重新出现。</p>
+<p>这个问题在 <code>rebase</code> 的时候会变得明显，这是因为 rebase 会大量删除提交（进行变基操作），如果对某个分支执行变基操作，同时其他人也基于这个分支开发，那么就会导致出现重复的提交（变基后的提交，别人没有变基的提交）。所以才有了 rebase 的清规戒律，即“不要在公用分支执行变基操作”。</p>
+<h3 id="6-5-pr"><a href="#6-5-pr" class="headerlink" title="6.5 pr"></a>6.5 pr</h3><p>我们都了解 fork-pullrequest 工作流了，我之前很好奇为啥要费劲 fork 出一个仓库出来，github 不能提供一种机制，使得贡献者并不需要再 fork 出一个仓库提交 pull request，而是直接在仓库中进行“尝试性修改”。</p>
+<p>这可能和某种文化有关，上面我的构想按理说是可以实现的，但是这种情况就过于“中心化”了，而 fork 出来的方式，虽然导致贡献者需要浪费时间 fork 仓库，但是会提高其对于所谓的“中心”的威慑力和自主权，是一个很保护贡献者的行为。</p>
+<hr>
+<h2 id="七、查看与调试"><a href="#七、查看与调试" class="headerlink" title="七、查看与调试"></a>七、查看与调试</h2><h3 id="7-1-status-log"><a href="#7-1-status-log" class="headerlink" title="7.1 status, log"></a>7.1 status, log</h3><p>底下这张图恰好说出了两个最为常用的指示信息</p>
+<p><img src="/posts/946388a1/image-20230930160916139.png" alt="image-20230930160916139"></p>
+<h3 id="7-2-show"><a href="#7-2-show" class="headerlink" title="7.2 show"></a>7.2 show</h3><p><code>show</code> 相比于 <code>status</code> 和 <code>log</code> 要更加底层，他的本质更类似于高级的 <code>cat-file</code> ，可以通过给定 SHA Number 来打印其中的内容。有一个很好用的用法是打印特定版本的某个文件，可以先用 <code>git log</code> 查询出版本号，然后查询对应的文件。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> show 6f0e9959a89165000c590657fdb5d700471fda3e:README.md<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="7-3-blame"><a href="#7-3-blame" class="headerlink" title="7.3 blame"></a>7.3 blame</h3><p>blame 可以查看某个文件中不同作者的更改</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> blame README.MD<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果希望限定范围，可以使用 <code>-L</code> 参数</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> blame -L <span class="token number">1,5</span> README.md<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="7-4-grep"><a href="#7-4-grep" class="headerlink" title="7.4 grep"></a>7.4 grep</h3><p>个人感觉 <code>git grep</code> 是一个比 <code>grep</code> 更好的工具，其具有 <code>grep</code> 的大部分功能，默认搜索的目录是项目目录。</p>
+<p>它可以在某个特定版本中查找</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> <span class="token function">grep</span> <span class="token string">"pattern"</span> <span class="token operator">&lt;</span>SHA1-number<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其实也可以换成 tag 或者是 branch，都是可以查找的。</p>
+<p>在搜索结果上加上行号</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> <span class="token function">grep</span> -n <span class="token string">"pattern"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>git grep</code> 也提供了强大的文件过滤功能</p>
+<p>搜索特定文件类型：要仅搜索特定文件类型，可以使用通配符或文件扩展名。例如，要搜索所有扩展名为 <code>.java</code> 的文件中的文本模式，可以运行以下命令：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> <span class="token function">grep</span> <span class="token string">"pattern"</span> -- <span class="token string">"*.java"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>排除特定文件或目录：如果你希望在搜索时排除特定的文件或目录，可以使用 <code>:(exclude)</code>。例如，要搜索所有文件，但排除名为 <code>config.txt</code> 的文件，可以运行以下命令：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> <span class="token function">grep</span> <span class="token string">"pattern"</span> -- <span class="token string">":(exclude)config.txt"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>指定特定目录：如果你只想在特定目录下搜索，可以指定目录的路径。例如，要在 <code>src</code> 目录下搜索文本模式，可以运行以下命令：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> <span class="token function">grep</span> <span class="token string">"pattern"</span> -- <span class="token string">"src"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h2 id="八、配置"><a href="#八、配置" class="headerlink" title="八、配置"></a>八、配置</h2><p>设置分页器</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> config --global core.pager <span class="token function">cat</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S7%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S7课上</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/19e22da2/" rel="prev" title="Linux-GNU工具">
+      <i class="fa fa-chevron-left"></i> Linux-GNU工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/16dd6674/" rel="next" title="Linux-Systemd">
+      Linux-Systemd <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="nav-text">二、底层实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%9F%BA%E4%BA%8E-diff-%E7%9A%84%E7%89%88%E6%9C%AC%E5%BA%93"><span class="nav-text">2.1 基于 diff 的版本库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Git-%E7%9A%84%E5%BF%AB%E7%85%A7%E8%AE%BE%E8%AE%A1"><span class="nav-text">2.2 Git 的快照设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%80%BB%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-text">2.3 总体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E7%89%88%E6%9C%AC%E5%BA%93%E7%BB%93%E6%9E%84"><span class="nav-text">2.4 版本库结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E7%BC%93%E5%AD%98%E5%8C%BA%E7%BB%93%E6%9E%84"><span class="nav-text">2.5 缓存区结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AF%B9%E4%B8%89%E6%A3%B5%E6%A0%91%E8%BF%9B%E8%A1%8C%E7%AE%A1%E7%90%86"><span class="nav-text">三、对三棵树进行管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E9%94%81"><span class="nav-text">3.1 锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-HEAD"><span class="nav-text">3.2 HEAD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-reset"><span class="nav-text">3.3 reset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-checkout"><span class="nav-text">3.4 checkout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-stash"><span class="nav-text">3.5 stash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-rm"><span class="nav-text">3.6 rm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-clean"><span class="nav-text">3.7 clean</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%88%86%E6%94%AF"><span class="nav-text">四、分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%BC%95%E7%94%A8"><span class="nav-text">4.1 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-branch-checkout-commit"><span class="nav-text">4.2 branch, checkout, commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-diff"><span class="nav-text">4.3 diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-merge"><span class="nav-text">4.4 merge</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E9%87%8D%E5%86%99%E7%89%88%E6%9C%AC%E5%BA%93"><span class="nav-text">五、重写版本库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-cherry-pick"><span class="nav-text">5.1 cherry-pick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-rebase"><span class="nav-text">5.2 rebase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-amend"><span class="nav-text">5.3 amend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-reflog"><span class="nav-text">5.4 reflog</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E8%BF%9C%E7%AB%AF%E5%8D%8F%E4%BD%9C"><span class="nav-text">六、远端协作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E8%BF%9C%E7%AB%AF%E5%BA%93%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%BA%93"><span class="nav-text">6.1 远端库和本地库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E4%B8%AD%E5%BF%83%E4%BB%93%E5%BA%93"><span class="nav-text">6.2 中心仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-pull"><span class="nav-text">6.3 pull</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-rebase-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">6.4 rebase 的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-pr"><span class="nav-text">6.5 pr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%9F%A5%E7%9C%8B%E4%B8%8E%E8%B0%83%E8%AF%95"><span class="nav-text">七、查看与调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-status-log"><span class="nav-text">7.1 status, log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-show"><span class="nav-text">7.2 show</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-blame"><span class="nav-text">7.3 blame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-grep"><span class="nav-text">7.4 grep</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E9%85%8D%E7%BD%AE"><span class="nav-text">八、配置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

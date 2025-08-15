@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="​    夫天地者，万物之逆旅也；光阴者，百代之过客也。而浮生若梦，为欢几何？古人秉烛夜游，良有以也。况阳春召我以烟景，大块假我以文章。会桃花之芳园，序天伦之乐事。群季俊秀，皆为惠连；吾人咏歌，独惭康乐。幽赏未已，高谈转清。开琼筵以坐花，飞羽觞而醉月。不有佳咏，何伸雅怀？如诗不成，罚依金谷酒数。 ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象-大宗师">
+<meta property="og:url" content="https://thysrael.github.io/posts/8b373749/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="​    夫天地者，万物之逆旅也；光阴者，百代之过客也。而浮生若梦，为欢几何？古人秉烛夜游，良有以也。况阳春召我以烟景，大块假我以文章。会桃花之芳园，序天伦之乐事。群季俊秀，皆为惠连；吾人咏歌，独惭康乐。幽赏未已，高谈转清。开琼筵以坐花，飞羽觞而醉月。不有佳咏，何伸雅怀？如诗不成，罚依金谷酒数。 ​">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-06-28T08:35:09.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.116Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S4课上">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="面向对象">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/8b373749/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>面向对象-大宗师 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/8b373749/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面向对象-大宗师
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-28 16:35:09" itemprop="dateCreated datePublished" datetime="2022-06-28T16:35:09+08:00">2022-06-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>​    夫天地者，万物之逆旅也；光阴者，百代之过客也。而浮生若梦，为欢几何？古人秉烛夜游，良有以也。况阳春召我以烟景，大块假我以文章。会桃花之芳园，序天伦之乐事。群季俊秀，皆为惠连；吾人咏歌，独惭康乐。幽赏未已，高谈转清。开琼筵以坐花，飞羽觞而醉月。不有佳咏，何伸雅怀？如诗不成，罚依金谷酒数。</p>
+<p>​                                                                                                                                                                    —— 李白《春夜宴从弟桃花园序》</p>
+</blockquote>
+<h2 id="一、第四单元总结"><a href="#一、第四单元总结" class="headerlink" title="一、第四单元总结"></a>一、第四单元总结</h2><h3 id="1-1-总论"><a href="#1-1-总论" class="headerlink" title="1.1 总论"></a>1.1 总论</h3><p>这个单元最大的主题其实跟第三单元是一样的，就是怎么糊弄怎么来。第三单元是因为操作系统的压力，第四单元因为是烤漆，所以多有糊弄，也是没有办法的事情。除了烤漆压力外，其实题设方面也是给足了糊弄的空间，主要有以下几个方面：</p>
+<ul>
+<li>题目设计上完全脱离了整体架构，用接口约束改成了一道道的算法题。</li>
+<li>去掉了互测，所以是没有人绞尽脑汁搞别人的。</li>
+<li>不再卡 TLE，所以算法的需求就变成了要跑得稳，而不是跑得快。</li>
+<li>博客要求也减少了，要不我怎么敢随便胡咧咧。</li>
+</ul>
+<p>但是是不是糊弄就不好了，我觉得肯定不是的，很多时候，糊弄也要有糊弄的手法，没人要求自己的 1000m 跑得要跟博尔特一样快，即使是自己的最佳状态。更何况不是每个人都喜欢跑步，都愿意跑出好成绩，糊弄才是人们做事情的常态。我个人理解的是，我们既要学习如何把一件事情做到精益求精，也要学习如何糊弄而且还能弄得差不多。而且尤其是做团队合作，本来就不能控制和要求别人去全心全意的投入，所以学会糊弄不仅是自己的事情，更是合作的事情。</p>
+<p>接下来讲几个糊弄的要点，都是我认真踩过坑以后总结出来的，大致上是十分有用的。</p>
+<h3 id="1-2-知识与题目"><a href="#1-2-知识与题目" class="headerlink" title="1.2 知识与题目"></a>1.2 知识与题目</h3><p>这个单元名义上是 <code>UML</code> 解析器，然后我和身边的小伙伴就去看指导书了，看完指导书还不够，还要看课程组提供的手册，在看完如此晦涩的手册后，还要意犹未尽地看官方的手册。然后这些都看完，结果一做题，发现根本不沾边。</p>
+<p>那么我们来分析一下这个错误哈，这个错误可以归结为“我对于第四单元太重视了，我要好好弄”这种自我陶醉的理由。不过其实呢？我觉得程序开发最重要的就是面向需求开发，那么到底什么是需求，需求有什么特点。那么其实可以分析一下：这个单元的背景是 UML 官方文档，然后的背景是出题人是一组人。这种背景最容易推导出来的结论就是：每个人都会对官方文档有自己的看法，他们甚至不能将一个人对于官方文档的理解出成题目，最后的题目的逻辑肯定是极其简单的，简单到让所有人没法质疑。</p>
+<p>换句话说，这个单元的开发任务就不再是“结合 UML 知识做题”，而变成了“结合出题人搭建的框架做题”。那么显然死扣知识就变得没意思了，因为本来需求就不是知识，而是出题人搭建的模型。</p>
+<p>我已经学了一个学期的面向对象了，居然这点没有考虑到，可谓是基本功不扎实啊。</p>
+<h3 id="1-3-官方包与读代码"><a href="#1-3-官方包与读代码" class="headerlink" title="1.3 官方包与读代码"></a>1.3 官方包与读代码</h3><p>那么确定了第一点以后，那么糊弄的解法就出来了，只看指导书和官方包，可以最快的理解出题人的模型。然后就会遇到另一个坑点。就是这回的官方包是一个冗余的包，它不仅可以用来解析标准的输入内容，它好像还可以直接解析 <code>.mdj</code> 文件，然后还会有一些其他的功能，这就导致这个包里真的是，啥东西都有。有的时候费劲马哈的看完一个文件，然后一看，真的是没啥用。</p>
+<p>关于这点，我到觉得是自己的问题，毕竟以后很大概率都不能自己掌握全局，很多时候都是面对一个大项目，自己耳聋眼瞎就得写代码了。这种问题我之前也想过，然后从理智中推导出几种方法来：</p>
+<ul>
+<li>顺着调用顺序看，比如从输入函数开始看，看输入的东西变成啥了（一般都变成比较容易管理的数据结构了），然后看这些新的东西又经过怎样的处理变成输出了。</li>
+<li>按照数据结构的组织顺序看，比如先看一个管理其他数据结构的内部，然后看它管理的东西的结构，这样一级一级，一个 BFS 就看完。</li>
+<li>按照题目的要求看，比如从一开始的 <code>UMLElement</code> 看，然后一步一步的，巴拉巴拉</li>
+<li>按照包的含义看，不同的包体现了不同的逻辑思维，然后一个包下的事物一般具有某些相似性，可以很有逻辑的看出来。</li>
+</ul>
+<p>然后当我逐个应用的时候，发现虽然确实自我感觉很好，觉得自己是在像一个有逻辑的人一样看代码。但是真的好慢，这些策略不是在帮我提高看代码的效率，而是在帮我特别慢的看代码速度下不着急的。</p>
+<p>幸亏之前在 U3 的时候就犯过这些错误了，到 U4 的时候我改成了“通篇浏览 + 跟人聊天”的方式。真的是超级快。首先通篇浏览一下整个项目的结构，不用看得很细，但是最好要有笔来记录一下，然后记录完成以后就去找已经完成的人聊天，不用聊框架之类虚的东西，就直接问他怎么求解，然后聊几句大致就可以明白出题人的思路了，然后就开始实现就好了，实现的过程中不断的去矫正，基本上就没有问题。</p>
+<p>为什么这种方法更好呢？我个人觉得是因为人们理解一个东西，其实是把各种信息在脑子中抽象出一个结构来。然后上面旧的方法就是整个将整个结构全都理解了（他们顶多算是优化了理解的速度），然后再开始动笔。但是新的方法则是需求推动的，接近于语言或者新生儿探究世界的方式，是一种顺序化的，逐步的输入，难度梯度比较平缓，所以更加容易。</p>
+<h3 id="1-4-评测"><a href="#1-4-评测" class="headerlink" title="1.4 评测"></a>1.4 评测</h3><p>不出意料，又要搭建评测机了，同时又不出意料，我又搭不出来。不过经过了一个学期的打磨，我已经准备好了一套应对办法。首先，手里拿住一个最好的自动化器，然后为其名曰“合作”，骗到一个贼好用的数据生成器，然后基本上普通测试就搞定了，然后再建一个特殊样例的提交平台（不用实际建，就是到处跟别人说有好样例发给我呀，我这里有一大堆好样例，大家共享啊），这样基本上强一点的数据就搞定了。</p>
+<p>这中间一定要就事论事，具体问题具体分析。比如面对大佬，可能资源的共享的诱惑力就没有这么大，因为大佬永远都握有资源，这个时候就需要抱大腿，乌漆嘛黑，天昏地暗地舔就完事了。对于同为菜鸡的同学，就一定要认真负责，一定要勇于分享，一定要积极检讨，一定要把评测机的难度一降再降。这样才能团结群众，充分发挥群众的力量。</p>
+<h3 id="1-5-算法实现"><a href="#1-5-算法实现" class="headerlink" title="1.5 算法实现"></a>1.5 算法实现</h3><p>这个坑经过第三单元的训练，我这回是一点也没有踩。很多时候，算法不是复杂度越低就越好的，因为越低的算法复杂度，一般就意味着越高的空间复杂度和实现难度，就意味着很难拓展（因为很多算法的提高都利用了具体问题具体分析的办法）。</p>
+<p>不过这回因为官方放海了，所以只要意识到“不会卡时间”这一个点，那么就可以很好的解决问题了。</p>
+<h3 id="1-6-架构设计"><a href="#1-6-架构设计" class="headerlink" title="1.6 架构设计"></a>1.6 架构设计</h3><p>其实于哥哥在讨论区已经说得很清楚了，主要是将三种图的功能分别拆到三个类中去实现，可以有效的避免 500 行的限制。但是我看见有的人对于每个 <code>Element</code> ，都自己实现了一个类，那么就显得有些冗余。其实有的时候，为了实现的更快捷一些，可以考虑一些摆烂的方法，比如对于 <code>Endpoint</code> 可以和 <code>Lifeline</code> 当成一个类，<code>InitState, State, FinalState</code> 可以是一个类。其实这样是我在第一单元，一定不会开心的，因为这是展示继承和多态的大好机会。但是怎么说呢，我已经不是一个哪里哪里都要用面向对象来解决的菜鸟了。我觉得很多时候不是“好”最重要，而是“适合”最重要。</p>
+<hr>
+<h2 id="二、OO-课程总结"><a href="#二、OO-课程总结" class="headerlink" title="二、OO 课程总结"></a>二、OO 课程总结</h2><h3 id="2-1-傲慢与偏见"><a href="#2-1-傲慢与偏见" class="headerlink" title="2.1 傲慢与偏见"></a>2.1 傲慢与偏见</h3><p>必须承认，我在学这么课程之前就已经有了很多的其他东西。当我听到“设计模式，需求分析，博客，架构”的时候，勾起了很多我的年少轻狂。因为这门课程很多时候都是在讨论概念，讨论设计，讨论架构，讨论分类，讨论信仰。可能这对很多同学来说是很好的事情，因为可能是第一次接触，而且大家都年轻气盛，又有几人不想挥斥方遒，指点江山，乘风破浪呢？我看到很多人沉迷于架构设计，沉迷于评测机，沉迷于论道，沉迷于刀人。真的，客观的说，OO 一定是最受六系学生欢迎的课程，无论大家学得好不好，最后的博客感想都是十分感人的。</p>
+<p>可能只有我是一个异类吧，上面说的这些东西，在我很小的时候就接触到了。我小时候是美术生，从小就是在各种架构设计中度过，每天就是琢磨出甲方的需求和怎么应付甲方。之后就是当生竞生，每天沉迷于动物分类，植物分类，对于人类尝试给毫无因果的东西分出类这种事情习以为常，每天就是写总结。</p>
+<p>反正这就导致我对于很多事情没有那股子新鲜劲儿，反而对于很多事情无聊的一面深有体会。所以很多时候面对课程，是有很大的傲慢与偏见的。尤其是我早年的经历并没有完成，当美术生当了半截子，当生竞生也是没有登峰造极，导致我对于很多问题的思考全都停留在愤世嫉俗的地步，没有更进一步学会和解。</p>
+<p>所以我个人总结是，OO 可对于我不是尝鲜的课，而是一个去解决自己的傲慢与偏见的课。</p>
+<h3 id="2-2-大宗师"><a href="#2-2-大宗师" class="headerlink" title="2.2 大宗师"></a>2.2 大宗师</h3><p>“大宗师”是我最大的体验，有的时候，不是“穷人力”即可以达到的。可以看下面这句话</p>
+<blockquote>
+<p>泉涸，鱼相与处于陆，相呴以湿，相濡以沫，不如相忘于江湖。与其誉尧而非桀也，不如两忘而化其道。</p>
+</blockquote>
+<p>好了，装逼的话说完了（其实我也不知道这些话啥意思），我觉得最大的领悟就是我们的设计目标不永远是“最好”，或者永远不是最好。很多时候，程序开发是一个权衡的东西，在程序内部，时间要和空间权衡，可迭代性要和实现难度权衡，架构设计要和具体实现权衡，面向对象要和面向过程权衡。当一个方面变得更好，必然会有一个方面变得更差。</p>
+<p>我没学这门课之前，脑子里想的都是为什么不能更好了，比如画画的时候，明明起稿的铅笔软一点，效果会更好，或者学生物的时候，在某些分类上，放弃一些传统的标准去做分类，会有更好的效果。这就导致我在画画的时候，谁都不服，就服分数，学分类学的时候，谁都不服，就服 DNA 相似度分类。但是其实呢？很多时候是没有一个固定标准的。</p>
+<p>比如第一单元，既然没有卡时间，那么自然不用考虑什么样的顺序可以化简的更短，直接暴力的每个都尝试一遍就好了。我的第一单元，醉心于架构的优雅，而输在了不肯接受实现的丑陋。</p>
+<p>再比如第二单元，在明明知道没有办法优化性能的前提下，执意优化性能，在知道标准模式很好的时候，却非得探究多线程与面向对象的冲突，输在了沉迷于自己学习的幻想中无法自拔。</p>
+<p>再比如第三单元，在明明知道时间紧，任务重的情况下，依然认真完成任务，而且完全是一种自我感动式的完成，对于真正的时间的复杂度的需求视而不见，沉迷于 <code>JML</code> 的数学形式和跟人辩论中无法自拔。</p>
+<p>其实只有第四单元是好的，在这个单元里，虽然我没有做出想第一单元那么优美的架构设计，也没有第二单元那疯魔成活的调度优化，也没有第三单元纵观全局。但是它很自然，虽然丑陋，但是自然，是符合“大宗师”理念的。</p>
+<p>回顾下来，虽然课程让我开心的事情有很多，但是最让我骄傲的，就是完后了第四单元，因为从这个单元开始，我从一个幼稚的人，向着一个成熟的人迈进。</p>
+<h3 id="2-3-对象"><a href="#2-3-对象" class="headerlink" title="2.3 对象"></a>2.3 对象</h3><p>那么到最后，我完成突破了吗？</p>
+<p>其实没有，很多时候不是道理想通了，事情就办成了这么简单。我无论比别人在认识上面多走了多少，在很多时候还是不如别人。哪怕不与别人相比，与我自己相比，也是这样，你说我想出了新的道理了吗？想出来了，做出新的改变了吗？做出来了。但是真的有多少进步吗，没有。</p>
+<p>其实就是两手空空，毫无所依而已。不过其实事情大部分都这样。我听过一个故事，大致就是讲一个小男孩拿着一个曲别针，先用曲别针换了饮料，又用饮料换了帽子，反正最后经过一系列的价值不等的交换，最后换到一个别墅。我小时候就想，这故事不具有美感，最好这个小孩再用别墅换回曲别针，或者一个小姑娘的笑容，这样在别人都为他丢失一栋别墅而烦恼的时候，酷酷的留下一句“嗨，反正不过损失一个曲别针”。</p>
+<p>在我敲完了这四千多字的博客的时候，我对于 OO 的看法尘埃落定，这课是好课，我来的时候连曲别针都没有，我走的时候却认识了很多朋友，发生了很多故事。</p>
+<p>最关键的，这门课程叫做“面向对象”，哪怕强如杰哥，兼具“得意门生，最佳性能，最狠狼人，暖心分享”四项大奖，他也有很大的不足，那就是他没对象啊。我就算各种强测各种寄，各种互测各种被刀，各种装逼各种被打脸，各种坑全都踩了一个遍。但是我在课程学习的过程中，真正做到了“面向对象”啊，我的代码都是“面向对象”编写的，我对象就坐我对面。这，你说说，有什么办法呢？强烈建议课程组给我这种贯彻课程基本精神的人满分以滋嘉奖。</p>
+<p>最后我想说：</p>
+<blockquote>
+<p>我跟 OO 有过对象般的争吵，我也希望和对象有 OO 似的美好。</p>
+</blockquote>
+<h3 id="2-3-尾声"><a href="#2-3-尾声" class="headerlink" title="2.3 尾声"></a>2.3 尾声</h3><p>一气呵成之后看了看要求，发现没有提意见，我真觉得 OO 绝世好课，故提一下建议：</p>
+<ul>
+<li>可以考虑优化指导书的渲染系统，个人感觉做的还可以更漂亮，尤其是斜体和数学公式。</li>
+<li>U3 或者 U4 开放一些架构设计的部分，连着两个单元没有架构设计，有点怀念。</li>
+<li>研讨课可以考虑不加分，这样大家的分享会比较理想。身边有很多不太擅长演讲的人为了这个很难过。</li>
+</ul>
+<p>最后，诚挚感谢吴际老师的教诲，战晨曦，吴家焱等助教的指导，冰哥亲人般的关怀，jjj, lsz, zkg, wxz,wxg, cjj, ghy, cnx 等人的帮助。爱你们。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S4%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S4课上</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag"><i class="fa fa-tag"></i> 面向对象</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/582ee379/" rel="prev" title="CPP设计-jsonxx">
+      <i class="fa fa-chevron-left"></i> CPP设计-jsonxx
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/5955f5d7/" rel="next" title="操作系统-AOSOA">
+      操作系统-AOSOA <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%AC%AC%E5%9B%9B%E5%8D%95%E5%85%83%E6%80%BB%E7%BB%93"><span class="nav-text">一、第四单元总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">1.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%9F%A5%E8%AF%86%E4%B8%8E%E9%A2%98%E7%9B%AE"><span class="nav-text">1.2 知识与题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AE%98%E6%96%B9%E5%8C%85%E4%B8%8E%E8%AF%BB%E4%BB%A3%E7%A0%81"><span class="nav-text">1.3 官方包与读代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E8%AF%84%E6%B5%8B"><span class="nav-text">1.4 评测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="nav-text">1.5 算法实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-text">1.6 架构设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81OO-%E8%AF%BE%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="nav-text">二、OO 课程总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%82%B2%E6%85%A2%E4%B8%8E%E5%81%8F%E8%A7%81"><span class="nav-text">2.1 傲慢与偏见</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%A4%A7%E5%AE%97%E5%B8%88"><span class="nav-text">2.2 大宗师</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%AF%B9%E8%B1%A1"><span class="nav-text">2.3 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%B0%BE%E5%A3%B0"><span class="nav-text">2.3 尾声</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

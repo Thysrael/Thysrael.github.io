@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、感受真的是十分开心的，毕竟自己终于搭建了一个“神经网络”，其成就感，简直和自己第一次写 Hello, world. ，第一次写字典树，第一次写出流水线 CPU，第一次在 ARM 上移植操作系统，第一次写出编译器后端一样快乐。当我的电脑的 CPU 利用率被这个东西拉满，风扇开始轰鸣的时候，开心的都要冒泡了。  尤其是“人工智能”这个词，在甚嚣尘上的舆论聚光灯下，已经被蒙上了一种虚妄的光晕。我回老">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IEArch-多层感知机">
+<meta property="og:url" content="https://thysrael.github.io/posts/71efcdfa/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、感受真的是十分开心的，毕竟自己终于搭建了一个“神经网络”，其成就感，简直和自己第一次写 Hello, world. ，第一次写字典树，第一次写出流水线 CPU，第一次在 ARM 上移植操作系统，第一次写出编译器后端一样快乐。当我的电脑的 CPU 利用率被这个东西拉满，风扇开始轰鸣的时候，开心的都要冒泡了。  尤其是“人工智能”这个词，在甚嚣尘上的舆论聚光灯下，已经被蒙上了一种虚妄的光晕。我回老">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/71efcdfa/image-20220930203534068.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/71efcdfa/image-20220930213146507.png">
+<meta property="article:published_time" content="2022-09-30T12:06:55.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:47.781Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S5课上">
+<meta property="article:tag" content="IEArch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/71efcdfa/image-20220930203534068.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/71efcdfa/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>IEArch-多层感知机 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/71efcdfa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IEArch-多层感知机
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-09-30 20:06:55" itemprop="dateCreated datePublished" datetime="2022-09-30T20:06:55+08:00">2022-09-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IEArch/" itemprop="url" rel="index"><span itemprop="name">IEArch</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、感受"><a href="#一、感受" class="headerlink" title="一、感受"></a>一、感受</h2><p>真的是十分开心的，毕竟自己终于搭建了一个“神经网络”，其成就感，简直和自己第一次写 Hello, world. ，第一次写字典树，第一次写出流水线 CPU，第一次在 ARM 上移植操作系统，第一次写出编译器后端一样快乐。当我的电脑的 CPU 利用率被这个东西拉满，风扇开始轰鸣的时候，开心的都要冒泡了。</p>
+<p><img src="/posts/71efcdfa/image-20220930203534068.png" alt="image-20220930203534068"></p>
+<p>尤其是“人工智能”这个词，在甚嚣尘上的舆论聚光灯下，已经被蒙上了一种虚妄的光晕。我回老家的时候，被问道“你会修电脑吗？”和“我会人工智能，你会吗？”的次数是一样多的。最尴尬的是，我明知道我学的东西或许并不比一个简单的神经网络浅薄，但是还是会因为自己不懂人工智能而自卑，因“外行人抢夺话语权”而闷闷不乐。转而我又会想到自己不够自信，不够有涵养，不够包容，进而跟自己更加生气。</p>
+<p>虽然这次严格意义上讲，也并不是纯粹的手搓，老师是给了示例代码的。我的工作不过是修改一些地方，就可以满足实验的要求了。不过通过梳理代码，看到线代知识，高数知识，编程知识，数学建模知识交织在一起，也是一件很有意思的事情。这种乐趣，我觉得比上面那种“战胜自卑”的乐趣更加纯粹。</p>
+<hr>
+<h2 id="二、概述"><a href="#二、概述" class="headerlink" title="二、概述"></a>二、概述</h2><p>这次的实验要求是利用已有的三层神经网络，改成一个四层的神经网络，最终实现一个手写数字识别的功能。其中修改的任务确实不是很难，基本上利用找规律和矩阵乘法的合法性就可以推断出如何多加一个 hidden layer 。</p>
+<p>所以我的精力主要放在了两个部分，一个是对于神经网络的数学原理的解释上，一个是对于原有代码的改写上（虽然只是一些小面积改写）。我之后会着重与这两个方面展开介绍。</p>
+<hr>
+<h2 id="三、效果"><a href="#三、效果" class="headerlink" title="三、效果"></a>三、效果</h2><p>具体的调参记录在第五节有叙述，这里只讨论效果最好的一次的参数配置。</p>
+<p><img src="/posts/71efcdfa/image-20220930213146507.png" alt="image-20220930213146507"></p>
+<p>配置为：</p>
+<ul>
+<li>层数：4</li>
+<li>学习率：0.08</li>
+<li>中间节点个数：600</li>
+<li>迭代次数：2</li>
+</ul>
+<p>由 <code>input</code> 到 <code>hidden1</code>  的权重保存在 <code>./weights/wih1.npy</code> 文件中，由 <code>hidden1</code> 到 <code>hidden2</code> 的权重保存在 <code>./weights/wh1h2.npy</code> 中，由 <code>hidden2</code>  到 <code>outupt</code> 的权重保存在 <code>./weights/wh2o.npy</code> 。</p>
+<hr>
+<h2 id="四、原理"><a href="#四、原理" class="headerlink" title="四、原理"></a>四、原理</h2><h3 id="4-1-numpy"><a href="#4-1-numpy" class="headerlink" title="4.1 numpy"></a>4.1 numpy</h3><p><code>numpy</code> 库里面东西很多，我们主要用到里面线性代数的部分。比如说</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>normal<span class="token punctuation">(</span>loc<span class="token punctuation">,</span> scale<span class="token punctuation">,</span> size<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以生成一个正态分布的矩阵。</p>
+<pre class="line-numbers language-none"><code class="language-none">np.array(input_feature, ndmin=2).T<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以用于生成一个二维矩阵，注意在 <code>numpy</code> 的概念里，矩阵和向量是两个概念。2 维向量和 $2 \times 1$ 的矩阵并不相同，对于向量，可以用到的操作是很少的（可能就是为了避免泛型 <code>List</code> 吧）。</p>
+<p>此外，<code>numpy</code> 还重载了一堆运算符，比如说 <code>*</code> 对于两个同维度矩阵来说，就是对应元素相乘，对于标量与矩阵，就是标量乘上矩阵的每个元素，对于 <code>@</code> ，就是矩阵点乘。加减法类似。</p>
+<p>除此之外，<code>numpy</code> 还提供了一些与文件的交互接口，比如说 <code>numpy</code> 可以读取一个二进制文件到一个 <code>numpy</code> 数组中，我们利用这个接口读取训练集和测试集。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">labels <span class="token operator">=</span> np<span class="token punctuation">.</span>fromfile<span class="token punctuation">(</span>l_path<span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>也可以将一个数组中的结果保存到文件中，我们用它来保存权重</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">np<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'./weights/wih1.npy'</span><span class="token punctuation">,</span> model<span class="token punctuation">.</span>input_hidden1_weight<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="4-2-前向"><a href="#4-2-前向" class="headerlink" title="4.2 前向"></a>4.2 前向</h3><p>基础的理解在另一篇博客中 <a href="https://thysrael.github.io/posts/963bfa61/">https://thysrael.github.io/posts/963bfa61/</a> 介绍了，这里主要介绍一下具体的表现形式</p>
+<script type="math/tex; mode=display">
+N_{m \times 1} = W_{m \times n} \bullet I_{n \times 1} \\
+O_{m \times 1} = f(N_{m \times 1})</script><p>这个东西描述了<strong>一层</strong>神经网络的结构，这一层的神经网络具有 n 个输入，具有 m 个输出。我们通过权重矩阵将输入映射到 m 维，对应的过程是 m 个神经元收集输入信息引发电位变化的过程，其中 $W$ 矩阵的每一行都代表一个神经元的权重。$f$ 被称为 <code>activation function</code> ，他接受一个 m 维的向量，输出一个 m 维的向量，对应的是局部电位引发动作电位的过程。</p>
+<h3 id="4-3-反向传播"><a href="#4-3-反向传播" class="headerlink" title="4.3 反向传播"></a>4.3 反向传播</h3><p>其基本原理很好理解，对于每一层，我们都可以逆序依次计算（从输出到输入）每一层的误差，然后每一层根据该层的误差，调整自己的参数，调整的方法为<strong>梯度下降法</strong>，简单说就是如果一个权重对于最后的误差影响大，那么就调整他调整的比较大，我们衡量的方法就是看他的梯度。</p>
+<p>首先我们看如何计算每层的误差</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># output layer error is the (target - actual)</span>
+output_loss <span class="token operator">=</span> targets <span class="token operator">-</span> self<span class="token punctuation">.</span>final_outputs
+<span class="token comment"># hidden layer2 error is the output_errors, split by weights, recombined at hidden nodes</span>
+hidden2_loss <span class="token operator">=</span> self<span class="token punctuation">.</span>hidden2_output_weight<span class="token punctuation">.</span>T @ output_loss
+<span class="token comment"># hidden layer1 error is the hidden2_errors, split by weights, recombined at hidden nodes</span>
+hidden1_loss <span class="token operator">=</span> self<span class="token punctuation">.</span>hidden1_hidden2_weight<span class="token punctuation">.</span>T @ hidden2_loss<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到输出层的误差就是理论结果与实际结果的差值，很好理解，对于倒数第一隐层的误差，就是权重矩阵的转置与输出误差的点乘。虽然这样有些道理，但是没有考虑激励函数，可以认为是一种神奇的建模思想吧，即</p>
+<script type="math/tex; mode=display">
+E^{'}_{(n \times 1)} = W^{T}_{m\times n} E_{m\times 1}</script><p>跟之前的前项传播放在一起</p>
+<script type="math/tex; mode=display">
+N_{m \times 1} = W_{m \times n} \bullet I_{n \times 1}</script><p>可以看出还是有一些道理的。</p>
+<p>然后开始介绍梯度下降法，这里面会涉及一些神秘公式，希望以后我还能记得，首先是总公式</p>
+<script type="math/tex; mode=display">
+W^{'} = W - learn\_rate \times \frac{dE_s}{dW}</script><p>其中重点可以引用链式法则拆解</p>
+<script type="math/tex; mode=display">
+\frac{dE_s}{dW} = \frac{dE_s}{dO}\times \frac{dO}{dN} \times \frac{dN}{dW}</script><p>其中有</p>
+<script type="math/tex; mode=display">
+E_s = \sum_{i}^{m} (target_i - O_i)^2</script><p>所以有</p>
+<script type="math/tex; mode=display">
+\frac{dE_s}{dO} = E_{m\times1}</script><p>对于 $\frac{dO}{dN}$ ，本质是对激励函数的求导，我们采用的激励函数是 $f(x) = \frac{1}{1 - e^{-x}}$ ，有奇妙特性为 $f^{‘}(x) = f(x)(1 - f(x))$。所以有</p>
+<script type="math/tex; mode=display">
+\frac{dO}{dN} = O_{m\times1}(1_{m\times1} - O_{m\times1})</script><p>对于最后一个部分，有</p>
+<script type="math/tex; mode=display">
+\frac{dN}{dW} = I_{1\times n}</script><p>最终有代码</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">self<span class="token punctuation">.</span>hidden2_output_weight <span class="token operator">+=</span> \
+            self<span class="token punctuation">.</span>learning_rate <span class="token operator">*</span> \
+            <span class="token punctuation">(</span>output_loss <span class="token operator">*</span> self<span class="token punctuation">.</span>final_outputs <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> self<span class="token punctuation">.</span>final_outputs<span class="token punctuation">)</span><span class="token punctuation">)</span> @ self<span class="token punctuation">.</span>hidden2_outputs<span class="token punctuation">.</span>T<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>当然很多东西并不那么数学。</p>
+<hr>
+<h2 id="五、调参"><a href="#五、调参" class="headerlink" title="五、调参"></a>五、调参</h2><p>主要的参数是有三个，一个是学习率 <code>learn rate</code>，一个是中间节点个数 <code>hidden_nodes</code>，一个是迭代次数 <code>epoches</code></p>
+<p>很容易分析得知，当学习率变高的时候，误差对于权重改变的影响会更加大。不过如果学习率变得过高，会出现某种意义上的过拟合现象，即一次较大误差可能会破坏原有的训练成果，表现为错误率呈现出剧烈的震荡，而且还始终维持较高水平。相反的，较低的学习率则更加“精密”，通过增大其他参数，可以让学习率降低，来达到更好的效果。</p>
+<p>中间节点个数似乎是越多越好的，这个是我一个 21 系的舍友告诉我的，我自己理性分析也是这样的，毕竟多了总比少了好，“异质”总比“同质”好。而且确实效果也是这样的，当我把节点数提高到 400 个的时候，准确率会上升两个百分点，但是似乎继续提高，边际收益会减少，比如说当我把节点提高到 800 个的时候，准确度基本上只提高了半个百分点。但是计算所用的时间会非线性的增长。</p>
+<p>迭代次数并不会在 <code>NeuralNetwork</code> 这个类中可以调整，而是在 <code>main.py</code> 中的函数 <code>train</code> 函数中的局部变量 <code>epoches</code> 中可调，原有代码是 2 次，显然增大次数会让准确率提高（应该吧，可能会有过拟合现象）。我一开始并没有发现这个变量，所以一直没调，之后补录，大概缺少了一些数据。</p>
+<p>其实还有一个变量是 hidden layer 的层数，我也不知道为啥 4 层的效果没有 3 层的好。我个人觉得，官方提供的代码可能参数已经调好了，而这些参数并不适应 4 层的网络，所以导致直接跑效果并不太好。</p>
+<p>最终数据如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>层数</th>
+<th>学习率</th>
+<th>中间节点个数</th>
+<th>迭代次数</th>
+<th>准确率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>0.1</td>
+<td>200</td>
+<td>2</td>
+<td>97%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.1</td>
+<td>200</td>
+<td>2</td>
+<td>95%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.1</td>
+<td>400</td>
+<td>2</td>
+<td>96%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.08</td>
+<td>600</td>
+<td>2</td>
+<td>97%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.2</td>
+<td>200</td>
+<td>2</td>
+<td>82%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.05</td>
+<td>300</td>
+<td>4</td>
+<td>97%</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S5%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S5课上</a>
+              <a href="/tags/IEArch/" rel="tag"><i class="fa fa-tag"></i> IEArch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/bb314391/" rel="prev" title="DBSM-Web开发直观">
+      <i class="fa fa-chevron-left"></i> DBSM-Web开发直观
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/de998002/" rel="next" title="补充数学-单纯形法">
+      补充数学-单纯形法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%84%9F%E5%8F%97"><span class="nav-text">一、感受</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A6%82%E8%BF%B0"><span class="nav-text">二、概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%88%E6%9E%9C"><span class="nav-text">三、效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8E%9F%E7%90%86"><span class="nav-text">四、原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-numpy"><span class="nav-text">4.1 numpy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%89%8D%E5%90%91"><span class="nav-text">4.2 前向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="nav-text">4.3 反向传播</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%B0%83%E5%8F%82"><span class="nav-text">五、调参</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

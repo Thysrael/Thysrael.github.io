@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、起始概念1.1 排版应当明确，排版问题并不会因为 LaTex “内容和格式分离”的设计宗旨而消失，实际上，LaTex 就是在解决“排版问题”，它就是一个排版工具，只不过在解决思路上采用了“内容和格式分离”的思想，让用户尽可能不被繁琐的排版细节所困扰。   而当我们抛开 LaTex 的拐杖去直面排版问题时，会发现它比我们想象得都要复杂、繁琐和无聊。   比如说常见的“断字与断行”问题，在不考虑断">
+<meta property="og:type" content="article">
+<meta property="og:title" content="科研可餍-再谈LaTeX">
+<meta property="og:url" content="https://thysrael.github.io/posts/58d9b86a/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、起始概念1.1 排版应当明确，排版问题并不会因为 LaTex “内容和格式分离”的设计宗旨而消失，实际上，LaTex 就是在解决“排版问题”，它就是一个排版工具，只不过在解决思路上采用了“内容和格式分离”的思想，让用户尽可能不被繁琐的排版细节所困扰。   而当我们抛开 LaTex 的拐杖去直面排版问题时，会发现它比我们想象得都要复杂、繁琐和无聊。   比如说常见的“断字与断行”问题，在不考虑断">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/58d9b86a/box1-17076556721651.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/58d9b86a/box2-17076556936422.png">
+<meta property="article:published_time" content="2024-02-11T12:41:14.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.983Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="工具总结">
+<meta property="article:tag" content="S7假期">
+<meta property="article:tag" content="科研可餍">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/58d9b86a/box1-17076556721651.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/58d9b86a/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>科研可餍-再谈LaTeX | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/58d9b86a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          科研可餍-再谈LaTeX
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-02-11 20:41:14" itemprop="dateCreated datePublished" datetime="2024-02-11T20:41:14+08:00">2024-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A7%91%E7%A0%94%E5%8F%AF%E9%A4%8D/" itemprop="url" rel="index"><span itemprop="name">科研可餍</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、起始概念"><a href="#一、起始概念" class="headerlink" title="一、起始概念"></a>一、起始概念</h2><h3 id="1-1-排版"><a href="#1-1-排版" class="headerlink" title="1.1 排版"></a>1.1 排版</h3><p>应当明确，排版问题并不会因为 LaTex “内容和格式分离”的设计宗旨而消失，实际上，LaTex 就是在解决“排版问题”，它就是一个排版工具，只不过在解决思路上采用了“内容和格式分离”的思想，让用户尽可能不被繁琐的排版细节所困扰。  </p>
+<p>而当我们抛开 LaTex 的拐杖去直面排版问题时，会发现它比我们想象得都要复杂、繁琐和无聊。  </p>
+<p>比如说常见的“断字与断行”问题，在不考虑断字的情况下，一个占据近一行宽度的字很容易造成这之前的一行较为稀疏，比如下面的这种情况，左侧为较为失败的断行算法，而右侧为较为成功的：  </p>
+<pre><code>  The quick brown fox jumps over          The  quick  brown  fox   jumps
+the lazy dog. The words here are        over  the  lazy  dog.  The words
+quite  short.  Aren't they?  But        here  are  quite  short.  Aren't
+long     ones      such       as        they?  But  long  ones  such  as
+perhydrocyclopentanophenanthrene        perhydrocyclopentanophenanthrene
+may appear.                             may appear.
+</code></pre><p>而断字则要考虑能否将单词按照音节拆分，比如将 <code>computer</code> 拆分成 <code>com-puter</code> 就比拆成 <code>c-omputer</code> 要更为合理。</p>
+<p>从这个角度看，排版是一个极其复杂的算法问题，具有很强的数学特性。</p>
+<h3 id="1-2-引擎"><a href="#1-2-引擎" class="headerlink" title="1.2 引擎"></a>1.2 引擎</h3><p>引擎指的是解决上面提到的排版问题的工具。</p>
+<p>以上面提到的“断行问题”举例，有一种基于“不美观度（badness）”的衡量标准，空格伸缩量越大 badness 越大。每一种断行的方式都有一个总体的衡量标准，包括 badness 、断行、以及行与行之间的疏密差异等。算法可以枚举 $2^n$ 种情况来获得最小的 badness 值（在实际生产中用的是 $O(n^2)$ 的最短路径算法）。完成这整个算法的工具就被称为 <strong>排版引擎</strong> （当然排版引擎不止完成这一个事情）。</p>
+<p>TeX 就是这样的一种工具（也就是引擎），它可以解决许多诸如“断行和断字问题”的排版问题。</p>
+<h3 id="1-3-实现"><a href="#1-3-实现" class="headerlink" title="1.3 实现"></a>1.3 实现</h3><p>这里需要再次拓展 TeX 的概念，TeX 在上文中被描述成了一种“引擎：解决排版问题的工具”，而实际上，TeX 的抽象层次要比引擎更高一些，它也可以被理解为一种 DSL （似乎也可以是通用语言，我听过用 TeX 搭建 OS 的传闻），TeX 这种语言描述了排版的目的，而引擎则是实现这些目的的工具。如果用 C 语言做类比，TeX 可以理解为“C 语言 + 编译器”的复合体。</p>
+<p>那么就会引出一个自然的现象，也就是同一种语言可以有 <strong>不同</strong> 的编译器，就像 C 语言可以有 gcc, clang, msvc 等多种编译器，同样的，TeX 作为一门语言，也可以有多种引擎实现。</p>
+<p>TeX 的发明人高纳德在实现 TeX 的时候，采用了一种它自己发明的语言——WEB ，这是一种文学编程语言，可以导出 Pascal 代码，也就说，最初版的 TeX 语言是用 Pascal 语言实现的。</p>
+<p>后来正统的 TeX 又通过 WEB2C 这个工具将原本的 WEB 语言实现翻译成了 C 语言实现。但是似乎大家并不会用这个版本的 TeX ，这是因为高爷爷坚持只有自己可以修改 TeX ，所以有些用户需求无法满足，所有后来又来了两个大牛重写了 TeX ，这种 TeX 被称为 eTeX 后续著名的 pdfTeX 或者 XeTeX 都是基于 eTeX 完成的开发。它们同样是遵循 TeX 语言规范实现的排版引擎。</p>
+<p>pdfTeX 的最大特点是会直接生成 PDF 文件，而传统的 TeX 则是会 DVI 文件（一种原生的，适合排版的文件格式），所以 pdfTeX 在 PDF 生成方面会更加有优势。</p>
+<p>XeTeX 是一种使用 Unicode 的 TeX 排版引擎，同时并支持一些现代字体技术，例如 OpenType、Graphite 和 Apple Advanced Typography（AAT）。也就说，对于中文的支持会好很多。</p>
+<p>LuaTeX 是作为带有 Lua 脚本引擎嵌入的 pdfTeX 版本发起的基于 TeX 的电脑排版系统。经过一段时间的开发后被pdfTeX 小组采纳作为 pdfTeX 的继任者。我看评论说似乎这个工具较为“新”，所以算是有利有弊。</p>
+<h3 id="1-4-宏"><a href="#1-4-宏" class="headerlink" title="1.4 宏"></a>1.4 宏</h3><p>TeX 这门语言有一个被叫做“控制序列（control sequence)”的组成部分，可以看成由 2 个部分组成：元语（primitive）和宏（macro），元语负责排版引擎工作，宏则负责组织元语。关于这门语言，我并没有深入的研究，我浅浅看上去像是一种 <strong>函数式</strong> 编程语言。  </p>
+<p>TeX 的宏定义如下所示：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\def</span> &lt;control sequence&gt; &lt;parameter text&gt;<span class="token punctuation">{</span>&lt;balanced text&gt;<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>定义宏的例子：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\def</span><span class="token function selector">\hello</span>#1#2<span class="token punctuation">{</span>Hello, #1, #2<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>调用宏的例子：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\hello</span><span class="token punctuation">{</span>bar<span class="token punctuation">}</span><span class="token punctuation">{</span>foo<span class="token punctuation">}</span> <span class="token comment">% output:Hello, bar, foo</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以看到使用 <code>\def</code> 可以定义新的宏，拓展 TeX 。我觉得这个功能依然是局限在文本替换的层面。  </p>
+<p>关于宏的形参，它用 <code>#n</code> 描述第 n 个参数，它可以看作是一个像 C 语言中 <code>scanf</code> 中的格式字符串类似的感觉，它并不是一个普通的 <code>#1#2#3..</code> 这样的序列，它还可以更加复杂，比如说 <code>#1.#2</code> ，它就可以接受一个形如 <code>45.2</code> 的参数，也就是说形参中间的那个小数点 <code>.</code> 发挥了匹配的作用。  </p>
+<p>而宏的实参在传递的时候，可以如上面举例一样，对于 <code>#1.#2</code> 传递 <code>45.2</code> 并让 <code>#1</code> 对应 <code>45</code> ， <code>#2</code> 对应 <code>2</code> ，但是如果面对 <code>4.52</code> 这样的数，它则会让 <code>#1</code> 对应 <code>4</code> 而 <code>#2</code> 对应 <code>5</code> ，也就是采用一种非贪心的参数匹配策略，所以如果希望 <code>4.52</code> 被正确传入，应当增加 <code>{}</code> 来表示区分，比如说 <code>4.{52}</code> 或者 <code>{4}.{52}</code> 。  </p>
+<p><code>balance text</code> 类似于 C 语言中 <code>printf</code> 的格式化字符串，可以使用形参中的 <code>#n</code> 拼接字符串，上面的例子比较清楚了，需要注意需要用 <code>{}</code> 包裹 <code>balance text</code> 。</p>
+<h3 id="1-5-格式"><a href="#1-5-格式" class="headerlink" title="1.5 格式"></a>1.5 格式</h3><p>在宏这一节谈到，利用宏可以拓展 TeX 的控制序列，其本质是扩展了 TeX 这门语言。而 LaTeX 利用 TeX 的控制序列，定义了许多新的控制序列并封装成一个可执行文件。这个可执行文件会去解释 LaTeX 新定义的命令成为 TeX 的控制序列，并最终交由 TeX 引擎进行排版。</p>
+<p>这种通过预定义一系列宏，来实现一种 TeX 编写模式和规范的成果被称为 <strong>格式（format）</strong> 。格式的出现并非偶然，因为 TeX 需要控制排版引擎，“友好程度”注定不会很高，而 LaTeX 即使用户没有排版和程序设计的知识也可以充分发挥由 TeX 所提供的强大功能，不必一一亲自去设计或校对，是更加用户友好的产品。从这个角度看，TeX 更像是“汇编语言”，而 LaTeX 更像是“高级语言”。</p>
+<p>LaTeX 这种“高级语言”更加流行的原因是因为它屏蔽了几乎全部的的排版细节，使得只需要拿到预制的 LaTeX 文档类和宏包，输入内容并编译就可以获得一个排版好的 PDF 文件，如果这么看的话，其实是没有必要了解 LaTeX 知识的，因为反正最后都是做 PPT 一样，只是套模板。  </p>
+<p>格式不止有 LaTeX 一种：高老爷子自己用的 plainTeX ；还有一种 ConTeXt 与 LaTeX 对应，LaTeX 屏蔽了 TeX 的印刷细节，而 ConTeXt 则采用了一种补充的方法，提供了处理印刷细节的友好接口。</p>
+<h3 id="1-6-宏包和驱动"><a href="#1-6-宏包和驱动" class="headerlink" title="1.6 宏包和驱动"></a>1.6 宏包和驱动</h3><p>除了格式这种“改天换地”的东西外，还存在其他用宏制作的控制序列集合，他们被称为宏包，他们同样可以增强 TeX 或者 LaTex 的功能，类似于“函数库”。  </p>
+<p>在LaTeX编译成文档时，还可能会用到一些必要的驱动软件，如将 dvi 文件转化为 pdf 文件的软件。如 dvipdf，dvipdfm，dvipdfmx ，xdvipdfmx 等。  </p>
+<h3 id="1-7-发行版"><a href="#1-7-发行版" class="headerlink" title="1.7 发行版"></a>1.7 发行版</h3><p>所谓的发行版指的就是将上面的引擎，格式，宏包，宏包管理器，驱动甚至编辑器打包到一起，整理出的一个“软件集合体”，比如说著名的 TeXLive 。  </p>
+<p>我之前经常担心引用的宏包没有安装，而实际上 TeXLive 安装了大部分常用的宏包，对于没有安装的宏包，TeXLive 也提供了宏包管理器方便安装和其他管理手段，如下所示：  </p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">tlmgr <span class="token function">install</span> <span class="token operator">&lt;</span>package-name<span class="token operator">&gt;</span>
+tlmgr remove <span class="token operator">&lt;</span>package-name<span class="token operator">&gt;</span>
+tlmgr info <span class="token operator">&lt;</span>package-name<span class="token operator">&gt;</span>
+tlmgr update --all --self<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h2 id="二、语法元素"><a href="#二、语法元素" class="headerlink" title="二、语法元素"></a>二、语法元素</h2><h3 id="2-1-综述"><a href="#2-1-综述" class="headerlink" title="2.1 综述"></a>2.1 综述</h3><p>正如 TeX 的命令分为元语和宏， LaTeX 也有自己的功能组件，分别是 <strong>命令和环境</strong> 。之所以比 TeX 单一的控制序列要多一种，这可能是因为这样 LaTeX 内容和格式分离的特征会更加明显。此外代码也会呈现方便的组织形式，比如说 <strong>宏包和文档类</strong> 。  </p>
+<p>正如 TeX 依靠宏来拓展功能， LaTeX 也有自己的拓展功能，即自定义和重定义命令和环境。  </p>
+<h3 id="2-2-命令"><a href="#2-2-命令" class="headerlink" title="2.2 命令"></a>2.2 命令</h3><h4 id="2-2-1-格式"><a href="#2-2-1-格式" class="headerlink" title="2.2.1 格式"></a>2.2.1 格式</h4><p>LaTeX 中的命令类似于 TeX 中的控制序列，其格式要求为：  </p>
+<ul>
+<li>以反斜线 <code>\</code> 开头，并跟随一串 <strong>大小写敏感</strong> 的字母（不包括数字、标点和空格）</li>
+<li>以反斜线 <code>\</code> 开头，并跟随单个的非字母字符，比如说 <code>\\, \$</code></li>
+</ul>
+<p>LaTex 命令后会忽略其后的所有连续空格，如果需要认为引入空格，需要在命令后面加入 <code>{}</code> 来阻止其忽略空格。比如说 <code>\LaTex{} user</code> 中的 <code>latex</code> 和 <code>user</code> 之间的空格会被保留。  </p>
+<p>此外这些命令后面可能会跟随一些参数，关于参数的具体格式在下一节介绍。  </p>
+<h4 id="2-2-2-参数"><a href="#2-2-2-参数" class="headerlink" title="2.2.2 参数"></a>2.2.2 参数</h4><p>LaTeX 的命令后可以跟随参数，一共有 3 种形式：  </p>
+<ul>
+<li><code>{}</code>: 表示一个必选（mandatory）参数，也就是只要使用某个命令，就必须填写它的必选参数</li>
+<li><code>[]</code>: 表示一个可选（optional）参数，也就是使用某个命令，可以填写或者不填写这个参数</li>
+<li><code>*</code>: 表示一个布尔可选参数，也就是说，使用一个 <code>*</code> 的本质等价于传入一个具有布尔值的可选参数。</li>
+</ul>
+<p>有如下示例：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\section</span><span class="token punctuation">[</span>&lt;short title&gt;<span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token headline class-name">&lt;title&gt;</span><span class="token punctuation">}</span>
+<span class="token function selector">\section*</span><span class="token punctuation">{</span><span class="token headline class-name">&lt;title&gt;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>对于第 1 条命令， <code>&lt;short title&gt;</code> 是一个可选参数，而 <code>&lt;title&gt;</code> 是一个必须参数。对于第 2 条命令， <code>*</code> 是一个特殊的布尔可选参数， <code>\section</code> 在接受这个参数后，会生成不带标号的标题，相当于通过这个 <code>*</code> 参数调整了原本 <code>\section</code> 的行为。  </p>
+<h4 id="2-2-3-自定义"><a href="#2-2-3-自定义" class="headerlink" title="2.2.3 自定义"></a>2.2.3 自定义</h4><p>LaTex 提供了自定义命令的命令，即 <code>\newcommand</code> ，其形式如下  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\newcommand</span>&lt;name&gt;<span class="token punctuation">[</span>&lt;num&gt;<span class="token punctuation">]</span><span class="token punctuation">[</span>&lt;first parameter default value&gt;<span class="token punctuation">]</span><span class="token punctuation">{</span>&lt;defination&gt;<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>具体的例子如下：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\newcommand</span><span class="token punctuation">{</span><span class="token function selector">\hello</span><span class="token punctuation">}</span><span class="token punctuation">[</span>2<span class="token punctuation">]</span><span class="token punctuation">[</span>LaTex<span class="token punctuation">]</span><span class="token punctuation">{</span>Hello, #1 and #2!<span class="token punctuation">}</span>
+<span class="token function selector">\hello</span><span class="token punctuation">[</span>AJ<span class="token punctuation">]</span><span class="token punctuation">{</span>world<span class="token punctuation">}</span> <span class="token comment">% Hello, AJ and world!</span>
+<span class="token function selector">\hello</span><span class="token punctuation">{</span>world<span class="token punctuation">}</span>     <span class="token comment">% Hello, LaTeX and world!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>当我们定义 <code>\hello</code> 命令时，指定它有 <code>2</code> 个参数，同时首个参数的默认值是 <code>LaTeX</code> ，在后面的定义中用 <code>#1, #2</code> 指代了传入的参数。  </p>
+<p>在第 1 次调用的时候，我传入了 <code>AJ</code> 这个可选参数，这个参数覆盖了原来的首参默认值 <code>LaTeX</code> ，同时传入了 <code>world</code> 这个必选参数。而在第 2 次调用的时候，并没有传入可选参数，所以就使用了默认参数 <code>LaTeX</code> 。  </p>
+<p>默认值这里强调必须是 <strong>第一个参数</strong> 。这点很有趣，其他参数不能具有默认值，似乎会造成语义的缺失，但是实际上如果将参数想象成一个链表，首参默认值就是对于当前节点的处理，如果希望处理后续节点，那么可以使用递归思想，也就是新定义一个命令。只不过这种形式依然受限。  </p>
+<p>如果只有首参有默认值，那么命令调用的时候可选参数一定在首位（因为参数传递要按照顺序），但是实际上依然会有 <code>{}[]</code> 这样调用的存在，这是因为存在 <code>xparse</code> 宏包，它可以定义带有多个可选参数、或者带星号的命令。  </p>
+<h4 id="2-2-4-重定义"><a href="#2-2-4-重定义" class="headerlink" title="2.2.4 重定义"></a>2.2.4 重定义</h4><p>LaTeX 不允许使用 <code>\newcommand</code> 定义一个与现有命令重名的命令。如果需要修改命令定义的话,使用 <code>\renewcommand</code> 命令。它使用与命令 <code>\newcommand</code> 相同的语法。  </p>
+<p>在某些情况之下，使用 <code>\providecommand</code> 命令是一种比较理想的方案，在命令未定义时,它相当于 <code>\newcommand</code> ；在命令已定义时，沿用已有的定义。  </p>
+<h3 id="2-3-环境"><a href="#2-3-环境" class="headerlink" title="2.3 环境"></a>2.3 环境</h3><h4 id="2-3-1-格式"><a href="#2-3-1-格式" class="headerlink" title="2.3.1 格式"></a>2.3.1 格式</h4><p>环境常常用于令一些效果在局部生效,或是生成特殊的文档元素。其结构如下：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">{</span><span class="token keyword">&lt;environment name&gt;</span><span class="token punctuation">}</span><span class="token punctuation">[</span>&lt;optional arguments&gt;<span class="token punctuation">]</span><span class="token punctuation">{</span>&lt;mandatory arguments&gt;<span class="token punctuation">}</span>
+  <span class="token comment">% ...</span>
+<span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">&lt;environment name&gt;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-3-2-自定义"><a href="#2-3-2-自定义" class="headerlink" title="2.3.2 自定义"></a>2.3.2 自定义</h4><p>新定义一个环境的命令如下所示：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\newenvironment</span><span class="token punctuation">{</span>king<span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token function selector">\rule</span><span class="token punctuation">{</span>1ex<span class="token punctuation">}</span><span class="token punctuation">{</span>1ex<span class="token punctuation">}</span><span class="token function selector">\hspace</span><span class="token punctuation">{</span><span class="token function selector">\stretch</span><span class="token punctuation">{</span>1<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token function selector">\hspace</span><span class="token punctuation">{</span><span class="token function selector">\stretch</span><span class="token punctuation">{</span>1<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token function selector">\rule</span><span class="token punctuation">{</span>1ex<span class="token punctuation">}</span><span class="token punctuation">{</span>1ex<span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-4-宏包"><a href="#2-4-宏包" class="headerlink" title="2.4 宏包"></a>2.4 宏包</h3><p>在使用 LaTeX 时，时常需要依赖一些扩展来增强或补充 LaTeX 的功能，比如排版复杂的表格、插入图片、增加颜色甚至超链接等等。这些扩展称为宏包。调用宏包的命令如下：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\usepackage</span><span class="token punctuation">[</span>&lt;options&gt;<span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token keyword">&lt;package-name&gt;</span><span class="token punctuation">}</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果希望查阅某个宏包的文档，可以使用  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\usepackage</span><span class="token punctuation">[</span>&lt;options&gt;<span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token keyword">&lt;package-name&gt;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>宏包文件以 <code>.sty</code> 结尾，宏包名就是宏包文件名。  </p>
+<h3 id="2-5-文档类"><a href="#2-5-文档类" class="headerlink" title="2.5 文档类"></a>2.5 文档类</h3><p>文档类规定了 LaTeX 源代码所要生成的文档的性质——普通文章、书籍、演示文稿、个人简历等等。LaTeX 源代码的开头须用 <code>\documentclass</code> 指定文档类:  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\documentclass</span><span class="token punctuation">[</span>&lt;options&gt;<span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token keyword">&lt;class-name&gt;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中 <code>&lt;class-name&gt;</code> 为文档类的名称，如 LaTeX 提供的 article、report、book ，在其基础上派生的一些文档类,如支持中文排版的 ctexart、ctexrep、ctexbook ，或者有其它功能的一些文档类,如 moderncv、beamer 等。  </p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+    <colgroup>
+<col class="org-left">
+        <col class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">名称</th>
+<th scope="col" class="org-left">作用</th>
+</tr>
+</thead>
+    <tbody>
+<tr>
+<td class="org-left">article</td>
+<td class="org-left">文章格式的文档类，广泛用于科技论文、报告、说明文档等。</td>
+</tr>
+        <tr>
+<td class="org-left">report</td>
+<td class="org-left">长篇报告格式的文档类，具有章节结构，用于综述、长篇论文、简单的书籍等。</td>
+</tr>
+        <tr>
+<td class="org-left">book</td>
+<td class="org-left">书籍文档类,包含章节结构和前言、正文、后记等结构。</td>
+</tr>
+        <tr>
+<td class="org-left">proc</td>
+<td class="org-left">基于 article 文档类的一个简单的学术文档模板。</td>
+</tr>
+        <tr>
+<td class="org-left">slides</td>
+<td class="org-left">幻灯格式的文档类,使用无衬线字体。</td>
+</tr>
+        <tr>
+<td class="org-left">minimal</td>
+<td class="org-left">一个极其精简的文档类,只设定了纸张大小和基本字号。</td>
+</tr>
+        </tbody>
+</table>
+
+<p>可选参数 <code>&lt;options&gt;</code> 为文档类指定选项，以全局地规定一些排版的参数，如字号，纸张大小，单双面等等。比如调用 article 文档类排版文章，指定纸张为 A4 大小，基本字号为 11pt ，双面：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\documentclass</span><span class="token punctuation">[</span>11pt,twoside,a4paper<span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token keyword">article</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h2 id="三、排版算法"><a href="#三、排版算法" class="headerlink" title="三、排版算法"></a>三、排版算法</h2><h3 id="3-1-综述"><a href="#3-1-综述" class="headerlink" title="3.1 综述"></a>3.1 综述</h3><p>这里会介绍一些 TeX 底层的排版算法逻辑，但是应该不会介绍具体的算法流程，其主旨是通过了解底层排版逻辑，来更好的对已有的排版结果进行细微的调整或者释然。  </p>
+<h3 id="3-2-空白符"><a href="#3-2-空白符" class="headerlink" title="3.2 空白符"></a>3.2 空白符</h3><p>因为 LaTeX 是一款排版软件，所以它并不能像 C 这样的编程语言忽视空白符。  </p>
+<p>对于 LaTeX 而言，一到多个空白符都会在最后的结果中被编译成一个空白符，也就是如下所示：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex">hello world<span class="token function selector">\\</span>
+hello            world<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这二者的效果是一样的。  </p>
+<h3 id="3-3-盒子模型"><a href="#3-3-盒子模型" class="headerlink" title="3.3 盒子模型"></a>3.3 盒子模型</h3><p>这里似乎介绍的是一种排版算法，当我们去将内容元素安放到固定的页面时，总是需要遵循一定的逻辑。“盒子模型”就是这样的一种逻辑。  </p>
+<p>盒子能和最基础的书写逻辑相容，是一种非常普遍的逻辑。所以它不仅出现在 LaTeX 中，同样出现在 CSS 的布局设计中。  </p>
+<p>按照我的理解，盒子逻辑是这样的，它将每个页面元素都视为一个“盒子”，每个盒子都有可能称为一个“母盒子”，每个“母盒子”里考虑 <strong>行和列</strong> 两个维度，“子盒子们”先按照行从左到右排列，排列成一行行的“盒子行”，然后这些盒子行在从上到下排列，组成一个比较“四四方方”的内容填充物。如图所示：  </p>
+<p><img src="/posts/58d9b86a/box1-17076556721651.png" alt=""></p>
+<p>也就是说，我们会按照 LaTeX 源码的书写顺序一个个摆放“盒子”。对于进行行排列，行的宽度就是所有在同一行的元素的宽度的加和，行的高度就是同一行的元素的最高高度（其实是最大高度和深度）。对于进行列排列，“母盒子”的高度就是母盒子内所有行的高度的加和，母盒子的宽度就是所有行的最大宽度。  </p>
+<p>需要注意，盒子是可以嵌套的，比如说上图中右上角就嵌套了一个里面有紫色小盒子的蓝色母盒子。  </p>
+<p>盒子模型的优点就是十分易于理解而且好控制，简直就像“串行模型”一样，其他排版算法只能作为盒子模型的补充。但是盒子模型有一些缺点，比如说他们没有“等分”或者“居中”的概念（虽然上面那个示意图的心型居中了），这是因为盒子模型的方向性过于明显，更不要说其他的复杂布局了（CSS 大部分的概念都是为了弥补此处的缺失）。此外，对于过大的图像或者表格，盒子模型也会非常乏力，比如说如果上面的心形过大，就会导致纸张排不下前两行，心形独占一张纸，同时在第一张纸留下大量空白。如下所示：  </p>
+<p><img src="/posts/58d9b86a/box2-17076556936422.png" alt=""></p>
+<p>这个问题可以用下面介绍的“浮动体”来解决。  </p>
+<h3 id="3-4-浮动体"><a href="#3-4-浮动体" class="headerlink" title="3.4 浮动体"></a>3.4 浮动体</h3><h4 id="3-4-1-格式"><a href="#3-4-1-格式" class="headerlink" title="3.4.1 格式"></a>3.4.1 格式</h4><p>正如前所述，表格和图片有可能所生成的“盒子”过大（与之形成鲜明对比的是一个个字母，基本上都是差不多大小），所以会导致不合理的分页或者大块的空白。 LaTeX 解决这个问题的方案是提出“浮动体”。  </p>
+<p>LaTeX 预定义了两类浮动体环境 <code>figure</code> 和 <code>table</code> 。习惯上 <code>figure</code> 里放图片， <code>table</code> 里放表格,但并没有严格限制,可以在任何一个浮动体里放置文字、公式、表格、图片等等任意内容。  </p>
+<p>以 <code>table</code> 环境的用法举例， <code>figure</code> 同理:  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">{</span><span class="token keyword">table&lt;*&gt;</span><span class="token punctuation">}</span><span class="token punctuation">[</span>&lt;placement&gt;<span class="token punctuation">]</span>
+  <span class="token comment">% ...</span>
+<span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">table</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>&lt;placement&gt;</code> 参数提供了一些符号用来表示浮动体允许排版的位置（也就是浮动体会出现在一个页面的哪些位置），如下表所示（默认是 <code>tbp</code> ，也就是一个浮动体可以出现在页面的顶部，底部和单独成页）：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>位置参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h(here)</td>
+<td>当前位置(代码所处的上下文)</td>
+</tr>
+<tr>
+<td>t(top)</td>
+<td>顶部</td>
+</tr>
+<tr>
+<td>b(bottom)</td>
+<td>底部</td>
+</tr>
+<tr>
+<td>p(page=13)</td>
+<td>单独成页</td>
+</tr>
+<tr>
+<td>!</td>
+<td>辅助参数，表示考虑位置的时候不需要考虑浮动体算法的诸多限制</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>*</code> 的作用是在多栏排版中的，这种特殊浮动体是 <strong>跨栏位</strong> 的,而且它们的 <code>h</code> 选项会失效,也就是不会出现在当前页。  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">{</span><span class="token keyword">figure*</span><span class="token punctuation">}</span><span class="token punctuation">[</span>tbp<span class="token punctuation">]</span>
+  <span class="token comment">% ...</span>
+<span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">figure*</span><span class="token punctuation">}</span>
+<span class="token function selector">\begin</span><span class="token punctuation">{</span><span class="token keyword">table*</span><span class="token punctuation">}</span><span class="token punctuation">[</span>tbp<span class="token punctuation">]</span>
+  <span class="token comment">% ...</span>
+<span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">table*</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>需要注意，浮动体相对于传统的盒子模型，我们没有办法简单判断出浮动体的位置（不过我们可以加一些位置限制），所以在文中引述它们时，我们无法用“上图”、“下表”之类的相对位置（因为他们不一定在哪里）来引述他们。于是，我们需要对它们进行编号，方便在文中引用。  </p>
+<p>我们用 <code>\caption</code> 完成这个功能，它需要在源码中图片或者表格的定义之后，如下所示：  </p>
+<pre class="line-numbers language-latex" data-language="latex"><code class="language-latex"><span class="token function selector">\begin</span><span class="token punctuation">{</span><span class="token keyword">table</span><span class="token punctuation">}</span>
+  <span class="token function selector">\centering</span>
+  <span class="token function selector">\begin</span><span class="token punctuation">{</span><span class="token keyword">tabular</span><span class="token punctuation">}</span><span class="token punctuation">{</span>|c|c|<span class="token punctuation">}</span>
+    <span class="token function selector">\hline</span>
+    列 1 <span class="token punctuation">&amp;</span> 列 2 <span class="token function selector">\\</span>
+    <span class="token function selector">\hline</span>
+    内容 1 <span class="token punctuation">&amp;</span> 内容 2 <span class="token function selector">\\</span>
+    <span class="token function selector">\hline</span>
+  <span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">tabular</span><span class="token punctuation">}</span>    
+  <span class="token function selector">\caption</span><span class="token punctuation">{</span>这是一个表格的标题<span class="token punctuation">}</span>
+<span class="token function selector">\end</span><span class="token punctuation">{</span><span class="token keyword">table</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在文本中可以用 <code>\label{tab:这是一个表格的标题}</code> 来进行引用。  </p>
+<h4 id="3-4-2-算法"><a href="#3-4-2-算法" class="headerlink" title="3.4.2 算法"></a>3.4.2 算法</h4><p>本节的大部分内容都参考自<a target="_blank" rel="noopener external nofollow noreferrer" href="https://ask.latexstudio.net/ask/article/644.html">这篇博客</a> 。  </p>
+<p>浮动算法的本质是相比于盒子模型，用户让渡一些权力给排版引擎（用户没法用盒子模型控制图片的位置了），让排版引擎排版出更加美观的页面。所以作为一种机器算法，它要模拟人的审美来进行排版决策，方法就是增加一些上文提到的 <strong>限制</strong> 。  </p>
+<p>限制包括浮动体个数(除单独成页外，默认每页不超过 3 个浮动体，其中顶部不超过 2 个，底部不超过 1 个)以及浮动体空间占页面的百分比(默认顶部不超过 70% ，底部不超过 30%) 。除了限制外，我们在创建浮动环境时利用 <strong>位置参数</strong> 给浮动体提了进一步的要求。  </p>
+<p>可以想见这是一个“全局优化算法”，但是实际上如果考虑全局的观感，那么计算量过大，所以在实践上， LaTeX 采用了一种“贪心免回溯算法”，大致如下：  </p>
+<ul>
+<li>如果遇到浮动对象，LaTeX 会根据位置参数和限制尝试立即将其放置。</li>
+<li>如果放置成功，则浮动对象就会被放置，并且该决策永远不会改变。</li>
+<li>如果放置不成功，则 LaTeX 会将浮动对象放入一个暂存队列中，在下一个页面开始时重新考虑。</li>
+<li>页面完成后，LaTeX 将检查此暂存队列并尽可能清空它。为此，它将首先尝试生成尽可能多的浮动页。一旦浮动页指标耗尽（一页上面全是图和表不好看），它将尝试将其余的浮动对象放置在顶部和底部区域。如果放置不成功，则将失败的对象重新插入暂存队列。</li>
+<li>在此之后，它开始按照盒子模型处理文档的其他元素。在处理过程中，它可能会遇到进一步的浮动对象。</li>
+<li>如果到达文档的结尾或者遇到 <code>\clearpage</code> 命令，LaTeX 就会开始新的一页，并放松所有限制性浮动体的条件，将所有在等待队列中的浮动体输出到浮动页上。</li>
+</ul>
+<p>这种算法会导致如下效果（并不一定能由上文的简化版算法推导）：  </p>
+<ul>
+<li>一个浮动体不可能在文档中比它在源代码中的位置更早地出现。</li>
+<li>双栏浮动体总是被首先延迟处理（维持了两个队列，有优先问题）。</li>
+<li>双栏浮动环境没有底部浮动区域。</li>
+<li>“Here” 的意思是“在这里放置，如果合适的话”（希望强制可以使用 <code>H</code> 参数）。</li>
+<li>所有的浮动体参数（通常）限制了浮动体可以放置的位置。</li>
+<li>浮动位置参数并不定义偏好顺序（也就是 <code>tb</code> 等价于 <code>bt</code> 没法通过更改顺序选择位置偏好）。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 工具总结</a>
+              <a href="/tags/S7%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S7假期</a>
+              <a href="/tags/%E7%A7%91%E7%A0%94%E5%8F%AF%E9%A4%8D/" rel="tag"><i class="fa fa-tag"></i> 科研可餍</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/cb973938/" rel="prev" title="吃喝玩乐-流浪贵阳">
+      <i class="fa fa-chevron-left"></i> 吃喝玩乐-流浪贵阳
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/43a479d4/" rel="next" title="吃喝玩乐-穿粉红大衣的少女">
+      吃喝玩乐-穿粉红大衣的少女 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%B5%B7%E5%A7%8B%E6%A6%82%E5%BF%B5"><span class="nav-text">一、起始概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%8E%92%E7%89%88"><span class="nav-text">1.1 排版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%BC%95%E6%93%8E"><span class="nav-text">1.2 引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AE%9E%E7%8E%B0"><span class="nav-text">1.3 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E5%AE%8F"><span class="nav-text">1.4 宏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E6%A0%BC%E5%BC%8F"><span class="nav-text">1.5 格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E5%AE%8F%E5%8C%85%E5%92%8C%E9%A9%B1%E5%8A%A8"><span class="nav-text">1.6 宏包和驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E5%8F%91%E8%A1%8C%E7%89%88"><span class="nav-text">1.7 发行版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AF%AD%E6%B3%95%E5%85%83%E7%B4%A0"><span class="nav-text">二、语法元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E7%BB%BC%E8%BF%B0"><span class="nav-text">2.1 综述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%91%BD%E4%BB%A4"><span class="nav-text">2.2 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E6%A0%BC%E5%BC%8F"><span class="nav-text">2.2.1 格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E5%8F%82%E6%95%B0"><span class="nav-text">2.2.2 参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E8%87%AA%E5%AE%9A%E4%B9%89"><span class="nav-text">2.2.3 自定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-%E9%87%8D%E5%AE%9A%E4%B9%89"><span class="nav-text">2.2.4 重定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%8E%AF%E5%A2%83"><span class="nav-text">2.3 环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E6%A0%BC%E5%BC%8F"><span class="nav-text">2.3.1 格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E8%87%AA%E5%AE%9A%E4%B9%89"><span class="nav-text">2.3.2 自定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E5%AE%8F%E5%8C%85"><span class="nav-text">2.4 宏包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E6%96%87%E6%A1%A3%E7%B1%BB"><span class="nav-text">2.5 文档类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8E%92%E7%89%88%E7%AE%97%E6%B3%95"><span class="nav-text">三、排版算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%BB%BC%E8%BF%B0"><span class="nav-text">3.1 综述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E7%A9%BA%E7%99%BD%E7%AC%A6"><span class="nav-text">3.2 空白符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="nav-text">3.3 盒子模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E6%B5%AE%E5%8A%A8%E4%BD%93"><span class="nav-text">3.4 浮动体</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-%E6%A0%BC%E5%BC%8F"><span class="nav-text">3.4.1 格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-%E7%AE%97%E6%B3%95"><span class="nav-text">3.4.2 算法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

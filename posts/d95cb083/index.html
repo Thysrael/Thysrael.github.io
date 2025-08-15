@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、Makefile这个 Makefile 要比之前的文件夹中的 Makefile 更加复杂，是因为之前的文件夹都是对操作系统特定部分的一个编译指导，所以基本上是实现的功能就是“对应的 C 文件和汇编文件编译成目标文件”这一个功能，最后合成一个整体。但是 user 的 Makefile 指导的是多个用户程序的编译，最后生成的是多个用户目标文件，同时还需要给每个用户文件装备上库目标文件。 首先先补充">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统-用户进程">
+<meta property="og:url" content="https://thysrael.github.io/posts/d95cb083/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、Makefile这个 Makefile 要比之前的文件夹中的 Makefile 更加复杂，是因为之前的文件夹都是对操作系统特定部分的一个编译指导，所以基本上是实现的功能就是“对应的 C 文件和汇编文件编译成目标文件”这一个功能，最后合成一个整体。但是 user 的 Makefile 指导的是多个用户程序的编译，最后生成的是多个用户目标文件，同时还需要给每个用户文件装备上库目标文件。 首先先补充">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-06-07T08:16:57.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.859Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S4课上">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/d95cb083/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>操作系统-用户进程 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/d95cb083/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统-用户进程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-07 16:16:57" itemprop="dateCreated datePublished" datetime="2022-06-07T16:16:57+08:00">2022-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>13 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、Makefile"><a href="#一、Makefile" class="headerlink" title="一、Makefile"></a>一、Makefile</h2><p>这个 Makefile 要比之前的文件夹中的 Makefile 更加复杂，是因为之前的文件夹都是对操作系统特定部分的一个编译指导，所以基本上是实现的功能就是“对应的 C 文件和汇编文件编译成目标文件”这一个功能，最后合成一个整体。但是 <code>user</code> 的 Makefile 指导的是多个用户程序的编译，最后生成的是多个用户目标文件，同时还需要给每个用户文件装备上库目标文件。</p>
+<p>首先先补充一下 makefile 的一些知识</p>
+<p><strong>自动化变量</strong></p>
+<ul>
+<li><code>$@</code> 表示目标（target）文件，就是冒号前面的那个文件</li>
+<li><code>$^</code> 表示所有的依赖文件，就是冒号后面的那一堆文件</li>
+<li><code>$&lt;</code> 表示第一个依赖文件，就是紧挨着冒号后面的一个文件</li>
+<li><code>$*</code> 这个变量表示目标模式中 <code>%</code> 及其之前的部分。如果目标是 <code>dir/a.foo.b</code>，并且目标的模式是 <code>a.%.b</code>，那么，<code>$*</code> 的值就是 <code>dir/a.foo</code>。</li>
+</ul>
+<p><strong>静态模式</strong></p>
+<p>就是带有 <code>%</code> 的那种 target 和 prereq。主要用于同时匹配多个，之前似乎介绍过了。这里只是强调，对于匹配，是用 target 里面的集合元素去匹配 prereq 中的元素，换句话说，是一个从上到下的结构，比如说</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token symbol">all</span><span class="token punctuation">:</span> a.x b.x
+
+<span class="token symbol">%.x</span><span class="token punctuation">:</span> %.o 	<span class="token comment">#这里</span>
+<span class="token symbol">a.o</span><span class="token punctuation">:</span> a.c
+	gcc -o <span class="token variable">$@</span> <span class="token variable">$&lt;</span>
+<span class="token symbol">b.o</span><span class="token punctuation">:</span> b.c
+	gcc -o <span class="token variable">$@</span> <span class="token variable">$&lt;</span>
+<span class="token symbol">c.o</span><span class="token punctuation">:</span> c.c
+	gcc -o <span class="token variable">$@</span> <span class="token variable">$&lt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于用注释标注出来的地方，虽然看上去，有 <code>a.o, b.o, c.o</code> 三个文件符合 <code>%.o</code> 的匹配条件，但是请注意，真正匹配到的只有 <code>a.o, b.o</code> 这是因为 <code>all</code> 作为总目标，指定了只要 <code>a.x, b.x</code> ，那么 <code>%.x</code> 就是 <code>a.x, b.x</code> 。所以就只会匹配到 <code>a.o, b.o</code> 。</p>
+<p><strong>中间文件</strong></p>
+<p>似乎 <code>make</code> 有一种特性是不保存中间文件，正是因为这种特性，我们在 <code>user</code> 下才会找不到 <code>.b.c</code> 文件，也找不到很多 <code>.o</code> 文件。</p>
+<p>然后就可以来看文件了（考虑到理解问题，我们从下往上看）：</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token symbol">%.o</span><span class="token punctuation">:</span> lib.h<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个只是在保证 <code>user</code> 下有 <code>lib.h</code> 这个文件，不然编译就会报错。</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token symbol">%.o</span><span class="token punctuation">:</span> %.c
+	<span class="token variable">$</span><span class="token punctuation">(</span>CC<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>CFLAGS<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>INCLUDES<span class="token punctuation">)</span> -c -o <span class="token variable">$@</span> <span class="token variable">$&lt;</span>
+
+<span class="token symbol">%.o</span><span class="token punctuation">:</span> %.S
+	<span class="token variable">$</span><span class="token punctuation">(</span>CC<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>CFLAGS<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>INCLUDES<span class="token punctuation">)</span> -c -o <span class="token variable">$@</span> <span class="token variable">$&lt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这两句比较正常，就是把“对应的 C 文件和汇编文件编译成目标文件”。</p>
+<p>接下来需要先从上往下看，这是因为本质上 <code>makefile</code> 是一个“需求决定工作”，而不是“工作决定需求”的东西，所以本源方法是从上往下看。</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">USERLIB <span class="token operator">:=</span> printf.o \
+		print.o \
+		libos.o \
+		fork.o \
+		pgfault.o \
+		syscall_lib.o \
+		ipc.o \
+		string.o
+
+<span class="token symbol">all</span><span class="token punctuation">:</span> tltest.x tltest.b fktest.x fktest.b pingpong.x pingpong.b idle.x \
+	<span class="token variable">$</span><span class="token punctuation">(</span>USERLIB<span class="token punctuation">)</span> entry.o syscall_wrap.o<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里我们可以看到，我们的目标文件有很多，但是我们可以将其分成三类，一类是库目标文件，也就是前面变量定义的</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">USERLIB <span class="token operator">:=</span> printf.o \
+		print.o \
+		libos.o \
+		fork.o \
+		pgfault.o \
+		syscall_lib.o \
+		ipc.o \
+		string.o<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一类是普通包装文件（瞎起的名字），他们是每个程序链接必须用到的（库文件则不一定，虽然这里是一定的）</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">entry.o syscall_wrap.o<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>最后是我们真的需要编译成成果的东西，即下面这个三个</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">tltest.x tltest.b fktest.x fktest.b pingpong.x pingpong.b idle.x<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>到最后我们用到的东西（也就是链接到整体的项目中的）是 <code>.x</code> 文件，它是一个二进制文件，<code>.b</code> 同样是一个二进制文件。只不过 <code>.b</code> 文件更接近我们通常的理解，而 <code>.x</code> 文件只是一个字符数组的二进制化。</p>
+<p>然后我们来看 .<code>x</code> 文件是怎样来的</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token symbol">%.x</span><span class="token punctuation">:</span> %.b.c
+	<span class="token variable">$</span><span class="token punctuation">(</span>CC<span class="token punctuation">)</span> <span class="token variable">$</span><span class="token punctuation">(</span>CFLAGS<span class="token punctuation">)</span> -c -o <span class="token variable">$@</span> <span class="token variable">$&lt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>可以看出，他是由一个名字相对应的 <code>.b.c</code> 的 C 文件编译而来的，但是这个 C 文件又是从何而？</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token symbol">%.b.c</span><span class="token punctuation">:</span> %.b
+	chmod +x ./bintoc
+	./bintoc <span class="token variable">$*</span> <span class="token variable">$&lt;</span> &gt; <span class="token variable">$@~</span> &amp;&amp; mv -f <span class="token variable">$@~</span> <span class="token variable">$@</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>我们可以看到，是由 <code>.b</code> 文件经过一个叫做 <code>bintoc</code> 的工具转换而来，首先是第一句</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">chmod +x ./bintoc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这是在赋予 <code>bintoc</code> 一个可执行的权限，这个工具的功能就是把一个二进制文件（这里是 <code>.b</code> ）转换为一个字符数组，我们可以在 <code>user</code> 文件夹下输入如下命令</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">make tltest.b.c<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>就会显式的得到 <code>tltest.b.c</code> 文件（如果是直接 <code>make</code> ，<code>.b.c</code> 会被判定为中间文件，不会保留），其内容如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">unsigned</span> <span class="token keyword">char</span> binary_user_tltest_start<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+<span class="token number">0x7f</span><span class="token punctuation">,</span> <span class="token number">0x45</span><span class="token punctuation">,</span> <span class="token number">0x4c</span><span class="token punctuation">,</span> <span class="token number">0x46</span><span class="token punctuation">,</span> <span class="token number">0x1</span><span class="token punctuation">,</span> <span class="token number">0x2</span><span class="token punctuation">,</span> <span class="token number">0x1</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> 
+<span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x2</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x8</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x1</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x40</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x34</span><span class="token punctuation">,</span> 
+<span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x68</span><span class="token punctuation">,</span> <span class="token number">0x44</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x10</span><span class="token punctuation">,</span> <span class="token number">0x1</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x34</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x20</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x2</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x28</span><span class="token punctuation">,</span> 
+<span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0xa</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x7</span><span class="token punctuation">,</span> <span class="token number">0x70</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x25</span><span class="token punctuation">,</span> <span class="token number">0xa0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x40</span><span class="token punctuation">,</span> <span class="token number">0x15</span><span class="token punctuation">,</span> <span class="token number">0xa0</span><span class="token punctuation">,</span> 
+<span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x40</span><span class="token punctuation">,</span> <span class="token number">0x15</span><span class="token punctuation">,</span> <span class="token number">0xa0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x18</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x18</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x4</span><span class="token punctuation">,</span> 
+<span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x4</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x1</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x10</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x40</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> 
+<span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x40</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x53</span><span class="token punctuation">,</span> <span class="token number">0x1a</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x53</span><span class="token punctuation">,</span> <span class="token number">0x24</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x7</span><span class="token punctuation">,</span> 
+<span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x10</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token number">0x73</span><span class="token punctuation">,</span> <span class="token number">0x79</span><span class="token punctuation">,</span> <span class="token number">0x73</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x6c</span><span class="token punctuation">,</span> <span class="token number">0x6c</span><span class="token punctuation">,</span> <span class="token number">0x5f</span><span class="token punctuation">,</span> <span class="token number">0x69</span><span class="token punctuation">,</span> <span class="token number">0x70</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x5f</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x6e</span><span class="token punctuation">,</span> <span class="token number">0x5f</span><span class="token punctuation">,</span> 
+<span class="token number">0x73</span><span class="token punctuation">,</span> <span class="token number">0x65</span><span class="token punctuation">,</span> <span class="token number">0x6e</span><span class="token punctuation">,</span> <span class="token number">0x64</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x70</span><span class="token punctuation">,</span> <span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x67</span><span class="token punctuation">,</span> <span class="token number">0x65</span><span class="token punctuation">,</span> <span class="token number">0x73</span><span class="token punctuation">,</span> <span class="token number">0x0</span><span class="token punctuation">,</span> <span class="token number">0x0</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">int</span> binary_user_tltest_size <span class="token operator">=</span> <span class="token number">29051</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这就与宏契合上了</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">ENV_CREATE</span><span class="token expression"><span class="token punctuation">(</span>x<span class="token punctuation">)</span> 							</span><span class="token punctuation">\</span>
+<span class="token expression"><span class="token punctuation">{</span> 												</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token keyword">extern</span> u_char binary_</span><span class="token punctuation">##</span><span class="token expression">x</span><span class="token punctuation">##</span><span class="token expression">_start<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>			</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token keyword">extern</span> u_int binary_</span><span class="token punctuation">##</span><span class="token expression">x</span><span class="token punctuation">##</span><span class="token expression">_size<span class="token punctuation">;</span> 			</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token function">env_create</span><span class="token punctuation">(</span>binary_</span><span class="token punctuation">##</span><span class="token expression">x</span><span class="token punctuation">##</span><span class="token expression">_start<span class="token punctuation">,</span> 				</span><span class="token punctuation">\</span>
+		<span class="token expression"><span class="token punctuation">(</span>u_int<span class="token punctuation">)</span>binary_</span><span class="token punctuation">##</span><span class="token expression">x</span><span class="token punctuation">##</span><span class="token expression">_size<span class="token punctuation">)</span><span class="token punctuation">;</span> 				</span><span class="token punctuation">\</span>
+<span class="token expression"><span class="token punctuation">}</span></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后我们就利用这个工具进行如下操作</p>
+<pre class="line-numbers language-none"><code class="language-none">./bintoc $* $&lt; &gt; $@~ &amp;&amp; mv -f $@~ $@<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>我们会把这个内容输入到一个以 <code>.b.c~</code> 结尾的临时文件中，然后再用 <code>mv</code> 指令将其存入正式的 <code>.b.c</code> 文件中，我不知道其深意。</p>
+<p>那么 <code>.b</code> 文件又是如何来的呢？</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token symbol">%.b</span><span class="token punctuation">:</span> entry.o syscall_wrap.o %.o <span class="token variable">$</span><span class="token punctuation">(</span>USERLIB<span class="token punctuation">)</span>
+	echo ld <span class="token variable">$@</span>
+	<span class="token variable">$</span><span class="token punctuation">(</span>LD<span class="token punctuation">)</span> -o <span class="token variable">$@</span> <span class="token variable">$</span><span class="token punctuation">(</span>LDFLAGS<span class="token punctuation">)</span> -G 0 -static -n -nostdlib -T ./user.lds <span class="token variable">$^</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这里强调一下，无论是 <code>.b, .b.c, .x</code> 那个文件，其实没有 <code>entry.o, fork.o</code> 之类的事情，所有的文件名，都是围绕这四个名字展开的</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">tltest fktest pingpong idle<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后看代码</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile"><span class="token symbol">%.b</span><span class="token punctuation">:</span> entry.o syscall_wrap.o %.o <span class="token variable">$</span><span class="token punctuation">(</span>USERLIB<span class="token punctuation">)</span>
+	<span class="token variable">$</span><span class="token punctuation">(</span>LD<span class="token punctuation">)</span> -o <span class="token variable">$@</span> <span class="token variable">$</span><span class="token punctuation">(</span>LDFLAGS<span class="token punctuation">)</span> -G 0 -static -n -nostdlib -T ./user.lds <span class="token variable">$^</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这里做的其实是把上面编译好的东西链接起来，也就是给每个 <code>tltest fktest pingpong idle</code> 的东西链接上 <code>entry.o syscall_wrap.o</code> 和库目标文件。</p>
+<p>至此，我们可以有一个大致的思路，我们首先编译出很多个目标文件，这其中有真正我们的程序目标文件，有的则是库文件，我们的目的是将库文件链接到每一个写好的程序上。这个时候会生成 <code>.b</code> 文件，这是可执行文件。但是因为此时我们没有文件系统，所以读不了它，所以我们需要将其转换成字符数组的形式，我们用这个工具<code>bintoc</code> 生成了 <code>.b.c</code> 的 C 文件，这个时候我们只需要将其重新编译成二进文件即可，即 <code>.x</code> 文件。</p>
+<hr>
+<h2 id="二、user-lds"><a href="#二、user-lds" class="headerlink" title="二、user.lds"></a>二、user.lds</h2><p>这个链接脚本就很普通</p>
+<pre class="line-numbers language-livescript" data-language="livescript"><code class="language-livescript"><span class="token identifier">OUTPUT_ARCH</span><span class="token punctuation">(</span><span class="token identifier">mips</span><span class="token punctuation">)</span>
+<span class="token identifier">ENTRY</span><span class="token punctuation">(</span><span class="token identifier">_start</span><span class="token punctuation">)</span>
+<span class="token identifier">SECTIONS</span>
+<span class="token punctuation">{</span>
+   <span class="token operator">.</span> <span class="token operator">=</span> <span class="token number">0x00400000</span><span class="token punctuation">;</span>
+
+  <span class="token identifier">_text</span> <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">;</span>			<span class="token comment">/* Text and read-only data */</span>
+  <span class="token punctuation">.</span><span class="token identifier">text</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">text</span><span class="token punctuation">)</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">fixup</span><span class="token punctuation">)</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">gnu</span><span class="token punctuation">.</span><span class="token identifier">warning</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+
+  <span class="token identifier">_etext</span> <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">;</span>			<span class="token comment">/* End of text section */</span>
+
+  <span class="token punctuation">.</span><span class="token identifier">data</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>			<span class="token comment">/* Data */</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">data</span><span class="token punctuation">)</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">rodata</span><span class="token punctuation">)</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">rodata</span><span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">)</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">eh_frame</span><span class="token punctuation">)</span>
+	<span class="token identifier">CONSTRUCTORS</span>
+	<span class="token punctuation">}</span>
+
+  <span class="token identifier">_edata</span> <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">;</span>			<span class="token comment">/* End of data section */</span>
+
+
+  <span class="token operator">.</span> <span class="token operator">=</span> <span class="token identifier">ALIGN</span><span class="token punctuation">(</span><span class="token number">0x1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token identifier">__bss_start</span> <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">;</span>		<span class="token comment">/* BSS */</span>
+  <span class="token punctuation">.</span><span class="token identifier">bss</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">bss</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+  <span class="token regex">/DISCARD/</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">comment</span><span class="token punctuation">)</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token identifier">debug_</span><span class="token operator">*</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+  <span class="token identifier">end</span> <span class="token operator">=</span> <span class="token operator">.</span> <span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只是指定了入口函数是 <code>_start</code> （注意是用户进程的 <code>_start</code> ，在 <code>entry.S</code>中）。</p>
+<p>然后将所有的代码从低地址区开始链接</p>
+<pre class="line-numbers language-livescript" data-language="livescript"><code class="language-livescript"><span class="token punctuation">.</span> <span class="token operator">=</span> <span class="token number">0x00400000</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h2 id="三、启动流程"><a href="#三、启动流程" class="headerlink" title="三、启动流程"></a>三、启动流程</h2><p>这个 <code>_start</code> 还是很简单的，其简单的最主要原因就是很多事情都是由内核完成的，所以才会使这里这么简单，其中在 <code>env_alloc</code> 中有</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">e<span class="token operator">-&gt;</span>env_tf<span class="token punctuation">.</span>cp0_status <span class="token operator">=</span> <span class="token number">0x1000100c</span><span class="token punctuation">;</span>
+e<span class="token operator">-&gt;</span>env_tf<span class="token punctuation">.</span>regs<span class="token punctuation">[</span><span class="token number">29</span><span class="token punctuation">]</span> <span class="token operator">=</span> USTACKTOP<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>可以看到这里设置了栈指针和 CP0_STATUS。于是当调度的时候，<code>sp</code> 已经是用户栈指针了。所以对于 <code>_start</code> 。做的事情就是从用户栈上给 <code>libmain</code> 传入两个参数，就是大名鼎鼎的 <code>argc, argv</code> 。  </p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">	.text
+	.globl _start
+_start:
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+nop
+	jal	libmain
+	nop<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于<code>libmain</code> </p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">exit</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">syscall_env_destroy</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">struct</span> <span class="token class-name">Env</span> <span class="token operator">*</span>env<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">libmain</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	env <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>	
+	<span class="token keyword">int</span> envid<span class="token punctuation">;</span>
+	envid <span class="token operator">=</span> <span class="token function">syscall_getenvid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	envid <span class="token operator">=</span> <span class="token function">ENVX</span><span class="token punctuation">(</span>envid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	env <span class="token operator">=</span> <span class="token operator">&amp;</span>envs<span class="token punctuation">[</span>envid<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token function">umain</span><span class="token punctuation">(</span>argc<span class="token punctuation">,</span> argv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先是先定义了一个 <code>env</code> 全局指针，这个指针指向了这个进程对应的进程控制块。还是挺有意思的。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">struct</span> <span class="token class-name">Env</span> <span class="token operator">*</span>env<span class="token punctuation">;</span>
+envid <span class="token operator">=</span> <span class="token function">ENVX</span><span class="token punctuation">(</span>envid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+env <span class="token operator">=</span> <span class="token operator">&amp;</span>envs<span class="token punctuation">[</span>envid<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>可以看到 <code>libmain</code> 主要还是起一个包装的作用，在正式开始前获得进程控制块，然后进行了一个参数传参。在正式结束后把进程控制块在操作系统中注销。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">exit</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">syscall_env_destroy</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后举一个 <code>umain</code> 的例子</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"lib.h"</span></span>
+
+<span class="token keyword">void</span> <span class="token function">umain</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> 
+    <span class="token punctuation">{</span>
+		<span class="token function">writef</span><span class="token punctuation">(</span><span class="token string">"IDLE!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到在这里的时候，就很像我们平时写的程序了。到了这里，我们可以说，我们终于对于用户完成了封装。用户只需要引用用户可知的头文件，就可以实现相应的功能，而不需要了解操作系统的实现细节。</p>
+<hr>
+<h2 id="四、库函数"><a href="#四、库函数" class="headerlink" title="四、库函数"></a>四、库函数</h2><p>这里说明，这里的库函数包括我在 <code>makefile</code> 这一节中提出的库函数和普通包装函数，放在这里一并记录了。</p>
+<h3 id="4-1-entry-S"><a href="#4-1-entry-S" class="headerlink" title="4.1 entry.S"></a>4.1 entry.S</h3><p><strong>__asm_pgfault_handler</strong></p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">.globl __pgfault_handler
+__pgfault_handler:
+.word 0
+
+.set noreorder
+.text
+.globl __asm_pgfault_handler
+__asm_pgfault_handler:
+nop
+	lw		a0, TF_BADVADDR(sp)
+	lw		t1, __pgfault_handler
+	jalr	t1
+	nop
+	
+	lw		v1,TF_LO(sp)
+    mtlo	v1
+    lw		v0,TF_HI(sp)
+    lw		v1,TF_EPC(sp)
+    mthi	v0
+    mtc0	v1,CP0_EPC
+    lw	$31,TF_REG31(sp)
+    lw	$30,TF_REG30(sp)
+    lw	$28,TF_REG28(sp)
+    lw	$25,TF_REG25(sp)
+    lw	$24,TF_REG24(sp)
+    lw	$23,TF_REG23(sp)
+    lw	$22,TF_REG22(sp)
+    lw	$21,TF_REG21(sp)
+    lw	$20,TF_REG20(sp)
+    lw	$19,TF_REG19(sp)
+    lw	$18,TF_REG18(sp)
+    lw	$17,TF_REG17(sp)
+    lw	$16,TF_REG16(sp)
+    lw	$15,TF_REG15(sp)
+    lw	$14,TF_REG14(sp)
+    lw	$13,TF_REG13(sp)
+    lw	$12,TF_REG12(sp)
+    lw	$11,TF_REG11(sp)
+    lw	$10,TF_REG10(sp)
+    lw	$9,TF_REG9(sp)
+    lw	$8,TF_REG8(sp)
+    lw	$7,TF_REG7(sp)
+    lw	$6,TF_REG6(sp)
+    lw	$5,TF_REG5(sp)
+    lw	$4,TF_REG4(sp)
+    lw	$3,TF_REG3(sp)
+    lw	$2,TF_REG2(sp)
+    lw	$1,TF_REG1(sp)
+    lw	k0,TF_EPC(sp) 	
+    jr	k0
+    lw	sp,TF_REG29(sp)  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个函数在“异常处理流”中讲过了，主要是跳转到函数指针 <code>__pgfault_handler</code> 指向的异常处理函数主体（pgfault），然后进行现场的恢复。</p>
+<p>在这个文件中还有与自映射有关的两个变量</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">	.globl vpt
+vpt:
+	.word UVPT
+
+	.globl vpd
+vpd:
+	.word (UVPT+(UVPT&gt;&gt;12)*4)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其实就类似与</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">unsigned</span> <span class="token keyword">int</span> vpt <span class="token operator">=</span> UVPT<span class="token punctuation">;</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">int</span> vpd <span class="token operator">=</span> <span class="token punctuation">(</span>UVPT<span class="token operator">+</span><span class="token punctuation">(</span>UVPT<span class="token operator">&gt;&gt;</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>关于为啥不直接使用原来定义好的宏，我觉得是因为原来的宏是属于操作系统的，而在库函数的实现的时候尽量少的接触操作系统的细节，是很有必要的，因为这样可以提高可移植性。</p>
+<h3 id="4-2-fork-c"><a href="#4-2-fork-c" class="headerlink" title="4.2 fork.c"></a>4.2 fork.c</h3><p>首先先吐槽一下，这个函数分类真的是烂透了，为什么 <code>fork.c</code> 中要有 <code>user_bcopy()</code> ，真的理解不了啊。</p>
+<p><strong>user_bcopy</strong></p>
+<p>实现就类似与 <code>bcopy</code></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">user_bcopy</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>src<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>dst<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token operator">*</span>max<span class="token punctuation">;</span>
+    max <span class="token operator">=</span> dst <span class="token operator">+</span> len<span class="token punctuation">;</span>
+
+    <span class="token comment">// copy machine words while possible</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>src <span class="token operator">%</span> <span class="token number">4</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>dst <span class="token operator">%</span> <span class="token number">4</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>dst <span class="token operator">+</span> <span class="token number">3</span> <span class="token operator">&lt;</span> max<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token operator">*</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span>dst <span class="token operator">=</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span>src<span class="token punctuation">;</span>
+            dst <span class="token operator">+=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+            src <span class="token operator">+=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// finish remaining 0-3 bytes</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>dst <span class="token operator">&lt;</span> max<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token operator">*</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>dst <span class="token operator">=</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>src<span class="token punctuation">;</span>
+        dst <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        src <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>user_bzero</strong></p>
+<p>与 <code>user_bcopy</code> 类似</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">user_bzero</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>v<span class="token punctuation">,</span> u_int n<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>p<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> m<span class="token punctuation">;</span>
+
+    p <span class="token operator">=</span> v<span class="token punctuation">;</span>
+    m <span class="token operator">=</span> n<span class="token punctuation">;</span>
+
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">--</span>m <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token operator">*</span>p<span class="token operator">++</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>pgfault</strong></p>
+<p>这个函数实现的是根据虚拟地址 <code>va</code> 为其分配一个物理页面，而且这个新的物理页面要有一些内容。</p>
+<p>最有意思的是，这个 <code>va</code> 之前是对应了一个物理页面的（这是一个子进程函数，所以之前是和父进程共享这个页面）。那么我们要实现的，似乎是让一个 <code>va</code> 对应两个物理页面。显然是不合理的。所以严谨地阐述这个函数的功能，是将 <code>va</code> 对应到新的物理页面，并将原来的物理页面映射关系去掉。这个新的物理页面的内容跟原来的物理页面内容一致。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">pgfault</span><span class="token punctuation">(</span>u_int va<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    u_int <span class="token operator">*</span>tmp <span class="token operator">=</span> USTACKTOP<span class="token punctuation">;</span>
+    <span class="token comment">//	writef("fork.c:pgfault():\t va:%x\n",va);</span>
+    u_long perm <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>Pte <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token operator">*</span>vpt<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token function">VPN</span><span class="token punctuation">(</span>va<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> <span class="token number">0xfff</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>perm <span class="token operator">&amp;</span> PTE_COW<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">user_panic</span><span class="token punctuation">(</span><span class="token string">"pgfault err: COW not found"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    perm <span class="token operator">-=</span> PTE_COW<span class="token punctuation">;</span>
+    <span class="token comment">// map the new page at a temporary place</span>
+    <span class="token function">syscall_mem_alloc</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> tmp<span class="token punctuation">,</span> perm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// copy the content</span>
+    <span class="token function">user_bcopy</span><span class="token punctuation">(</span><span class="token function">ROUNDDOWN</span><span class="token punctuation">(</span>va<span class="token punctuation">,</span> BY2PG<span class="token punctuation">)</span><span class="token punctuation">,</span> tmp<span class="token punctuation">,</span> BY2PG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// map the page on the appropriate place</span>
+    <span class="token function">syscall_mem_map</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> tmp<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> va<span class="token punctuation">,</span> perm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// unmap the temporary place</span>
+    <span class="token function">syscall_mem_unmap</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>duppage</strong></p>
+<p>这个函数用于根据父进程的映射关系，去复制子进程的映射关系，<code>pn</code> 是虚拟页面号的意思。复制最困难的是对于权限位的考量，其实就是对于 <code>COW</code> 的设置。如果一个页面，他不是只读的（说明有写的可能），而且也没有明确说是可以共享的（只共享写），那么就是应该增设 <code>PTE_COW</code> 位，这种增设是对于父子进程都要设置的。所以尽管这里有两个<code>map</code>，但是第一个 <code>map</code> 是用于子进程建立页面映射，而第二个是用于修改父进程的映射权限。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">duppage</span><span class="token punctuation">(</span>u_int envid<span class="token punctuation">,</span> u_int pn<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// addr is the va we need to process</span>
+    u_int addr <span class="token operator">=</span> pn <span class="token operator">&lt;&lt;</span> PGSHIFT<span class="token punctuation">;</span>
+    <span class="token comment">// *vpt + pn is the adress of page_table_entry which is corresponded to the va</span>
+    u_int perm <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>Pte <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token operator">*</span>vpt<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span>pn<span class="token punctuation">]</span> <span class="token operator">&amp;</span> <span class="token number">0xfff</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// if the page can be write and is not shared, so the page need to be COW and map twice</span>
+    <span class="token keyword">int</span> flag <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>perm <span class="token operator">&amp;</span> PTE_R<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>perm <span class="token operator">&amp;</span> PTE_LIBRARY<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        perm <span class="token operator">|=</span> PTE_COW<span class="token punctuation">;</span>
+        flag <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">syscall_mem_map</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> addr<span class="token punctuation">,</span> envid<span class="token punctuation">,</span> addr<span class="token punctuation">,</span> perm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>flag<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">syscall_mem_map</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> addr<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> addr<span class="token punctuation">,</span> perm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">//	user_panic("duppage not implemented");</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>fork</strong></p>
+<p>这个函数用于产生一个子进程，并且设置其状态和各种配置。这里需要强调的一个有趣的点是，<code>fork</code> 本身并不是系统调用函数，他是由一系列系统调用函数组成的一个用户函数。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    u_int newenvid<span class="token punctuation">;</span>
+    <span class="token keyword">extern</span> <span class="token keyword">struct</span> <span class="token class-name">Env</span> <span class="token operator">*</span>envs<span class="token punctuation">;</span>
+    <span class="token keyword">extern</span> <span class="token keyword">struct</span> <span class="token class-name">Env</span> <span class="token operator">*</span>env<span class="token punctuation">;</span>
+    u_int i<span class="token punctuation">;</span>
+
+    <span class="token comment">// The parent installs pgfault using set_pgfault_handler</span>
+    <span class="token function">set_pgfault_handler</span><span class="token punctuation">(</span>pgfault<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// alloc a new alloc</span>
+    newenvid <span class="token operator">=</span> <span class="token function">syscall_env_alloc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>newenvid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        env <span class="token operator">=</span> envs <span class="token operator">+</span> <span class="token function">ENVX</span><span class="token punctuation">(</span><span class="token function">syscall_getenvid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">VPN</span><span class="token punctuation">(</span>USTACKTOP<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>vpd<span class="token punctuation">)</span><span class="token punctuation">[</span>i <span class="token operator">&gt;&gt;</span> <span class="token number">10</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> PTE_V<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>vpt<span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&amp;</span> PTE_V<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">duppage</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">syscall_mem_alloc</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> UXSTACKTOP <span class="token operator">-</span> BY2PG<span class="token punctuation">,</span> PTE_V <span class="token operator">|</span> PTE_R<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">syscall_set_pgfault_handler</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> __asm_pgfault_handler<span class="token punctuation">,</span> UXSTACKTOP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">syscall_set_env_status</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> ENV_RUNNABLE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> newenvid<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先我们先进行了一个父进程的配置，我们用这个函数为父进程分配了处理 <code>COW</code> 的时候的栈，还指定了处理 <code>pgfault</code> 异常的函数。至于为啥不一早就分配好了呢？我觉得是因为不是每个进程都需要用到这个栈，所以为了避免页面的浪费，就没有改成了用函数手动配置，而不是默认配置。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">set_pgfault_handler</span><span class="token punctuation">(</span>pgfault<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后我们利用系统调用创造一个进程</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">newenvid <span class="token operator">=</span> <span class="token function">syscall_env_alloc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>我们先看子进程，它会被时钟中断调度（先别管咋调度的），那么就会从内存控制块里恢复现场，那么此时被恢复的 <code>v0</code> 就是 <code>0</code>，返回的 PC 就是 <code>syscall_env_alloc</code> 所导致的 <code>syscall</code> 的下一条，也就是 <code>msyscall</code> 中的这条</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">LEAF</span><span class="token punctuation">(</span>msyscall<span class="token punctuation">)</span>
+	syscall
+	nop				<span class="token comment">// 这条</span>
+	jr		ra
+	nop
+<span class="token function">END</span><span class="token punctuation">(</span>msyscall<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>那么再次返回的时候 <code>syscall_env_alloc</code> 的返回值就变成了 0。然后就会进入下面这个分支判断</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">if</span> <span class="token punctuation">(</span>newenvid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    env <span class="token operator">=</span> envs <span class="token operator">+</span> <span class="token function">ENVX</span><span class="token punctuation">(</span><span class="token function">syscall_getenvid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>env</code> 是对于用户进程的一个全局变量，他表示正在运行的进程块，一般会在 <code>start</code> 到 <code>main</code> 之间设置，但是以为 <code>fork</code> 出的子进程没有设置这个，所以需要在这里设置，然后就可以结束 <code>fork</code> 了，返回值是 <code>0</code>。</p>
+<p>但是对于父进程来说，对于子进程的修改还没有结束，他还需要将虚拟环境完全的复制给子进程，也就是下面的语句。这里的 <code>i</code> 是虚页号，我们可以用 <code>(*vpd)[i &gt;&gt; 10]</code> 的找出这个虚页号对应的一级页表项，用 <code>(*vpt)[i]</code> 找出二级页表项，为什么可以这样呢？</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">VPN</span><span class="token punctuation">(</span>USTACKTOP<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>vpd<span class="token punctuation">)</span><span class="token punctuation">[</span>i <span class="token operator">&gt;&gt;</span> <span class="token number">10</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> PTE_V<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>vpt<span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&amp;</span> PTE_V<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">duppage</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先我们需要弄清 <code>extern</code> 的用法，这似乎是理解的最难点，对于一个在 <code>file1</code> 中定义的全局变量 <code>a</code></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  		<span class="token comment">// 假设地址 &amp;a = 0x8000_5000</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>那么在文件 <code>file2</code> 的时候需要引入这个变量，那么可以有两种写法（虽然正常人只会用第一种）</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">extern</span> <span class="token keyword">int</span> a<span class="token punctuation">;</span>
+<span class="token keyword">extern</span> <span class="token keyword">int</span> a<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>但是两者的结果是不同的，如果我们打印第一个变量 <code>a</code>，那么会出现 <code>1</code>，如果打印第二个变量（我都感觉这是个指针常量了），那么就会出现 <code>a = 0x80005000</code> 。我不知道为啥是这样的，但是确实是这样的。</p>
+<p>然后我们来看一下 <code>vpt</code> 和 <code>vpd</code> 的定义，在 <code>user</code> 文件夹下的 <code>entry.S</code> 下</p>
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">	.globl vpt
+vpt:
+	.word UVPT
+
+	.globl vpd
+vpd:
+	.word (UVPT+(UVPT&gt;&gt;12)*4)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到是一个自映射的标准写法，相关的宏就是我们在 <code>mmu.h</code> 中定义的，而且我们在进程创建之初，就完成了这个设置，</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">e<span class="token operator">-&gt;</span>env_pgdir<span class="token punctuation">[</span><span class="token function">PDX</span><span class="token punctuation">(</span>UVPT<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> e<span class="token operator">-&gt;</span>env_cr3 <span class="token operator">|</span> PTE_V<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但是最让人困惑的莫过于教程中“指针的指针”这一说法，我个人觉得直接认为他是错误的就好了。因为在引入的时候，我们用的是这种方法</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">extern</span> <span class="token keyword">volatile</span> Pte <span class="token operator">*</span>vpt<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">extern</span> <span class="token keyword">volatile</span> Pde <span class="token operator">*</span>vpd<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>按照 c 的语法，<code>vpt</code> 应该是一个指针数组，但是这个操作 <code>(*vpt)[i]</code> 如果需要先按照数组方式理解，然后再按照指针方式理解，那么就会变成这样 <code>*(vpt[0] + i)</code> 或者直观一些 <code>vpt[0][i]</code> 。这都是无厘头的，因为类似于我们声明了一个指针数组，但是只用它的第一个元素当指针，为啥我们不直接声明一个指针 <code>Pte* vpt</code>。这是个未解之谜，我与叶哥哥讨论，叶哥哥也认为如果写成</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">u_int <span class="token operator">*</span>vpt <span class="token operator">=</span> <span class="token punctuation">(</span>u_int<span class="token operator">*</span><span class="token punctuation">)</span> UVPT<span class="token punctuation">;</span>
+<span class="token comment">// use vpt[i]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>会很好看，鬼知道他为啥写成这样。</p>
+<p>但是既然写了，就要从语法上解释通，对于 <code>(*vpt)</code> 操作，结合上面介绍的 <code>extern</code> 知识，可以知道，<code>vpt</code> 的值不再是 <code>0x7fc0 0000</code>了，而是 <code>vpt</code> 的地址（恶心）。然后 <code>(*vpt)</code> 的值才是 <code>0x7fc0 0000</code> 。所以再结合 <code>(*vpt) + VPN</code> ，知道这是在计算二级页表项的虚拟地址，然后取地址，就可以得到二级页表项 <code>*((*vpt) + VPN) = (*vpt)[VPN]</code> 。</p>
+<p>在有了这些知识打底的基础上，我们就可以看到底要干啥了，我们遍历了所有的二级页表项和一级页表项，如果他是有效的，那么就要给子进程复制他，人物交给了 <code>duppage</code>。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">VPN</span><span class="token punctuation">(</span>USTACKTOP<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>vpd<span class="token punctuation">)</span><span class="token punctuation">[</span>i <span class="token operator">&gt;&gt;</span> <span class="token number">10</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> PTE_V<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>vpt<span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&amp;</span> PTE_V<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">duppage</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后我们需要设置一些子进程的对于 <code>COW</code> 的设置</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">syscall_mem_alloc</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> UXSTACKTOP <span class="token operator">-</span> BY2PG<span class="token punctuation">,</span> PTE_V <span class="token operator">|</span> PTE_R<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">syscall_set_pgfault_handler</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> __asm_pgfault_handler<span class="token punctuation">,</span> UXSTACKTOP<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>上面两句话的作用其实跟父进程的 <code>set_pgfault_handler(pgfault)</code> 作用一样，就是没有设置 <code>pgout</code> 因为之前似乎已经设置了。</p>
+<p>最后我们需要让子进程进入调度序列，就是底下这个函数实现的</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">syscall_set_env_status</span><span class="token punctuation">(</span>newenvid<span class="token punctuation">,</span> ENV_RUNNABLE<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="4-3-ipc-c"><a href="#4-3-ipc-c" class="headerlink" title="4.3 ipc.c"></a>4.3 ipc.c</h3><p>这个文件中记录着与进程通信有关的函数。</p>
+<p><strong>ipc_send</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">void ipc_send(u_int whom, u_int val, u_int srcva, u_int perm)
+{
+	int r;
+
+	while ((r = syscall_ipc_can_send(whom, val, srcva, perm)) == -E_IPC_NOT_RECV) 
+	{
+		syscall_yield();
+	}
+
+	if (r == 0) {
+		return;
+	}
+
+	user_panic("error in ipc_send: %d", r);
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个函数主要是一个忙等的实现，通过不断的尝试</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">syscall_ipc_can_send</span><span class="token punctuation">(</span>whom<span class="token punctuation">,</span> val<span class="token punctuation">,</span> srcva<span class="token punctuation">,</span> perm<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个函数就是一个尝试并获得的过程。如果没有获得成功，就会被 <code>yield</code> 。</p>
+<p><strong>ipc_recv</strong></p>
+<p>这个函数就没有忙等，是因为其系统调用的实现中实现了 <code>wait-notify</code> 机制。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">u_int <span class="token function">ipc_recv</span><span class="token punctuation">(</span>u_int <span class="token operator">*</span>whom<span class="token punctuation">,</span> u_int dstva<span class="token punctuation">,</span> u_int <span class="token operator">*</span>perm<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">syscall_ipc_recv</span><span class="token punctuation">(</span>dstva<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>whom<span class="token punctuation">)</span> 
+    <span class="token punctuation">{</span>
+		<span class="token operator">*</span>whom <span class="token operator">=</span> env<span class="token operator">-&gt;</span>env_ipc_from<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>perm<span class="token punctuation">)</span> 
+    <span class="token punctuation">{</span>
+		<span class="token operator">*</span>perm <span class="token operator">=</span> env<span class="token operator">-&gt;</span>env_ipc_perm<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">return</span> env<span class="token operator">-&gt;</span>env_ipc_value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-4-lib-h"><a href="#4-4-lib-h" class="headerlink" title="4.4 lib.h"></a>4.4 lib.h</h3><p>这个头文件里包括了所有的库函数声明（丑爆了）。</p>
+<h3 id="4-5-pgfault-c"><a href="#4-5-pgfault-c" class="headerlink" title="4.5 pgfault.c"></a>4.5 pgfault.c</h3><p><strong>set_pgfault_handler</strong></p>
+<p>这个函数看着很奇怪，是因为把函数调用写到了条件里，其实比较好看懂的写法应该是这样（不严谨）</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">set_pgfault_handler</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>fn<span class="token punctuation">)</span><span class="token punctuation">(</span>u_int va<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>__pgfault_handler <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
+    <span class="token punctuation">{</span>
+    	<span class="token function">syscall_mem_alloc</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> UXSTACKTOP <span class="token operator">-</span> BY2PG<span class="token punctuation">,</span> PTE_V <span class="token operator">|</span> PTE_R<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token function">syscall_set_pgfault_handler</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> __asm_pgfault_handler<span class="token punctuation">,</span> UXSTACKTOP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token comment">// Save handler pointer for assembly to call.</span>
+	__pgfault_handler <span class="token operator">=</span> fn<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也就是说，当一个进程第一次调用 <code>fork</code> 的时候（对应的就是 <code>__pgfault_handler == 0</code> ）。那么这个函数就会为他分配出一个用来处理 <code>pgfault</code> 异常的栈，而且设置他处理这种异常的函数是 <code>__asm_pgfault_handler</code> 。</p>
+<p>每次这个函数都会将 <code>__pgfault_handler</code> 设置成 <code>fn</code>，在 <code>fork</code> 中是传入参数是 <code>pgfault</code>。 </p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">set_pgfault_handler</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>fn<span class="token punctuation">)</span><span class="token punctuation">(</span>u_int va<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>__pgfault_handler <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
+    <span class="token punctuation">{</span>
+		<span class="token comment">// Your code here:</span>
+		<span class="token comment">// map one page of exception stack with top at UXSTACKTOP</span>
+		<span class="token comment">// register assembly handler and stack with operating system</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">syscall_mem_alloc</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> UXSTACKTOP <span class="token operator">-</span> BY2PG<span class="token punctuation">,</span> PTE_V <span class="token operator">|</span> PTE_R<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">||</span>
+			<span class="token function">syscall_set_pgfault_handler</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> __asm_pgfault_handler<span class="token punctuation">,</span> UXSTACKTOP<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> 
+        <span class="token punctuation">{</span>
+			<span class="token function">writef</span><span class="token punctuation">(</span><span class="token string">"cannot set pgfault handler\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">return</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token comment">//		panic("set_pgfault_handler not implemented");</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token comment">// Save handler pointer for assembly to call.</span>
+	__pgfault_handler <span class="token operator">=</span> fn<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-6-print-c"><a href="#4-6-print-c" class="headerlink" title="4.6 print.c"></a>4.6 print.c</h3><p>就不记录了，因为跟内核态的 <code>print.c</code> 一模一样。</p>
+<h3 id="4-7-printf-c"><a href="#4-7-printf-c" class="headerlink" title="4.7 printf.c"></a>4.7 printf.c</h3><p><strong>writef</strong></p>
+<p><code>writef</code> 对应的就是用户态的 <code>printf</code>。这个名字烂爆了，因为 <code>write</code> 有写的意思，很容易跟人造成“写”的错觉，而不是“打印”。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">user_myoutput</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>arg<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">,</span> <span class="token keyword">int</span> l<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+
+    <span class="token comment">// special termination call</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>l <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'\0'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">syscall_putchar</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">syscall_putchar</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">writef</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>fmt<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    va_list ap<span class="token punctuation">;</span>
+    <span class="token function">va_start</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> fmt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">user_lp_Print</span><span class="token punctuation">(</span>user_myoutput<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> fmt<span class="token punctuation">,</span> ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">va_end</span><span class="token punctuation">(</span>ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>_user_panic</strong></p>
+<p>跟 <code>panic</code> 的实现完全相同。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">user_panic</span><span class="token expression"><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token function">_user_panic</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">,</span> <span class="token constant">__LINE__</span><span class="token punctuation">,</span> __VA_ARGS__<span class="token punctuation">)</span></span></span>
+
+<span class="token keyword">void</span> <span class="token function">_user_panic</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>file<span class="token punctuation">,</span> <span class="token keyword">int</span> line<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>fmt<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    va_list ap<span class="token punctuation">;</span>
+
+    <span class="token function">va_start</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> fmt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">writef</span><span class="token punctuation">(</span><span class="token string">"panic at %s:%d: "</span><span class="token punctuation">,</span> file<span class="token punctuation">,</span> line<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">user_lp_Print</span><span class="token punctuation">(</span>user_myoutput<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>fmt<span class="token punctuation">,</span> ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">writef</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">va_end</span><span class="token punctuation">(</span>ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-8-string-c"><a href="#4-8-string-c" class="headerlink" title="4.8 string.c"></a>4.8 string.c</h3><p>这里面定义了一些简单的字符串处理函数，但是在此时还没用到，猜测会在文件系统中使用。</p>
+<p><strong>strlen</strong></p>
+<p>求字符串长度，这里唯一一个亮点是 <code>const char *s</code> 保证了 <code>s</code> 指向的字符串不会被更改。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">strlen</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> n<span class="token punctuation">;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>n <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">*</span>s<span class="token punctuation">;</span> s<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        n<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> n<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>strcpy</strong></p>
+<p>字符串拷贝函数。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">strcpy</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>dst<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>src<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>ret<span class="token punctuation">;</span>
+
+    ret <span class="token operator">=</span> dst<span class="token punctuation">;</span>
+
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>dst<span class="token operator">++</span> <span class="token operator">=</span> <span class="token operator">*</span>src<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>strchr</strong></p>
+<p>这个函数用于找寻字符串中有无特定的字符，如果有，就返回字符串中指向这个字符首次出现位置的指针。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">strchr</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> <span class="token operator">*</span>s<span class="token punctuation">;</span> s<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">*</span>s <span class="token operator">==</span> c<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> s<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>strcmp</strong></p>
+<p>用于进行字符串之间的比较，比较方法就是普通的字典序比较。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>p<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>q<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">*</span>p <span class="token operator">&amp;&amp;</span> <span class="token operator">*</span>p <span class="token operator">==</span> <span class="token operator">*</span>q<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        p<span class="token operator">++</span><span class="token punctuation">,</span> q<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>u_int<span class="token punctuation">)</span><span class="token operator">*</span>p <span class="token operator">&lt;</span> <span class="token punctuation">(</span>u_int<span class="token punctuation">)</span><span class="token operator">*</span>q<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>u_int<span class="token punctuation">)</span><span class="token operator">*</span>p <span class="token operator">&gt;</span> <span class="token punctuation">(</span>u_int<span class="token punctuation">)</span><span class="token operator">*</span>q<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>memcpy</strong></p>
+<p>复制一段东西。有一说一，我不知道在有了 <code>user_bcopy</code> 后，为啥还要用这个（还慢）</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token operator">*</span><span class="token function">memcpy</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>destaddr<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token keyword">const</span> <span class="token operator">*</span>srcaddr<span class="token punctuation">,</span> u_int len<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>dest <span class="token operator">=</span> destaddr<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> <span class="token keyword">const</span> <span class="token operator">*</span>src <span class="token operator">=</span> srcaddr<span class="token punctuation">;</span>
+
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>len<span class="token operator">--</span> <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token operator">*</span>dest<span class="token operator">++</span> <span class="token operator">=</span> <span class="token operator">*</span>src<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> destaddr<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-9-syscall-lib-c"><a href="#4-9-syscall-lib-c" class="headerlink" title="4.9 syscall_lib.c"></a>4.9 syscall_lib.c</h3><p>就是一大堆函数调用 <code>msyscall</code> ，一般格式就这样（会有参数占位符）</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+
+<span class="token keyword">void</span> <span class="token function">syscall_putchar</span><span class="token punctuation">(</span><span class="token keyword">char</span> ch<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">msyscall</span><span class="token punctuation">(</span>SYS_putchar<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>ch<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-10-syscall-wrap-S"><a href="#4-10-syscall-wrap-S" class="headerlink" title="4.10 syscall_wrap.S"></a>4.10 syscall_wrap.S</h3><p><strong>msyscall</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">LEAF</span><span class="token punctuation">(</span>msyscall<span class="token punctuation">)</span>
+    syscall
+	nop
+	jr		ra
+	nop
+<span class="token function">END</span><span class="token punctuation">(</span>msyscall<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S4%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S4课上</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 操作系统</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/c8a10fd9/" rel="prev" title="操作系统-文件系统">
+      <i class="fa fa-chevron-left"></i> 操作系统-文件系统
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/1020f479/" rel="next" title="Linux-Unix备考">
+      Linux-Unix备考 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Makefile"><span class="nav-text">一、Makefile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81user-lds"><span class="nav-text">二、user.lds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="nav-text">三、启动流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%BA%93%E5%87%BD%E6%95%B0"><span class="nav-text">四、库函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-entry-S"><span class="nav-text">4.1 entry.S</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-fork-c"><span class="nav-text">4.2 fork.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-ipc-c"><span class="nav-text">4.3 ipc.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-lib-h"><span class="nav-text">4.4 lib.h</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-pgfault-c"><span class="nav-text">4.5 pgfault.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-print-c"><span class="nav-text">4.6 print.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-printf-c"><span class="nav-text">4.7 printf.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-8-string-c"><span class="nav-text">4.8 string.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-9-syscall-lib-c"><span class="nav-text">4.9 syscall_lib.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-10-syscall-wrap-S"><span class="nav-text">4.10 syscall_wrap.S</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

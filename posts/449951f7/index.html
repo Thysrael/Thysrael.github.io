@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、命题与联结词1.1 联结词的向量值函数理解可以将联结词理解成一个n元函数，完成的是将 ${0,1}^n$ 到 ${0,1}$ 的映射，特别的，如果当n等于零的时候，可以预见，联结词函数退化成了一个常值函数，也就是 0 和 1 。所以 0 和 1 也被称为零元真值函数。 1.2 联结词的运算符理解其实联结词还可以理解为运算符，比如合取就是变种的乘法，异或就是变种的加法，更往深里说，应该是运算符就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="离散数学-命题逻辑">
+<meta property="og:url" content="https://thysrael.github.io/posts/449951f7/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、命题与联结词1.1 联结词的向量值函数理解可以将联结词理解成一个n元函数，完成的是将 ${0,1}^n$ 到 ${0,1}$ 的映射，特别的，如果当n等于零的时候，可以预见，联结词函数退化成了一个常值函数，也就是 0 和 1 。所以 0 和 1 也被称为零元真值函数。 1.2 联结词的运算符理解其实联结词还可以理解为运算符，比如合取就是变种的乘法，异或就是变种的加法，更往深里说，应该是运算符就">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-16T08:28:14.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.959Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S2复习">
+<meta property="article:tag" content="离散数学">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/449951f7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>离散数学-命题逻辑 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/449951f7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          离散数学-命题逻辑
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 16:28:14" itemprop="dateCreated datePublished" datetime="2022-01-16T16:28:14+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">离散数学</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、命题与联结词"><a href="#一、命题与联结词" class="headerlink" title="一、命题与联结词"></a>一、命题与联结词</h2><h3 id="1-1-联结词的向量值函数理解"><a href="#1-1-联结词的向量值函数理解" class="headerlink" title="1.1 联结词的向量值函数理解"></a>1.1 联结词的向量值函数理解</h3><p>可以将联结词理解成一个n元函数，完成的是将 ${0,1}^n$ 到 ${0,1}$ 的映射，特别的，如果当n等于零的时候，可以预见，联结词函数退化成了一个<strong>常值函数</strong>，也就是 0 和 1 。所以 0 和 1 也被称为零元真值函数。</p>
+<h3 id="1-2-联结词的运算符理解"><a href="#1-2-联结词的运算符理解" class="headerlink" title="1.2 联结词的运算符理解"></a>1.2 联结词的运算符理解</h3><p>其实联结词还可以理解为运算符，比如合取就是变种的<strong>乘法</strong>，异或就是变种的<strong>加法</strong>，更往深里说，应该是运算符就是一种向量值函数。</p>
+<h2 id="二、公式和真值赋值"><a href="#二、公式和真值赋值" class="headerlink" title="二、公式和真值赋值"></a>二、公式和真值赋值</h2><h3 id="2-1-原子公式"><a href="#2-1-原子公式" class="headerlink" title="2.1 原子公式"></a>2.1 原子公式</h3><p>命题变元被称为原子公式。</p>
+<h3 id="2-2-公式"><a href="#2-2-公式" class="headerlink" title="2.2 公式"></a>2.2 公式</h3><p>当我们回顾公式的定义时，应该意识到，这是一个<strong>语法定义</strong>，其目的是为了描述一种<strong>特殊的字符串</strong>，这种字符串当<strong>被赋予意义</strong>以后，就可以来表明一个命题 。总之，要意识到公式没有意义，它只是一种形式。这也是<strong>原子公式</strong>概念的提出的意义，把<strong>命题变元</strong>过分强调的<strong>语义性质</strong>剥离掉。</p>
+<p>公式的定义采用<strong>递归定义</strong>，也就是：</p>
+<ul>
+<li><p>0 , 1 是公式。</p>
+</li>
+<li><p>原子公式是公式。</p>
+</li>
+<li><p>用逻辑联结词连接的公式是公式。</p>
+<p>突然想到，公式的递归定义跟树的递归定义是否有相似性呢。应该是有的，任何比较自然的字符串好像都是递归定义的。</p>
+<p>另外还要一个<strong>有S生成的公式A</strong>的概念，S是联结词的集合，这样就可以对字符串有了进一步的限制。</p>
+</li>
+</ul>
+<h3 id="2-3-真值赋值"><a href="#2-3-真值赋值" class="headerlink" title="2.3 真值赋值"></a>2.3 真值赋值</h3><p>从全体命题变元的集合到集合 ${0,1}$ 的函数，被称为真值赋值。这么说v也是一个向量值函数，自变量向量的维数就是命题变元的个数。也就是说，真值赋值为每个命题变元指定了真值。由此衍生出几个书写规范：</p>
+<ul>
+<li>$p^v$ 表示v赋给命题变元p的真值。</li>
+<li>$v(A)$ 表示 A 在真值赋值v下的值。</li>
+<li>$v=(p/1,q/0)$ 就是对v的解释，这个 v 把 p 赋成1，把 q 赋成 0 。</li>
+<li>$v[p_1/q_1,\dots p_n/q_n]$ 不是 $v$ ，而是在v的基础上修改了一些</li>
+</ul>
+<p>如果真值赋值 <em>v</em> 使得 $v(A)=1$ ，那么称 <em>v</em> 满足 A。</p>
+<h3 id="2-4-变元相关性定理思考"><a href="#2-4-变元相关性定理思考" class="headerlink" title="2.4 变元相关性定理思考"></a>2.4 变元相关性定理思考</h3><p>设 A 是公式，$v_1，v_2$ 是真值赋值，对于 A 中出现的每个命题变元p，$p^{v_1}=p^{v_2}$ ，则 $v_1(A)=v_2(A)$ 。</p>
+<p>这个定理看似再说 $v_1,v_2$ 其实说的是，真值赋值<strong>决定且唯一决定</strong>了A的值，这与“证明唯一性的时候证明存在a，b满足条件且a=b”一样，都是描述的手段。</p>
+<h3 id="2-5-可满足式，永真式，重言式，矛盾式，不可满足式，永假式"><a href="#2-5-可满足式，永真式，重言式，矛盾式，不可满足式，永假式" class="headerlink" title="2.5 可满足式，永真式，重言式，矛盾式，不可满足式，永假式"></a>2.5 可满足式，永真式，重言式，矛盾式，不可满足式，永假式</h3><p>如果每一个真值赋值 v 都满足 A 。那么称 A 是永真式，也称重言式，重言式的提出可能是为了后面区分谓词逻辑做准备。</p>
+<p>如果每一个真值赋值都不满足 A 。那么 A 也称永假式、矛盾式、不可满足式。</p>
+<p>如果至少有一个真值赋值满足 A 。则称 A 是可满足式。</p>
+<p>可以看到，命题逻辑里的公式的语义和语法的区分不太明显，<strong>语法</strong>基本上不强调，似乎因为命题变元的变化太少。</p>
+<h3 id="2-6-可判定与可解"><a href="#2-6-可判定与可解" class="headerlink" title="2.6 可判定与可解"></a>2.6 可判定与可解</h3><p>如果S是一个公式集合且包含于W中，P是一个程序，且P满足以下条件：</p>
+<ol>
+<li>P以W中元素为输入量</li>
+<li>当输入的是S中的元素时，P运行终止且输出“是”。</li>
+<li>当输入的不是S中的元素时，P运行终止且输出“否”。</li>
+</ol>
+<p>称P解S的判定问题，如果有一个程序解S的判定问题，就称S的判定问题是可解的。它这个定义总给我感觉是一个<strong>语法</strong>定义，好像计算机没有办法知道自己在干什么一样。</p>
+<h2 id="三、等值演算和对偶定理"><a href="#三、等值演算和对偶定理" class="headerlink" title="三、等值演算和对偶定理"></a>三、等值演算和对偶定理</h2><h3 id="3-1-总论"><a href="#3-1-总论" class="headerlink" title="3.1 总论"></a>3.1 总论</h3><p>等值演算是说的是不同公式之间的等价关系，具体就表现在无论是哪个真值赋值，两个公式的值都是相同的。而对偶和对偶定理的提出，其实是对等值式模式的一种总结。他自己并不能作为等值模式的一种，是更高一维的东西。</p>
+<h3 id="3-2-等值式模式"><a href="#3-2-等值式模式" class="headerlink" title="3.2 等值式模式"></a>3.2 等值式模式</h3><h4 id="3-2-1-思考"><a href="#3-2-1-思考" class="headerlink" title="3.2.1 思考"></a>3.2.1 思考</h4><p>等值式模式错综复杂，那么什么是重要的呢？我认为涉及 $\vee, \wedge, \neg$ 的是重要的，因为在这一章的最重头戏是范式，而范式必须处理成含 有上述三种联结词的公式，所以比较重要。而如果抛开做题来看的话，研究各种联结词是怎样与01作用的显然更有用，因为在利用位运算的时候会用到。</p>
+<h4 id="3-2-2-分配律"><a href="#3-2-2-分配律" class="headerlink" title="3.2.2 分配律"></a>3.2.2 分配律</h4><script type="math/tex; mode=display">
+A\vee(B\wedge C)\Leftrightarrow (A\vee B)\wedge(A \vee C)\\
+A\wedge(B\vee C)\Leftrightarrow (A\wedge B)\vee(A \wedge C)\\
+A\wedge(B\oplus C)\Leftrightarrow (A\wedge B)\oplus(A \wedge C)</script><p>在异或是并不对偶的，我也没有办法，只能死记了。</p>
+<h4 id="3-2-3-吸收律"><a href="#3-2-3-吸收律" class="headerlink" title="3.2.3 吸收律"></a>3.2.3 吸收律</h4><script type="math/tex; mode=display">
+A\vee(A\wedge B)\Leftrightarrow A\\
+A\wedge(A\vee B)\Leftrightarrow A</script><p>这个东西乍看之下好像是可以用分配律轻松获得的，但是我推导了一下，还是不是那么显然的。</p>
+<h4 id="3-2-4-德摩根律"><a href="#3-2-4-德摩根律" class="headerlink" title="3.2.4 德摩根律"></a>3.2.4 德摩根律</h4><script type="math/tex; mode=display">
+\neg(A\vee B)\Leftrightarrow\neg A\wedge\neg B\\
+\neg(A\wedge B)\Leftrightarrow\neg A\vee\neg B</script><h4 id="3-2-5-化归律"><a href="#3-2-5-化归律" class="headerlink" title="3.2.5 化归律"></a>3.2.5 化归律</h4><script type="math/tex; mode=display">
+A\rightarrow B \Leftrightarrow \neg A\vee B\\
+A\leftrightarrow B\Leftrightarrow(A\rightarrow B)\wedge(B\rightarrow A)\\
+A\oplus B\Leftrightarrow(A\wedge \neg B)\vee(B\wedge \neg A)</script><p>名字是我瞎起的，主要是为了说明其他联结词与上述三个联结词之间的转换。</p>
+<h3 id="3-3-对偶"><a href="#3-3-对偶" class="headerlink" title="3.3 对偶"></a>3.3 对偶</h3><p>设 A 是有 ${0,1,\neg,\vee,\wedge}$ 生成的公式，将 A 中的 $\vee$ 和 $\wedge$ 互换，0 和 1 互换，就可以得到 $A^\prime$ ，$A$ 和 $A^\prime$ 互为对偶式。</p>
+<p>对于相反的真值赋值，对偶式满足</p>
+<script type="math/tex; mode=display">
+v(A)=\neg v^\prime(A^\prime)</script><h3 id="3-4-对偶定理"><a href="#3-4-对偶定理" class="headerlink" title="3.4 对偶定理"></a>3.4 对偶定理</h3><p>如果 $A\Leftrightarrow B$，则 $A^\prime\Leftrightarrow B^\prime$，他可以使记忆的数量减少。</p>
+<h2 id="四、范式"><a href="#四、范式" class="headerlink" title="四、范式"></a>四、范式</h2><h3 id="4-1-文字"><a href="#4-1-文字" class="headerlink" title="4.1 文字"></a>4.1 文字</h3><p>原子公式和原子公式的否定被称为文字。</p>
+<h3 id="4-2-简单析取合取式"><a href="#4-2-简单析取合取式" class="headerlink" title="4.2 简单析取合取式"></a>4.2 简单析取合取式</h3><p>有且只有文字组成的析取式或者合取式被称为简单析取合取式。</p>
+<h3 id="4-3-极大项与极小项"><a href="#4-3-极大项与极小项" class="headerlink" title="4.3 极大项与极小项"></a>4.3 极大项与极小项</h3><p>极大项与极小项是从简单析取式合取式中衍生出的概念，设存在一个原子公式集合 ${p_1\dots p_n}$ ，那么如果一个简单析取式里的每一项都有这个集合里的元素的文字组成，且每个元素都出现且只出现一遍，那么就称这个简单析取式为这个集合的<strong>极大项</strong>，<strong>极大项</strong>具有唯一使其为假的真值赋值，反之，则可以定义<strong>极小项</strong>，<strong>极小项</strong>具有唯一使其为真的真值赋值。</p>
+<p><strong>极小项</strong>可以抽象出一个向量与他对应，比如 $p\wedge q\wedge\neg r$ 可以对应 $(1,1,0)$ ，这个向量是唯一使极小项的值取1。这是极为自然的，因为它海哥前面有没有<strong>否定</strong>符号有关，我们只要看前面没有否定符号，就认为是1，而有否定符号，就认为是0，但这其实不是有道理的，顶多算是一种做题技巧。</p>
+<p><strong>极大项</strong>也可以抽象出一个向量，但是$p\wedge q\wedge\neg r$ 对应的不是$(1,1,0)$，而是$(0,0,1)$ 这个向量是唯一使极大项取值为0的向量，这才叫一一对应。</p>
+<h3 id="4-4-析取合取范式"><a href="#4-4-析取合取范式" class="headerlink" title="4.4 析取合取范式"></a>4.4 析取合取范式</h3><p>如果组成析取式和合取式的公式均是简单合取式析取式，则称为范式。</p>
+<p>有0是0个公式的析取，1是0个公式的合取。</p>
+<h3 id="4-5-主范式"><a href="#4-5-主范式" class="headerlink" title="4.5 主范式"></a>4.5 主范式</h3><p>如果析取式的所有组成项都是极小项，那么他就是一个主析取范式。</p>
+<p>如果合取式的所有组成项都是极大项，那么他就是一个主合取范式。</p>
+<h3 id="4-6-主范式与真值表"><a href="#4-6-主范式与真值表" class="headerlink" title="4.6 主范式与真值表"></a>4.6 主范式与真值表</h3><p>不难想到，主范式里面的极大项和极小项与输入向量有对应关系，具体的对应关系是这样的。</p>
+<p>主析取范式里面对应的所有向量值和主合取范式里面对应的所有向量值的没有重复，也没有遗漏，刚好就是所有输入向量的可能取值，举个例子</p>
+<script type="math/tex; mode=display">
+A=(\neg p\rightarrow r)\wedge(q\leftrightarrow p)</script><p>列出真值表</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">p</th>
+<th style="text-align:center">q</th>
+<th style="text-align:center">r</th>
+<th style="text-align:center">$(q\leftrightarrow p)$</th>
+<th style="text-align:center">$(\neg p\rightarrow r)$</th>
+<th style="text-align:center">$(\neg p\rightarrow r)\wedge(q\leftrightarrow p)$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A 的主析取范式是</p>
+<script type="math/tex; mode=display">
+(\neg p\wedge\neg q\wedge r)\vee(p\wedge q\wedge\neg r)\vee( p\wedge q\wedge r)</script><p>恰好就对应三个可以使A为1的向量。</p>
+<p>A的主合取范式是</p>
+<script type="math/tex; mode=display">
+(p\vee q\vee r)\wedge(p\vee\neg q\vee r)\wedge(p\vee\neg q\vee\neg r)\wedge(\neg p\vee q\vee r)\wedge(\neg p\vee q\vee\neg r)</script><p>恰好就是对应三个使A为0的向量，但是需要注意的是，对应规则不可以搞混，不是看有没有否定符号（其实最快的办法就是看有没有），本质是看使极大项赋值为0的量。</p>
+<p>在教材中，他没有明确指出相同公式的极大项和极小项间的关系，他在已知主合取范式后依然采用的是先用自然语言描述一下非A，然后在迂回不清的说了怎么求A的主析取范式，这显然是不好的。真正的方法应该是像上述一样的。</p>
+<p>在有了这个知识后，我们就可以用主范式来分析公式的性质了，当公式为永真式的时候，那么他取值恒为1，那么他就有 $2^n$ 个极小项，没有极大项，那么他的主析取范式就有 $2^n$ 项，主合取范式就有0项，那么显然主合取范式与原公式等值，所以主合取范式必须是1，这也是1是0个公式合取的由来。当公式为永假式的时候，他的取值恒为0，那么最后他的主合取范式会有 $2^n$ 项，主析取范式就有0项，为了保证等值，就需要说明0是0个公式的析取。</p>
+<p>最后补充一下我的直观理解，我想了两种方法，都还不错。一种是运算符，如果把合取理解成乘法，那么只有每一个乘项都不为0，他才能不为0，有点像多项式连乘的感觉，主合取范式就是分解出根的 $(x-x_1)(x-x_2)$ 只有取 $x=x_1,x=x_2$ 的时候才有0值出现，这么看的话，讲一个公式化为主合取范式的过程就是<strong>分解因式</strong>。而析取可以理解为加法，或者是加法和大于0的不等式的结合 $(x-x_1)^2+(x-x_2)^2&gt;0$  就是很好的例子，这种理解可以很好的解释0个项的情况。另一种理解是把他理解为电路，对于主合取范式来说，可以把它理解为一根电线，里面的项就是这个导线上的元件，显然没有元件的时候电路是导通的，所以有电流流过，取值为1。对于主析取范式，可以把他的项理解为一条并联支路，如果项为0，那么就没有电流流过了。</p>
+<h2 id="五、联结词完全集"><a href="#五、联结词完全集" class="headerlink" title="五、联结词完全集"></a>五、联结词完全集</h2><h3 id="5-1-完全集"><a href="#5-1-完全集" class="headerlink" title="5.1 完全集"></a>5.1 完全集</h3><p>显然有了范式的铺垫，那么 ${\vee, \wedge, \neg}$ 显然是完全集了，证明方法就是范式的意义。但是它不是最小完全集。</p>
+<h3 id="5-2-最小完全集"><a href="#5-2-最小完全集" class="headerlink" title="5.2 最小完全集"></a>5.2 最小完全集</h3><p>${\neg,\vee},{\neg,\wedge},{\neg,\rightarrow}$ 是比较常见的最小完全集，如果想证明一个集合是完全集，只需要用已知完全集里的元素去表示这个集合里的联结词就好了，而如果想证明时最小完全集，就必须去掉一个元素以后证明这个集合不是完全集，证明不是完全集的方法就是找到一个联结词F，然后发现用现在这个集合里的联结词没法表示他。</p>
+<p>可以看到，无论是两种证明中的哪一种，都必须涉及<strong>表示</strong>，我们这么说表示，如果想要表示一个n元联结词F，那么只能用n个不同命题的变元，但是并不限制相同命题变元在公式中出现的次数（不出现到出现很多次），结合已知联结词，看看能不能表示<strong>F的真值表</strong>，但是因为有了出现次数不限的条件，是没有办法<strong>爆算</strong>出来的，大部分时候是要观察F的真值表具有的性质，而用已知联结词没法表示的性质。所以解法难且不唯一。对F的选择也很讲究。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S2%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S2复习</a>
+              <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 离散数学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/67348790/" rel="prev" title="大学物理-近代物理">
+      <i class="fa fa-chevron-left"></i> 大学物理-近代物理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/75288196/" rel="next" title="离散数学-谓词逻辑">
+      离散数学-谓词逻辑 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%91%BD%E9%A2%98%E4%B8%8E%E8%81%94%E7%BB%93%E8%AF%8D"><span class="nav-text">一、命题与联结词</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E8%81%94%E7%BB%93%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E5%80%BC%E5%87%BD%E6%95%B0%E7%90%86%E8%A7%A3"><span class="nav-text">1.1 联结词的向量值函数理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E8%81%94%E7%BB%93%E8%AF%8D%E7%9A%84%E8%BF%90%E7%AE%97%E7%AC%A6%E7%90%86%E8%A7%A3"><span class="nav-text">1.2 联结词的运算符理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%85%AC%E5%BC%8F%E5%92%8C%E7%9C%9F%E5%80%BC%E8%B5%8B%E5%80%BC"><span class="nav-text">二、公式和真值赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%8E%9F%E5%AD%90%E5%85%AC%E5%BC%8F"><span class="nav-text">2.1 原子公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%85%AC%E5%BC%8F"><span class="nav-text">2.2 公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%9C%9F%E5%80%BC%E8%B5%8B%E5%80%BC"><span class="nav-text">2.3 真值赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E5%8F%98%E5%85%83%E7%9B%B8%E5%85%B3%E6%80%A7%E5%AE%9A%E7%90%86%E6%80%9D%E8%80%83"><span class="nav-text">2.4 变元相关性定理思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%8F%AF%E6%BB%A1%E8%B6%B3%E5%BC%8F%EF%BC%8C%E6%B0%B8%E7%9C%9F%E5%BC%8F%EF%BC%8C%E9%87%8D%E8%A8%80%E5%BC%8F%EF%BC%8C%E7%9F%9B%E7%9B%BE%E5%BC%8F%EF%BC%8C%E4%B8%8D%E5%8F%AF%E6%BB%A1%E8%B6%B3%E5%BC%8F%EF%BC%8C%E6%B0%B8%E5%81%87%E5%BC%8F"><span class="nav-text">2.5 可满足式，永真式，重言式，矛盾式，不可满足式，永假式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E5%8F%AF%E5%88%A4%E5%AE%9A%E4%B8%8E%E5%8F%AF%E8%A7%A3"><span class="nav-text">2.6 可判定与可解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%AD%89%E5%80%BC%E6%BC%94%E7%AE%97%E5%92%8C%E5%AF%B9%E5%81%B6%E5%AE%9A%E7%90%86"><span class="nav-text">三、等值演算和对偶定理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">3.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E7%AD%89%E5%80%BC%E5%BC%8F%E6%A8%A1%E5%BC%8F"><span class="nav-text">3.2 等值式模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E6%80%9D%E8%80%83"><span class="nav-text">3.2.1 思考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E5%88%86%E9%85%8D%E5%BE%8B"><span class="nav-text">3.2.2 分配律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E5%90%B8%E6%94%B6%E5%BE%8B"><span class="nav-text">3.2.3 吸收律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4-%E5%BE%B7%E6%91%A9%E6%A0%B9%E5%BE%8B"><span class="nav-text">3.2.4 德摩根律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-5-%E5%8C%96%E5%BD%92%E5%BE%8B"><span class="nav-text">3.2.5 化归律</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%AF%B9%E5%81%B6"><span class="nav-text">3.3 对偶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E5%AF%B9%E5%81%B6%E5%AE%9A%E7%90%86"><span class="nav-text">3.4 对偶定理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%8C%83%E5%BC%8F"><span class="nav-text">四、范式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%96%87%E5%AD%97"><span class="nav-text">4.1 文字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E7%AE%80%E5%8D%95%E6%9E%90%E5%8F%96%E5%90%88%E5%8F%96%E5%BC%8F"><span class="nav-text">4.2 简单析取合取式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E6%9E%81%E5%A4%A7%E9%A1%B9%E4%B8%8E%E6%9E%81%E5%B0%8F%E9%A1%B9"><span class="nav-text">4.3 极大项与极小项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E6%9E%90%E5%8F%96%E5%90%88%E5%8F%96%E8%8C%83%E5%BC%8F"><span class="nav-text">4.4 析取合取范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-%E4%B8%BB%E8%8C%83%E5%BC%8F"><span class="nav-text">4.5 主范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-%E4%B8%BB%E8%8C%83%E5%BC%8F%E4%B8%8E%E7%9C%9F%E5%80%BC%E8%A1%A8"><span class="nav-text">4.6 主范式与真值表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%81%94%E7%BB%93%E8%AF%8D%E5%AE%8C%E5%85%A8%E9%9B%86"><span class="nav-text">五、联结词完全集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E5%AE%8C%E5%85%A8%E9%9B%86"><span class="nav-text">5.1 完全集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%9C%80%E5%B0%8F%E5%AE%8C%E5%85%A8%E9%9B%86"><span class="nav-text">5.2 最小完全集</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

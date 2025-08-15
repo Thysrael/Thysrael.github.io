@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MATLAB程序设计语言基础一、变量与常量1.1 常见数据类型1.1.1 数值型数据应当意识到，数值型数据概念的提出是与符号型数据想对应的，matlab一般存储数据为双浮点数，就势必造成存储和运算的误差，比如将 $\frac{1}{3}$ 存为 0.333333，更不要提 0 的模糊表示了。如果是整数的话，其实也会造成运算的误差，比如 5&#x2F;2&#x3D;2 的取整操作。所以准确的来说，运用数值型数据只能得到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数学建模-MATLAB语法基础">
+<meta property="og:url" content="https://thysrael.github.io/posts/9965eed7/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="MATLAB程序设计语言基础一、变量与常量1.1 常见数据类型1.1.1 数值型数据应当意识到，数值型数据概念的提出是与符号型数据想对应的，matlab一般存储数据为双浮点数，就势必造成存储和运算的误差，比如将 $\frac{1}{3}$ 存为 0.333333，更不要提 0 的模糊表示了。如果是整数的话，其实也会造成运算的误差，比如 5&#x2F;2&#x3D;2 的取整操作。所以准确的来说，运用数值型数据只能得到">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-16T08:22:01.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.881Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="工具总结">
+<meta property="article:tag" content="数学建模">
+<meta property="article:tag" content="S2课上">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/9965eed7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>数学建模-MATLAB语法基础 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/9965eed7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数学建模-MATLAB语法基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 16:22:01" itemprop="dateCreated datePublished" datetime="2022-01-16T16:22:01+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" itemprop="url" rel="index"><span itemprop="name">数学建模</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="MATLAB程序设计语言基础"><a href="#MATLAB程序设计语言基础" class="headerlink" title="MATLAB程序设计语言基础"></a>MATLAB程序设计语言基础</h1><h2 id="一、变量与常量"><a href="#一、变量与常量" class="headerlink" title="一、变量与常量"></a>一、变量与常量</h2><h3 id="1-1-常见数据类型"><a href="#1-1-常见数据类型" class="headerlink" title="1.1 常见数据类型"></a>1.1 常见数据类型</h3><h4 id="1-1-1-数值型数据"><a href="#1-1-1-数值型数据" class="headerlink" title="1.1.1 数值型数据"></a>1.1.1 数值型数据</h4><p>应当意识到，<strong>数值型数据</strong>概念的提出是与<strong>符号型数据</strong>想对应的，matlab一般存储数据为<strong>双浮点数</strong>，就势必造成存储和运算的误差，比如将 $\frac{1}{3}$ 存为 0.333333，更不要提 0 的<strong>模糊表示</strong>了。如果是整数的话，其实也会造成运算的误差，比如 <strong>5/2=2</strong> 的取整操作。所以准确的来说，运用数值型数据只能得到<strong>近似解</strong>，而不能得到<strong>解析解</strong>。而用<strong>符号型数据</strong>可以避免这个漏洞。</p>
+<p>一般的赋值操作就会把值默认为 double 类型，但是可以用<strong>数据类型转换</strong>函数进行转化。有如下语句。</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">a<span class="token operator">=</span><span class="token number">1.1</span><span class="token punctuation">;</span> <span class="token comment">%construct a numeric variable called 'a'</span>
+a<span class="token operator">=</span><span class="token function">uint</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">%Convert to unsigned 8-bit integer</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>另外，如果一句话之后不加分号，会会在<strong>命令窗</strong>显示这次运算的运算结果。</p>
+<p>如果<strong>赋值语句</strong>（赋值变量=赋值表达式），那么如果省略了<strong>赋值变量和等号</strong>，结果就会被存储在ans中。</p>
+<h4 id="1-1-2-符号型数据"><a href="#1-1-2-符号型数据" class="headerlink" title="1.1.2 符号型数据"></a>1.1.2 符号型数据</h4><p>正是由于<strong>数值型数据</strong>的弊端，matlab提供了<strong>符号型数据</strong>，数据会完好无损的存在于声明的变量中，同时还可以利用一些函数来对声明出的<strong>符号型数据变量</strong>进行一些限制。有如下语句</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">syms a b real <span class="token comment">%a，b都是声明的变量，real说明他们是纯实数，与此类似的还有positive 整数、complex 复数、integer 整数</span>
+<span class="token function">assumptions</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment">%可以用这个语句看出a是什么类型的符号型数据</span>
+<span class="token function">assume</span><span class="token punctuation">(</span>a<span class="token operator">&gt;=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">assumeAlso</span><span class="token punctuation">(</span>a<span class="token operator">&lt;</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">%可以用这两个语句对声明的变量进行进一步限制</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>但是需要注意，这样声明出的变量是没有办法直接赋值的，因为matlab应该属于<strong>弱类型格式转换</strong>，直接赋值会将符号型数据变成数值型数据 如：</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">b<span class="token operator">=</span><span class="token number">1.1</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这样b就变成数值型了，是因为<strong>1.1</strong>是<strong>数值型</strong>，所以我们应该借用<strong>数据转换的思想</strong>，用类型转换来进行赋值，有语句</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">b<span class="token operator">=</span><span class="token function">sym</span><span class="token punctuation">(</span><span class="token number">1.1</span><span class="token punctuation">)</span> <span class="token comment">%注意不是syms，而是sym</span>
+b<span class="token operator">=</span><span class="token function">sym</span><span class="token punctuation">(</span><span class="token string">'1.1'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>则两句话都可以把b赋成1.1 ，但是第一句话的1.1在很多位以后会变得不精确，这是因为1.1是一个数值型数据，所以不准，但是第二句话会更好一些。</p>
+<p>当我们有了一个符号型数据的时候，我们可以用下面的命令来控制以任意精度显示这个变量</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token function">vpa</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span>n<span class="token punctuation">)</span> <span class="token comment">%这条语句会把b以n精度现实</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>对于这小节出现的不加括号的函数（我也不确定syms是不是函数），有一种解释是说，如果加了括号，他会解析里面的内容，而不加括号，只会解析输入的字符串，没有验证过。</p>
+<h4 id="1-1-3-字符串数据"><a href="#1-1-3-字符串数据" class="headerlink" title="1.1.3 字符串数据"></a>1.1.3 字符串数据</h4><p>字符串类型，注意不是<strong>字符类型</strong>，与C语言不同，是用单引号控制的，在<strong>传参</strong>，<strong>隐函数</strong>部分有很多应用。</p>
+<h4 id="1-1-4-函数句柄"><a href="#1-1-4-函数句柄" class="headerlink" title="1.1.4 函数句柄"></a>1.1.4 函数句柄</h4><p>也被称为<strong>函数指针</strong>（应该跟C语言类似），多在传参的时候应用，因为我没有接触太多，不知道具体用处，声明用法如下</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">f<span class="token operator">=</span><span class="token operator">@</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token function">sun</span><span class="token punctuation">(</span>x<span class="token operator">.^</span>a<span class="token operator">+</span>y<span class="token operator">.^</span>b<span class="token punctuation">)</span> <span class="token comment">%即f=@(变量列表)函数计算表达式</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>函数里面的参数的值（a，b）取的是声明之前的值，如果之后a，b在发生变化，函数不会发生改变。这种函数被称为<strong>匿名函数</strong>，f就是函数句柄。</p>
+<h4 id="1-1-5-单元数组"><a href="#1-1-5-单元数组" class="headerlink" title="1.1.5 单元数组"></a>1.1.5 单元数组</h4><p>单元数组有点类似于<strong>广义表</strong>，不要求数组内的元素具有相同性质，可以第一个元素是标量，第二个是一个二维坐标，第三个是个矩阵。单元数组用 {} 来声明。由于只学了一点，还没有见过他的应用。</p>
+<h4 id="1-1-6-类与对象"><a href="#1-1-6-类与对象" class="headerlink" title="1.1.6 类与对象"></a>1.1.6 类与对象</h4><h3 id="1-2-常见常量"><a href="#1-2-常见常量" class="headerlink" title="1.2 常见常量"></a>1.2 常见常量</h3><h4 id="1-2-1-小量eps"><a href="#1-2-1-小量eps" class="headerlink" title="1.2.1 小量eps"></a>1.2.1 小量eps</h4><p>默认值为 $2.2204\times 10^{-16}$ 当某个值的绝对值小于 eps 时，就会被matlab判定为 0。</p>
+<h4 id="1-2-2-虚数单位i、j"><a href="#1-2-2-虚数单位i、j" class="headerlink" title="1.2.2 虚数单位i、j"></a>1.2.2 虚数单位i、j</h4><p>i 和 j：表示虚数单位，如果表示一个虚数单位，一般用 1j 而不是 j。</p>
+<h4 id="1-2-3-无穷-Inf"><a href="#1-2-3-无穷-Inf" class="headerlink" title="1.2.3 无穷 Inf"></a>1.2.3 无穷 Inf</h4><p>无穷大量，适用于<strong>有限数除零</strong>等运算。</p>
+<h4 id="1-2-4-不定式-NaN"><a href="#1-2-4-不定式-NaN" class="headerlink" title="1.2.4 不定式 NaN"></a>1.2.4 不定式 NaN</h4><p>不定式（not a number） 用于 0/0，Inf/Inf 等运算。</p>
+<h4 id="1-2-5-圆周率"><a href="#1-2-5-圆周率" class="headerlink" title="1.2.5 圆周率"></a>1.2.5 圆周率</h4><p>pi：圆周率 $\pi$ 的<strong>双精度浮点</strong>表示。</p>
+<h4 id="1-2-6-警告错误信息"><a href="#1-2-6-警告错误信息" class="headerlink" title="1.2.6 警告错误信息"></a>1.2.6 警告错误信息</h4><p>lasterr和lastwarn：存放最新一次的错误或者警告信息，为字符串类型。</p>
+<hr>
+<h2 id="二、基本操作"><a href="#二、基本操作" class="headerlink" title="二、基本操作"></a>二、基本操作</h2><h3 id="2-1-生成矩阵"><a href="#2-1-生成矩阵" class="headerlink" title="2.1 生成矩阵"></a>2.1 生成矩阵</h3><h4 id="2-1-1-矩阵总论"><a href="#2-1-1-矩阵总论" class="headerlink" title="2.1.1 矩阵总论"></a>2.1.1 矩阵总论</h4><p>应该明确的是，<strong>矩阵</strong>不是一种特殊的<strong>数据类型</strong>。他就是一个普通的<strong>代数结构</strong>。这种思想其实在<strong>高等代数</strong>就体现出来了，标量和向量和矩阵没有什么明显的区别，只不过是数学家为了描述世界提出的结构。只是因为我们先接触标量，才觉得矩阵那么奇怪。</p>
+<p>矩阵不单独作为一种数据类型的原因是因为所有的数据类型都有<strong>矩阵形式</strong>，矩阵更像是一种<strong>状态</strong>，这种状态可以不断叠加。</p>
+<p>在matlab里，很多东西都是用矩阵表示的，比如函数可以有多个返回值，这时就需要用矩阵作为返回值，当传入参数的时候，也可以用矩阵的形式，当画图的时候，因为没有办法做到每个点都计算，所以会选取网格上的点计算，这时网格也是用矩阵来表示的。这些都是由于矩阵在<strong>数学</strong>上有极好的<strong>抽象能力</strong>决定的。</p>
+<p>最后说一点闲话，matlab是没有<strong>数组</strong>这个数据结构的，所以是否暗示了<strong>矩阵</strong>和<strong>数组</strong>是可以相互替代的。我认为是可以的，两者都有<strong>有序</strong>，<strong>集合</strong>的特点。</p>
+<h4 id="2-1-2-声明法"><a href="#2-1-2-声明法" class="headerlink" title="2.1.2 [ ] 声明法"></a>2.1.2 [ ] 声明法</h4><p>用 [ ]  可以声明矩阵，矩阵的横行之间用 ；来分割，横行里每个元素用<strong>逗号</strong>或者<strong>空格</strong>分隔（这两种分隔方式应该是完全等价的）。有如下声明语句</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">a<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">;</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当然，因为矩阵可以<strong>嵌套</strong>表达，所以有这样的形式，注意一下行和列的区别</p>
+<pre class="line-numbers language-none"><code class="language-none">a1=[a;[1 2 3]];
+a2=[a [1;2;3]];<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="2-2-3-冒号表达式"><a href="#2-2-3-冒号表达式" class="headerlink" title="2.2.3 冒号表达式"></a>2.2.3 冒号表达式</h4><p>冒号表达式可以生成一个行向量，他有两种写法</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">v1<span class="token operator">=</span><span class="token number">0</span><span class="token operator">:</span><span class="token number">0.2</span><span class="token operator">:</span><span class="token keyword">pi</span><span class="token punctuation">;</span> <span class="token comment">%从0开始，步距为0.2，直至不超过pi的最大值</span>
+v2<span class="token operator">=</span><span class="token number">0</span><span class="token operator">:</span><span class="token keyword">pi</span> <span class="token comment">%步距如果不声明的话，就是1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>冒号表达式完全等价于一个行向量，所以可以有如下合理语句：</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">a<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">;</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+a1<span class="token operator">=</span><span class="token punctuation">[</span>a<span class="token punctuation">;</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="2-2-4-子矩阵提取"><a href="#2-2-4-子矩阵提取" class="headerlink" title="2.2.4 子矩阵提取"></a>2.2.4 子矩阵提取</h4><p>提取子矩阵的具体方法如下</p>
+<script type="math/tex; mode=display">
+B=A(v_1,v_2);</script><p>$v<em>1$ 向量表示子矩阵要保留的<strong>行号</strong>构成的向量，$v_2$ 表示要保留的<strong>列号</strong>（注意行列都是从1而不是0开始计数的）。其中，$v_1$ 表示子矩阵要保留的行号构成的向量，$v_2$ 表示要保留的列号构成的向量。可以这么说，$B$ 矩阵的（x，y）位置的元素是原矩阵 $A$ 的（$v</em>{1x},v_{2y}$）位置的元素。若 $v_1$ 为<strong>：</strong>，则表示要提取所有的行，$v_2$ 亦有相应的处理结果。关键词 $end$ 表示最后一行。</p>
+<p>有如下实例</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">a<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">;</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+a1<span class="token operator">=</span><span class="token function">a</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token punctuation">,</span><span class="token keyword">end</span><span class="token operator">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">%将矩阵左右翻转</span>
+a2<span class="token operator">=</span><span class="token function">a</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">2</span><span class="token operator">:</span><span class="token keyword">end</span><span class="token punctuation">,</span><span class="token operator">:</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">%提取由所有奇数行和所有列交叉形成的部分</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>另一种提取子矩阵是利用<strong>逻辑类型</strong>（上一种是<strong>利用正整数类型</strong>），即<strong>布尔值类型</strong>，在这里，置 1 的元素所在的行列会被保留，如</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">a<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  
+b1<span class="token operator">=</span><span class="token function">isprime</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+b2<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 
+b3<span class="token operator">=</span><span class="token function">logical</span><span class="token punctuation">(</span>b2<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">% 初始一些条件</span>
+c1<span class="token operator">=</span><span class="token function">a</span><span class="token punctuation">(</span>b1<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">%可以运行</span>
+c2<span class="token operator">=</span><span class="token function">a</span><span class="token punctuation">(</span>b2<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">%不可以运行，因为不是逻辑类型</span>
+c3<span class="token operator">=</span><span class="token function">a</span><span class="token punctuation">(</span>b3<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">%可以运行，因为是逻辑类型</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2-查询"><a href="#2-2-查询" class="headerlink" title="2.2 查询"></a>2.2 查询</h3><h4 id="2-2-1-基本操作"><a href="#2-2-1-基本操作" class="headerlink" title="2.2.1 基本操作"></a>2.2.1 基本操作</h4><p>只要按如下语句查询，就有</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">help something<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-2-2-英语"><a href="#2-2-2-英语" class="headerlink" title="2.2.2 英语"></a>2.2.2 英语</h4><p>因为解释都是英文的，所以有一个好的英文词汇积累是很重要的，故录于下</p>
+<ul>
+<li>scalar 标量</li>
+<li>symbolic variable 符号型变量</li>
+<li>norm 范数</li>
+<li>permutation 排列</li>
+<li>interval 区间</li>
+<li>piecewise 分段</li>
+<li>numerator 分子</li>
+<li>denominator 分母</li>
+<li>sparse 稀疏的</li>
+<li>syntax 句法</li>
+<li>gradient 斜率</li>
+</ul>
+<h3 id="2-3-数学运算"><a href="#2-3-数学运算" class="headerlink" title="2.3 数学运算"></a>2.3 数学运算</h3><h4 id="2-3-1-矩阵的代数运算"><a href="#2-3-1-矩阵的代数运算" class="headerlink" title="2.3.1 矩阵的代数运算"></a>2.3.1 矩阵的代数运算</h4><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">B<span class="token operator">=</span>A<span class="token operator">.'</span>  <span class="token comment">% B是A的转置</span>
+c<span class="token operator">=</span>A<span class="token operator">-</span>B  <span class="token comment">% C是A、B相减的结果</span>
+C<span class="token operator">=</span>A<span class="token operator">*</span>B  <span class="token comment">% C是A、B相乘的结果</span>
+X<span class="token operator">=</span>A<span class="token operator">\</span>B  <span class="token comment">% C是A_{-1}B的结果</span>
+X<span class="token operator">=</span>B<span class="token operator">/</span>A  <span class="token comment">% C是BA_{-1}的结果</span>
+F<span class="token operator">=</span>A<span class="token operator">^</span>x  <span class="token comment">% F是A连乘x次的结果</span>
+B<span class="token operator">=</span><span class="token function">fliplr</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span>  <span class="token comment">% B是A左右翻转的结果</span>
+C<span class="token operator">=</span><span class="token function">flipud</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span>  <span class="token comment">% C是A上下翻转的结果</span>
+D<span class="token operator">=</span><span class="token function">rot90</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span>   <span class="token comment">% D是A逆时针旋转90度的结果</span>
+E<span class="token operator">=</span><span class="token function">rot90</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span>k<span class="token punctuation">)</span>  <span class="token comment">% E是A逆时针旋转90k度的结果</span>
+C<span class="token operator">=</span>A<span class="token operator">.*</span>B  <span class="token comment">% 点运算就是对相应元素的直接运算，因为矩阵的普遍性，这个运算形式使得很多</span>
+e<span class="token operator">=</span><span class="token function">norm</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span>  <span class="token comment">% 即求A的范数</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-3-2-矩阵的逻辑运算"><a href="#2-3-2-矩阵的逻辑运算" class="headerlink" title="2.3.2 矩阵的逻辑运算"></a>2.3.2 矩阵的逻辑运算</h4><p>这个好像在离散数学的<strong>关系运算</strong>中用得到。</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">C<span class="token operator">=</span>A<span class="token operator">&amp;</span>B
+C<span class="token operator">=</span>A<span class="token operator">|</span>B
+C<span class="token operator">=</span><span class="token operator">~</span>A
+C<span class="token operator">=</span><span class="token function">xor</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span>B<span class="token punctuation">)</span>  <span class="token comment">% C均为布尔值矩阵</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-3-3-矩阵的布尔运算"><a href="#2-3-3-矩阵的布尔运算" class="headerlink" title="2.3.3 矩阵的布尔运算"></a>2.3.3 矩阵的布尔运算</h4><p>这一节涉及了多个函数，其中函数的参量基本上都是一个<strong>布尔表达式</strong>。所以尽管节名不太严谨，但很形象。但是还是需要意识到，这里的布尔值也是个矩阵。</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">C<span class="token operator">=</span>A<span class="token operator">&gt;</span>B  <span class="token comment">% 维持了逻辑运算的逻辑</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>find函数可以查找出满足某关系的矩阵下标，当返回值为一个值时（单下标情况），find函数将整个矩阵<strong>按列</strong>排列成新的列向量，然后再返回满足要求的元素的下标。如</p>
+<pre class="line-numbers language-none"><code class="language-none">a=[1,2,3;4,5,6;7,8,0]
+i=find(a&gt;=5)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>也可以采用双下标的形式，那么就不需要进行矩阵的重新排列，i，j 分别代表横坐标和纵坐标。</p>
+<p>另外还有 all 和 any 也是很实用的查询函数，有实例（具体的应用懒得写了，help里可以查询）</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">a1<span class="token operator">=</span><span class="token function">all</span><span class="token punctuation">(</span>a<span class="token operator">&gt;=</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a2<span class="token operator">=</span><span class="token function">any</span><span class="token punctuation">(</span>a<span class="token operator">&gt;=</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="2-3-4-解析结果的化简和变换"><a href="#2-3-4-解析结果的化简和变换" class="headerlink" title="2.3.4 解析结果的化简和变换"></a>2.3.4 解析结果的化简和变换</h4><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">syms<span class="token punctuation">;</span> sP<span class="token operator">=</span><span class="token punctuation">(</span>s<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token operator">^</span><span class="token number">2</span><span class="token operator">*</span><span class="token punctuation">(</span>s<span class="token operator">^</span><span class="token number">2</span><span class="token operator">+</span><span class="token number">3</span><span class="token operator">*</span>s<span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token punctuation">(</span>s<span class="token operator">^</span><span class="token number">3</span><span class="token operator">+</span><span class="token number">12</span><span class="token operator">*</span>s<span class="token operator">^</span><span class="token number">2</span><span class="token operator">+</span><span class="token number">48</span><span class="token operator">*</span>s<span class="token operator">+</span><span class="token number">64</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">%初始化一个冗杂的多项式</span>
+P1<span class="token operator">=</span><span class="token function">simplify</span><span class="token punctuation">(</span>P<span class="token punctuation">)</span>  <span class="token comment">% 返回值是一个符号型数据，代表化简的结果</span>
+P2<span class="token operator">=</span><span class="token function">expand</span><span class="token punctuation">(</span>P<span class="token punctuation">)</span>  <span class="token comment">% 返回值是一个符号型数据，代表多项式的展开结果</span>
+P3<span class="token operator">=</span><span class="token function">factor</span><span class="token punctuation">(</span>P<span class="token punctuation">)</span>  <span class="token comment">% 返回值是一个符号型数据矩阵，矩阵中的元素就是因式</span>
+P4<span class="token operator">=</span><span class="token function">prod</span><span class="token punctuation">(</span>P<span class="token punctuation">)</span>  <span class="token comment">% 返回值是一个符号型数据，是因式分解后因式的乘积形式</span>
+P5<span class="token operator">=</span><span class="token function">latex</span><span class="token punctuation">(</span>P1<span class="token punctuation">)</span>  <span class="token comment">% 返回值是一个符号型数据，为LaTeX格式</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-3-5-离散数学运算"><a href="#2-3-5-离散数学运算" class="headerlink" title="2.3.5 离散数学运算"></a>2.3.5 离散数学运算</h4><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">n<span class="token operator">=</span><span class="token function">floor</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>  <span class="token comment">% 向下取整</span>
+n<span class="token operator">=</span><span class="token function">ceil</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>  <span class="token comment">% 向上取整</span>
+n<span class="token operator">=</span><span class="token function">round</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>  <span class="token comment">% 四舍五入</span>
+n<span class="token operator">=</span><span class="token function">fix</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>  <span class="token comment">% 向零取整</span>
+<span class="token punctuation">[</span>n<span class="token punctuation">,</span>d<span class="token punctuation">]</span><span class="token operator">=</span><span class="token function">rat</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>  <span class="token comment">% 将x中元素换位最简有理数，n和d分别为分子和分母矩阵</span>
+B<span class="token operator">=</span><span class="token function">rem</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span>C<span class="token punctuation">)</span>  <span class="token comment">%  A中元素对C中元素求模得到的余数</span>
+k<span class="token operator">=</span><span class="token function">gcd</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>m<span class="token punctuation">)</span>  <span class="token comment">% 求最大公约数</span>
+k<span class="token operator">=</span><span class="token function">lcm</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>m<span class="token punctuation">)</span>  <span class="token comment">% 求最小公倍数</span>
+v<span class="token operator">=</span><span class="token function">factor</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>  <span class="token comment">% 分解因式，得到一个向量</span>
+v1<span class="token operator">=</span><span class="token function">isprime</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span>  <span class="token comment">% 判断v中的向量各个元素是否为质数，如果是的话，得到一个</span>
+V<span class="token operator">=</span><span class="token function">perms</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span>  <span class="token comment">% 对向量v中的元素进行全排列，结果由矩阵V返回</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h2 id="三、高级操作"><a href="#三、高级操作" class="headerlink" title="三、高级操作"></a>三、高级操作</h2><h3 id="3-1-流程结构"><a href="#3-1-流程结构" class="headerlink" title="3.1 流程结构"></a>3.1 流程结构</h3><h4 id="3-1-1-复杂结构总论"><a href="#3-1-1-复杂结构总论" class="headerlink" title="3.1.1 复杂结构总论"></a>3.1.1 复杂结构总论</h4><p>我将<strong>流程结构</strong>和<strong>函数结构</strong>称为复杂结构，具体表现为<strong>一个语句没有办法实现功能，而是需要一个语句块来实现一个基础功能</strong>，这种特点导致了最大的困难是<strong>语法</strong>，因为语句块设计到将多个语句组织到一起，那么<strong>组织形式</strong>就是重中之重。</p>
+<p>对于组织形式，可以说跟C还是很不一样的。首先没有了 <strong>{ }</strong> 代表的语句块分割结构，而变成了以end结尾的结构。此外，由于 <strong>；分号</strong> 不再是一个语句结束的<strong>必要条件</strong>，而变成<strong>回车</strong>，所以初学很容易犹豫担心完成不了一个<strong>语句块</strong>就结束了，但是其实不用担心，当写下如 while 或者 for 或者 if 等<strong>起始句</strong>以后，回车就不会产生<strong>执行语句</strong>的功能，知道对应的<strong>end</strong>，才会有执行结果,，而且还可以<strong>自动缩进</strong>。</p>
+<h4 id="3-1-2-循环结构"><a href="#3-1-2-循环结构" class="headerlink" title="3.1.2 循环结构"></a>3.1.2 循环结构</h4><p>有 for 和 while 两种结构，对于后面加不加括号，加不加分号，加不加逗号，其实都可以，所以我就选用了一种我最舒服的结构，如下</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token comment">%{</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token number">i</span><span class="token operator">=</span>v<span class="token punctuation">)</span>
+	循环结构体<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+<span class="token comment">%}</span>
+
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token number">i</span><span class="token operator">=</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">10000</span><span class="token punctuation">)</span>
+    s<span class="token operator">=</span>s<span class="token operator">+</span><span class="token number">i</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+
+<span class="token comment">%{</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span>条件式<span class="token punctuation">)</span>
+	循环结构体<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+<span class="token comment">%}</span>
+
+<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">i</span><span class="token operator">&lt;=</span><span class="token number">10000</span><span class="token punctuation">)</span>
+	s<span class="token operator">=</span>s<span class="token operator">+</span><span class="token number">i</span><span class="token punctuation">;</span>
+	<span class="token number">i</span><span class="token operator">=</span><span class="token number">i</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-1-3-条件转移结构"><a href="#3-1-3-条件转移结构" class="headerlink" title="3.1.3 条件转移结构"></a>3.1.3 条件转移结构</h4><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token keyword">if</span><span class="token punctuation">(</span>条件<span class="token number">1</span><span class="token punctuation">)</span>
+	语句组<span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">elseif</span><span class="token punctuation">(</span>条件<span class="token number">2</span><span class="token punctuation">)</span>
+	语句组<span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span>
+	语句组<span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-1-4-开关结构"><a href="#3-1-4-开关结构" class="headerlink" title="3.1.4 开关结构"></a>3.1.4 开关结构</h4><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token keyword">switch</span><span class="token punctuation">(</span>开关表达式<span class="token punctuation">)</span>
+<span class="token keyword">case</span> 表达式<span class="token number">1</span>
+	语句段<span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">case</span> 表达式<span class="token number">2</span>
+	语句段<span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">otherwise</span>
+	语句段<span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-1-5-试探结构"><a href="#3-1-5-试探结构" class="headerlink" title="3.1.5 试探结构"></a>3.1.5 试探结构</h4><p>本语句结构会试探性的执行语句段1，如果报错，就执行语句段2。</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token keyword">try</span>
+	语句段<span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">catch</span>
+	语句段<span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2-函数"><a href="#3-2-函数" class="headerlink" title="3.2 函数"></a>3.2 函数</h3><h4 id="3-2-1-函数总论"><a href="#3-2-1-函数总论" class="headerlink" title="3.2.1 函数总论"></a>3.2.1 函数总论</h4><p>matlab跟C语言在函数方面的处理不同，可能是<strong>解释型语言</strong>的特性，函数没有办法定义在<strong>主文件</strong>中的，想要定义函数，必须新开一个文件，然后在里面写函数。对于具体的机理，我看到一种说法是这么说的，matlab会将文件进行识别成两类文件，<strong>非函数文件</strong>和<strong>函数文件</strong>。当文件开头就开始定义函数时，matlab将此文件识别为函数，那么文中的第一个函数将被视为该文件对应的函数（<strong>主体函数</strong>，优先运行），而文中定义的其他函数，此时视为可在文中互相调用的<strong>附属函数</strong>。这个“函数调用文中函数”机制允许我们在文中定义函数。当文件开头不是以“function”定义的函数时，文件被识别做非函数，则逐行解析运行，若下文有函数定义，则报错。</p>
+<p>对于<strong>附属函数</strong>，所谓的<strong>“文中定义”</strong>，可能是在函数内部再次进行函数声明，而不是两个函数呈现<strong>并联</strong>关系。</p>
+<h4 id="3-2-2-函数的格式"><a href="#3-2-2-函数的格式" class="headerlink" title="3.2.2 函数的格式"></a>3.2.2 函数的格式</h4><p>虽然教材中在函数的结尾没有用end标识符，但是我在进行附属函数定义时，还是用到了end标识符才能顺利定义，所以还是加上吧。而且好像还不能加分号结尾。</p>
+<p>此外，用<strong>help+函数名</strong>的格式，就可以显示函数中的注释内容。</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token comment">%函数的格式</span>
+<span class="token keyword">function</span> <span class="token punctuation">[</span>返回变量列表<span class="token punctuation">]</span><span class="token operator">=</span>函数名<span class="token punctuation">(</span>输入变量列表<span class="token punctuation">)</span>
+	<span class="token comment">%注释说明语段</span>
+	输入、返回变量格式检测，输入变量存储在nargin中，是自动生成的。
+	函数体语句<span class="token punctuation">;</span>
+<span class="token keyword">end</span>
+
+<span class="token comment">%单纯的函数</span>
+<span class="token keyword">function</span> <span class="token punctuation">[</span>m<span class="token punctuation">,</span> s<span class="token punctuation">]</span><span class="token operator">=</span><span class="token function">findsum</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+	<span class="token comment">% 为了寻找求和</span>
+	s<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+	m<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+	
+	<span class="token keyword">while</span><span class="token punctuation">(</span>s<span class="token operator">&lt;=</span>k<span class="token punctuation">)</span>
+    	m<span class="token operator">=</span>m<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+    	s<span class="token operator">=</span>s<span class="token operator">+</span>m<span class="token punctuation">;</span>
+	<span class="token keyword">end</span>
+<span class="token keyword">end</span>
+
+<span class="token comment">%嵌套附属函数</span>
+<span class="token keyword">function</span> <span class="token punctuation">[</span>m<span class="token punctuation">,</span> s<span class="token punctuation">]</span><span class="token operator">=</span><span class="token function">findsum</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+<span class="token comment">% 为了寻找求和</span>
+	s<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+	m<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+	
+	<span class="token keyword">function</span> n<span class="token operator">=</span><span class="token function">Add</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+		n<span class="token operator">=</span>k<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">end</span>
+	
+	<span class="token keyword">while</span><span class="token punctuation">(</span>s<span class="token operator">&lt;=</span>k<span class="token punctuation">)</span>
+    	m<span class="token operator">=</span><span class="token function">Add</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	s<span class="token operator">=</span>s<span class="token operator">+</span>m<span class="token punctuation">;</span>
+	<span class="token keyword">end</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-2-3-可变输入输出个数的处理"><a href="#3-2-3-可变输入输出个数的处理" class="headerlink" title="3.2.3 可变输入输出个数的处理"></a>3.2.3 可变输入输出个数的处理</h4><p>这是<strong>单元数组</strong>的一个重要应用。有下例：</p>
+<p>matlab提供的cover() 函数可以用来求解两个多项式的乘积，我们可以编写一个函数来计算<strong>任意项多项式</strong>的乘积，需要明悉的是，用<strong>向量</strong>来表示多项式。</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token keyword">function</span> a<span class="token operator">=</span><span class="token function">convs</span><span class="token punctuation">(</span>varargin<span class="token punctuation">)</span>
+	a<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token number">i</span><span class="token operator">=</span><span class="token number">1</span><span class="token operator">:</span>nargin<span class="token punctuation">)</span>
+		a<span class="token operator">=</span><span class="token function">conv</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span>varargin<span class="token punctuation">{</span><span class="token number">i</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">end</span>
+<span class="token keyword">end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-2-4-匿名函数"><a href="#3-2-4-匿名函数" class="headerlink" title="3.2.4 匿名函数"></a>3.2.4 匿名函数</h4><p>匿名函数好像只适合描述<strong>数学函数</strong>，就是那种<strong>公式型的，简单的</strong>函数，其基本的结构为：</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">f<span class="token operator">=</span><span class="token operator">@</span><span class="token punctuation">(</span>变量列表<span class="token punctuation">)</span>函数计算表达式<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中 f 就是<strong>函数句柄</strong>。但其实这个是有误区的，匿名函数既有数值的，又有非数值形式的。匿名的意思是<strong>没有名字</strong>。</p>
+<h4 id="3-2-5-符号函数"><a href="#3-2-5-符号函数" class="headerlink" title="3.2.5 符号函数"></a>3.2.5 符号函数</h4><p>我一直都没有搞懂他与匿名函数的区别，还有与<strong>符号型变量</strong>的区别。现在看上去，应该是符号型函数描述的是<strong>数值型函数</strong>，匿名函数的范围更广一些，对于某些工具函数，两者可以相互替换，但是对于某些函数，两者不能替换。所以顺其自然就好了。</p>
+<p>我现在想来应该是这样的，<strong>符号变量</strong>进行运算的时候，遵循的应该是<strong>符号运算</strong>（具体的我也不清楚，但应该是那种能得到<strong>解析解</strong>的运算），所以显然这种运算并不能很好的解决所有的问题，尤其是在需要求解<strong>数值解</strong>的时候，显然符号函数就远远不够进行这类运算的，这也是在<strong>fsolve</strong>和<strong>fminunc</strong>函数这种求解<strong>数值解</strong>的函数中使用的是<strong>匿名函数</strong>了。</p>
+<h4 id="3-2-6-分段函数的表示"><a href="#3-2-6-分段函数的表示" class="headerlink" title="3.2.6 分段函数的表示"></a>3.2.6 分段函数的表示</h4><p>可以利用<strong>布尔值表达式</strong>巧妙的解决这一问题。例子如下</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">z<span class="token operator">=</span><span class="token number">0.5457</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.75</span><span class="token operator">*</span>y<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">3.75</span><span class="token operator">*</span>x<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">1.5</span><span class="token operator">*</span>x<span class="token punctuation">)</span><span class="token operator">.*</span><span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&gt;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token punctuation">...</span>
+  <span class="token number">0.7575</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span>y<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">6</span><span class="token operator">*</span>x<span class="token operator">.^</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">.*</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&gt;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&lt;=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token operator">+</span><span class="token punctuation">...</span>
+  <span class="token number">0.5457</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.75</span><span class="token operator">*</span>y<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">3.75</span><span class="token operator">*</span>x<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">+</span><span class="token number">1.5</span><span class="token operator">*</span>x<span class="token punctuation">)</span><span class="token operator">.*</span><span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&lt;=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">%...是换行的需要，matlab不能忽视换行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3-绘图"><a href="#3-3-绘图" class="headerlink" title="3.3 绘图"></a>3.3 绘图</h3><h4 id="3-3-1-二维曲线绘制"><a href="#3-3-1-二维曲线绘制" class="headerlink" title="3.3.1 二维曲线绘制"></a>3.3.1 二维曲线绘制</h4><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token function">plot</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>选项<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">% 注意这里x是向量，y既可以是向量，又可以是矩阵</span>
+<span class="token function">plot</span><span class="token punctuation">(</span>x1<span class="token punctuation">,</span>y1<span class="token punctuation">,</span>选项<span class="token punctuation">,</span>x2<span class="token punctuation">,</span>y2<span class="token punctuation">,</span>选项<span class="token punctuation">,</span>x3<span class="token punctuation">,</span>y3<span class="token punctuation">,</span>选项<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">% 可以用这个来绘制多个曲线在一张图上</span>
+<span class="token function">plotyy</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y1<span class="token punctuation">,</span>x<span class="token punctuation">,</span>y2<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">% 用于解决幅值差悬殊的情况</span>
+<span class="token function">ezplot</span><span class="token punctuation">(</span><span class="token string">'隐函数表达式'</span><span class="token punctuation">,</span>定义域<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">ezplot</span><span class="token punctuation">(</span><span class="token string">'x^2*sin(x+y^2)+y^2*exp(x+y)+5*cos(x^2+y)'</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-3-2-三维曲线绘制"><a href="#3-3-2-三维曲线绘制" class="headerlink" title="3.3.2 三维曲线绘制"></a>3.3.2 三维曲线绘制</h4><pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab">t<span class="token operator">=</span><span class="token number">0</span><span class="token operator">:</span><span class="token number">0.1</span><span class="token operator">:</span><span class="token number">2</span><span class="token operator">*</span><span class="token keyword">pi</span><span class="token punctuation">;</span>
+x<span class="token operator">=</span>t<span class="token operator">.^</span><span class="token number">3.</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span>t<span class="token punctuation">)</span><span class="token operator">.*</span><span class="token function">sin</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">*</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+y<span class="token operator">=</span>t<span class="token operator">.^</span><span class="token number">3.</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span>t<span class="token punctuation">)</span><span class="token operator">.*</span><span class="token function">cos</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">*</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+z<span class="token operator">=</span>t<span class="token operator">.^</span><span class="token number">2</span><span class="token punctuation">;</span>                    <span class="token comment">% 初始化曲线</span>
+<span class="token function">plot3</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span>
+grid <span class="token comment">% grid是加网格线的意思，但是这样是没有办法添加成功的</span>
+<span class="token function">plot3</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span><span class="token punctuation">,</span>grid <span class="token comment">% 这样才是正确的添加方式，可能是解释型语言的弊病吧</span>
+<span class="token function">plot3</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span><span class="token punctuation">,</span>hold on<span class="token punctuation">,</span><span class="token function">stem3</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span> <span class="token comment">% hold on 是将两个图像显示在一种图上的方法</span>
+<span class="token function">plot3</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span><span class="token punctuation">,</span>hold on<span class="token punctuation">,</span><span class="token function">stem3</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span><span class="token punctuation">,</span>grid <span class="token comment">% 最全的图像</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-3-3-三维曲面绘制"><a href="#3-3-3-三维曲面绘制" class="headerlink" title="3.3.3 三维曲面绘制"></a>3.3.3 三维曲面绘制</h4><p>不同于<strong>曲面绘制</strong>，<strong>曲面绘制</strong>需要先生成<strong>网格数据</strong>，然后才能生成图片。</p>
+<pre class="line-numbers language-matlab" data-language="matlab"><code class="language-matlab"><span class="token punctuation">[</span>x y<span class="token punctuation">]</span><span class="token operator">=</span><span class="token function">meshgrid</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">0.04</span><span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">:</span><span class="token number">0.04</span><span class="token operator">:</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">% 生成网格数据</span>
+z<span class="token operator">=</span><span class="token number">0.5457</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.75</span><span class="token operator">*</span>y<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">3.75</span><span class="token operator">*</span>x<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">1.5</span><span class="token operator">*</span>x<span class="token punctuation">)</span><span class="token operator">.*</span><span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&gt;</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token punctuation">...</span>
+  <span class="token number">0.7575</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span>y<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">6</span><span class="token operator">*</span>x<span class="token operator">.^</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">.*</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&gt;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&lt;=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token operator">+</span><span class="token punctuation">...</span>
+  <span class="token number">0.5457</span><span class="token operator">*</span><span class="token function">exp</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">0.75</span><span class="token operator">*</span>y<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">3.75</span><span class="token operator">*</span>x<span class="token operator">.^</span><span class="token number">2</span><span class="token operator">+</span><span class="token number">1.5</span><span class="token operator">*</span>x<span class="token punctuation">)</span><span class="token operator">.*</span><span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token operator">&lt;=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">surf</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 工具总结</a>
+              <a href="/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" rel="tag"><i class="fa fa-tag"></i> 数学建模</a>
+              <a href="/tags/S2%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S2课上</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/5c72949e/" rel="prev" title="办公工具-用Word写论文">
+      <i class="fa fa-chevron-left"></i> 办公工具-用Word写论文
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/7cb310e9/" rel="next" title="大学物理-经典力学">
+      大学物理-经典力学 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MATLAB%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80"><span class="nav-text">MATLAB程序设计语言基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8F%98%E9%87%8F%E4%B8%8E%E5%B8%B8%E9%87%8F"><span class="nav-text">一、变量与常量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.1 常见数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-%E6%95%B0%E5%80%BC%E5%9E%8B%E6%95%B0%E6%8D%AE"><span class="nav-text">1.1.1 数值型数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-%E7%AC%A6%E5%8F%B7%E5%9E%8B%E6%95%B0%E6%8D%AE"><span class="nav-text">1.1.2 符号型数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B0%E6%8D%AE"><span class="nav-text">1.1.3 字符串数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-4-%E5%87%BD%E6%95%B0%E5%8F%A5%E6%9F%84"><span class="nav-text">1.1.4 函数句柄</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-5-%E5%8D%95%E5%85%83%E6%95%B0%E7%BB%84"><span class="nav-text">1.1.5 单元数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-6-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1"><span class="nav-text">1.1.6 类与对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%B8%B8%E8%A7%81%E5%B8%B8%E9%87%8F"><span class="nav-text">1.2 常见常量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-%E5%B0%8F%E9%87%8Feps"><span class="nav-text">1.2.1 小量eps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E8%99%9A%E6%95%B0%E5%8D%95%E4%BD%8Di%E3%80%81j"><span class="nav-text">1.2.2 虚数单位i、j</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-%E6%97%A0%E7%A9%B7-Inf"><span class="nav-text">1.2.3 无穷 Inf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-%E4%B8%8D%E5%AE%9A%E5%BC%8F-NaN"><span class="nav-text">1.2.4 不定式 NaN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-5-%E5%9C%86%E5%91%A8%E7%8E%87"><span class="nav-text">1.2.5 圆周率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-6-%E8%AD%A6%E5%91%8A%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF"><span class="nav-text">1.2.6 警告错误信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-text">二、基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E7%94%9F%E6%88%90%E7%9F%A9%E9%98%B5"><span class="nav-text">2.1 生成矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-%E7%9F%A9%E9%98%B5%E6%80%BB%E8%AE%BA"><span class="nav-text">2.1.1 矩阵总论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-%E5%A3%B0%E6%98%8E%E6%B3%95"><span class="nav-text">2.1.2 [ ] 声明法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E5%86%92%E5%8F%B7%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-text">2.2.3 冒号表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-%E5%AD%90%E7%9F%A9%E9%98%B5%E6%8F%90%E5%8F%96"><span class="nav-text">2.2.4 子矩阵提取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%9F%A5%E8%AF%A2"><span class="nav-text">2.2 查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-text">2.2.1 基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E8%8B%B1%E8%AF%AD"><span class="nav-text">2.2.2 英语</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%95%B0%E5%AD%A6%E8%BF%90%E7%AE%97"><span class="nav-text">2.3 数学运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E7%9F%A9%E9%98%B5%E7%9A%84%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97"><span class="nav-text">2.3.1 矩阵的代数运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="nav-text">2.3.2 矩阵的逻辑运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%B8%83%E5%B0%94%E8%BF%90%E7%AE%97"><span class="nav-text">2.3.3 矩阵的布尔运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-%E8%A7%A3%E6%9E%90%E7%BB%93%E6%9E%9C%E7%9A%84%E5%8C%96%E7%AE%80%E5%92%8C%E5%8F%98%E6%8D%A2"><span class="nav-text">2.3.4 解析结果的化简和变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-5-%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6%E8%BF%90%E7%AE%97"><span class="nav-text">2.3.5 离散数学运算</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C"><span class="nav-text">三、高级操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%B5%81%E7%A8%8B%E7%BB%93%E6%9E%84"><span class="nav-text">3.1 流程结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-%E5%A4%8D%E6%9D%82%E7%BB%93%E6%9E%84%E6%80%BB%E8%AE%BA"><span class="nav-text">3.1.1 复杂结构总论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84"><span class="nav-text">3.1.2 循环结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-%E6%9D%A1%E4%BB%B6%E8%BD%AC%E7%A7%BB%E7%BB%93%E6%9E%84"><span class="nav-text">3.1.3 条件转移结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-%E5%BC%80%E5%85%B3%E7%BB%93%E6%9E%84"><span class="nav-text">3.1.4 开关结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-5-%E8%AF%95%E6%8E%A2%E7%BB%93%E6%9E%84"><span class="nav-text">3.1.5 试探结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%87%BD%E6%95%B0"><span class="nav-text">3.2 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E5%87%BD%E6%95%B0%E6%80%BB%E8%AE%BA"><span class="nav-text">3.2.1 函数总论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-text">3.2.2 函数的格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E5%8F%AF%E5%8F%98%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E4%B8%AA%E6%95%B0%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-text">3.2.3 可变输入输出个数的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4-%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0"><span class="nav-text">3.2.4 匿名函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-5-%E7%AC%A6%E5%8F%B7%E5%87%BD%E6%95%B0"><span class="nav-text">3.2.5 符号函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-6-%E5%88%86%E6%AE%B5%E5%87%BD%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="nav-text">3.2.6 分段函数的表示</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%BB%98%E5%9B%BE"><span class="nav-text">3.3 绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-%E4%BA%8C%E7%BB%B4%E6%9B%B2%E7%BA%BF%E7%BB%98%E5%88%B6"><span class="nav-text">3.3.1 二维曲线绘制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-%E4%B8%89%E7%BB%B4%E6%9B%B2%E7%BA%BF%E7%BB%98%E5%88%B6"><span class="nav-text">3.3.2 三维曲线绘制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-%E4%B8%89%E7%BB%B4%E6%9B%B2%E9%9D%A2%E7%BB%98%E5%88%B6"><span class="nav-text">3.3.3 三维曲面绘制</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

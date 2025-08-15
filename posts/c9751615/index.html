@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="跟布尔代数那一篇性质类似，可以看做是布尔代数在数字电路中的一个应用。里面介绍的东西跟计组这门课关系不大。 但是可以说，这个实在是太漂亮优雅了。首先接触的时候就可以体会出硬件思想与编程软件思想的区别（还是多亏了叶哥哥的提醒），然后还可以体会设计思想，是一种完全不同于解题的理念，需要考虑的东西更多，有的时候求的不是最完美，而是最合适。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成-数据表示">
+<meta property="og:url" content="https://thysrael.github.io/posts/c9751615/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="跟布尔代数那一篇性质类似，可以看做是布尔代数在数字电路中的一个应用。里面介绍的东西跟计组这门课关系不大。 但是可以说，这个实在是太漂亮优雅了。首先接触的时候就可以体会出硬件思想与编程软件思想的区别（还是多亏了叶哥哥的提醒），然后还可以体会设计思想，是一种完全不同于解题的理念，需要考虑的东西更多，有的时候求的不是最完美，而是最合适。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231019205227001.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231019205619171.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231019210211837.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231019212956503.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231019214143528.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231019214738074.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231019214839095.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231020102046049.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231020102231696.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231020102344171.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/c9751615/image-20231020103055372.png">
+<meta property="article:published_time" content="2022-01-06T12:48:41.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.063Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S3复习">
+<meta property="article:tag" content="计算机组成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/c9751615/image-20231019205227001.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/c9751615/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>计算机组成-数据表示 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c9751615/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机组成-数据表示
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-06 20:48:41" itemprop="dateCreated datePublished" datetime="2022-01-06T20:48:41+08:00">2022-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">计算机组成</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>跟布尔代数那一篇性质类似，可以看做是布尔代数在数字电路中的一个应用。里面介绍的东西跟计组这门课关系不大。</p>
+<p>但是可以说，这个实在是太<strong>漂亮优雅</strong>了。首先接触的时候就可以体会出<strong>硬件思想</strong>与编程软件思想的区别（还是多亏了叶哥哥的提醒），然后还可以体会<strong>设计</strong>思想，是一种完全不同于解题的理念，需要考虑的东西更多，有的时候求的不是最完美，而是最合适。</p>
+<span id="more"></span>
+<h2 id="一、整数"><a href="#一、整数" class="headerlink" title="一、整数"></a>一、整数</h2><h3 id="1-1-二进制数与十进制数间的转换"><a href="#1-1-二进制数与十进制数间的转换" class="headerlink" title="1.1 二进制数与十进制数间的转换"></a>1.1 二进制数与十进制数间的转换</h3><p>首先强调，这里的二进制数是补码形式的（这里的补码就是负数补码，正数原码），我后面进行数学推导的时候，用的是 n 位的二进制数，从高到低，分别是：</p>
+<script type="math/tex; mode=display">
+a_{n-1}, a_{n-2}, \cdot\cdot\cdot, a_0</script><p>对于<strong>二进制转十进制</strong>，有公式</p>
+<script type="math/tex; mode=display">
+decimal = -a_{n-1} \times 2^{n-1} + a_{n-2} \times 2^{n-2} + \cdot\cdot\cdot + a_0 \times 2^0</script><p>这是因为补码的本质是<strong>将一个负数用一个正数表示</strong>，补码的构造是结合溢出，也就是<strong>取余</strong>操作，比如对于四位二进制，-4 对应的是 12，也就是 $-4+2^4 = 12$，可以看出，如果想把补码（负数对应的正数）还原成原来的负数，需要减去 $2^n$ ，所以对于一个二进制数表示的负数，如果按照无符号的算法，有 unsigned_decimal，减去 $2^n$，就得到了 signed_decimal 。</p>
+<script type="math/tex; mode=display">
+unsigned_{decimal} = a_{n-1} \times 2^{n-1} + a_{n-2} \times 2^{n-2} + \cdot\cdot\cdot + a_0 \times 2^0</script><script type="math/tex; mode=display">
+signed_{decimal} =unsigned_{decimal} - 2^n = -a_{n-1} \times 2^{n-1} + a_{n-2} \times 2^{n-2} + \cdot\cdot\cdot + a_0 \times 2^0</script><p>然后发现，对于二进制正数，上面的计算公式也<strong>恰巧符合</strong>（$a_{n-1}$ 恰好为 0，正负不影响），所以这个公式就很简便了。</p>
+<p>对于<strong>十进制转二进制</strong>，对于正数，就可以直接转化，对于负数 $x_0$ ，需要先写出其绝对值的二进制表示 $x_1$ ，在逐位取反得到 $x_2$ ，然后加一，就可以得到对应的二进制数 $x_3$ ，现在我们来<strong>证明</strong>这个操作的合法性。有公式：</p>
+<script type="math/tex; mode=display">
+x_1 = -x_0</script><script type="math/tex; mode=display">
+x_1 + x_2 = 111\cdot\cdot\cdot1 = 2^n - 1</script><script type="math/tex; mode=display">
+x_2 = 2^n-1-x_1</script><p>此时如果我们再给 $x_2$ 加 1 ，就得到了式子：</p>
+<script type="math/tex; mode=display">
+x_3 = 2^n - x_1 = 2^n + x_0</script><p>依照<strong>溢出原理</strong>，一个负数加上$2^n$，就可以得到对应的正数。所以 $x_3$ 就是 $x_1$ 对应的那个正数。</p>
+<h3 id="1-2-通用加法器的实现"><a href="#1-2-通用加法器的实现" class="headerlink" title="1.2 通用加法器的实现"></a>1.2 通用加法器的实现</h3><p>对于正数，就是以原码的形式储存，对于负数，是按照补码的形式存储的，这是补码的<strong>第一次应用</strong>，这样存储的好处是可以将原来以<strong>无符号加法</strong>为实现目标的<strong>加法器</strong>，也可以用于<strong>“负数 + 正数”、“正数 + 负数”、“负数 + 负数” </strong>的通用加法器，不需要更改一点硬件设计，这是因为有如下公式：</p>
+<script type="math/tex; mode=display">
+计算机中负数 + 正数 = 实际负数 + 2^n + 正数 = 实际负数 + 正数（利用溢出原理消去 2^n）</script><script type="math/tex; mode=display">
+计算机中负数 A + 计算机中负数 B = 实际负数 A + 2^n + 实际负数 B + 2^n = 实际负数 A + 实际负数 B</script><h3 id="1-3-减法器的实现"><a href="#1-3-减法器的实现" class="headerlink" title="1.3 减法器的实现"></a>1.3 减法器的实现</h3><p>这是补码的<strong>第二次</strong>应用，这次跟通用加法器的实现不同，是需要更改一些硬件基础的，对于<strong>减数</strong>，需要在前面增加一个 n 位的异或门，一个 n 位输入接减数，另一个接<strong>减法信号</strong>（sub == 1 时，实现减法器功能，sub == 0 时，实现加法器功能）。此外，还需要把加法器的进位输入端连接到<strong>减法信号</strong>，整体的效果当要进行减法的时候，是对于减数进行取反操作，并给结果加 1，可以知道，这样构造出的减法器应用了补码原理，而且是<strong>通用减法器</strong>。</p>
+<p>硬件描述如下：</p>
+<pre class="line-numbers language-verilog" data-language="verilog"><code class="language-verilog"><span class="token keyword">module</span> <span class="token function">Adder_subtractor</span><span class="token punctuation">(</span><span class="token keyword">input</span> <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">input</span> <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span> b<span class="token punctuation">,</span> <span class="token keyword">input</span> sub<span class="token punctuation">,</span> <span class="token keyword">output</span> <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span> ans<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">wire</span> carry<span class="token punctuation">;</span>
+    <span class="token keyword">wire</span> <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span> tmp <span class="token operator">=</span> b <span class="token operator">^</span> <span class="token operator">{</span><span class="token number">16</span><span class="token operator">{</span>sub<span class="token operator">}}</span><span class="token punctuation">;</span><span class="token comment">//如果 sub == 1，就对 b 取反，如果 sub == 0，就不发生变化</span>
+    
+    add16 <span class="token function">sub</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> tmp<span class="token punctuation">,</span> sub<span class="token punctuation">,</span> ans<span class="token punctuation">,</span> carry<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//大部分硬件还是与加法器上搭建的</span>
+<span class="token keyword">endmodule</span>
+
+<span class="token keyword">module</span> <span class="token function">add16</span><span class="token punctuation">(</span><span class="token keyword">input</span> <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">input</span> <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span> b<span class="token punctuation">,</span> <span class="token keyword">input</span> cin<span class="token punctuation">,</span> <span class="token keyword">output</span> <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">]</span> sum<span class="token punctuation">,</span> <span class="token keyword">output</span> cout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">assign</span> <span class="token operator">{</span>cout<span class="token punctuation">,</span> sum<span class="token operator">}</span> <span class="token operator">=</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+<span class="token keyword">endmodule</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-4-位数拓展"><a href="#1-4-位数拓展" class="headerlink" title="1.4 位数拓展"></a>1.4 位数拓展</h3><p>比如要把一个 4 位的二进制数拓展成 8 位，还不能改变他所代表的值。可以这么做，将 $a_{n-1}$ 复制到待扩展位中，就可以满足条件。我们采用迭代证明，对于 n 位数，如果扩展到 n+1 可以，那么扩展到 n+2，n+3，n+4……都可以。</p>
+<p>对于正数，前面添一个 0，显然对值本身不会造成任何影响，对于负数，前面添一个 1，我们将其转换为十进制</p>
+<script type="math/tex; mode=display">
+extend =-a_{n} \times 2^{n} + a_{n-1} \times 2^{n-1} + \cdot\cdot\cdot+ a_0 \times 2^0</script><p>我们又有：</p>
+<script type="math/tex; mode=display">
+a_n= 1， a_{n-1} = 1</script><p>所以有</p>
+<script type="math/tex; mode=display">
+extend =-a_{n} \times 2^{n} + a_{n-1} \times 2^{n-1} + \cdot\cdot\cdot + a_0 \times 2^0  = -a_{n-1} \times 2^{n-1} + a_{n-2} \times 2^{n-2} + \cdot\cdot\cdot + a_0 \times 2^0 = non\_extend</script><h3 id="1-5-溢出判断"><a href="#1-5-溢出判断" class="headerlink" title="1.5 溢出判断"></a>1.5 溢出判断</h3><p>溢出有两种形式，“正数+正数”和“负数+负数”（减法自动转化）。最简单的方法是判断<strong>最高位的进位 carry_out</strong> 和<strong>次高位的进位 carry_out</strong> 是否相同，如果相同，就说明发出了溢出。</p>
+<p>对于<strong>“正数+正数”</strong>，显然最高位肯定 carry_out 是 0（两个 0 和一个 carry_in 相加没办法进位）如果被次高位进位了，那么它就变成了一个负数了，所以要求次高位不能进位。</p>
+<p>对于<strong>“负数+负数”</strong>，最高位的 carry_out 一定是 1，如果是次高位没有 1 进上来，那么就会在最高位出现 0，就溢出了，如果是进上来了，那么可以证明结果尽管发出了物理上的溢出，但是在数值上没有问题，因为有公式</p>
+<script type="math/tex; mode=display">
+计算机中负数 A + 计算机中负数 B = 实际负数 A + 2^n + 实际负数 B + 2^n</script><p>对于溢出，其实就是减掉一个 $2^n$​​，显然是不会对真值造成影响的。</p>
+<h3 id="1-6-超前进位加法器"><a href="#1-6-超前进位加法器" class="headerlink" title="1.6 超前进位加法器"></a>1.6 超前进位加法器</h3><pre class="line-numbers language-none"><code class="language-none">C1 = A0 &amp; B0 | C0 &amp; (A0 ^ B0);
+C2 = A1 &amp; B1 | C1 &amp; (A1 ^ B1);
+...
+Cn = An-1 &amp; Bn-1 | Cn-1 &amp; (An-1 ^ Bn-1);
+
+//所以如果我们这样转换变量
+Gi = Ai &amp; Bi; Pi = Ai ^ Bi;
+//就会有如下式子
+C1 = G0 | P0 &amp; c0;
+C2 = G1 | G0 &amp; P1 | P0 &amp; P1 &amp; C0;
+C3 = G2 | G1 &amp; P2 | G0 &amp; P1 &amp; P2 | P0 &amp; P1 &amp; P2 &amp; C0;
+C4 = G3 | G2 &amp; P3 | G1 &amp; P2 &amp; P3 | G0 &amp; P1 &amp; P2 &amp; P3 | P0 &amp; P1 &amp; P2 &amp; P3 &amp; C0;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，$Ci$ 不再和 $C{i-1}$ 有直接关系了，这样就为<strong>并行计算</strong>提供了方法。但是相应的，电路设计变得复杂。</p>
+<h3 id="1-7-无符号乘法"><a href="#1-7-无符号乘法" class="headerlink" title="1.7 无符号乘法"></a>1.7 无符号乘法</h3><p>首先我们看无符号乘法的的实现，其流程基本上就是 W 次（其中 W 为数据位宽）的加法和移位操作，是二进制竖式乘法的模拟：</p>
+<p><img src="/posts/c9751615/image-20231019205227001.png" alt="image-20231019205227001"></p>
+<p>做出来硬件比较直观的是这样：</p>
+<p><img src="/posts/c9751615/image-20231019205619171.png" alt="image-20231019205619171"></p>
+<p>可以看到利用 6 的不同位并配合 3 的左移位（SL）和加法就达到计算的效果。但是这种直观的方法会导致计算时间很长，因为靠右侧的加法单元要等待左侧加法单元的计算结果稳定后（也就是算完后），再进行计算（被串行化）了，每个周期的时延会延长。</p>
+<p>所以我们就提出了下面这种模型，相比于上面的简陋版，这种模型使用了一个循环结构，每个周期只完成一次加法和一次位移，这样每个周期的时延就减少了，不过乘法运算所需要的周期数就增加了。这种结构还有一个好处在于节约了硬件资源，原先用 W - 1 个加法单元可以完成的事情，现在用 1 个就可以完成了。</p>
+<p><img src="/posts/c9751615/image-20231019210211837.png" alt="image-20231019210211837"></p>
+<p>当然还有另一种设计，因为乘法十分优良的并行性（每一位之间是没有关系的），所以可以产生一个树结构来汇总加法计算结果，这样在一个周期内就可以完成运算，而一个周期的时间其实是 logW 个加法单元的时间，其缺点就在于会使用 W - 1 个加法单元，如下所示：</p>
+<p><img src="/posts/c9751615/image-20231019212956503.png" alt="image-20231019212956503"></p>
+<p>在实际实现中，可以在上面这两种设计思路中取一个平衡，使得计算资源和计算时间更加均衡或者符合要求。乘法实现如此自由，得益于乘法良好的并行性。</p>
+<h3 id="1-8-有符号乘法"><a href="#1-8-有符号乘法" class="headerlink" title="1.8 有符号乘法"></a>1.8 有符号乘法</h3><p>首先应当明确，有符号数乘法与有符号加法不同，有符号加法可以完全使用无符号加法的加法器（利用了溢出原理），但是有符号乘法和无符号乘法是不一样的，比如说 3（<code>4b'0011</code>）与 -6 （<code>4'b1010</code>）如果做无符号乘法，那么结果是 <code>8'b00011110</code>，其对应的有符号数是 30，这与原本的结果 -18 风马牛不相及。</p>
+<p>为了保证有符号数的正确性，较为直观就可以想到，可以先对乘数取绝对值，然后对绝对值进行运算，然后将结果改变符号。这种思路非常直观，但是需要的硬件资源较多，因为要进行补码运算（这里插一嘴，我刚开始学的时候总觉得原码和反码是一对，因为俩个数在二进制中“针锋相对”，十分漂亮，但是仔细想，只有原码和他的补码的和是 $2^W$ ，这是更加美妙的数学性质），比较耗资源。</p>
+<p>另外其实也可以考虑利用 1.1 节提到的思路，将最高位视为负数（也就是减法器），这样就可以实现正确运算，如下所示</p>
+<script type="math/tex; mode=display">
+−3 × 6 = (−1 × 2^3 + 1 × 2^2 + 0 × 2^1 + 1 × 2^0) × 6 = −2^3 × 6 + 2^2 × 6 + 2^0 × 6 = -18</script><p>一种对应的实现如下：</p>
+<p><img src="/posts/c9751615/image-20231019214143528.png" alt="image-20231019214143528"></p>
+<p>可以看到圈出的部分有可能是加法，也有可能是减法。需要注意，即使 <code>ain</code> 是一个负数，这个实现依然是可以使用的。</p>
+<p>还有一种设计思路是这样的：我们为了算补码的乘法，可以这样算，首先将乘数符号拓展到 2W 位，然后相乘，得到 4W 的结果，取低 2W 位即为正确的积，演示如下：</p>
+<p><img src="/posts/c9751615/image-20231019214738074.png" alt="image-20231019214738074"></p>
+<p>其证明如下（感谢 kg）：</p>
+<p><img src="/posts/c9751615/image-20231019214839095.png" alt="image-20231019214839095"></p>
+<p>我们可以用硬件模拟这种结果即可。同时也可以这样优化硬件，因为有</p>
+<pre class="line-numbers language-none"><code class="language-none">111.111 x a = -a<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>比如 a x b ，如果 a 最高位是 1，那无符号乘结果高 W 位减去 b 就行，同理 b 最高位是 1，无符号结果高 W 位减 a 就行。</p>
+<h3 id="1-9-无符号除法"><a href="#1-9-无符号除法" class="headerlink" title="1.9 无符号除法"></a>1.9 无符号除法</h3><p>无符号除法也是二进制竖式计算的模拟</p>
+<p><img src="/posts/c9751615/image-20231020102046049.png" alt="image-20231020102046049"></p>
+<p>在实际的实现中，会将余数和被除数放在一个寄存器中，其算法流程如图所示</p>
+<p><img src="/posts/c9751615/image-20231020102231696.png" alt="image-20231020102231696"></p>
+<p>其实现结构如下：</p>
+<p><img src="/posts/c9751615/image-20231020102344171.png" alt="image-20231020102344171"></p>
+<p>在运算中，我们需要：</p>
+<ul>
+<li>将除数放在 Divisor 的高 32 位</li>
+<li>将 Quotient 置为 0</li>
+</ul>
+<p>当然这个结构还是十分朴素的，因为还有很多优化的空间，在优化之后我们可以看到如下结构</p>
+<p><img src="/posts/c9751615/image-20231020103055372.png" alt="image-20231020103055372"></p>
+<p>可以解释一下为什么这样可以：</p>
+<ul>
+<li>首先除数本来就应该是 32 位的，之前是 64 位是为了和 64 位的被除数或者余数做运算。</li>
+<li>那么如果将除数改成 32 位的，那么为啥还可以和 64 位的被除数做运算，这是因为实际上除法周期的只设计 32 位的比较和加减法运算，所以在局部来说用 32 位 ALU 和余数的高 32 位进行计算式合理的。</li>
+<li>余数和商是可以共用一个寄存器的，因为由除法的性质可知，余数和商（这里说的都是计算过程中的）的位数加和永远都是 64。</li>
+<li>左移功能也非常优雅，因为商每次都在左移（产生新的结算结果），而余数为了和除数对齐，每次也都是要左移（对应朴素版本的除数右移），这样余数越来越短，而商越来越长，两者位数之和不变。</li>
+<li>这种设计很容易得到和 MIPS 或者 RISCV 类似的结果，就是 Hi 存储余数，Lo 存储商。所以严格意义上说，寄存器是不需要右移功能的，右移功能是为了在低 32 位中取出余数（将高 32 位右移到低 32 位），至于为什么非得在低 32 位拿到结果，这是因为这样可以减少高 32 位的 fanout（连在高 32 位上的线），芯片上的线不是理想环境，是个 rc 电路，充电放电都需要时间。一个寄存器对外接的线越多，需要承担的负载就越大，充放电时间就更长，频率就更低。</li>
+<li>此外无论是这个实现还是上一个实现，里面都用到了“移位寄存器”，这是因为这种每次移动 1 位的功能十分简单，所以放到了寄存器中实现，这样更加优化。但是并非所有移位功能都很简单，这是因为支持任意位功能的移位是十分复杂的，比如移动 7 位，就很容易变成进行 7 次移位，那么一个周期时间就会非常长，这种移位是放到 ALU 中的，有一种设计思路是“第一个周期 1 位移，第二个周期 2 位移，第三个周期 4 位移，第四个周期 8 位移，第五个周期 16 位移”，这样在 5 个周期中结束运算，利用了二进制思想。</li>
+</ul>
+<p>上面只是介绍了无符号除法的一种“模拟竖式”的实现方法，而在实际的实现中，还有更加变态的方法，比如说“牛顿插值”（听着就离谱），所以就不再讨论了。</p>
+<h3 id="1-10-有符号除法"><a href="#1-10-有符号除法" class="headerlink" title="1.10 有符号除法"></a>1.10 有符号除法</h3><p>我没有太研究过普世的方法，据说可以依靠“取绝对值进行无符号运算后加上符号”的方法解决。</p>
+<hr>
+<h2 id="二、浮点数"><a href="#二、浮点数" class="headerlink" title="二、浮点数"></a>二、浮点数</h2><h3 id="2-1-定点数和浮点数"><a href="#2-1-定点数和浮点数" class="headerlink" title="2.1 定点数和浮点数"></a>2.1 定点数和浮点数</h3><p>二进制小数相比于二进制的整数并没有什么稀奇的，小数点的部分其实就是 2 的负幂次，比如说十进制小数 1.375 因为可以表示成：</p>
+<script type="math/tex; mode=display">
+1.375 = 1 + 0.25 + 0.125 = 1 \times 2^0 + 0 \times 2^{-1} + 1 \times 2^{-2} + 1 \times 2^{-3}</script><p>所以就可以被表示成二进制小数 1.011 。</p>
+<p>所谓的定点数，就是规定某一位与某个幂次的对应关系，比如说第 0 位就对应 $2^{-4}$ ，第 1 位就对应 $2^{-3}$ ，依次类推，那么 <code>0b0110</code> 就表示 <code>0.375</code> 。这种方法其实和整数的表示方法是相同的，整数本质上是规定第 $n$ 位对应 $2^{n}$ 。</p>
+<p>而浮点数则是通过引入“幂次”（阶码）这个概念，使得“某一位与某个幂次的对应关系”变得不再是固定的，而是要靠阶码来确定。</p>
+<h3 id="2-2-最基础的浮点数表示"><a href="#2-2-最基础的浮点数表示" class="headerlink" title="2.2 最基础的浮点数表示"></a>2.2 最基础的浮点数表示</h3><p>我们用一个十进制数 288 来举例，288 的二进制表示是 11100100，转换为科学计数法就是 $1.11001 \times 2^{111}$​ 。我们用符号位（sign）存储数的<strong>正负</strong>，用阶码（exponent）存储<strong>基数的幂次</strong>，用尾数（mantissa）存储那个小数。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号（1位）</th>
+<th style="text-align:center">阶码（8位）</th>
+<th style="text-align:center">尾数（23 位）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0000_0111</td>
+<td style="text-align:center">111_0010_0000_0000_0000_0000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="2-3-隐含前导-1"><a href="#2-3-隐含前导-1" class="headerlink" title="2.3 隐含前导 1"></a>2.3 隐含前导 1</h3><p>我们注意到，只要需要存储的数字不是 0，尾数的第一位就一定是 1，所以就没有必要每次花一个数据位去保存了，所以我们就得到了采用<strong>隐含前导 1</strong>的第二种表示方法。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号（1位）</th>
+<th style="text-align:center">阶码（8位）</th>
+<th style="text-align:center">尾数（23 位）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0000_0111</td>
+<td style="text-align:center">110_0100_0000_0000_0000_0000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这也是“尾数”名字的由来，正因为它是小数点 <code>.</code> 后的部分，所以被称为尾数。</p>
+<h3 id="2-4-偏码与补码"><a href="#2-4-偏码与补码" class="headerlink" title="2.4 偏码与补码"></a>2.4 偏码与补码</h3><p>那么如果遇到阶码是负数的情况怎么办，当然我们可以用补码来表示，但是补码不太符合浮点数的计算要求，为什么这么说呢？首先我要了解一下<strong>浮点数的加法过程</strong>。</p>
+<p>面对浮点数加法，我们与整数加法不同的是，我们要先<strong>比较</strong>阶码的大小，然后利用阶码的差，将<strong>尾数对齐</strong>，那么显然，补码的设计是不适合进行比较的，比如 -1 永远都对应最大的无符号数，比所有的正数都大。我们需要的是一个<strong>好比较的数制</strong>。</p>
+<p>这是<strong>偏码</strong>的长处，偏码就是把原始阶码加上了一个<strong>常数偏置</strong>。这个常数一般是 $2^{n-1} - 1$​ ，其中 $n$ 是阶码的位数，这样一来，阶码的大小比较就很容易了，而且计算差值也不会受到影响。所以采用了偏码的 288，储存形式如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">符号（1位）</th>
+<th style="text-align:center">阶码（8位）</th>
+<th style="text-align:center">尾数（23 位）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1000_0110</td>
+<td style="text-align:center">110_0100_0000_0000_0000_0000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>那么为什么不所有的数都采用偏码表示，舍弃补码的用法，这可能是因为补码能更好的适应加减法吧。</p>
+<h3 id="2-5-浮点数的表示范围"><a href="#2-5-浮点数的表示范围" class="headerlink" title="2.5 浮点数的表示范围"></a>2.5 浮点数的表示范围</h3><p>需要明确的一点，尽管浮点数的表示范围大了，但是其实他能表示的数还是 $2^{32}$ 个，这跟一个 int 表示的数是一样的，准确的来说，是浮点数的上限高了，但是范围内只能表示特定的一些数。因为只有 $2^{32}$ 中状态，所以只能表示 $2^{32}$ 种数，这是很直白的道理。</p>
+<p>所以与浮点数相伴随的，是<strong>舍入</strong>现象和<strong>溢出</strong>现象，因为没办法精确表示每一个数，所以<strong>舍入</strong>是必然的。<strong>溢出</strong>也比整型要复杂，分为<strong>负上溢出</strong>（负数太小了），<strong>负下溢出</strong>（负数太接近 0 了），<strong>正下溢出</strong>（正数太接近 0 了），<strong>正上溢出</strong>（正数太大了）。</p>
+<h3 id="2-6-特殊情况的表示"><a href="#2-6-特殊情况的表示" class="headerlink" title="2.6 特殊情况的表示"></a>2.6 特殊情况的表示</h3><p>正如 2.4 节形容的，有些数是没有办法按常理表示的，所以我们分出了几个状态来表示这些特殊值</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数字</th>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">阶码</th>
+<th style="text-align:center">小数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">x</td>
+<td style="text-align:center">0000_0000</td>
+<td style="text-align:center">000_0000_0000_0000_0000_0000</td>
+</tr>
+<tr>
+<td style="text-align:center">$\infty $</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1111_1111</td>
+<td style="text-align:center">000_0000_0000_0000_0000_0000</td>
+</tr>
+<tr>
+<td style="text-align:center">$-\infty$</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1111_1111</td>
+<td style="text-align:center">000_0000_0000_0000_0000_0000</td>
+</tr>
+<tr>
+<td style="text-align:center">NaN</td>
+<td style="text-align:center">x</td>
+<td style="text-align:center">1111_1111</td>
+<td style="text-align:center">非零</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="2-7-IEEE-754-标准"><a href="#2-7-IEEE-754-标准" class="headerlink" title="2.7 IEEE 754 标准"></a>2.7 IEEE 754 标准</h3><p>采用隐含前导 1，偏码，特殊情况的数制就是这个标准。</p>
+<h3 id="2-8-浮点数加减乘除分析"><a href="#2-8-浮点数加减乘除分析" class="headerlink" title="2.8 浮点数加减乘除分析"></a>2.8 浮点数加减乘除分析</h3><p>在设计难度上，浮点数加减法 &gt; 浮点除法 &gt; 浮点乘法 &gt; 整数运算。</p>
+<p>这是因为对于浮点乘除法，并不需要对齐，只需要尾数相乘除，阶码相加减即可，而加减法要考虑对齐的问题，除此之外，还需要支持许多非标准数和舍入模式。</p>
+<p>这里是一份软件实现的 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/ucb-bar/berkeley-softfloat-3/blob/master/source/f32_mul.c">乘法</a> 和软件实现的 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/ucb-bar/berkeley-softfloat-3/blob/master/source/s_subMagsF32.c">减法</a> ，可以看到减法实现要明显复杂过乘法。</p>
+<h3 id="2-9-浮点算力"><a href="#2-9-浮点算力" class="headerlink" title="2.9 浮点算力"></a>2.9 浮点算力</h3><p>算力最基本的计量单位是 FLOPS（Floating-point Operations Per Second），即每秒执行的浮点运算次数。浮点运算其实就是带小数的加减乘除运算。</p>
+<p>算力是核心个数、频率、单时钟周期能力三者的乘积。GPU 的算力强悍，就是因为它的核心数更多。</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S3%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S3复习</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" rel="tag"><i class="fa fa-tag"></i> 计算机组成</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/f6a8f3b9/" rel="prev" title="计算机组成-布尔代数">
+      <i class="fa fa-chevron-left"></i> 计算机组成-布尔代数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/dc316254/" rel="next" title="计算机组成-存储系统">
+      计算机组成-存储系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B4%E6%95%B0"><span class="nav-text">一、整数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0%E4%B8%8E%E5%8D%81%E8%BF%9B%E5%88%B6%E6%95%B0%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-text">1.1 二进制数与十进制数间的转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E9%80%9A%E7%94%A8%E5%8A%A0%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">1.2 通用加法器的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%87%8F%E6%B3%95%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">1.3 减法器的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E4%BD%8D%E6%95%B0%E6%8B%93%E5%B1%95"><span class="nav-text">1.4 位数拓展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E6%BA%A2%E5%87%BA%E5%88%A4%E6%96%AD"><span class="nav-text">1.5 溢出判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E8%B6%85%E5%89%8D%E8%BF%9B%E4%BD%8D%E5%8A%A0%E6%B3%95%E5%99%A8"><span class="nav-text">1.6 超前进位加法器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E6%97%A0%E7%AC%A6%E5%8F%B7%E4%B9%98%E6%B3%95"><span class="nav-text">1.7 无符号乘法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-%E6%9C%89%E7%AC%A6%E5%8F%B7%E4%B9%98%E6%B3%95"><span class="nav-text">1.8 有符号乘法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-9-%E6%97%A0%E7%AC%A6%E5%8F%B7%E9%99%A4%E6%B3%95"><span class="nav-text">1.9 无符号除法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-10-%E6%9C%89%E7%AC%A6%E5%8F%B7%E9%99%A4%E6%B3%95"><span class="nav-text">1.10 有符号除法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="nav-text">二、浮点数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%AE%9A%E7%82%B9%E6%95%B0%E5%92%8C%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="nav-text">2.1 定点数和浮点数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%9C%80%E5%9F%BA%E7%A1%80%E7%9A%84%E6%B5%AE%E7%82%B9%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="nav-text">2.2 最基础的浮点数表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E9%9A%90%E5%90%AB%E5%89%8D%E5%AF%BC-1"><span class="nav-text">2.3 隐含前导 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E5%81%8F%E7%A0%81%E4%B8%8E%E8%A1%A5%E7%A0%81"><span class="nav-text">2.4 偏码与补码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E6%B5%AE%E7%82%B9%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA%E8%8C%83%E5%9B%B4"><span class="nav-text">2.5 浮点数的表示范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="nav-text">2.6 特殊情况的表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-IEEE-754-%E6%A0%87%E5%87%86"><span class="nav-text">2.7 IEEE 754 标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-%E6%B5%AE%E7%82%B9%E6%95%B0%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4%E5%88%86%E6%9E%90"><span class="nav-text">2.8 浮点数加减乘除分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-%E6%B5%AE%E7%82%B9%E7%AE%97%E5%8A%9B"><span class="nav-text">2.9 浮点算力</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这篇工作比较缝合，它引用了 3 个 idea：  Flash Attention 和 pass 抽象 TeAAL 和它使用的 Einsum 规范 Extended Einsum  TeAAL 提出用 Einsum 的形式去描述算子，并指导加速器的设计。但是 Einsum 只能描述仅包含加法和乘法的算子，对于 Flash-Attension 这种包含指数运算（softmax）和迭代运算的算子无法描">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海边拾贝-FuseMax">
+<meta property="og:url" content="https://thysrael.github.io/posts/ce241189/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="这篇工作比较缝合，它引用了 3 个 idea：  Flash Attention 和 pass 抽象 TeAAL 和它使用的 Einsum 规范 Extended Einsum  TeAAL 提出用 Einsum 的形式去描述算子，并指导加速器的设计。但是 Einsum 只能描述仅包含加法和乘法的算子，对于 Flash-Attension 这种包含指数运算（softmax）和迭代运算的算子无法描">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-17394538526611.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-17394538576465.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-17394538620357.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945386674411.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945387091113.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945387591215.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945387855817.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945388095219.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945388316621.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945388498323.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945389006225.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945389210827.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945389430429.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945389672931.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945389876733.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945390147135.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945390429437.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945390670239.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945390896841.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/28d63d58-4bd5-4995-ac91-a004c6cf6f85.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945391102343.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/2861afa9-44ca-43ca-ba57-24cee9103951-1740103737579-3.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945391334345.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945391528647.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945391724649.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945392031051.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/ce241189/-173945392212853.png">
+<meta property="article:published_time" content="2025-02-13T13:32:06.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.910Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S9课上">
+<meta property="article:tag" content="海边拾贝">
+<meta property="article:tag" content="直观总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/ce241189/-17394538526611.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/ce241189/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>海边拾贝-FuseMax | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/ce241189/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          海边拾贝-FuseMax
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-02-13 21:32:06" itemprop="dateCreated datePublished" datetime="2025-02-13T21:32:06+08:00">2025-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" itemprop="url" rel="index"><span itemprop="name">海边拾贝</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>这篇工作比较缝合，它引用了 3 个 idea：</p>
+<ul>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://arxiv.org/abs/2205.14135">Flash Attention</a> 和 pass 抽象</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://dl.acm.org/doi/10.1145/3613424.3623791">TeAAL</a> 和它使用的 Einsum 规范</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://arxiv.org/abs/2404.11591">Extended Einsum</a></li>
+</ul>
+<p>TeAAL 提出用 Einsum 的形式去描述算子，并指导加速器的设计。但是 Einsum 只能描述仅包含加法和乘法的算子，对于 Flash-Attension 这种包含指数运算（softmax）和迭代运算的算子无法描述，于是作者借用了 Extended Einsum 的形式描述了 Flash Attension 算子并实现了 FuseMax 加速器，同时论证了 pass 抽象的合理性。</p>
+<p>而实际上，TeAAL 提出的用 Einsum 指导加速器设计的思路并没有因为使用了 Extended Einsum 而被拓展；FuseMax 所展现的性能优势，大部分来自于 Flash-Attension 算法本身，而不是其硬件实现。</p>
+</blockquote>
+<h2 id="一、Background"><a href="#一、Background" class="headerlink" title="一、Background"></a>一、Background</h2><h3 id="1-1-Flash-Attention-Pass"><a href="#1-1-Flash-Attention-Pass" class="headerlink" title="1.1 Flash Attention, Pass"></a>1.1 Flash Attention, Pass</h3><p>Flash-Attention 是一种 Attention 算子的实现，相比于传统的实现，它可以降低内存带宽的需求，并且使用更少的片上内存，更适合当前加速器存在的 memory bound。为了达到这个目的，我们需要：</p>
+<ul>
+<li>尽可能少的从内存中读取数据 -&gt; 算法设计的 pass 数要少</li>
+<li>尽可能少使用片上内存 -&gt; tile 后 reduce</li>
+</ul>
+<p>而这两个需求都被 softmax 的传统实现阻止了，softmax 的表达式如下：</p>
+<p><img src="/posts/ce241189/-17394538526611.png" alt="img"></p>
+<p>传统的 softmax 实现是一种 3-pass 的实现：</p>
+<p><img src="/posts/ce241189/-17394538576465.png" alt="img"></p>
+<p>所谓的 pass，就是需要访问输入的次数：</p>
+<blockquote>
+<p>the number of times a given element of an input must be revisited after visiting every other element of the input. </p>
+</blockquote>
+<p>因为 softmax 需要先遍历所有元素计算出 max 值，然后根据 max 值遍历所有元素计算分母，再根据分母计算分子。</p>
+<p>在 flash-attention 之前，有 2018 online-softmax 工作，将算法优化成了 2-pass 的。他将第 1，2 轮进行了合并：</p>
+<p><img src="/posts/ce241189/-17394538620357.png" alt="img"></p>
+<p>最终结果如图：</p>
+<p><img src="/posts/ce241189/-173945386674411.png" alt="img"></p>
+<p>如果仅在 softmax 层，那么 2-pass 就是极限了，不过如果考虑整个 Attention，那么是可以继续优化成 1-pass 的算法，这就是 Flash-Attention，2-pass 的 Attention 表示如下：</p>
+<p><img src="/posts/ce241189/-173945387091113.png" alt="img"></p>
+<p>然后我们注意到（直观上说，是利用了 a 这个数组并不是最终结果，而是会被 reduce 的性质）：</p>
+<p><img src="/posts/ce241189/-173945387591215.png" alt="img"></p>
+<p>整理后得到：</p>
+<p><img src="/posts/ce241189/-173945387855817.png" alt="img"></p>
+<p>这就是一个 1-pass 的 Flash-Attention 算法。在此基础上，如果增加了 tile 操作，那么就会获得完全体的 Flash-Attention，但这本文的重点是对于 pass 的优化。</p>
+<p><img src="/posts/ce241189/-173945388095219.png" alt="img"></p>
+<h3 id="1-2-Einsum-Notation"><a href="#1-2-Einsum-Notation" class="headerlink" title="1.2 Einsum Notation"></a>1.2 Einsum Notation</h3><p>爱因斯坦求和标记（Einstein summation notation）是一种标记的约定，用于描述张量运算。比如说二维矩阵乘法就可以被描述为：</p>
+<p><img src="/posts/ce241189/-173945388316621.png" alt="img"></p>
+<p>而矩阵与向量的乘法可以被描述为：</p>
+<p><img src="/posts/ce241189/-173945388498323.png" alt="img"></p>
+<p>Einsum 的输入包括张量，如<script type="math/tex">A, B</script>和其对应的坐标，如<script type="math/tex">m,k</script>和<script type="math/tex">k,n</script>，还有输出矩阵对应的坐标，如<script type="math/tex">m,</script>，比如在 numpy 中，$$$$和$$$$的矩阵乘法写作：</p>
+<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">np.einsum('mk,kn-&gt;mn', A, B)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Einsum 的特点在于，它将 compute 和 reduce 阶段完全区分开了，而不是混在一起，更加清晰了。</p>
+<p>具体而言，在 compute 阶段，我们会根据输入坐标，构建一个迭代空间，然后遍历空间中的每一个点进行计算，得到一个相同维度的张量。以矩阵乘法为例，输入坐标是<script type="math/tex">m,k</script>和<script type="math/tex">k,n</script>，我们构建的迭代空间是<script type="math/tex">[1,M] \times [1,K] \times [1,N]</script>。经过计算得到的张量是<script type="math/tex">z'_{m,k, n} = [a_{m,k} \times b_{k,n}]</script>。</p>
+<p>在 reduce 阶段，我们需要将我们得到的张量 $z<em>{m,k,n}$ 与输出坐标 <script type="math/tex">m,n</script> 进行比对，发现多了一个 <script type="math/tex">k</script> 维度。所以我们会沿着多出的维度进行规约，然后就可以得到 $$z</em>{m,n}=[\sum^{K}<em>{k=1}[a</em>{m,k} \times b_{k,n}]$$。</p>
+<p>对比我平时用的矩阵乘法，可以看到 compute 和 reduce 是混合在一起的。</p>
+<pre class="line-numbers language-C" data-language="C"><code class="language-C"> for (int i = 0; i &lt; M; i++) {
+     for (int j = 0; j &lt; N; j++) {
+        for (int k = 0; k &lt; K; k++) {
+            Z[i][j] += A[i][k] * B[k][j];
+         }
+    }
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-3-TeAAL"><a href="#1-3-TeAAL" class="headerlink" title="1.3 TeAAL"></a>1.3 TeAAL</h3><p>TeAAL 是一个加速器模型 generator，可以根据不同算子生成不同的加速器模型。在它的设计中，算子需要使用 Einsum Cascade 来进行描述，也就是一系列的 Einsum 。</p>
+<p>使用 Einsum 好处在于，引入了迭代空间，使得许多加速器设计中的优化和 tradeoff 都非常清晰。TeAAL 提出了 3 个维度的优化：</p>
+<ul>
+<li><strong>Loop Order</strong>：迭代空间“是<script type="math/tex">[1,M] \times [1,K] \times [1,N]</script>还是<script type="math/tex">[1,K] \times [1,M] \times [1,N]</script>”？这会影响数据是 stationary 的，还是 stream 的。</li>
+<li><strong>Splitting</strong>：运算中我们常常将输入分块计算，也可以视为在对迭代空间分块。</li>
+<li><strong>Work scheduling</strong>：根据迭代空间计算出的张量，是如何摆放的？包括空间和时间维度。</li>
+</ul>
+<p>总之 Einsum 是一个非常适合数学化表述加速器设计的标记。</p>
+<h3 id="1-4-Extended-Einsum"><a href="#1-4-Extended-Einsum" class="headerlink" title="1.4 Extended Einsum"></a>1.4 Extended Einsum</h3><p>传统的 Einsum 是不能指定运算符的，比如说在 Numpy 中，Compute 阶段只能使用乘法，Reduce 阶段只能是加法：</p>
+<pre class="line-numbers language-Python" data-language="Python"><code class="language-Python">np.einsum('mk,kn-&gt;mn', A, B)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p> 而 Extended Einsum 则允许自定义 Compute 和 Reduce 阶段的运算符，例如：</p>
+<p><img src="/posts/ce241189/-173945389006225.png" alt="img"></p>
+<p><script type="math/tex">\bigwedg</script> 是 Compute 阶段使用的运算符，<script type="math/tex">\bigve</script>是 Reduce 阶段使用的运算符。</p>
+<p>除此之外，Extended Einsum 还可以表达循环，比如说前缀和计算：</p>
+<p><img src="/posts/ce241189/-173945389210827.png" alt="img"></p>
+<p>还可以表达递推式，同样是前缀和计算：</p>
+<p><img src="/posts/ce241189/-173945389430429.png" alt="img"></p>
+<p>有了 Extended Einsum，我们就可以描述 Flash-Attention 这种包含许多复杂运算和递推式的算法。</p>
+<hr>
+<h2 id="二、Contribution"><a href="#二、Contribution" class="headerlink" title="二、Contribution"></a>二、Contribution</h2><h3 id="2-1-Einsum-与-Pass"><a href="#2-1-Einsum-与-Pass" class="headerlink" title="2.1 Einsum 与 Pass"></a>2.1 Einsum 与 Pass</h3><p>本文认为，如果将算子写成 Einsum 的形式，那么是有助于确定算子的 Pass 数的，比如说这个算子，就是 2-Pass：</p>
+<p><img src="/posts/ce241189/-173945389672931.png" alt="img"></p>
+<p>而相同功能的另一个算子，就是 1-Pass：</p>
+<p><img src="/posts/ce241189/-173945389876733.png" alt="img"></p>
+<p>本文认为，迭代空间也可以被表示成一个 fibertree，而根据这些 fibertree 就可以判断 pass。首先，我不知道为什么原本适用于稀疏矩阵表示的 fibertree 要用来表示一个非常稠密的迭代空间（它可能是想说 fibertree 用于表示根据迭代空间生成的那个向量），其次，我不知道为什么表示成了 fibertree，就可以看出来是多少个 Pass。</p>
+<p>它原文中对迭代空间的 fibertree 定义如下，非常的简略：</p>
+<blockquote>
+<p>The is-fibertree is a special tree where each fiber belongs to a rank in the iteration space of the Einsum.</p>
+</blockquote>
+<p>而他介绍的根据 fibertree 识别 Pass 的方法，则依赖于非常主观的“Dependency”，其定义基本上和 Flash-Attention 中的定义一样：</p>
+<blockquote>
+<p>Now, in a scenario where fibers for a particular rank exist in multiple is-fibertrees; in each, they project to the same tensor; and <strong>there is a dependency such that all of the elements of the earlier is-fibertree’s fiber must be read before any element can be read again by the later is-fibertree (for all mappings of the</strong> <strong>cascade**</strong>)**, we refer to that read-read sequence as creating an additional pass.</p>
+</blockquote>
+<p>这种冗余和主观定义的方式，指示它无法编写成一个程序来自动优化 Pass 数目：</p>
+<blockquote>
+<p>We leave a full analysis of the space of pass-reduction approaches to future work.</p>
+</blockquote>
+<h3 id="2-2-用-Einsum-表示-Flash-Attention"><a href="#2-2-用-Einsum-表示-Flash-Attention" class="headerlink" title="2.2 用 Einsum 表示 Flash-Attention"></a>2.2 用 Einsum 表示 Flash-Attention</h3><p>用 Extended Einsum 表示 Flash-Attention，结果如图：</p>
+<p><img src="/posts/ce241189/-173945390147135.png" alt="img"></p>
+<p>文章只是将 Flash-Attention 换了一种标记形式（从伪代码到 Einsum Cascade），其算法的实质并没有发生改变。</p>
+<h3 id="2-3-将-Flash-Attention-Map-到硬件上"><a href="#2-3-将-Flash-Attention-Map-到硬件上" class="headerlink" title="2.3 将 Flash-Attention Map 到硬件上"></a>2.3 将 Flash-Attention Map 到硬件上</h3><p>本文将 Flash-Attention 实现到了 Timeloop and Accelergy 模拟的 spatial 架构上：</p>
+<p><img src="/posts/ce241189/-173945390429437.png" alt="img"></p>
+<p>传统的 Attention 加速器，使用 2D Array 来计算矩阵乘法，使用 1D Array 来计算 softmax，这种安排的缺点在于，1D Array 计算 softmax 非常吃力，进而导致 2D Array 需要等待 1D Array 的计算，造成了低计算利用率。</p>
+<p>但是 Flash-Attention 算法本身就融合 softmax 到前面的计算中，所以有一部分的 softmax 的计算任务，是可以放到 2D Array 中计算的，这样两个部分的计算任务就更加均衡了。</p>
+<p>此外，2D Array 的 fill 和 drain 的开销很大，所以需要使用流水线的方法摊还（amortize）开销。</p>
+<hr>
+<h2 id="三、Evaluation"><a href="#三、Evaluation" class="headerlink" title="三、Evaluation"></a>三、Evaluation</h2><h3 id="3-1-Setup"><a href="#3-1-Setup" class="headerlink" title="3.1 Setup"></a>3.1 Setup</h3><p>实验在 TimeLoop 模拟器上进行（全是 Python 代码），BaseLine 分别是一个未经优化的 Attention 加速器，和 FLAT（经过 Fusion 等优化，但是依然使用普通 Attention 算法的加速器）。</p>
+<p>WorkLoad 有 BERT，TrXL，T5，XLM。</p>
+<h3 id="3-2-Compute-Utilization"><a href="#3-2-Compute-Utilization" class="headerlink" title="3.2 Compute Utilization"></a>3.2 Compute Utilization</h3><p>在真实负载情况下，计算单元利用率的比值：</p>
+<p><img src="/posts/ce241189/-173945390670239.png" alt="img"></p>
+<p>正如前文分析的，Baseline 的 2D Array 受到 1D Array 的拖累，导致利用率极低。</p>
+<p>而在序列长度过长时，传统 Attention 算法会导致 global buffer 溢出，进而计算率下降，而 Flash-Attention 则没有这个问题。</p>
+<h3 id="3-3-SpeedUp"><a href="#3-3-SpeedUp" class="headerlink" title="3.3 SpeedUp"></a>3.3 SpeedUp</h3><p>在 attention 时的加速比：</p>
+<p><img src="/posts/ce241189/-173945390896841.png" alt="img"></p>
+<p>在 inference 时的加速比：</p>
+<p><img src="/posts/ce241189/28d63d58-4bd5-4995-ac91-a004c6cf6f85.png" alt=""></p>
+<p>因为计算单元利用率提高，所以加速比也显著提高。</p>
+<h3 id="3-4-Energy"><a href="#3-4-Energy" class="headerlink" title="3.4 Energy"></a>3.4 Energy</h3><p>在 attention 时的能耗：</p>
+<p><img src="/posts/ce241189/-173945391102343.png" alt="img"></p>
+<p>在 inference 时的能耗：</p>
+<p><img src="/posts/ce241189/2861afa9-44ca-43ca-ba57-24cee9103951-1740103737579-3.png" alt="2861afa9-44ca-43ca-ba57-24cee9103951"></p>
+<p>Flash-Attention 节约了 DRAM 的访存开销。</p>
+<hr>
+<h2 id="四、计算密度"><a href="#四、计算密度" class="headerlink" title="四、计算密度"></a>四、计算密度</h2><p>这篇工作主要结合了前人的工作，许多成果本质上是算法（Flash-Attention）或者开发框架（TeAAL，Timeloop）的成果，而非这篇工作自己的成果。</p>
+<p>随着计算单元数目的增多，Roofline 模型中的硬件的 <script type="math/tex">I_{max}</script>越来越往右移动，这就导致越来越多的算法成为 memory bound 的：</p>
+<p><img src="/posts/ce241189/-173945391334345.png" alt="img"></p>
+<p>有一种解决问题的方式是减少内存读取的次数，比如说 Kernel Fusion：</p>
+<p><img src="/posts/ce241189/-173945391528647.png" alt="img"></p>
+<p>直白的 Fusion 并不会修改算子的实现，它只是将计算的中间结果存在了 On-chip Memory 中，但是 On-chip Memory 空间有限，这就导致一旦存不下来，依然会溢出到 Off-chip Memory 中，最终效果并不好（从上文的 Evaluation 中也可以看出）。</p>
+<p>为了解决溢出问题（或者单纯为了减少访存次数），有一种思路是增加 On-chip Memory 的容量，比如说 IPU，相比于 CPU 和 GPU，就增加了更多的片上 SRAM：</p>
+<p><img src="/posts/ce241189/-173945391724649.png" alt="img"></p>
+<p>但是这种方式存在问题，就是片上 SRAM 的面积过大，IPU 很少去和 GPU 对比单位芯片面积（iso-area）下的性能。</p>
+<p>Flash-Attention 和 FuseMax 我认为是另一种思路的代表，就是“以算代存”，计算的中间结果并存储后供后续使用，而是当需要使用的时候，再次计算一遍，是一种更加“数据流”的方法。通过构造额外的计算，来避免存储（Flash Attention 引入了更多的冗余的计算，但是减少了冗余的存储）：</p>
+<p><img src="/posts/ce241189/-173945392031051.png" alt="img"><img src="/posts/ce241189/-173945392212853.png" alt="img"></p>
+<p>我个人隐隐约约感觉，计算单元和存储单元有某种统一性，如果能把握它并提出一种更好的抽象，或许可以做出一个更本质的 tradeoff。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S9%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S9课上</a>
+              <a href="/tags/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" rel="tag"><i class="fa fa-tag"></i> 海边拾贝</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 直观总结</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/7dc4ea13/" rel="prev" title="Sys4AI-LLM">
+      <i class="fa fa-chevron-left"></i> Sys4AI-LLM
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/afa7becb/" rel="next" title="自由王国-没有银弹">
+      自由王国-没有银弹 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Background"><span class="nav-text">一、Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Flash-Attention-Pass"><span class="nav-text">1.1 Flash Attention, Pass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Einsum-Notation"><span class="nav-text">1.2 Einsum Notation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-TeAAL"><span class="nav-text">1.3 TeAAL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Extended-Einsum"><span class="nav-text">1.4 Extended Einsum</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Contribution"><span class="nav-text">二、Contribution</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Einsum-%E4%B8%8E-Pass"><span class="nav-text">2.1 Einsum 与 Pass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E7%94%A8-Einsum-%E8%A1%A8%E7%A4%BA-Flash-Attention"><span class="nav-text">2.2 用 Einsum 表示 Flash-Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%B0%86-Flash-Attention-Map-%E5%88%B0%E7%A1%AC%E4%BB%B6%E4%B8%8A"><span class="nav-text">2.3 将 Flash-Attention Map 到硬件上</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Evaluation"><span class="nav-text">三、Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Setup"><span class="nav-text">3.1 Setup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Compute-Utilization"><span class="nav-text">3.2 Compute Utilization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-SpeedUp"><span class="nav-text">3.3 SpeedUp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Energy"><span class="nav-text">3.4 Energy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%AE%A1%E7%AE%97%E5%AF%86%E5%BA%A6"><span class="nav-text">四、计算密度</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

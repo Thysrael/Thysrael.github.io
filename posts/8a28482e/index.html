@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、直观理解1.1 电磁场的理解场是物质的，那么怎么才能把这种物质性显现出来呢？我认为我觉得它不明显是因为从小就接受电磁波的传导是不需要介质，以太是不存在的这两个概念。但是实际呢，只不过这种介质不是那种常见的比如空气啊啥的东西，但不意味着没有。在麦克斯韦的时代，他的理论就是建立在电磁以太上的基础上的。其实想一想，没有介质就有超距作用的嫌疑了，而且对于一个比较淳朴的人来说，认为作用是不需要通过介质传">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大学物理-电磁学">
+<meta property="og:url" content="https://thysrael.github.io/posts/8a28482e/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、直观理解1.1 电磁场的理解场是物质的，那么怎么才能把这种物质性显现出来呢？我认为我觉得它不明显是因为从小就接受电磁波的传导是不需要介质，以太是不存在的这两个概念。但是实际呢，只不过这种介质不是那种常见的比如空气啊啥的东西，但不意味着没有。在麦克斯韦的时代，他的理论就是建立在电磁以太上的基础上的。其实想一想，没有介质就有超距作用的嫌疑了，而且对于一个比较淳朴的人来说，认为作用是不需要通过介质传">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-16T08:24:18.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.759Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="大学物理">
+<meta property="article:tag" content="S2复习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/8a28482e/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>大学物理-电磁学 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/8a28482e/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          大学物理-电磁学
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 16:24:18" itemprop="dateCreated datePublished" datetime="2022-01-16T16:24:18+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大学物理</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、直观理解"><a href="#一、直观理解" class="headerlink" title="一、直观理解"></a>一、直观理解</h2><h3 id="1-1-电磁场的理解"><a href="#1-1-电磁场的理解" class="headerlink" title="1.1 电磁场的理解"></a>1.1 电磁场的理解</h3><p>场是物质的，那么怎么才能把这种<strong>物质性</strong>显现出来呢？我认为我觉得它不明显是因为从小就接受电磁波的传导是不需要介质，以太是不存在的这两个概念。但是实际呢，只不过这种介质不是那种常见的比如空气啊啥的东西，但不意味着没有。在麦克斯韦的时代，他的理论就是建立在<strong>电磁以太</strong>上的基础上的。其实想一想，没有介质就有<strong>超距作用</strong>的嫌疑了，而且对于一个比较淳朴的人来说，认为<strong>作用</strong>是不需要通过介质传播的，就像可以不用手就触摸姑娘的脸颊一样不自然。</p>
+<p>妨碍场理解的另一个因素是我们只要不涉及电磁波，那么很多现象还是可以直接认为两个物体相互作用，而场只是起<strong>辅助</strong>作用。总之，粒子和粒子关系占了主体地位，场占了次要地位。那么怎么挽救这个东西呢，一方面，可以认为场是<strong>感觉</strong>，有点类似<strong>罐中脑</strong>的感觉，我知道了一个粒子的受力情况，只能推测出此处的场的情况，而不能知道其他的电荷分布，这么看场才是<strong>唯一确定</strong>的。</p>
+<p>还有一个方面，就是强化场的物质性，强化一个不那么物质的东西的物质性，最快速的办法是用比喻。而实际上也确实挺像的。以奔涌的大河为例，我不能说水是河，而应该说运动的水是河。但是还不够精确，运动的有沙子水是河，运动的泥水也是河，运动的眼泪也是河，所以说明一个东西是河，跟组成他的粒子没啥关系，而是跟运动的形式有关系，所以可以说运动的挺大的液体形式是河，但是<strong>运动的挺大的液体形式</strong>不是传统的意义上的物质，但是你还是可以说他已经很物质了，除了<strong>运动</strong>这个概念以外（在场里面大概是流速吧），还有很多东西都是这么个属性，比如<strong>源</strong>，<strong>旋</strong>，<strong>不可压缩</strong>。有点<strong>算子</strong>的感觉。</p>
+<p>结合上面两点，认为场是有能量的，应该就没有问题了，一旦能量的概念定下来，<strong>物质性</strong>大概就被锤得死死的了。另外说一嘴，电磁以太是充满整个空间的，场不是，场是以光速运动的，所以二者不可等价。</p>
+<h3 id="1-2-力场的理解"><a href="#1-2-力场的理解" class="headerlink" title="1.2 力场的理解"></a>1.2 力场的理解</h3><p>在直观化了<strong>电磁场</strong>后，还是要注意到，电磁场是一种<strong>力场</strong>，这说明这个场很多性质都是为了作用力来服务的，不是所要强化这种观念，而是要弱化这种观念，因为这本书介绍的时候，电场的场的性质和力的性质时一块介绍的，在之后有介绍了一些场的性质，就很不容易让人建立完整的场的概念，磁场的介绍也是如是。所以的结果就是一方面，对场的性质感觉不出来，另一方面，对深层的定义为什么老有力学掺杂进来感到不解。真正正确的理解应该是这样的。我们先用力学概念（比如电偶极子，磁矩）定义了最最微观的场产生的机理，然后脱离了力学概念，用很大的功夫，专注于研究场本身的性质研究（比如高斯定理，源，旋，场的变化），最后，用一个简单的力学公式（<strong>洛伦兹力公式</strong>）描述粒子在电磁场中的受力情况。</p>
+<h3 id="1-3-磁荷，恒定电流，位移电流的理解"><a href="#1-3-磁荷，恒定电流，位移电流的理解" class="headerlink" title="1.3 磁荷，恒定电流，位移电流的理解"></a>1.3 磁荷，恒定电流，位移电流的理解</h3><p>造成我电磁学的如此不好的原因还有一个就是对于<strong>电生磁</strong>现象的不清楚，因为高中<strong>分子电流</strong>的概念，导致所有的磁都是<strong>运动的电荷</strong>产生的，就有一种磁场是从属别人的关系，对于<strong>电生磁</strong>的理解成了<strong>磁场的诞生原因</strong>。那其他的电生磁现象呢？就被理解为其他磁场诞生的原因。在电场中，有静电场和感应电场的区别，一个是自己产生的，另一个是由于磁场变化产生的，就很自然。但是对于磁场，所有的都是别人产生的，就很不好。</p>
+<p>所以更为自然的理解是有一种叫做<strong>磁荷</strong>的东西，他是产生磁场的原因，所谓的<strong>分子电流</strong>不过是一种微观解释，并不在场中作为本质出现，就像知道人是由细胞组成的，也不能说明人的所有品格都是细胞的品格。所以奥斯特做的<strong>电生磁</strong>准确的说不是电生磁，而是静磁场的性质探究和微观机理解释，只有麦克斯韦提出的<strong>位移电流</strong>才是真正描述<strong>变化的磁场产生电场</strong>这件事情的。</p>
+<h3 id="1-4-介质的理解"><a href="#1-4-介质的理解" class="headerlink" title="1.4 介质的理解"></a>1.4 介质的理解</h3><p>我愿意把介质理解为水中的海绵，石头，水车。这些东西，有的会加强原来的水流，有的会减缓原来的流，但是因为多了这些东西，原来的水流不是水流了，而是一种新的水流和石头的混合体，所以就没有办法再像原来一样分析了，所以需要引入辅助量，也就是<strong>电位移矢量</strong>和<strong>磁场强度</strong>，但是这些量并非仅仅在数学上有用，而是确实是更为概括，更为宏观的场的性质，那为什么不用这些量作为主量呢。因为这些量能体现<strong>场的性质</strong>，但是不能体现<strong>力的性质</strong>，他们没法在洛伦兹公式中出现，所以决定了他们的地位只能是一个辅助量，这与人们研究场的目的是相同的。那么为什么力学性质不能被体现呢？因为力场对介质的作用是通过力，而介质对力场的作用还是通过力，所以就没有办法在力的层面搞明白这件事情了，但是在场的层面，更高维，封装的更好，就可以描述场的性质了。</p>
+<hr>
+<h2 id="二、静电场"><a href="#二、静电场" class="headerlink" title="二、静电场"></a>二、静电场</h2><h3 id="2-1-库仑定律"><a href="#2-1-库仑定律" class="headerlink" title="2.1 库仑定律"></a>2.1 库仑定律</h3><p>库仑定律是最大的杀招，因为他比高斯定律计算可涵盖的范围更加广，有如下结论。</p>
+<h4 id="2-1-1-电偶极子"><a href="#2-1-1-电偶极子" class="headerlink" title="2.1.1 电偶极子"></a>2.1.1 电偶极子</h4><script type="math/tex; mode=display">
+E_{延长线}=\frac{1}{4\pi\varepsilon_0}\frac{2P}{r^3}\\E_{中垂面}=-\frac{1}{4\pi\varepsilon_0}\frac{P}{r^3}</script><h4 id="2-1-2-带电圆环"><a href="#2-1-2-带电圆环" class="headerlink" title="2.1.2 带电圆环"></a>2.1.2 带电圆环</h4><script type="math/tex; mode=display">
+E=\frac{1}{4\pi\varepsilon_0}\frac{Qx}{(x^2+R^2)^{\frac{3}{2}}}</script><h4 id="2-1-3-带电细棒"><a href="#2-1-3-带电细棒" class="headerlink" title="2.1.3 带电细棒"></a>2.1.3 带电细棒</h4><script type="math/tex; mode=display">
+E=\frac{\lambda}{2\pi\varepsilon_0}\frac{l}{x\sqrt{x^2+l^2}}</script><h3 id="2-2-高斯定理"><a href="#2-2-高斯定理" class="headerlink" title="2.2 高斯定理"></a>2.2 高斯定理</h3><p>怎么做高斯面，尤其是面对具有无限尺寸的带电体时，怎么做高斯面，才是考察的重点。</p>
+<h4 id="2-2-1-均匀带电球壳"><a href="#2-2-1-均匀带电球壳" class="headerlink" title="2.2.1 均匀带电球壳"></a>2.2.1 均匀带电球壳</h4><h4 id="2-2-2-无限长带电细棒"><a href="#2-2-2-无限长带电细棒" class="headerlink" title="2.2.2 无限长带电细棒"></a>2.2.2 无限长带电细棒</h4><script type="math/tex; mode=display">
+E=\frac{\lambda}{2\pi\varepsilon_0}</script><h4 id="2-2-3-无限大带电平面"><a href="#2-2-3-无限大带电平面" class="headerlink" title="2.2.3 无限大带电平面"></a>2.2.3 无限大带电平面</h4><script type="math/tex; mode=display">
+E=\frac{\sigma}{2\varepsilon_0}</script><p>可以看到，均匀带电平板的电场强度垂直于带电平面，面外是匀强电场。</p>
+<h3 id="2-3-电介质的极化"><a href="#2-3-电介质的极化" class="headerlink" title="2.3 电介质的极化"></a>2.3 电介质的极化</h3><h4 id="2-3-1-位移极化与取向极化"><a href="#2-3-1-位移极化与取向极化" class="headerlink" title="2.3.1 位移极化与取向极化"></a>2.3.1 位移极化与取向极化</h4><p><strong>位移极化</strong>是针对<strong>无极分子</strong>而言的，指的是原来重合的正负极中心在外加电场作用下，发生了偏移，产生了<strong>感生电矩</strong>。<strong>取向极化</strong>指的是<strong>有极分子</strong>在外加电场的作用下，排列趋于整齐，导致产生了宏观电矩，有极分子也会产生位移极化，但是与取向极化相比不值一提，不再讨论。</p>
+<p>无论是那种极化，在电介质的表面都会有宏观电荷的出现，而且只在表面出现，这点与导体是很像的。因此，也容易造成知识迁移中的误区，因为导体内部是没有电荷分布的，我容易以为电介质内部也没有电荷分布，但其实电介质内部是有电荷的，只不过相互抵消，不怎么显现罢了，只有在这里建立这个正确的认知以后，才能理解极化强度矢量等一系列概念。</p>
+<h4 id="2-3-2-描绘极化"><a href="#2-3-2-描绘极化" class="headerlink" title="2.3.2 描绘极化"></a>2.3.2 描绘极化</h4><p>首先应当明确，极化出的极化电场是与原来的电场呈现相反的趋势，这挺正常的，因为如果诱导出的电场与原电场相同，那么就会正反馈，然后就没完没了了。在导体中也有这种现象，导体的极化电场会叠加掉原来的磁场。这种电场被称为<strong>退极化场</strong>。</p>
+<p><strong>极化强度矢量p</strong>（其实我觉得它可能叫做<strong>极化强度</strong>更可爱），是一种类似于密度的概念，每个点都具有他的极化强度，也就是说不仅可以将其理解为<strong>密度</strong>，还可以理解为他也是一个场，就像电场强度那样的概念。到此为止，我们已经完全的描述了极化，剩下的工作就是把极化造成的影响用不同的公式输出了。</p>
+<p>极化强度是受外加电场的影响的，对于<strong>线性电介质</strong>，我们有简单的公式来计算<strong>总电场</strong>和极化强度的关系</p>
+<script type="math/tex; mode=display">
+P=\varepsilon_0\chi_eE</script><p>其中 $\chi$ 是一个比例系数，没有单位，用来描述电介质的极化性质。</p>
+<p><strong>极化电荷</strong>，有如下积分形式公式</p>
+<script type="math/tex; mode=display">
+\oiint P\cdot dS=-\sum q^\prime</script><p>又有如下微分形式公式</p>
+<script type="math/tex; mode=display">
+\nabla \cdot P=-\rho^\prime</script><p>均匀极化的电介质内部极化强度为一个<strong>常量</strong>，所以电介质内部没有宏观电荷。</p>
+<p><strong>极化电荷面密度</strong> ，有如下公式</p>
+<script type="math/tex; mode=display">
+\sigma^\prime=P\cdot n</script><p>即面密度等于极化强度的沿法向量分量。这并不难理解，这就是极化电荷高斯定理和极化电荷只在表面分布的必然结论。</p>
+<p>我们加上标 $\prime$ 的原因是因为要与原来静电场的电荷进行区别。表明他们是<strong>感应</strong>出来的。</p>
+<h4 id="2-3-3-有电介质的电场"><a href="#2-3-3-有电介质的电场" class="headerlink" title="2.3.3 有电介质的电场"></a>2.3.3 有电介质的电场</h4><p>因为 $q^\prime$ 和 $E$ 的计算相互牵扯，因为  $q^\prime$ 受到 $E$ 大小的影响，  $q^\prime$ 又对 $E$ 造成影响，导致没有办法在这个层面获得正确的答案。所以我们将这两个量打包成一个量，有公式</p>
+<script type="math/tex; mode=display">
+\varepsilon_0E+P=D</script><p>D 被称为<strong>电位移</strong>，然后就修改高斯定理为</p>
+<script type="math/tex; mode=display">
+\oiint D\cdot dS=\sum q_0</script><p>其中 q 是实际的电荷，不包括感应出的电荷（也很合逻辑，因为感应出的电荷我们也不关心）。</p>
+<script type="math/tex; mode=display">
+D=\varepsilon_0E+P=\varepsilon_0(1+\chi_e)E=\varepsilon_0\varepsilon_rE</script><p>$\varepsilon_r$ 被称为<strong>相对介电常数</strong>，也称<strong>相对电容率</strong>。</p>
+<h3 id="2-4-电势、电容、静电能"><a href="#2-4-电势、电容、静电能" class="headerlink" title="2.4 电势、电容、静电能"></a>2.4 电势、电容、静电能</h3><h4 id="2-4-1-关系理解"><a href="#2-4-1-关系理解" class="headerlink" title="2.4.1 关系理解"></a>2.4.1 关系理解</h4><p>这里再介绍一些数学知识，在我看来，<strong>梯度运算</strong>可以把一个标量场转化为一个向量场，比如对电势场进行梯度运算，就可以得到电场强度场，而<strong>散度运算和旋度运算</strong>都是将一个矢量场转换为一个标量场，比如对电位移场求散度就可以得到电荷密度，对磁场强度场求旋度就可以得到磁化电流密度。</p>
+<p>电势的提出只有在<strong>无旋场</strong>中才可以，环路积分恒为 0 才有提出的意义，当我们定义完电势后，就可以求电容了，这是因为<strong>导体电量</strong>和<strong>导体的电势</strong>是一一对应关系，这样才能确定<strong>导体的电容</strong>，所有问题研究的都是<strong>导体</strong>。</p>
+<p>能量在这里可以在强化一下理解，首先明确，能量一定要有一个<strong>宿主</strong>，总要待在一个东西上面，如果不是在场里面，那么就只能在电荷里面，那显然不对，因为电荷没法储存这种感觉的能量，如果是的话，那么每个电荷带的能量应该是一样的，而其实电磁能跟电荷间的关系和电荷的运动都有关，这种<strong>关系和运动</strong>不就是<strong>电磁场</strong>吗？</p>
+<h4 id="2-4-2-电势差"><a href="#2-4-2-电势差" class="headerlink" title="2.4.2 电势差"></a>2.4.2 电势差</h4><p>P,Q 之间的电势差为：</p>
+<script type="math/tex; mode=display">
+U_{PQ}=U_P-U_Q=\int_P^QE\cdot dl</script><p>然后规定 $U_\infty=0$，最后有结论，电势的梯度是电场强度的负值。</p>
+<h4 id="2-4-3-电容和电容器"><a href="#2-4-3-电容和电容器" class="headerlink" title="2.4.3 电容和电容器"></a>2.4.3 电容和电容器</h4><p><strong>孤立导体的电容</strong>，对于一个导体而言，当其带的电荷确定了，那么静电平衡后表面电荷的分布就确定了，那么导体外的电场分布和导体的电势就确定了（导体是一个等势体），所以电量和电势一一对应。</p>
+<p>两个<strong>互不连接</strong>的导体构成的闭合的、或近似闭合的导体空腔称为<strong>电容器</strong>，这两个导体被称为电容器的两个极板。电容器的主要指标是<strong>电容</strong>和<strong>耐压值</strong>。若两导体构成空腔的相对表面分别带上 $\pm Q$ （注意这里一定是相同的电量），静电平衡后，电荷的分布确定，空腔内的电场分布及A，B 之间的电势差确定。由于<strong>导体空腔的静电屏蔽效应</strong>，$U<em>{AB}$ 不受腔外电荷、电场的影响。随着两极板电量 $\pm Q$ 的增减，$U</em>{AB}$ 成正比的增减，两者之比称为电容器的电容。</p>
+<p>任何导体之间都会存在电容，这种电容被称为<strong>分布电容</strong>。好像还是要求导体的带电量相同。</p>
+<p>当电容器串联时，<strong>电容</strong>会减少，但是每个电容器的分压减少，更不容易达到<strong>击穿电压</strong>。当电容器并联时，<strong>电容</strong>会增大，但是耐压值受到里面最小的耐压值的制约。</p>
+<h4 id="2-4-4-静电能"><a href="#2-4-4-静电能" class="headerlink" title="2.4.4 静电能"></a>2.4.4 静电能</h4><p>对于<strong>n 个点电荷体系</strong>的<strong>相互作用能</strong>就是从 n 个点电荷中不重复地选出各种可能的配对，这些配对 $\frac{q<em>iq_j}{4\pi\varepsilon_0r</em>{ij} }$ 的能量之和就是相互作用能。有公式：</p>
+<script type="math/tex; mode=display">
+W=\frac{1}{2}\sum q_iU_i</script><p>对于<strong>连续带电体</strong>有</p>
+<script type="math/tex; mode=display">
+W=\frac{1}{2}\int Udq</script><p>对于<strong>电容器</strong>，有</p>
+<script type="math/tex; mode=display">
+W=\frac{1}{2}\frac{Q^2}{C}=\frac{1}{2}CU^2=\frac{1}{2}QU</script><p>对于最<strong>普遍的静电场</strong>，有</p>
+<script type="math/tex; mode=display">
+W=\oiiint\frac{1}{2}D\cdot EdV</script><hr>
+<h2 id="三、静磁场"><a href="#三、静磁场" class="headerlink" title="三、静磁场"></a>三、静磁场</h2><h3 id="3-1-毕奥萨伐尔定律"><a href="#3-1-毕奥萨伐尔定律" class="headerlink" title="3.1 毕奥萨伐尔定律"></a>3.1 毕奥萨伐尔定律</h3><h4 id="3-1-1-公式形式"><a href="#3-1-1-公式形式" class="headerlink" title="3.1.1 公式形式"></a>3.1.1 公式形式</h4><script type="math/tex; mode=display">
+dB=\frac{\mu_0}{4\pi}\frac{I}{r^2}dl\times n_r</script><p>这个公式的前两项描述了磁感应强度的大小，微分形式是因为要把电流切割成电流源，这是没有办法的事情，没有办法获得一个像单位电荷一样的不借助微分形式的东西，并不是一定要写成微分形式，而是不得不写成，所以在高中没有涉及这个定律，也是因为对<strong>微元</strong>的不了解。</p>
+<p>公式的第三项是两个单位向量相乘，只是为了表明方向，不具有其他意义。</p>
+<h4 id="3-1-2-载流直导线的磁场"><a href="#3-1-2-载流直导线的磁场" class="headerlink" title="3.1.2 载流直导线的磁场"></a>3.1.2 载流直导线的磁场</h4><script type="math/tex; mode=display">
+B=\frac{\mu_0 I}{4\pi r_0}(\cos\theta_1-\cos\theta_2)</script><h4 id="3-1-3-载流圆线圈轴线上的磁场"><a href="#3-1-3-载流圆线圈轴线上的磁场" class="headerlink" title="3.1.3 载流圆线圈轴线上的磁场"></a>3.1.3 载流圆线圈轴线上的磁场</h4><script type="math/tex; mode=display">
+B=\frac{\mu_0}{2}\frac{R^2I}{(R^2+r_0^2)^{\frac{3}{2}}}</script><h4 id="3-1-4-载流直螺线管磁场"><a href="#3-1-4-载流直螺线管磁场" class="headerlink" title="3.1.4 载流直螺线管磁场"></a>3.1.4 载流直螺线管磁场</h4><script type="math/tex; mode=display">
+B=\frac{1}{2}\mu_0nI(\cos\beta_2-\cos\beta_1)</script><h3 id="3-2-安培环路定理"><a href="#3-2-安培环路定理" class="headerlink" title="3.2 安培环路定理"></a>3.2 安培环路定理</h3><h4 id="3-2-1-总论"><a href="#3-2-1-总论" class="headerlink" title="3.2.1 总论"></a>3.2.1 总论</h4><p>还是要再次强调，安培环路定理只是描述静磁场性质的，与所谓的<strong>电生磁</strong>没啥关系，真正的<strong>电生磁</strong>应该是麦克斯韦方程组最后一个方程的等号右面的第二项。</p>
+<h4 id="3-2-2-载流螺绕环磁场"><a href="#3-2-2-载流螺绕环磁场" class="headerlink" title="3.2.2 载流螺绕环磁场"></a>3.2.2 载流螺绕环磁场</h4><script type="math/tex; mode=display">
+B=\frac{\mu_0NI}{2\pi r}</script><h4 id="3-2-3-无限长直载流导线磁场"><a href="#3-2-3-无限长直载流导线磁场" class="headerlink" title="3.2.3 无限长直载流导线磁场"></a>3.2.3 无限长直载流导线磁场</h4><script type="math/tex; mode=display">
+B=\frac{\mu_0I}{2\pi r}</script><h3 id="3-3-磁介质的磁化"><a href="#3-3-磁介质的磁化" class="headerlink" title="3.3 磁介质的磁化"></a>3.3 磁介质的磁化</h3><h4 id="3-3-1-分子固有磁矩"><a href="#3-3-1-分子固有磁矩" class="headerlink" title="3.3.1 分子固有磁矩"></a>3.3.1 分子固有磁矩</h4><p>电子轨道运动磁矩，电子自旋磁矩，核自旋磁矩之和就是<strong>分子电流</strong>的固有磁矩，简称<strong>分子固有磁矩</strong>。这个东西就像电偶极子一样，是最基本的分析量。对于电子轨道运动磁矩有</p>
+<script type="math/tex; mode=display">
+P_m=iSn</script><p>长成这个奇怪的样子是因为他是由一个力学公式中剥离出来的，所以不大看得出意义，但是这个定义是很本质的反映了场的力学属性。我们知道力矩是跟参考点的选择是有关系的，但是对于<strong>合外力为零</strong>的情况，力矩不受参考点的影响，在交流电动机里面的线圈合外力为0，这个电子轨道磁矩大概受到的合力也为0吧。</p>
+<h4 id="3-3-2-顺磁质与抗磁质"><a href="#3-3-2-顺磁质与抗磁质" class="headerlink" title="3.3.2 顺磁质与抗磁质"></a>3.3.2 顺磁质与抗磁质</h4><p>抗磁质的固有磁矩为 0 ，会在磁化后产生附加磁场与外加磁场反方向的弱磁性磁介质。这是因为电子轨道磁矩会发生变化，导致产生附加磁场。</p>
+<p>顺磁质的固有磁矩不为 0 ，会在磁化后产生于外加磁场同向的磁介质，只是因为固有磁矩的取向变得整齐所致。另外，热运动对分子固有磁矩的整齐排列起干扰破坏作用，温度越高，干扰越强。</p>
+<p>当顺磁质极化以后，就会在顺磁质的表面产生宏观的<strong>磁化电流</strong>。形成这种电流的每个电子都被限制在分子范围内运动，因此也称这种电流为<strong>束缚电流</strong>。这种电流不存在宏观的<strong>电荷移动</strong>。分子电流在运行的时候并无阻力，因此磁化电流没有热效应。</p>
+<h4 id="3-3-3-描述磁化"><a href="#3-3-3-描述磁化" class="headerlink" title="3.3.3 描述磁化"></a>3.3.3 描述磁化</h4><p><strong>磁化强度M</strong>就好像<strong>极化强度P</strong>一样，是用来描述磁化强度的。他的大小受到<strong>总磁场</strong>的影响。有公式</p>
+<script type="math/tex; mode=display">
+M=\chi_mH</script><p>至于为啥是<strong>磁场强度</strong>而不是<strong>磁感应强度</strong>，我也想不出除磁荷观点外比较好的解释。</p>
+<p><strong>磁化电流</strong>，与磁化强度有关系：</p>
+<script type="math/tex; mode=display">
+\oint M\cdot dl=\sum I^\prime</script><p>同样可以写成微分形式，有</p>
+<script type="math/tex; mode=display">
+\nabla\times M=j_m</script><p> $j_m$ 被称为<strong>磁化电流密度</strong>，表示通过单位垂直面积的磁化电流，其方向为磁化电流的方向。需要强调的，尽管是叉乘，但是旋度是个<strong>标量</strong>。</p>
+<p><strong>磁介质表面面磁化电流密度</strong>，有公式</p>
+<script type="math/tex; mode=display">
+i^\prime=M \times n</script><h4 id="3-3-4-有磁介质的磁场"><a href="#3-3-4-有磁介质的磁场" class="headerlink" title="3.3.4 有磁介质的磁场"></a>3.3.4 有磁介质的磁场</h4><p>由于 $I^\prime$ 与 $B$ 互相牵引，所以难以计算，因此引入辅助量<strong>磁场强度H</strong>，有公式</p>
+<script type="math/tex; mode=display">
+H=\frac{B}{\mu_0}-M\\\oint H\cdot dl=\sum I_0</script><p>同时有<strong>磁场强度</strong>与<strong>磁感应强度</strong>的关系，有</p>
+<script type="math/tex; mode=display">
+B=\mu_0\mu_r H</script><p>$\mu_0$ 被称为真空磁导率，$\mu_r$ 是相对磁导率。</p>
+<h4 id="3-3-5-铁磁质"><a href="#3-3-5-铁磁质" class="headerlink" title="3.3.5 铁磁质"></a>3.3.5 铁磁质</h4><hr>
+<h2 id="四、磁生电（电磁感应）"><a href="#四、磁生电（电磁感应）" class="headerlink" title="四、磁生电（电磁感应）"></a>四、磁生电（电磁感应）</h2><h3 id="4-1-法拉第电磁感应定律"><a href="#4-1-法拉第电磁感应定律" class="headerlink" title="4.1 法拉第电磁感应定律"></a>4.1 法拉第电磁感应定律</h3><script type="math/tex; mode=display">
+\varepsilon=-\frac{d\Phi_B}{dt}</script><p>这个是可以确定电动势的方向的，先假设一个电动势的方向，用右手螺旋定则确定出方向，然后在判断时候与 $B$ 的方向相同，进而判断。</p>
+<h3 id="4-2-动生电动势"><a href="#4-2-动生电动势" class="headerlink" title="4.2 动生电动势"></a>4.2 动生电动势</h3><script type="math/tex; mode=display">
+\varepsilon=\int(v\times B)\cdot dl</script><p>这个积出来是一个标量，所以是没有办法判断电动势的方向的，要结合<strong>楞次定律</strong>。</p>
+<h3 id="4-3-感生电动势"><a href="#4-3-感生电动势" class="headerlink" title="4.3 感生电动势"></a>4.3 感生电动势</h3><script type="math/tex; mode=display">
+\varepsilon=-\oiint\frac{\part B}{\part t}\cdot dS</script><h3 id="4-4-自感、互感、磁能"><a href="#4-4-自感、互感、磁能" class="headerlink" title="4.4 自感、互感、磁能"></a>4.4 自感、互感、磁能</h3><h4 id="4-4-1-自感"><a href="#4-4-1-自感" class="headerlink" title="4.4.1 自感"></a>4.4.1 自感</h4><p>正如介绍<strong>静电能</strong>的时候引入了<strong>电容器</strong>，介绍<strong>磁场能</strong>的时候引入了<strong>电感</strong>。</p>
+<p>设线圈中的电流为 I ，则记法的磁感应强度以及通过线圈自身的磁链均与 I 成正比：</p>
+<script type="math/tex; mode=display">
+\Psi=LI</script><p>这个式子描述的是因为线圈中的电流，线圈产生了一个磁场，线圈的磁链受到了电流的影响。这并不是<strong>感应</strong>的部分，感应的部分是</p>
+<script type="math/tex; mode=display">
+\varepsilon_L=-L\frac{dI}{dt}</script><p>所以管 $L$ 叫自感系数好像有点不好，应该叫<strong>自激发</strong>系数。自感系数只跟线圈的大小、材质、匝数，形状、磁介质有关。</p>
+<h4 id="4-4-2-互感"><a href="#4-4-2-互感" class="headerlink" title="4.4.2 互感"></a>4.4.2 互感</h4><p>对于两个线圈，第一个的电流激发的磁场通过第二个线圈，使第二个线圈的磁通量发生了改变，有公式描述</p>
+<script type="math/tex; mode=display">
+\Psi_2=MI_1</script><p>其实还是不是感应问题，而只是激发问题，有一系列公式</p>
+<script type="math/tex; mode=display">
+M=K\sqrt{L_1L_2}</script><p>K 是耦合系数，说明<strong>漏磁</strong>的严重程度。</p>
+<h4 id="4-4-3-磁场能"><a href="#4-4-3-磁场能" class="headerlink" title="4.4.3 磁场能"></a>4.4.3 磁场能</h4><script type="math/tex; mode=display">
+W=\frac{1}{2}\sum L_iI_i^2+\frac{1}{2}\sum M_{ij}I_iI_j</script><p>有普遍的能量密度</p>
+<script type="math/tex; mode=display">
+W=\oiiint\frac{1}{2}B\cdot H dV</script><hr>
+<h2 id="五、电生磁（位移电流）"><a href="#五、电生磁（位移电流）" class="headerlink" title="五、电生磁（位移电流）"></a>五、电生磁（位移电流）</h2><h3 id="5-1-修正过的安培环路定理"><a href="#5-1-修正过的安培环路定理" class="headerlink" title="5.1 修正过的安培环路定理"></a>5.1 修正过的安培环路定理</h3><script type="math/tex; mode=display">
+\oint H\cdot dl=I_0+\frac{d\Phi_D}{dt}</script><h3 id="5-2-位移电流"><a href="#5-2-位移电流" class="headerlink" title="5.2 位移电流"></a>5.2 位移电流</h3><script type="math/tex; mode=display">
+I_D=\frac{d\Phi_D}{dt}=\frac{d}{dt}\oiint D\cdot dS=\oiint\frac{\part D}{\part t}\cdot dS\\
+=\varepsilon_0\oiint\frac{\part E}{\part t}\cdot dS+\oiint\frac{\part P}{\part t}\cdot dS</script><p>可以看到，<strong>位移电流</strong>会由两个部分产生，但是第一项的<strong>极化电流的变化</strong>只是暂态的过程，而<strong>变化电场</strong>才是位移电流的主要贡献项。</p>
+<hr>
+<h2 id="六、场生力"><a href="#六、场生力" class="headerlink" title="六、场生力"></a>六、场生力</h2><h3 id="6-1-安培力公式"><a href="#6-1-安培力公式" class="headerlink" title="6.1 安培力公式"></a>6.1 安培力公式</h3><script type="math/tex; mode=display">
+dF=Idl \times B</script><h3 id="6-2-磁矩"><a href="#6-2-磁矩" class="headerlink" title="6.2 磁矩"></a>6.2 磁矩</h3><script type="math/tex; mode=display">
+M=P_m\times B\\
+P_m=ISn</script><p>其中 $M$ 是<strong>磁力矩</strong>，$P_m$ 是磁矩，$n$ 的方向由 $I$ 的方向结合右手螺旋判定。</p>
+<h3 id="6-3-洛伦兹定理"><a href="#6-3-洛伦兹定理" class="headerlink" title="6.3 洛伦兹定理"></a>6.3 洛伦兹定理</h3><script type="math/tex; mode=display">
+F=qE+qv\times B</script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" rel="tag"><i class="fa fa-tag"></i> 大学物理</a>
+              <a href="/tags/S2%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S2复习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/7cb310e9/" rel="prev" title="大学物理-经典力学">
+      <i class="fa fa-chevron-left"></i> 大学物理-经典力学
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/67348790/" rel="next" title="大学物理-近代物理">
+      大学物理-近代物理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3"><span class="nav-text">一、直观理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%94%B5%E7%A3%81%E5%9C%BA%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">1.1 电磁场的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%8A%9B%E5%9C%BA%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">1.2 力场的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E7%A3%81%E8%8D%B7%EF%BC%8C%E6%81%92%E5%AE%9A%E7%94%B5%E6%B5%81%EF%BC%8C%E4%BD%8D%E7%A7%BB%E7%94%B5%E6%B5%81%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">1.3 磁荷，恒定电流，位移电流的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E4%BB%8B%E8%B4%A8%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">1.4 介质的理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%9D%99%E7%94%B5%E5%9C%BA"><span class="nav-text">二、静电场</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%BA%93%E4%BB%91%E5%AE%9A%E5%BE%8B"><span class="nav-text">2.1 库仑定律</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-%E7%94%B5%E5%81%B6%E6%9E%81%E5%AD%90"><span class="nav-text">2.1.1 电偶极子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-%E5%B8%A6%E7%94%B5%E5%9C%86%E7%8E%AF"><span class="nav-text">2.1.2 带电圆环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3-%E5%B8%A6%E7%94%B5%E7%BB%86%E6%A3%92"><span class="nav-text">2.1.3 带电细棒</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E9%AB%98%E6%96%AF%E5%AE%9A%E7%90%86"><span class="nav-text">2.2 高斯定理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E5%9D%87%E5%8C%80%E5%B8%A6%E7%94%B5%E7%90%83%E5%A3%B3"><span class="nav-text">2.2.1 均匀带电球壳</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E6%97%A0%E9%99%90%E9%95%BF%E5%B8%A6%E7%94%B5%E7%BB%86%E6%A3%92"><span class="nav-text">2.2.2 无限长带电细棒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E6%97%A0%E9%99%90%E5%A4%A7%E5%B8%A6%E7%94%B5%E5%B9%B3%E9%9D%A2"><span class="nav-text">2.2.3 无限大带电平面</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%94%B5%E4%BB%8B%E8%B4%A8%E7%9A%84%E6%9E%81%E5%8C%96"><span class="nav-text">2.3 电介质的极化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E4%BD%8D%E7%A7%BB%E6%9E%81%E5%8C%96%E4%B8%8E%E5%8F%96%E5%90%91%E6%9E%81%E5%8C%96"><span class="nav-text">2.3.1 位移极化与取向极化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E6%8F%8F%E7%BB%98%E6%9E%81%E5%8C%96"><span class="nav-text">2.3.2 描绘极化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-%E6%9C%89%E7%94%B5%E4%BB%8B%E8%B4%A8%E7%9A%84%E7%94%B5%E5%9C%BA"><span class="nav-text">2.3.3 有电介质的电场</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E7%94%B5%E5%8A%BF%E3%80%81%E7%94%B5%E5%AE%B9%E3%80%81%E9%9D%99%E7%94%B5%E8%83%BD"><span class="nav-text">2.4 电势、电容、静电能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-%E5%85%B3%E7%B3%BB%E7%90%86%E8%A7%A3"><span class="nav-text">2.4.1 关系理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-%E7%94%B5%E5%8A%BF%E5%B7%AE"><span class="nav-text">2.4.2 电势差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-3-%E7%94%B5%E5%AE%B9%E5%92%8C%E7%94%B5%E5%AE%B9%E5%99%A8"><span class="nav-text">2.4.3 电容和电容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-4-%E9%9D%99%E7%94%B5%E8%83%BD"><span class="nav-text">2.4.4 静电能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%9D%99%E7%A3%81%E5%9C%BA"><span class="nav-text">三、静磁场</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%AF%95%E5%A5%A5%E8%90%A8%E4%BC%90%E5%B0%94%E5%AE%9A%E5%BE%8B"><span class="nav-text">3.1 毕奥萨伐尔定律</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-%E5%85%AC%E5%BC%8F%E5%BD%A2%E5%BC%8F"><span class="nav-text">3.1.1 公式形式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E8%BD%BD%E6%B5%81%E7%9B%B4%E5%AF%BC%E7%BA%BF%E7%9A%84%E7%A3%81%E5%9C%BA"><span class="nav-text">3.1.2 载流直导线的磁场</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-%E8%BD%BD%E6%B5%81%E5%9C%86%E7%BA%BF%E5%9C%88%E8%BD%B4%E7%BA%BF%E4%B8%8A%E7%9A%84%E7%A3%81%E5%9C%BA"><span class="nav-text">3.1.3 载流圆线圈轴线上的磁场</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-%E8%BD%BD%E6%B5%81%E7%9B%B4%E8%9E%BA%E7%BA%BF%E7%AE%A1%E7%A3%81%E5%9C%BA"><span class="nav-text">3.1.4 载流直螺线管磁场</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%AE%89%E5%9F%B9%E7%8E%AF%E8%B7%AF%E5%AE%9A%E7%90%86"><span class="nav-text">3.2 安培环路定理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">3.2.1 总论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E8%BD%BD%E6%B5%81%E8%9E%BA%E7%BB%95%E7%8E%AF%E7%A3%81%E5%9C%BA"><span class="nav-text">3.2.2 载流螺绕环磁场</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E6%97%A0%E9%99%90%E9%95%BF%E7%9B%B4%E8%BD%BD%E6%B5%81%E5%AF%BC%E7%BA%BF%E7%A3%81%E5%9C%BA"><span class="nav-text">3.2.3 无限长直载流导线磁场</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%A3%81%E4%BB%8B%E8%B4%A8%E7%9A%84%E7%A3%81%E5%8C%96"><span class="nav-text">3.3 磁介质的磁化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-%E5%88%86%E5%AD%90%E5%9B%BA%E6%9C%89%E7%A3%81%E7%9F%A9"><span class="nav-text">3.3.1 分子固有磁矩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-%E9%A1%BA%E7%A3%81%E8%B4%A8%E4%B8%8E%E6%8A%97%E7%A3%81%E8%B4%A8"><span class="nav-text">3.3.2 顺磁质与抗磁质</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-%E6%8F%8F%E8%BF%B0%E7%A3%81%E5%8C%96"><span class="nav-text">3.3.3 描述磁化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-4-%E6%9C%89%E7%A3%81%E4%BB%8B%E8%B4%A8%E7%9A%84%E7%A3%81%E5%9C%BA"><span class="nav-text">3.3.4 有磁介质的磁场</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-5-%E9%93%81%E7%A3%81%E8%B4%A8"><span class="nav-text">3.3.5 铁磁质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%A3%81%E7%94%9F%E7%94%B5%EF%BC%88%E7%94%B5%E7%A3%81%E6%84%9F%E5%BA%94%EF%BC%89"><span class="nav-text">四、磁生电（电磁感应）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%B3%95%E6%8B%89%E7%AC%AC%E7%94%B5%E7%A3%81%E6%84%9F%E5%BA%94%E5%AE%9A%E5%BE%8B"><span class="nav-text">4.1 法拉第电磁感应定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%8A%A8%E7%94%9F%E7%94%B5%E5%8A%A8%E5%8A%BF"><span class="nav-text">4.2 动生电动势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E6%84%9F%E7%94%9F%E7%94%B5%E5%8A%A8%E5%8A%BF"><span class="nav-text">4.3 感生电动势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E8%87%AA%E6%84%9F%E3%80%81%E4%BA%92%E6%84%9F%E3%80%81%E7%A3%81%E8%83%BD"><span class="nav-text">4.4 自感、互感、磁能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-1-%E8%87%AA%E6%84%9F"><span class="nav-text">4.4.1 自感</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-2-%E4%BA%92%E6%84%9F"><span class="nav-text">4.4.2 互感</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-3-%E7%A3%81%E5%9C%BA%E8%83%BD"><span class="nav-text">4.4.3 磁场能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%94%B5%E7%94%9F%E7%A3%81%EF%BC%88%E4%BD%8D%E7%A7%BB%E7%94%B5%E6%B5%81%EF%BC%89"><span class="nav-text">五、电生磁（位移电流）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E4%BF%AE%E6%AD%A3%E8%BF%87%E7%9A%84%E5%AE%89%E5%9F%B9%E7%8E%AF%E8%B7%AF%E5%AE%9A%E7%90%86"><span class="nav-text">5.1 修正过的安培环路定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E4%BD%8D%E7%A7%BB%E7%94%B5%E6%B5%81"><span class="nav-text">5.2 位移电流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%9C%BA%E7%94%9F%E5%8A%9B"><span class="nav-text">六、场生力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E5%AE%89%E5%9F%B9%E5%8A%9B%E5%85%AC%E5%BC%8F"><span class="nav-text">6.1 安培力公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E7%A3%81%E7%9F%A9"><span class="nav-text">6.2 磁矩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E6%B4%9B%E4%BC%A6%E5%85%B9%E5%AE%9A%E7%90%86"><span class="nav-text">6.3 洛伦兹定理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、发展与历史体系结构包括指令集，存储组织，I&#x2F;O，总线结构。写到这里的时候真的觉得一切都值了。 1.1 操作系统迭代一开始的操作系统是批处理式的。批处理的意思就是把一堆任务集中到一起，然后一起处理，这样的好处是实现了初步的流水线化。但是计算机要读取任务，要通过磁带，而磁带上的内容，要通过读卡器读取卡片（可能就是一堆打着孔的硬纸板吧）写到磁盘上，如果读一个任务写一个磁带，然后读一个磁带，处理一个任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux-Unix备考">
+<meta property="og:url" content="https://thysrael.github.io/posts/1020f479/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、发展与历史体系结构包括指令集，存储组织，I&#x2F;O，总线结构。写到这里的时候真的觉得一切都值了。 1.1 操作系统迭代一开始的操作系统是批处理式的。批处理的意思就是把一堆任务集中到一起，然后一起处理，这样的好处是实现了初步的流水线化。但是计算机要读取任务，要通过磁带，而磁带上的内容，要通过读卡器读取卡片（可能就是一堆打着孔的硬纸板吧）写到磁盘上，如果读一个任务写一个磁带，然后读一个磁带，处理一个任">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220613105927896.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/u=4288700365,2823135409&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG.jpeg">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/u=3158712283,2527618484&amp;fm=253&amp;fmt=auto.jpeg">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20240302195202633-17093803335651.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220613110002883.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220613110035527.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220608091028831.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220608092833679.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220608111010459.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220608134143039.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/1020f479/image-20220608182823372.png">
+<meta property="article:published_time" content="2022-06-08T15:25:33.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.825Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S4复习">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/1020f479/image-20220613105927896.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/1020f479/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Linux-Unix备考 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/1020f479/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux-Unix备考
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-08 23:25:33" itemprop="dateCreated datePublished" datetime="2022-06-08T23:25:33+08:00">2022-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>18k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>16 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、发展与历史"><a href="#一、发展与历史" class="headerlink" title="一、发展与历史"></a>一、发展与历史</h2><p>体系结构包括指令集，存储组织，I/O，总线结构。写到这里的时候真的觉得一切都值了。</p>
+<h3 id="1-1-操作系统迭代"><a href="#1-1-操作系统迭代" class="headerlink" title="1.1 操作系统迭代"></a>1.1 操作系统迭代</h3><p>一开始的操作系统是<strong>批处理式</strong>的。批处理的意思就是把一堆任务集中到一起，然后一起处理，这样的好处是实现了初步的流水线化。但是计算机要读取任务，要通过磁带，而磁带上的内容，要通过读卡器读取卡片（可能就是一堆打着孔的硬纸板吧）写到磁盘上，如果读一个任务写一个磁带，然后读一个磁带，处理一个任务，这就太慢了。所以就考虑可以先用读卡器将一堆任务的卡片都一起读到磁带上，然后一起把这些磁带上的任务处理了。这就是所谓的批处理。那么这个时候，操作系统的主要作用就是自动地一个任务一个任务的完成。</p>
+<p>之后就变成了<strong>多道程序设计</strong>。尽管我们把写磁带这个功能给分割开来，让计算机可以安心处理磁带上的任务，但是计算机依然是需要读取磁盘上的内容的，这段 I/O 所占的时间 CPU 是不会工作的。为了把这段时间利用起来，我们可以考虑在内存中存放多个任务，这样当有一个任务在进行 I/O 的时候，CPU 可以去运算其他任务，这就是“多道程序设计”。所谓的“多道”，就是说在内存中存在多个任务。可以看作是在内存空间上实现了并行。</p>
+<p>同时还有一个技术产生了，那就是<strong>分时系统</strong>。这说的是尽管有了多道程序设计去优化速度，但是其本质还是一个“批处理系统”，就是说攒一大堆任务一起处理，一起出成果，那么就会导致等待的时候过长。为了提高响应性，可以考虑将 CPU 轮流分配（虽然多道程序设计也实现了），然后关键的是，干完就赶快出货，别拖着一起出。</p>
+<p>这三种技术的界限分割并不明显，因为事实就是他们在理论上本就具有一脉相承的。我感觉可能只是在具体的软硬件技术上有所区别，比如分时系统对于调度的要求可能就会跟批处理的难度有一个很大的提升。</p>
+<h3 id="1-2-名人"><a href="#1-2-名人" class="headerlink" title="1.2 名人"></a>1.2 名人</h3><p>Kenneth Lane Thompson 肯尼斯 · 蓝 · 汤普森。一般称其为汤普森。开发 Unix 的人，除此之外，还参与了 C 和 go 语言的设计，还设计了 ed 和 UTF-8。他老人家还健在。</p>
+<p><img src="/posts/1020f479/image-20220613105927896.png" alt="image-20220613105927896"></p>
+<p>Dennis Ritchie 丹尼斯 · 里奇。是汤普森的好友。两人一起开发了 Unix 和 C。并且用 C 重写了 Unix。</p>
+<p><img src="/posts/1020f479/u=4288700365,2823135409&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG.jpeg" alt="img"></p>
+<p>Bill Joy 比尔 · 乔伊。这人之前没有听过，所以专门找了一张描述他成就的图，据说他就是各种“代码之神”段子的原本主角。他是汤普森在伯克利大学的学生。<code>SPARC</code> 同样是 RISC 类型，用于学术领域的大型工作站中，包括银行金融体系的主服务器。</p>
+<p><img src="/posts/1020f479/u=3158712283,2527618484&amp;fm=253&amp;fmt=auto.jpeg" alt="img"></p>
+<p>他的成就</p>
+<p><img src="/posts/1020f479/image-20240302195202633-17093803335651.png" alt="image-20240302195202633"></p>
+<p>Linus Torvalds 林纳斯 · 托瓦兹。Linux 系统的开发者，还开发了 git。</p>
+<p><img src="/posts/1020f479/image-20220613110002883.png" alt="image-20220613110002883"></p>
+<p>Richard Stallman 理查德 · 斯托曼。gcc, gdb, Emacs 的创造者。GNU 运动的发起者。</p>
+<p><img src="/posts/1020f479/image-20220613110035527.png" alt="image-20220613110035527"></p>
+<h3 id="1-3-历史"><a href="#1-3-历史" class="headerlink" title="1.3 历史"></a>1.3 历史</h3><ul>
+<li>1970 年，UNIX 诞生，被称为 UNIX 元年，这可能也是各种计时装置从 1970 年 0 点 0 分开始的原因。</li>
+<li>1973 年，用 C 语言重写的 UNIX 诞生，这个版本被叫做 SYSTEM V。这一年也是 C 语言的诞辰，可以说开发完 C 语言立刻就重写了 UNIX。</li>
+<li>1977 年，UNIX 最著名的分发版之一的 BSD（Berkeley Software Distribution）诞生，这个发行版上有 vi、pascal编译器，并在之后与 TCP/IP 结合。</li>
+<li>1988 年，为统一各UNIX系统编程接口，提供应用程序在各UNIX系统之间的可移植性，IEEE出台了POSIX（Portable Operating System Interface）标准，定义了UNIX系统必须提供的接口函数（在C语言头文件中定义）</li>
+<li>1991 年，Linux 诞生。</li>
+</ul>
+<hr>
+<h2 id="二、基本操作"><a href="#二、基本操作" class="headerlink" title="二、基本操作"></a>二、基本操作</h2><h3 id="2-1-tty"><a href="#2-1-tty" class="headerlink" title="2.1 tty"></a>2.1 tty</h3><p>tty，teletypewriter 电传打字机，其本意可能是为了比喻一种虚拟化的打字机，即一种与计算机沟通的手段。linux 提供 <code>tty1 ~ tty6</code> 6 个接口操作环境，给我个人感觉就是一个没有内置命令的 shell。</p>
+<p>我们平时打开 Linux 的系统的时候，其实发生的是先打开 tty1，然后运行 XWindow 桌面管理器，然后再登陆的一个流程。如果我们想看原生的 tty 长啥样子，可以按 <code>Ctrl + Alt + Fn</code>  （其中 n 是 2 ~ 6）。就可以看见了。</p>
+<p>进去 <code>tty</code> 以后首先要输入用户名并登陆。</p>
+<h3 id="2-2-进程查看"><a href="#2-2-进程查看" class="headerlink" title="2.2 进程查看"></a>2.2 进程查看</h3><p>利用 <code>ps</code> 命令可以查看进程状态</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">ps</span> -l		<span class="token comment"># 只查看自己当前 shel 运行的进程</span>
+<span class="token function">ps</span> -lA		<span class="token comment"># 查看所有系统运行的进程</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>其效果如图：</p>
+<p><img src="/posts/1020f479/image-20220608091028831.png" alt="image-20220608091028831"></p>
+<p>其中 <code>F</code> 用于说明进程的权限，<code>4</code> 表示 <code>root</code> 权限，<code>1</code> 表示子进程仅执行 <code>fork</code> ，没有实际执行 <code>exec</code>。</p>
+<p>其中 <code>S</code> 表示进程的状态，<code>R</code> 表示 Running，说明该进程正在运行；<code>S</code> 表示 sleeping，该进程正在睡眠状态，但是可以被信号量唤醒；<code>D</code> 不可唤醒状态，一般为等待 I/O；<code>T</code> 停止状态，可能是在后台暂停；<code>Z</code> 表示 zombie，进程已经终止但是无法被移除到内存外。</p>
+<p><code>PID</code> 是进程编号，<code>PPID</code> 是父进程编号。</p>
+<p><code>C</code> 是 CPU 的使用率。</p>
+<p><code>PRI</code> 是 priority 的缩写， <code>NI</code> 是 Nice 的缩写，两者表示优先级，都是越小优先级越高。</p>
+<p>此外用 <code>top</code> 命令也可以查看进程的状态，这个更像 windows 下的任务管理器，因为这是一个动态变化的东西，效果如图</p>
+<p><img src="/posts/1020f479/image-20220608092833679.png" alt="image-20220608092833679"></p>
+<p>他会进入 <code>top</code> 的工作环境，在此按键有了新的功能（注意大小写）：</p>
+<ul>
+<li><code>P</code>：以 CPU 的使用排序显示</li>
+<li><code>M</code>：以 Memory 的使用排序现实</li>
+<li><code>N</code>： 以 PID 来排序</li>
+<li><code>T</code>：由该进程使用的 CPU 时间积累（<code>TIME+</code>）进行排序</li>
+<li><code>k</code>：给予某个 PID 一个信号（signal）</li>
+<li><code>r</code>：给予某个 PID 重新定制一个 <code>nice</code> 值</li>
+<li><code>q</code>：退出 <code>top</code> 的工作环境</li>
+</ul>
+<p>关于进程的优先调度，<code>PRI</code> 的值是操作系统给的，而且还会实时变化，所以我们没有办法调控。但是我们还有调控优先级的需求，所以就有了 <code>Nice</code> 值，两者的相关性如下：</p>
+<script type="math/tex; mode=display">
+\tt{PRI(new)\space = \space PRI(old) \space + \space Nice}</script><p>此外 <code>Nice</code> 的值有如下限制：</p>
+<ul>
+<li><code>nice</code> 的值可调整的范围为 <code>-20 ~ 19</code></li>
+<li><code>root</code> 可随意调整自己和他人进程的 <code>nice</code> 的值，且范围为 <code>-20 ~ 19</code></li>
+<li>一般用户仅可调整自己的 <code>nice</code> 值，且范围为 <code>0 ~ 19</code></li>
+<li>一般用户仅可将 <code>nice</code> 值越调越高</li>
+</ul>
+<h3 id="2-3-进程信号"><a href="#2-3-进程信号" class="headerlink" title="2.3 进程信号"></a>2.3 进程信号</h3><p>就和 lab-4-2 extra 中介绍的一样，我们有一个命令叫做 <code>kill</code> ，其格式如下</p>
+<pre class="line-numbers language-none"><code class="language-none">kill -signal PID<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>正如 extra 提到的，<code>kill</code> 并不是一个单纯的“杀死进程”的命令，而是一个给进程发送信号的命令。发送的信号是“杀死”只是 <code>kill</code> 的一种用法。</p>
+<p>我们用下面的命令可以查看 <code>signal</code> 的种类</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">kill</span> -l
+<span class="token function">kill</span> -L<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>输出结果如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token number">1</span><span class="token punctuation">)</span> SIGHUP       <span class="token number">2</span><span class="token punctuation">)</span> SIGINT       <span class="token number">3</span><span class="token punctuation">)</span> SIGQUIT      <span class="token number">4</span><span class="token punctuation">)</span> SIGILL       <span class="token number">5</span><span class="token punctuation">)</span> SIGTRAP
+<span class="token number">6</span><span class="token punctuation">)</span> SIGABRT      <span class="token number">7</span><span class="token punctuation">)</span> SIGBUS       <span class="token number">8</span><span class="token punctuation">)</span> SIGFPE       <span class="token number">9</span><span class="token punctuation">)</span> SIGKILL     <span class="token number">10</span><span class="token punctuation">)</span> SIGUSR1
+<span class="token number">11</span><span class="token punctuation">)</span> SIGSEGV     <span class="token number">12</span><span class="token punctuation">)</span> SIGUSR2     <span class="token number">13</span><span class="token punctuation">)</span> SIGPIPE     <span class="token number">14</span><span class="token punctuation">)</span> SIGALRM     <span class="token number">15</span><span class="token punctuation">)</span> SIGTERM
+<span class="token number">16</span><span class="token punctuation">)</span> SIGSTKFLT   <span class="token number">17</span><span class="token punctuation">)</span> SIGCHLD     <span class="token number">18</span><span class="token punctuation">)</span> SIGCONT     <span class="token number">19</span><span class="token punctuation">)</span> SIGSTOP     <span class="token number">20</span><span class="token punctuation">)</span> SIGTSTP
+<span class="token number">21</span><span class="token punctuation">)</span> SIGTTIN     <span class="token number">22</span><span class="token punctuation">)</span> SIGTTOU     <span class="token number">23</span><span class="token punctuation">)</span> SIGURG      <span class="token number">24</span><span class="token punctuation">)</span> SIGXCPU     <span class="token number">25</span><span class="token punctuation">)</span> SIGXFSZ
+<span class="token number">26</span><span class="token punctuation">)</span> SIGVTALRM   <span class="token number">27</span><span class="token punctuation">)</span> SIGPROF     <span class="token number">28</span><span class="token punctuation">)</span> SIGWINCH    <span class="token number">29</span><span class="token punctuation">)</span> SIGIO       <span class="token number">30</span><span class="token punctuation">)</span> SIGPWR
+<span class="token number">31</span><span class="token punctuation">)</span> SIGSYS      <span class="token number">34</span><span class="token punctuation">)</span> SIGRTMIN    <span class="token number">35</span><span class="token punctuation">)</span> SIGRTMIN+1  <span class="token number">36</span><span class="token punctuation">)</span> SIGRTMIN+2  <span class="token number">37</span><span class="token punctuation">)</span> SIGRTMIN+3
+<span class="token number">38</span><span class="token punctuation">)</span> SIGRTMIN+4  <span class="token number">39</span><span class="token punctuation">)</span> SIGRTMIN+5  <span class="token number">40</span><span class="token punctuation">)</span> SIGRTMIN+6  <span class="token number">41</span><span class="token punctuation">)</span> SIGRTMIN+7  <span class="token number">42</span><span class="token punctuation">)</span> SIGRTMIN+8
+<span class="token number">43</span><span class="token punctuation">)</span> SIGRTMIN+9  <span class="token number">44</span><span class="token punctuation">)</span> SIGRTMIN+10 <span class="token number">45</span><span class="token punctuation">)</span> SIGRTMIN+11 <span class="token number">46</span><span class="token punctuation">)</span> SIGRTMIN+12 <span class="token number">47</span><span class="token punctuation">)</span> SIGRTMIN+13
+<span class="token number">48</span><span class="token punctuation">)</span> SIGRTMIN+14 <span class="token number">49</span><span class="token punctuation">)</span> SIGRTMIN+15 <span class="token number">50</span><span class="token punctuation">)</span> SIGRTMAX-14 <span class="token number">51</span><span class="token punctuation">)</span> SIGRTMAX-13 <span class="token number">52</span><span class="token punctuation">)</span> SIGRTMAX-12
+<span class="token number">53</span><span class="token punctuation">)</span> SIGRTMAX-11 <span class="token number">54</span><span class="token punctuation">)</span> SIGRTMAX-10 <span class="token number">55</span><span class="token punctuation">)</span> SIGRTMAX-9  <span class="token number">56</span><span class="token punctuation">)</span> SIGRTMAX-8  <span class="token number">57</span><span class="token punctuation">)</span> SIGRTMAX-7
+<span class="token number">58</span><span class="token punctuation">)</span> SIGRTMAX-6  <span class="token number">59</span><span class="token punctuation">)</span> SIGRTMAX-5  <span class="token number">60</span><span class="token punctuation">)</span> SIGRTMAX-4  <span class="token number">61</span><span class="token punctuation">)</span> SIGRTMAX-3  <span class="token number">62</span><span class="token punctuation">)</span> SIGRTMAX-2
+<span class="token number">63</span><span class="token punctuation">)</span> SIGRTMAX-1  <span class="token number">64</span><span class="token punctuation">)</span> SIGRTMAX<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是估计也用不到那么多，所以挑几个说一下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>代号</th>
+<th>名称</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>HUP</td>
+<td>启动终止的进程，可让该 PID 重新读取自己的配置文件</td>
+</tr>
+<tr>
+<td>2</td>
+<td>INT</td>
+<td>就是 <code>Ctrl + c</code> 的意思</td>
+</tr>
+<tr>
+<td>9</td>
+<td>KILL</td>
+<td>强制中断一个进程</td>
+</tr>
+<tr>
+<td>15</td>
+<td>TERM</td>
+<td>以正常方式终止一个进程</td>
+</tr>
+<tr>
+<td>19</td>
+<td>STOP</td>
+<td>挂起一个进程，类似与 <code>Ctrl + z</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="2-4-任务管理"><a href="#2-4-任务管理" class="headerlink" title="2.4 任务管理"></a>2.4 任务管理</h3><p>可以出现提示字符让用户操作的环境就称为前台（foreground），至于其他任务就可以放入后台（background）去暂停或运行。</p>
+<p>一般的时候命令都是在前台执行的，如果我们想把他放到后台去管理，可以这样</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">command</span> <span class="token operator">&amp;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>对于前台的命令，我们既可以按 <code>Ctrl + c</code> 终止任务，也可以按 <code>Ctrl + z</code> 将其放到后台并悬挂。</p>
+<p>对于后台的命令，可以用下面的命令查看</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">jobs</span> -l<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其输出结果如下</p>
+<p><img src="/posts/1020f479/image-20220608111010459.png" alt="image-20220608111010459"></p>
+<p>除了进程号以外，还会提供形如 <code>[1], [2]</code> 的 <code>jobnumber</code> 。</p>
+<p>如果想要将后台人物拿到前台来处理，可以使用命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">fg</span> %jobnumber<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果想要让任务在后台下的状态变成运行中，可以使用如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">bg</span> %jobnumber<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但是似乎后台依然是和 <code>shell</code> 终端有关的。为了让其真正放到系统后台，可以如下命令</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">nohup</span> <span class="token builtin class-name">command</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h2 id="三、文件系统"><a href="#三、文件系统" class="headerlink" title="三、文件系统"></a>三、文件系统</h2><h3 id="3-1-文件的类型"><a href="#3-1-文件的类型" class="headerlink" title="3.1 文件的类型"></a>3.1 文件的类型</h3><p>我们都知道文件的类型和权限都可以用 <code>ls -l</code> 查看。我注意到 linux 将文件分为这么几类：</p>
+<ul>
+<li><code>d</code> 目录</li>
+<li><code>-</code> 文件</li>
+<li><code>l</code> 链接文件</li>
+<li><code>b</code> 块设备，可以随机存储的外设</li>
+<li><code>c</code>字符型设备，一般是串行端口，键盘鼠标，无法随机存取</li>
+</ul>
+<h3 id="3-2-文件的权限"><a href="#3-2-文件的权限" class="headerlink" title="3.2 文件的权限"></a>3.2 文件的权限</h3><p>其实这个似乎结合 MOS 的实现来看还挺好理解的。</p>
+<p>对于普通的文件其权限</p>
+<ul>
+<li><code>r</code> ，就是读取文件的实际内容</li>
+<li><code>w</code>，可以编辑、新增、修改文件的内容（但是不能删除，因为删除文件其实是修改目录）、</li>
+<li><code>x</code>，可以被系统执行</li>
+</ul>
+<p>对于目录权限</p>
+<ul>
+<li><code>r</code> 可以读取目录结构，就是可以 <code>ll</code></li>
+<li><code>w</code> 可以修改目录的内容，包括新建文件和目录，删除文件和目录，给文件改名</li>
+<li><code>x</code> access directory，可以进入这个目录，使其成为工作目录</li>
+</ul>
+<h3 id="3-3-ext2"><a href="#3-3-ext2" class="headerlink" title="3.3 ext2"></a>3.3 ext2</h3><p><code>Unix</code> 习惯的文件系统就是 ext2，就是我们熟悉的 <code>inode</code> 结构就是这个文件系统的方式。</p>
+<p>FAT 是微软之前主要使用的文件系统，后来改成了 NTFS。现在 FAT 还是 U 盘的文件系统，另外说一下，FAT 是链表式的组织结构。</p>
+<p>现在有一种新的文件系统叫做 XFS，似乎是日志式的。</p>
+<h3 id="3-4-常见外设"><a href="#3-4-常见外设" class="headerlink" title="3.4 常见外设"></a>3.4 常见外设</h3><p>在一切皆文件的指导思想下，还是积累几个常用的外设文件吧</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">dev/tty*		<span class="token comment"># 终端</span>
+dev/pts<span class="token operator">&amp;</span>		<span class="token comment"># 远程终端</span>
+dev/stdin		<span class="token comment"># 标准输入</span>
+dev/stdout		<span class="token comment"># 标准输出</span>
+dev/stderr		<span class="token comment"># 标准错误</span>
+dev/zero		<span class="token comment"># 零字节流</span>
+dev/null		<span class="token comment"># 空</span>
+dev/fd			<span class="token comment"># 软盘</span>
+dev/hd			<span class="token comment"># 硬盘</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其实还是要多积累。</p>
+<hr>
+<h2 id="四、文件编辑和流处理"><a href="#四、文件编辑和流处理" class="headerlink" title="四、文件编辑和流处理"></a>四、文件编辑和流处理</h2><h3 id="4-1-常见环境变量"><a href="#4-1-常见环境变量" class="headerlink" title="4.1 常见环境变量"></a>4.1 常见环境变量</h3><p><code>PS1</code> 用来设置命令提示符的格式，具体的语法在 <code>P323</code> 页有，只是吐槽一句，这是 <code>bash</code> 的</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">\</span><span class="token punctuation">[</span><span class="token punctuation">\</span>033<span class="token punctuation">[</span>01<span class="token punctuation">;</span>32m<span class="token punctuation">\</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">\</span>u@<span class="token punctuation">\</span>h<span class="token punctuation">\</span><span class="token punctuation">[</span><span class="token punctuation">\</span>033<span class="token punctuation">[</span>01<span class="token punctuation">;</span>37m<span class="token punctuation">\</span><span class="token punctuation">]</span> <span class="token punctuation">\</span>W<span class="token punctuation">\</span><span class="token punctuation">[</span><span class="token punctuation">\</span>033<span class="token punctuation">[</span>01<span class="token punctuation">;</span>32m<span class="token punctuation">\</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">\</span>$<span class="token punctuation">\</span><span class="token punctuation">[</span><span class="token punctuation">\</span>033<span class="token punctuation">[</span>00m<span class="token punctuation">\</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这是 <code>zsh</code> 的</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token variable">${$((_p9k_on_expand()))+}</span>%<span class="token punctuation">{</span><span class="token variable">${_p9k__raw_msg-}</span><span class="token variable">${_p9k__raw_msg<span class="token operator">:</span><span class="token operator">:=</span>}</span>%<span class="token punctuation">}</span><span class="token variable">${(e)_p9k_t<span class="token punctuation">[</span>7<span class="token punctuation">]</span>}</span><span class="token variable">${_p9k__1-${${<span class="token operator">:-</span>${_p9k__d<span class="token operator">:</span><span class="token operator">:=</span>0}</span><span class="token variable">${_p9k__rprompt<span class="token operator">:</span><span class="token operator">:=</span>${_p9k__1r-${${<span class="token operator">:-</span>${_p9k__bg<span class="token operator">:</span><span class="token operator">:=</span>NONE}</span><span class="token variable">${_p9k__i<span class="token operator">:</span><span class="token operator">:=</span>0}</span><span class="token variable">${_p9k__sss<span class="token operator">:</span><span class="token operator">:=</span>}</span><span class="token punctuation">}</span>+<span class="token punctuation">}</span><span class="token variable">${${<span class="token operator">:-</span>${P9K_CONTENT<span class="token operator">:</span><span class="token operator">:=</span>}</span><span class="token variable">${_p9k__n<span class="token operator">:</span><span class="token operator">:=</span>}</span><span class="token variable">${${${_p9k__bg<span class="token operator">:-</span>0}</span><span class="token builtin class-name">:</span><span class="token comment">#NONE}:-${_p9k__n::=8}}${_p9k__n:=${${(M)${:-x$_p9k__bg}:#x(000|000)}:+10}}${_p9k__n:=11}}${_p9k__e::=${${_p9k__1rstatus+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}1}}}+}${${_p9k__e:#00}:+${_p9k_t[$_p9k__n]/&lt;_p9k__w&gt;/$_p9k__w}${_p9k__c}%b%K{000\}%F{002\}${${(M)_p9k__e:#11}:+ }$_p9k__v${${:-${_p9k__w::=%b%K{000\}%F{002\} %b%K{000\}%F{002\}}${_p9k__sss::=%b%K{000\}%F{002\} }${_p9k__i::=1}${_p9k__bg::=000}}+}}${${:-"${${(%):-%j}:#0}"}:+${${:-${P9K_CONTENT::=""}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=12}}${_p9k__n:=${${(M)${:-x$_p9k__bg}:#x(000|000)}:+14}}${_p9k__n:=15}${_p9k__v::=}${_}}${_p9k__e::=${${_p9k__1rbackground_jobs+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}1}}}+}${${_p9k__e:#00}:+${_p9k_t[$_p9k__n]/&lt;_p9k__w&gt;/$_p9k__w}${_p9k__c}%b%K{000\}%F{006\}${${(M)_p9k__e:#11}:+ }$_p9k__v${${:-${_p9k__w::=%b%K{000\}%F{006\} %b%K{000\}%F{006\}}${_p9k__sss::=%b%K{000\}%F{006\} }${_p9k__i::=3}${_p9k__bg::=000}}+}}}${${:-"${${(%):-%#}:#\#}"}:+${${:-${P9K_CONTENT::=%n@%m}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=20}}${_p9k__n:=${${(M)${:-x$_p9k__bg}:#x(000|000)}:+22}}${_p9k__n:=23}${_}}${_p9k__e::=${${_p9k__1rcontext+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}0}}}+}${${_p9k__e:#00}:+${_p9k_t[$_p9k__n]/&lt;_p9k__w&gt;/$_p9k__w}${_p9k__c}%b%K{000\}%F{003\}${${:-${_p9k__w::=%b%K{000\}%F{003\} %b%K{000\}%F{003\}}${_p9k__sss::=%b%K{000\}%F{003\} }${_p9k__i::=30}${_p9k__bg::=000}}+}}}${${:-"${${(%):-%#}:#\%}"}:+${${:-${P9K_CONTENT::=%n@%m}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=24}}${_p9k__n:=${${(M)${:-x$_p9k__bg}:#x(000|000)}:+26}}${_p9k__n:=27}${_p9k__c::="${P9K_CONTENT}"}${_p9k__c::=}}${_p9k__e::=${${_p9k__1rcontext+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}0}}}+}${${_p9k__e:#00}:+${_p9k_t[$_p9k__n]/&lt;_p9k__w&gt;/$_p9k__w}${_p9k__c}%b%K{000\}%F{001\}${${:-${_p9k__w::=%b%K{000\}%F{001\} %b%K{000\}%F{001\}}${_p9k__sss::=%b%K{000\}%F{001\} }${_p9k__i::=30}${_p9k__bg::=000}}+}}}${${:-"${${:-$_p9k__keymap.$_p9k__zle_state}:#(vicmd.*|vivis.*|vivli.*|*.*insert*)}"}:+${${:-${P9K_CONTENT::=OVERTYPE}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=28}}${_p9k__n:=${${(M)${:-x$_p9k__bg}:#x(003|003)}}${_p9k__e::=${${_p9k__1rvi_mode+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}0}}}+}${${_p9k__e:#00}:+${_p9k_t[$_p9k__n]/&lt;_p9k__w&gt;/$_p9k__w}${_p9k__c}%b%K{003\}%F{000\}${${:-${_p9k__w::=%b%K{003\}%F{000\} %b%K{003\}%F{000\}}${_p9k__sss::=%b%K{003\}%F{000\} }${_p9k__i::=38}${_p9k__bg::=003}}+}}}${${:-"${(M)${:-$_p9k__keymap$_p9k__region_active}:#vicmd0}"}:+${${:-${P9K_CONTENT::=NORMAL}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=32}}${_p9k__n:=${${(M)${:-x$_p9k__bg}:#x(002|002)}:+34}}${_p9k__n:=35}${_p9}}${_p9k__e::=${${_p9k__1rvi_mode+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}0}}}+}${${_p9k__e:#00}:+${_p9k_t[$_p9k__n]/&lt;_p9k__w&gt;/$_p9k__w}${_p9k__c}%b%K{002\}%F{000\}${${:-${_p9k__w::=%b%K{002\}%F{000\} %b%K{002\}%F{000\}}${_p9k__sss::=%b%K{002\}%F{000\} }${_p9k__i::=38}${_p9k__bg::=002}}+}}}${${:-"${(M)${:-$_p9k__keymap$_p9k__region_active}:#(vicmd1|vivis?|vivli?)}"}:+${${:-${P9K_CONTENT::=VISUAL}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=36}}${_p9k__n:=${${(M)${:-x$_p9k__bg}:#x(004|004)}:+38}}${_}}${_p9k__e::=${${_p9k__1rvi_mode+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}0}}}+}${${_p9k__e:#00}:+${_p9k_t[$_p9k__n]/&lt;_p9k__w&gt;/$_p9k__w}${_p9k__c}%b%K{004\}%F{000\}${${:-${_p9k__w::=%b%K{004\}%F{000\} %b%K{004\}%F{000\}}${_p9k__sss::=%b%K{004\}%F{000\} }${_p9k__i::=38}${_p9k__bg::=004}}+}}}$_p9k__sss%b%k%f}}${_p9k__lprompt::=${_p9k__1l-${${:-${_p9k__bg::=NONE}${_p9k__i::=0}${_p9k__sss::=%f}}+}${${:-${P9K_CONTENT::=}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=40}}${_p9k__n:=${${(M)${:-x007}:#x($_p}}${_p9k__e::=${${_p9k__1los_icon+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}0}}}+}${${_p9k__e:#00}:+${${_p9k_t[$_p9k__n]/&lt;_p9k__ss&gt;/$_p9k__ss}/&lt;_p9k__s&gt;/$_p9k__s}${_p9k__c}%b%K{007\}%F{030\} ${${:-${_p9k__s::=%F{007\}}${_p9k__ss::=}${_p9k__sss::=%F{007\}}${_p9k__i::=1}${_p9k__bg::=007}}+}}${${:-${P9K_CONTENT::="%{d%}${:-"%B%F{255}"}${(Q)${:-"\~"}}${:-"%b%K{030}%F{254}"}%{d%}"}${_p9k__n::=}${${${_p9k__bg:-0}:#NONE}:-${_p9k__n::=44}}${_p9k__n:=${${(M)${:-x030}:#x($_p9k__bg|${_p9k__bg:-0})}:+46}}${_p9k__n:=}}${_p9k__e::=${${_p9k__1ldir+00}:-${${(%):-$_p9k__c%1(l.1.0)}[-1]}1}}}+}${${_p9k__e:#00}:+${${_p9k_t[$_p9k__n]/&lt;_p9k__ss&gt;/$_p9k__ss}/&lt;_p9k__s&gt;/$_p9k__s}${_p9k__v}${${(M)_p9k__e:#11}:+ }${_p9k__c}%b%K{030\}%F{254\} ${${:-${_p9k__s::=%F{030\}}${_p9k__ss::=}${_p9k__sss::=%F{030\}}${_p9k__i::=2}${_p9k__bg::=030}}+}}${(e)_p9k__vcs}%b%k$_p9k__sss%b%k%f${:-" %b%k%f"}}}}+}${(e)_p9k_t[6]}${${_p9k__h::=84.5}+}${${_p9k__d::=$((_p9k__m-_p9k__h))}+}${_p9k__lprompt/\%\{d\%\}*\%\{d\%\}/${_p9k__1ldir-${:-"%B%F{255}"}${(Q)${:-"\~"}}${:-"%b%K{030}%F{254}"}}}${${_p9k__m::=$((_p9k__d+_p9k__h))}+}}${${COLUMNS::=$_p9k__clm}+}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>PS2</code> 是换行的时候的辅助提示符。</p>
+<p><code>$</code> 是本 shell 的 PID.</p>
+<p><code>?</code> 是上一个命令的返回值，一般返回 <code>0</code> 是正常的。这也是我们写 C 函数的时候在 <code>main</code> 里要 <code>return 0</code> 的原因。</p>
+<h3 id="4-2-三种引号"><a href="#4-2-三种引号" class="headerlink" title="4.2 三种引号"></a>4.2 三种引号</h3><p>单引号中的变量并不会是原值，而是就是字符串。</p>
+<p>双引号中变量会是原值。</p>
+<p>反引号中的命令先会被执行，然后字符串会变成命令执行的输出，可以看作是另一种形式的重定向</p>
+<p>有如下示例：</p>
+<p><img src="/posts/1020f479/image-20220608134143039.png" alt="image-20220608134143039"></p>
+<h3 id="4-3-通配符"><a href="#4-3-通配符" class="headerlink" title="4.3 通配符"></a>4.3 通配符</h3><p>需要注意的是，通配符的解析是由 shell 提供的，shell 是不提供正则表达式功能的。然后有一个有意思的，就是一旦有了通配符，命令的输入参数就会变成不定长的，所以很多时候不是想不到用通配符，而是不敢用通配符，怕用了就会出现问题。只能说需要多看脚本来积累经验了。</p>
+<p>常用的通配符：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>代表 0 到任意个字符</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>代表 1 到任意个字符</td>
+</tr>
+<tr>
+<td><code>[]</code></td>
+<td>表示一定有一个在括号内的字符</td>
+</tr>
+<tr>
+<td><code>[^]</code></td>
+<td>表示一定有一个不在括号内的字符</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>通配符通配的东西应该是都在当前工作目录下的文件和目录（如果不指定的话），比如说在家目录下，输入和输出如下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">echo</span> *                                                                                                     
+<span class="token number">20373249</span> 公共 模板 视频 图片 文档 下载 音乐 桌面 OS os-env shell<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>可以 <code>*</code> 匹配了家目录下的所有文件和目录名。</p>
+<p>当有了通配符之后，就有了转义的需求。如果我只是想输出 <code>*</code> ，那么就不能直接 <code>echo *</code> 了，而是应该加转义符后输入 <code>echo \*</code>。</p>
+<h3 id="4-4-grep"><a href="#4-4-grep" class="headerlink" title="4.4 grep"></a>4.4 grep</h3><p>单独拆一张来讲它，其实是想要讨论一下管道命令。管道命令的输入到底是什么？我觉得就是一个字符串。虽然这个字符串可能很长，有很多行，但是依然是一个字符串。管道命令一般都有非管道命令的用法，其实可能就是把文件中的字符串当作处理对象了。</p>
+<p><code>grep</code> 的格式入下</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">grep</span> <span class="token punctuation">[</span>选项<span class="token punctuation">]</span> <span class="token string">"模式"</span> 文件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中的模式就是一个字符串，这个字符串符合正则表达式，这些之前就聊过了。</p>
+<p>主要强调的是 <code>grep</code> 的模式匹配是以行为单位进行的，只要在一行中找到匹配模式，<code>grep</code> 就会输出这一行。</p>
+<h3 id="4-5-sed"><a href="#4-5-sed" class="headerlink" title="4.5 sed"></a>4.5 sed</h3><p>先说一下，<code>sed</code> 应该是 <code>strean ed</code> 的意思，<code>ed</code> 是一款编辑器，也就是 <code>editor</code> 。这个编辑器就是汤普森设计的，他的学生乔伊开发了 <code>vi</code> 。所以会发现其中有很多的思想是相通的。另外需要强调的是，因为是流处理器，所以对于“向前回溯”的操作，<code>sed</code> 的支持功能并不太好，这是流处理的性质。</p>
+<p><code>sed</code> 的流也是以行为单位进行的，<code>sed</code> 的功能就是以行为单位进行操作。所以理解其工作，就是理解两个部分，一个是怎么选择行，一个是对行有哪些操作。</p>
+<p>对于第一个问题，一般用两种方式，一个是直接指定行号，比如 <code>1</code> 就是选择第一行，<code>3,5</code> 就是选择第 3 到 5 行。<code>$</code> 就是选择最后一行。另一种的方式是利用查找的方式 <code>/正则表达式/</code> 如果有匹配正则表达式的行，就会被选择。</p>
+<p>对于第二个问题，之前都整理过了，就不赘述了。<a target="_blank" rel="noopener external nofollow noreferrer" href="https://jingyan.baidu.com/article/adc81513a26ac7f723bf738f.html">https://jingyan.baidu.com/article/adc81513a26ac7f723bf738f.html</a> 这篇写的很好。</p>
+<h3 id="4-6-awk"><a href="#4-6-awk" class="headerlink" title="4.6 awk"></a>4.6 awk</h3><p><code>awk</code> 和 <code>cut</code> 的操作单位都要比 <code>grep</code> 和 <code>sed</code> 这样的行处理器要细致一些。<code>awk</code> 的优越之处太多了，但是之前总结过了，就不赘述了。主要是强调二者的关系和区别。</p>
+<p><code>awk</code> 自带了一大堆内置变量。我觉得比较容易弄混的是 <code>$0</code> 指的是这一行的字符串，<code>$1</code> 指的才是第一个被分割的字符</p>
+<p>另外还有一点需要强调 <code>awk</code> 绝不是一个简单的字符处理工具，他是可以编程的，是可以有复杂的流程控制的。</p>
+<hr>
+<h2 id="五、系统管理"><a href="#五、系统管理" class="headerlink" title="五、系统管理"></a>五、系统管理</h2><h3 id="5-1-etc"><a href="#5-1-etc" class="headerlink" title="5.1 etc"></a>5.1 etc</h3><p><code>etc</code> 这个目录下记录着系统的配置信息，比较著名的有</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">/etc/passwd			<span class="token comment"># 用户数据库，其中的域给出了用户名、真实姓名、家目录、加密的口令和用户的其他信息.</span>
+/etc/shadow			<span class="token comment"># 在安装了影子口令软件的系统上的影子口令文件</span>
+/etc/group			<span class="token comment"># 用户组信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-2-网络入门"><a href="#5-2-网络入门" class="headerlink" title="5.2 网络入门"></a>5.2 网络入门</h3><ul>
+<li><p>IP地址，是用来标注你这台电脑的身份的，就如同我们每个人都有一个身份证一般。一般长这样</p>
+<pre class="line-numbers language-none"><code class="language-none">192.168.1.255<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>子网掩码表示计算机使用的网络属于哪个网络段中，两个IP地址同属于一个网段就可以直接通信 。一般长这样</p>
+<pre class="line-numbers language-none"><code class="language-none">255.255.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>当属于不同的网络段时则需要网关来发挥作用了，而网关指的是处于不同网络段的计算机联系在一起，可以让他们进行互相通信，网关需要依靠路由器来完成它的功能。</p>
+</li>
+</ul>
+<hr>
+<h2 id="六、shell-编程"><a href="#六、shell-编程" class="headerlink" title="六、shell 编程"></a>六、shell 编程</h2><p>确实在那篇上已经整理过很多了。所以只是备考。</p>
+<h3 id="6-1-位置变量"><a href="#6-1-位置变量" class="headerlink" title="6.1 位置变量"></a>6.1 位置变量</h3><p>其中 <code>$0</code> 指命令本身，<code>$1</code> 指第一个参数，以此类推。</p>
+<p>对于位置变量，我们可以用 <code>set</code> 命令进行重新设置（类似于屏蔽传入的参数，而且哪怕只设置了一个，外面传进来三，也是只有一个），还可以用 <code>shift</code> 进行位移（第一个变成第二个……）有示例</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">echo</span> <span class="token variable">$0</span> <span class="token variable">$1</span> <span class="token variable">$2</span> <span class="token variable">$3</span> <span class="token variable">$4</span>
+<span class="token builtin class-name">set</span> a b c d e f g  			<span class="token comment"># 设置$1~$7分别为a,b,c,...g</span>
+<span class="token builtin class-name">echo</span> <span class="token variable">$0</span> <span class="token variable">$1</span> <span class="token variable">$2</span> <span class="token variable">$3</span> <span class="token variable">$4</span>
+<span class="token builtin class-name">shift</span> <span class="token number">2</span>						<span class="token comment"># 左移2位，此时 $1 对应 c</span>
+<span class="token builtin class-name">echo</span> <span class="token variable">$0</span> <span class="token variable">$1</span> <span class="token variable">$2</span> <span class="token variable">$3</span> <span class="token variable">$4</span>			<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当输入为</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">./Ctest/test.sh <span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span> <span class="token number">5</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>输出为</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">./Ctest/test.sh <span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span>
+./Ctest/test.sh a b c d
+./Ctest/test.sh c d e f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-2-引号辨析"><a href="#6-2-引号辨析" class="headerlink" title="6.2 引号辨析"></a>6.2 引号辨析</h3><p>对于下面这组例题</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">echo</span> don<span class="token string">'t do that					# 会另起一行接着要求输入，知道输入了配对的单引号为止
+echo "don'</span>t <span class="token keyword">do</span> that<span class="token string">"				# 输出：don't do that
+echo "</span>don<span class="token string">'t do that, $0"			# 输出：don'</span>t <span class="token keyword">do</span> that, <span class="token function">bash</span> 因为这是 <span class="token function">bash</span> 程序
+<span class="token builtin class-name">echo</span> <span class="token string">"don't do that, <span class="token variable"><span class="token variable">`</span><span class="token function">date</span><span class="token variable">`</span></span>"</span>		<span class="token comment"># 输出：don't do that, bash, 2022年 06月 08日 星期三 17:44:37 CST</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"don't do that, \<span class="token variable">$0</span>, \<span class="token variable"><span class="token variable">`</span>date<span class="token punctuation">\</span><span class="token variable">`</span></span>"</span>	<span class="token comment"># 输出：don't do that, $0, `date` ，因为反引号被转义了</span>
+<span class="token builtin class-name">echo</span> <span class="token string">'don'</span>t <span class="token keyword">do</span> that,  <span class="token variable">$0</span>, <span class="token variable"><span class="token variable">`</span><span class="token function">date</span><span class="token variable">`</span></span><span class="token string">'	# 会另起一行接着要求输入，知道输入了配对的单引号为止
+echo '</span>dont <span class="token keyword">do</span> that,  <span class="token variable">$0</span>, <span class="token variable"><span class="token variable">`</span><span class="token function">date</span><span class="token variable">`</span></span>'	<span class="token comment"># 输出：dont do that,  $0, `date`，可见单引号内反引号不起作用</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-3-内置变量"><a href="#6-3-内置变量" class="headerlink" title="6.3 内置变量"></a>6.3 内置变量</h3><ul>
+<li><code>$#</code>  命令行参数个数</li>
+<li><code>$@</code> 代表所有的命令行参数，如果有 4 个，那么就是 <code>"$1""$2""$3""$4"</code></li>
+<li><code>$*</code> 代表所有的命令行参数，如果有 4 个，那么就是 <code>"$1 $2 $3 $4"</code></li>
+<li><code>$?</code> 最后一条命令的返回值</li>
+<li>$$$$ 当前shell的进程号</li>
+<li><code>$!</code> 最后一个后台命令的进程号</li>
+</ul>
+<hr>
+<h2 id="七、C-语言开发环境"><a href="#七、C-语言开发环境" class="headerlink" title="七、C 语言开发环境"></a>七、C 语言开发环境</h2><h3 id="7-1-gdb"><a href="#7-1-gdb" class="headerlink" title="7.1 gdb"></a>7.1 gdb</h3><p><img src="/posts/1020f479/image-20220608182823372.png" alt="image-20220608182823372"></p>
+<hr>
+<h2 id="八、系统调用"><a href="#八、系统调用" class="headerlink" title="八、系统调用"></a>八、系统调用</h2><h3 id="8-1-信号"><a href="#8-1-信号" class="headerlink" title="8.1 信号"></a>8.1 信号</h3><p>完全跟 <code>lab4-2 extra</code> 几乎一模一样，可以说真的很开心。</p>
+<p>信号的主要机制就是可以让一个用户进程向另一个用户进程发送一个信号，信号接受者进程只要接收到类型为sig的信号，不管其正在执行程序的哪一部分，就立即执行 <code>handler</code> 函数。当 <code>handler</code> 函数执行结束后，控制权返回进程被中断的那一点继续执行。这个行为跟中断很像，所以这也被称为“软中断”。</p>
+<p><code>signal</code> 函数确实是一个注册函数，其原型如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token function">signal</span><span class="token punctuation">(</span><span class="token keyword">int</span> signum<span class="token punctuation">,</span><span class="token keyword">void</span><span class="token punctuation">(</span><span class="token operator">*</span> handler<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个函数看着难，但是很好理解，可以先转换成这种形式</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">typedef</span> <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token class-name">sig_t</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">sig_t</span> <span class="token function">signal</span><span class="token punctuation">(</span><span class="token keyword">int</span> signum<span class="token punctuation">,</span><span class="token class-name">sig_t</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这个 <code>sig_t</code> 就是一个函数指针，用来决定当信号来临，信号的接受者就会执行这个函数。返回值也是一个函数指针，它会返回被替换掉的那个 <code>handler</code> 函数。</p>
+<p><code>kill</code> 函数确实是用来发送信号的，在 <code>shell</code> 里使用的 <code>kill</code> 命令。实际上是对 <code>kill()</code> 函数的一个包装。其原型如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">kill</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">,</span><span class="token keyword">int</span> signo<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="8-2-命名管道"><a href="#8-2-命名管道" class="headerlink" title="8.2 命名管道"></a>8.2 命名管道</h3><p>首先说一下<strong>半双工管道</strong>的意思，就是数据流是单项的。我查资料说管道就是一种特殊的文件。</p>
+<p>命名管道的“文件性质“会更加明显一些，他会在目录中登记，可以被查看，可以被各种函数使用。最好的一点就是不再需要通信的两个进程有父子关系。</p>
+<p>读代码端：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/stat.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span>  </span>
+  
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">int</span> fd<span class="token punctuation">;</span>  
+    <span class="token keyword">int</span> ret<span class="token punctuation">;</span>  
+      
+    ret <span class="token operator">=</span> <span class="token function">mkfifo</span><span class="token punctuation">(</span><span class="token string">"my_fifo"</span><span class="token punctuation">,</span> <span class="token number">0666</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 创建命名管道  </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>ret <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>  
+    <span class="token punctuation">{</span>  
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"mkfifo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+      
+    fd <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"my_fifo"</span><span class="token punctuation">,</span> O_RDONLY<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 等着只写  </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>fd <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>  
+    <span class="token punctuation">{</span>  
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"open fifo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+      
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>  
+    <span class="token punctuation">{</span>  
+        <span class="token keyword">char</span> recv<span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">;</span>  
+        <span class="token function">read</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> recv<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>recv<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 读数据  </span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"read from my_fifo buf=[%s]\n"</span><span class="token punctuation">,</span>recv<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+      
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>写代码端：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/stat.h&gt;</span>  </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span>  </span>
+  
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  
+<span class="token punctuation">{</span>  
+    <span class="token keyword">int</span> fd<span class="token punctuation">;</span>  
+    <span class="token keyword">int</span> ret<span class="token punctuation">;</span>  
+      
+    ret <span class="token operator">=</span> <span class="token function">mkfifo</span><span class="token punctuation">(</span><span class="token string">"my_fifo"</span><span class="token punctuation">,</span> <span class="token number">0666</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 创建命名管道  </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>ret <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>  
+    <span class="token punctuation">{</span>  
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"mkfifo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+      
+    fd <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"my_fifo"</span><span class="token punctuation">,</span> O_WRONLY<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 等着只读  </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>fd <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>  
+    <span class="token punctuation">{</span>  
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"open fifo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+      
+    <span class="token keyword">char</span> send<span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"Hello Mike"</span><span class="token punctuation">;</span>  
+    <span class="token function">write</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> send<span class="token punctuation">,</span> <span class="token function">strlen</span><span class="token punctuation">(</span>send<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//写数据  </span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"write to my_fifo buf=%s\n"</span><span class="token punctuation">,</span>send<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+      
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 阻塞，保证读写进程保持着通信过程  </span>
+      
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S4%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S4复习</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/d95cb083/" rel="prev" title="操作系统-用户进程">
+      <i class="fa fa-chevron-left"></i> 操作系统-用户进程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/60099a32/" rel="next" title="基物实验-matlab脚本">
+      基物实验-matlab脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8F%91%E5%B1%95%E4%B8%8E%E5%8E%86%E5%8F%B2"><span class="nav-text">一、发展与历史</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%BF%AD%E4%BB%A3"><span class="nav-text">1.1 操作系统迭代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%90%8D%E4%BA%BA"><span class="nav-text">1.2 名人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%8E%86%E5%8F%B2"><span class="nav-text">1.3 历史</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-text">二、基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-tty"><span class="nav-text">2.1 tty</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%BF%9B%E7%A8%8B%E6%9F%A5%E7%9C%8B"><span class="nav-text">2.2 进程查看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%BF%9B%E7%A8%8B%E4%BF%A1%E5%8F%B7"><span class="nav-text">2.3 进程信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-text">2.4 任务管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">三、文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%96%87%E4%BB%B6%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">3.1 文件的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%96%87%E4%BB%B6%E7%9A%84%E6%9D%83%E9%99%90"><span class="nav-text">3.2 文件的权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-ext2"><span class="nav-text">3.3 ext2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E5%B8%B8%E8%A7%81%E5%A4%96%E8%AE%BE"><span class="nav-text">3.4 常见外设</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%96%87%E4%BB%B6%E7%BC%96%E8%BE%91%E5%92%8C%E6%B5%81%E5%A4%84%E7%90%86"><span class="nav-text">四、文件编辑和流处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%B8%B8%E8%A7%81%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-text">4.1 常见环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E4%B8%89%E7%A7%8D%E5%BC%95%E5%8F%B7"><span class="nav-text">4.2 三种引号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="nav-text">4.3 通配符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-grep"><span class="nav-text">4.4 grep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-sed"><span class="nav-text">4.5 sed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-awk"><span class="nav-text">4.6 awk</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86"><span class="nav-text">五、系统管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-etc"><span class="nav-text">5.1 etc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8"><span class="nav-text">5.2 网络入门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81shell-%E7%BC%96%E7%A8%8B"><span class="nav-text">六、shell 编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E4%BD%8D%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="nav-text">6.1 位置变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E5%BC%95%E5%8F%B7%E8%BE%A8%E6%9E%90"><span class="nav-text">6.2 引号辨析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="nav-text">6.3 内置变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81C-%E8%AF%AD%E8%A8%80%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-text">七、C 语言开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-gdb"><span class="nav-text">7.1 gdb</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-text">八、系统调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E4%BF%A1%E5%8F%B7"><span class="nav-text">8.1 信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E5%91%BD%E5%90%8D%E7%AE%A1%E9%81%93"><span class="nav-text">8.2 命名管道</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

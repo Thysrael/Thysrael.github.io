@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、安全目标1.1 总论系统安全有 3 个目标：  机密性（Confidentiality）：又称隐私性（Privacy），是指数据不能被未授权的主体窃取（即恶意读操作）。 完整性（Integrity）：是指数据不能被未授权的主体篡改（即恶意写操作）。 可用性（Availability）：是指数据能够被授权主体正常访问。  合称 CIA 。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息安全-基本概念">
+<meta property="og:url" content="https://thysrael.github.io/posts/7efac32a/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、安全目标1.1 总论系统安全有 3 个目标：  机密性（Confidentiality）：又称隐私性（Privacy），是指数据不能被未授权的主体窃取（即恶意读操作）。 完整性（Integrity）：是指数据不能被未授权的主体篡改（即恶意写操作）。 可用性（Availability）：是指数据能够被授权主体正常访问。  合称 CIA 。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/7efac32a/image-20240711145910684.png">
+<meta property="article:published_time" content="2024-07-10T12:51:28.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:47.805Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="信息安全">
+<meta property="article:tag" content="S8假期">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/7efac32a/image-20240711145910684.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/7efac32a/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>信息安全-基本概念 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/7efac32a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信息安全-基本概念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-07-10 20:51:28" itemprop="dateCreated datePublished" datetime="2024-07-10T20:51:28+08:00">2024-07-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">信息安全</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、安全目标"><a href="#一、安全目标" class="headerlink" title="一、安全目标"></a>一、安全目标</h2><h3 id="1-1-总论"><a href="#1-1-总论" class="headerlink" title="1.1 总论"></a>1.1 总论</h3><p>系统安全有 3 个目标：</p>
+<ul>
+<li><strong>机密性（Confidentiality）</strong>：又称隐私性（Privacy），是指数据不能被未授权的主体窃取（即恶意读操作）。</li>
+<li><strong>完整性（Integrity）</strong>：是指数据不能被未授权的主体篡改（即恶意写操作）。</li>
+<li><strong>可用性（Availability）</strong>：是指数据能够被授权主体正常访问。</li>
+</ul>
+<p>合称 CIA 。</p>
+<h3 id="1-2-机密性-Confidentiality"><a href="#1-2-机密性-Confidentiality" class="headerlink" title="1.2 机密性 (Confidentiality)"></a>1.2 机密性 (Confidentiality)</h3><h4 id="1-2-1-含义"><a href="#1-2-1-含义" class="headerlink" title="1.2.1 含义"></a>1.2.1 含义</h4><p>完整性是指保护数据不被未授权的主体篡改，确保数据的准确性、一致性和信任度。</p>
+<h4 id="1-2-2-实现手段"><a href="#1-2-2-实现手段" class="headerlink" title="1.2.2 实现手段"></a>1.2.2 实现手段</h4><ul>
+<li><strong>加密</strong>：对数据进行加密，只有持有正确解密密钥的主体才能读取数据。</li>
+<li><strong>访问控制</strong>：通过访问控制列表（ACL）和权限设置来限制数据的访问。</li>
+<li><strong>身份验证</strong>：确保数据只能由经过身份验证的用户或系统访问。</li>
+</ul>
+<h4 id="1-2-3-示例"><a href="#1-2-3-示例" class="headerlink" title="1.2.3 示例"></a>1.2.3 示例</h4><ul>
+<li><strong>加密通信</strong>：使用 HTTPS 协议对网络通信进行加密，防止第三方窃取传输中的数据。</li>
+<li><strong>数据加密存储</strong>：在文件系统或数据库中对敏感信息进行加密存储。</li>
+<li><strong>访问控制</strong>：设定文件或数据库记录的访问权限，只允许具备相应权限的用户访问。</li>
+</ul>
+<h3 id="1-3-完整性-Integrity"><a href="#1-3-完整性-Integrity" class="headerlink" title="1.3 完整性 (Integrity)"></a>1.3 完整性 (Integrity)</h3><h4 id="1-3-1-含义"><a href="#1-3-1-含义" class="headerlink" title="1.3.1 含义"></a>1.3.1 含义</h4><p>完整性是指保护数据不被未授权的主体篡改，确保数据的准确性、一致性和信任度。</p>
+<h4 id="1-3-2-实现手段"><a href="#1-3-2-实现手段" class="headerlink" title="1.3.2 实现手段"></a>1.3.2 实现手段</h4><ul>
+<li><strong>校验和和哈希</strong>：使用校验和或哈希函数来生成数据的唯一摘要，接收方可以通过比较摘要来验证数据是否被篡改。</li>
+<li><strong>数字签名</strong>：使用数字签名对数据进行签名，以确保数据在传输中的完整性和来源的可靠性。</li>
+<li><strong>版本控制</strong>：使用版本控制系统记录数据的变更历史，防止未经授权的修改。</li>
+</ul>
+<h4 id="1-3-3-示例"><a href="#1-3-3-示例" class="headerlink" title="1.3.3 示例"></a>1.3.3 示例</h4><ul>
+<li><strong>哈希校验</strong>：下载文件后检查文件的哈希值，确认其未被篡改。</li>
+<li><strong>数字签名</strong>：邮件或文档使用数字签名，收件人可以验证其来源和内容的完整性。</li>
+<li><strong>文件权限</strong>：设置敏感文件为只读，防止未经授权的用户进行修改。</li>
+</ul>
+<h3 id="1-4-可用性-Availability"><a href="#1-4-可用性-Availability" class="headerlink" title="1.4 可用性 (Availability)"></a>1.4 可用性 (Availability)</h3><h4 id="1-4-1-含义"><a href="#1-4-1-含义" class="headerlink" title="1.4.1 含义"></a>1.4.1 含义</h4><p>可用性是指确保数据和系统在需要时能够被授权的主体正常访问和使用。</p>
+<h4 id="1-4-2-实现手段"><a href="#1-4-2-实现手段" class="headerlink" title="1.4.2 实现手段"></a>1.4.2 实现手段</h4><ul>
+<li><strong>冗余和备份</strong>：通过数据冗余和定期备份来确保数据在特殊情况下（如硬件故障）仍然可用。</li>
+<li><strong>容错和高可用架构</strong>：设计容错和高可用系统架构，使用负载均衡、多路径等技术，确保系统在故障情况下仍然能够提供服务。</li>
+<li><strong>DoS/DDoS 保护</strong>：通过防火墙、入侵检测系统（IDS）和流量管理等手段防止拒绝服务（DoS）或分布式拒绝服务（DDoS）攻击。</li>
+</ul>
+<h4 id="1-4-3-示例"><a href="#1-4-3-示例" class="headerlink" title="1.4.3 示例"></a>1.4.3 示例</h4><ul>
+<li><strong>云备份</strong>：定期将数据备份到云存储，确保在本地数据损坏时可以恢复。</li>
+<li><strong>高可用性集群</strong>：使用高可用性集群和负载均衡器分配流量，确保一个节点出现故障时，其他节点可以继续提供服务。</li>
+<li><strong>流量管理</strong>：部署防火墙和负载均衡器，防止由于流量异常导致的服务中断。</li>
+</ul>
+<h3 id="1-5-三者的区别"><a href="#1-5-三者的区别" class="headerlink" title="1.5 三者的区别"></a>1.5 三者的区别</h3><ul>
+<li><strong>机密性 vs. 完整性</strong>：机密性关注的是防止数据被窃取，而完整性关注的是数据未经授权被篡改。机密性主要解决“谁能看到”的问题，而完整性解决的是“它是否被改变”的问题。</li>
+<li><strong>完整性 vs. 可用性</strong>：完整性确保数据的准确和一致性，而可用性确保数据和系统在需要时是可访问的。完整性保证数据未受未经授权的修改，可用性保证在正确时间提供正确的服务。</li>
+<li><strong>机密性 vs. 可用性</strong>：在某些情况下，机密性和可用性可能需要权衡。例如，高度加密的数据可能需要更多的计算资源解密，从而影响系统的可用性。机密性和可用性关注的是不同的方面，前者注重安全访问，后者注重无障碍访问。</li>
+</ul>
+<hr>
+<h2 id="二、访问控制"><a href="#二、访问控制" class="headerlink" title="二、访问控制"></a>二、访问控制</h2><h3 id="2-1-总论"><a href="#2-1-总论" class="headerlink" title="2.1 总论"></a>2.1 总论</h3><p>访问控制（Access Control）是按照访问主体的身份（Identity）来限制其访问对象的一种方法。它由两个基本过程组成，即：</p>
+<ul>
+<li>认证（Authentication）：验证某个发起访问请求的主体的身份。</li>
+<li>授权（Authorization）：授予某个身份一定的权限以访问特定的对象。</li>
+</ul>
+<p>访问控制是这样的一件事，资源的请求方被称为主体，认证干的事情是确定你真的是这个主题，而不是一个人化妆了伪造出来的人，换句话说，认证干的是“主体 =&gt; 身份”的工作；授权则干得是“身份 =&gt; 权限”的工作，需要强调，授权并不只局限于“赋予”某个身份一定的权限，他还包括这个权限的正确执行，违法权限的行为的发现。</p>
+<p><img src="/posts/7efac32a/image-20240711145910684.png" alt="image-20240711145910684"></p>
+<p>打给比方，认证就是“火眼金睛”，而“授权”则是天条和天兵。</p>
+<h3 id="2-2-认证"><a href="#2-2-认证" class="headerlink" title="2.2 认证"></a>2.2 认证</h3><p>认证过程旨在建立发起请求的主体与系统中某个 ID 之间的绑定关系。例如，用户登录操作系统时，首先要选择用户名（即 ID），然后输入密码或口令完成登录过程。</p>
+<p>认证过程中,判断某一个主体身份的方法主要有三种：</p>
+<ul>
+<li>你知道什么（Something you know）：例如密码/口令（password）、手势密码、某个问题的答案等。</li>
+<li>你有什么（Something you have）：例如 USB-key、密码器等实物；电子令牌（token）</li>
+<li>你是什么（Something you are）：例如指纹、虹膜、步态、键盘输入习惯等，属于人的一部分。</li>
+</ul>
+<p>总的来说，由上到下主体和身份（ID）的相关性在增强，进而安全性就在增强。主体知道的东西很容易被窃取，比如一个用生日做的密码，即使不是主体，也很容猜到。而主体的指纹，就没那么容易搞到了。</p>
+<p>Token 和 Password 都用于身份验证但用途和特性不同。Password 是用户在登录时输入的静态字符组合，用于初次验证身份。而 Token 则是在用户通过密码验证后，由服务器生成并发给客户端的动态凭证，用于在后续请求中证明身份。与 Password 不同，Token 通常有时效性，可以减少频繁传递 Password 的安全风险，并且适合分布式系统中的认证场景。</p>
+<h3 id="2-3-授权"><a href="#2-3-授权" class="headerlink" title="2.3 授权"></a>2.3 授权</h3><p>授权，是判断某个主体是否有权限访问某个对象的过程。授权机制主要考虑以下三个问题：</p>
+<ol>
+<li><p><strong>用何种数据结构来表达主体与对象之间的权限关系</strong>：</p>
+<p>确定如何存储和表示主体与对象之间的权限关系，如使用访问控制列表（ACL）、角色权限矩阵或权限表等。</p>
+</li>
+<li><p><strong>如何设置和修改这种权限关系</strong>：</p>
+<p>确定权限的分配和调整机制，例如通过管理员手动配置、角色分配系统或自动化策略等。</p>
+</li>
+<li><p><strong>如何强制保证这种权限关系</strong>：</p>
+<p>确保系统能够正确执行权限检查和访问控制，防止未经授权的访问。可以通过身份验证、访问控制检查和安全审计等手段来实现。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/" rel="tag"><i class="fa fa-tag"></i> 信息安全</a>
+              <a href="/tags/S8%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S8假期</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/a039c29c/" rel="prev" title="沟通交流-旋氏语法">
+      <i class="fa fa-chevron-left"></i> 沟通交流-旋氏语法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/71c079c7/" rel="next" title="海边拾贝-VeriSMo">
+      海边拾贝-VeriSMo <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E5%85%A8%E7%9B%AE%E6%A0%87"><span class="nav-text">一、安全目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">1.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%9C%BA%E5%AF%86%E6%80%A7-Confidentiality"><span class="nav-text">1.2 机密性 (Confidentiality)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-%E5%90%AB%E4%B9%89"><span class="nav-text">1.2.1 含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E5%AE%9E%E7%8E%B0%E6%89%8B%E6%AE%B5"><span class="nav-text">1.2.2 实现手段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-%E7%A4%BA%E4%BE%8B"><span class="nav-text">1.2.3 示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AE%8C%E6%95%B4%E6%80%A7-Integrity"><span class="nav-text">1.3 完整性 (Integrity)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-%E5%90%AB%E4%B9%89"><span class="nav-text">1.3.1 含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-%E5%AE%9E%E7%8E%B0%E6%89%8B%E6%AE%B5"><span class="nav-text">1.3.2 实现手段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-%E7%A4%BA%E4%BE%8B"><span class="nav-text">1.3.3 示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E5%8F%AF%E7%94%A8%E6%80%A7-Availability"><span class="nav-text">1.4 可用性 (Availability)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-%E5%90%AB%E4%B9%89"><span class="nav-text">1.4.1 含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-%E5%AE%9E%E7%8E%B0%E6%89%8B%E6%AE%B5"><span class="nav-text">1.4.2 实现手段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3-%E7%A4%BA%E4%BE%8B"><span class="nav-text">1.4.3 示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E4%B8%89%E8%80%85%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">1.5 三者的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-text">二、访问控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%80%BB%E8%AE%BA"><span class="nav-text">2.1 总论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%AE%A4%E8%AF%81"><span class="nav-text">2.2 认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%8E%88%E6%9D%83"><span class="nav-text">2.3 授权</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

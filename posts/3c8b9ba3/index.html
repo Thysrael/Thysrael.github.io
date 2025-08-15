@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Pansy Parser这里是 Pansy 编译器的 parser 具体语法树Parser 的目的是为了根据语法获得一个具体语法树（Concrete Syntax Tree，CST）。这棵语法树的非叶子节点是各个语法成分，而叶子节点则是 Token （或者说包含 Token）。强调这个是因为我没有意识到可以将 Token  与其他语法成分等量齐观。 在文法中，我们约定非叶子节点采用首字母大写的驼峰">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译技术-语法分析">
+<meta property="og:url" content="https://thysrael.github.io/posts/3c8b9ba3/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="Pansy Parser这里是 Pansy 编译器的 parser 具体语法树Parser 的目的是为了根据语法获得一个具体语法树（Concrete Syntax Tree，CST）。这棵语法树的非叶子节点是各个语法成分，而叶子节点则是 Token （或者说包含 Token）。强调这个是因为我没有意识到可以将 Token  与其他语法成分等量齐观。 在文法中，我们约定非叶子节点采用首字母大写的驼峰">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-28T14:57:29.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.000Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S5课上">
+<meta property="article:tag" content="编译技术">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/3c8b9ba3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>编译技术-语法分析 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/3c8b9ba3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译技术-语法分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-12-28 22:57:29" itemprop="dateCreated datePublished" datetime="2022-12-28T22:57:29+08:00">2022-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编译技术</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>7.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Pansy-Parser"><a href="#Pansy-Parser" class="headerlink" title="Pansy Parser"></a>Pansy Parser</h1><p>这里是 Pansy 编译器的 parser</p>
+<h2 id="具体语法树"><a href="#具体语法树" class="headerlink" title="具体语法树"></a>具体语法树</h2><p><code>Parser</code> 的目的是为了根据语法获得一个<strong>具体语法树</strong>（Concrete Syntax Tree，CST）。这棵语法树的非叶子节点是各个语法成分，而叶子节点则是 <code>Token</code> （或者说包含 <code>Token</code>）。强调这个是因为我没有意识到可以将 <code>Token</code>  与其他语法成分等量齐观。</p>
+<p>在文法中，我们约定非叶子节点采用首字母大写的驼峰命名法，比如 <code>CompUnit</code>，而对于叶子节点，我们采用全大写的形式，比如 <code>IDENFR</code> 。</p>
+<p>相比于各种学长压缩语法树，在语法解析的时候直接获得<strong>抽象语法树</strong>（Abstract Syntax Tree，AST）的设计，我觉得我这个设计是更加适合应试的，因为考试的题目是要依托于文法的，AST 忽略或者说提炼了部分的文法信息，这就导致与原有文法的不契合。而且这种<strong>“将语义信息隐藏在语法中”</strong>的设计思想，和我个人性格更符。</p>
+<hr>
+<h2 id="Supporter"><a href="#Supporter" class="headerlink" title="Supporter"></a>Supporter</h2><p>解析的过程可以看做对于 <code>tokens</code> 数组（词法分析的成果）的遍历，只有当解析到最底部的终结符的时候，我们才会移动 <code>tokens</code> 指针。为了实现更强的功能（主要是错误处理和前瞻），所以采用了一个 <code>supporter</code> 对这个数据结构和动作进行封装。封装好的 <code>ParseSupporter</code> 支持前瞻，回退，日志记录、$First$ 判断等多项功能。</p>
+<hr>
+<h2 id="改写语法与解析实现"><a href="#改写语法与解析实现" class="headerlink" title="改写语法与解析实现"></a>改写语法与解析实现</h2><p>手搓了一份 SysY 的文法，采用正则形式，写在了 <code>SysY.g4</code> 文件中。相比于课程组给出的文法，消除了左递归，并且严谨了表述。而且拓展了一部分十分不优雅的语法。</p>
+<h3 id="编译单元-CompUnit"><a href="#编译单元-CompUnit" class="headerlink" title="编译单元 CompUnit"></a>编译单元 CompUnit</h3><pre class="line-numbers language-none"><code class="language-none">CompUnit -&gt; {Decl} {FuncDef} MainFuncDef<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>编译单元由声明，函数定义和主函数定义组成，而且必须保持这个顺序，我修改成了</p>
+<pre class="line-numbers language-none"><code class="language-none">CompUnit
+   : (FuncDef | Decl)+
+   ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这样声明和函数可以交错，而且不会有 <code>MainFuncDef</code> 这个选项。识别的时候依靠前瞻即可。</p>
+<p>在实际操作的时候，发现还是需要 <code>MainFuncDef</code> 的时候，因为 <code>MainFuncDef</code> 的语法成分和 <code>FuncDef</code> 并不相同，两者不能统一处理。<code>CompUnit</code> 的解析主要是识别三种符号，然后持续解析直到 <code>tokens</code> 被读取完，如果与三种符号都不匹配，那么直接报错退出。 </p>
+<h3 id="声明-Decl"><a href="#声明-Decl" class="headerlink" title="声明 Decl"></a>声明 Decl</h3><pre class="line-numbers language-none"><code class="language-none">Decl → ConstDecl | VarDecl <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>声明可以是常量声明或者变量声明</p>
+<pre class="line-numbers language-none"><code class="language-none">Decl
+   : ConstDecl
+   | VarDecl
+   ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这部分没有修改。</p>
+<p>在实现中，只需要根据 First 是不是 <code>const</code> 就可以区分这两种情况，并不会产生任何的歧义。</p>
+<h3 id="常量声明-ConstDecl"><a href="#常量声明-ConstDecl" class="headerlink" title="常量声明 ConstDecl"></a>常量声明 ConstDecl</h3><pre class="line-numbers language-none"><code class="language-none">ConstDecl → 'const' BType ConstDef { ',' ConstDef } ';' <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>主要修改是增加了 token 节点，避免了 token 的暴露，让后序遍历更加一致。而且去掉了 <code>BType</code></p>
+<pre class="line-numbers language-none"><code class="language-none">ConstDecl
+   : CONST_KW BType ConstDef (COMMA ConstDef)* SEMICOLON
+   ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>可以看到，常量声明可以用逗号分割，同时声明多个。利用有没有逗号判断 constDef 的个数，是严谨的。</p>
+<h3 id="常量定义-ConstDef"><a href="#常量定义-ConstDef" class="headerlink" title="常量定义 ConstDef"></a>常量定义 ConstDef</h3><pre class="line-numbers language-none"><code class="language-none">ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改成</p>
+<pre class="line-numbers language-none"><code class="language-none">ConstDef
+   : IDENFR (L_BRACKT ConstExp R_BRACKT)* ASSIGN ConstInitVal
+   ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>基本上没有任何变化。</p>
+<p>在实现中，以左中括号为判断是否存在维度信息的标准，缺少右中括号并不会干扰判断。</p>
+<h3 id="常量初值-ConstInitVal"><a href="#常量初值-ConstInitVal" class="headerlink" title="常量初值 ConstInitVal"></a>常量初值 ConstInitVal</h3><p>常量初值可以是一个常量表达式，也可以是一个数组初值</p>
+<pre class="line-numbers language-none"><code class="language-none">ConstInitVal → ConstExp
+			 | '{' [ ConstInitVal { ',' ConstInitVal } ] '}'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在实现的时候，利用的是，是否是左大括号，如果是进行数组初始化，否则，就是单值常量，这没准会造成某种意义的不严谨。</p>
+<h3 id="常量表达式-ConstExp"><a href="#常量表达式-ConstExp" class="headerlink" title="常量表达式 ConstExp"></a>常量表达式 ConstExp</h3><pre class="line-numbers language-none"><code class="language-none">ConstExp → AddExp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>最终 <code>ConstExp</code> 会变成 <code>AddExp</code> 。<code>Exp</code> 也是会推出 <code>AddExp</code>。其中的区别是 <code>ConstExp</code> 里不能有变量。</p>
+<p>修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">ConstExp
+    : AddExp
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>事实证明这里没有直接跳过 <code>ConstExp</code> 直接 <code>AddExp</code> 是一个明智之举，因为这样 <code>AddExpNode</code> 就可以继承属性来判断当前是否是 <code>const</code> 了。</p>
+<h3 id="变量声明-VarDecl"><a href="#变量声明-VarDecl" class="headerlink" title="变量声明 VarDecl"></a>变量声明 VarDecl</h3><pre class="line-numbers language-none"><code class="language-none">VarDecl → BType VarDef { ',' VarDef } ';'<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">VarDecl
+    : BType VarDef (COMMA VarDef)* SEMICOLON
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>根据有无左括号判断是否有维度信息，根据有无等于号判断时是否有初始值，是严谨的。</p>
+<h3 id="变量定义-VarDef"><a href="#变量定义-VarDef" class="headerlink" title="变量定义 VarDef"></a>变量定义 VarDef</h3><pre class="line-numbers language-none"><code class="language-none">VarDef → Ident { '[' ConstExp ']' } 
+	   | Ident { '[' ConstExp ']' } '=' InitVal //包含普通变量、一维数组、二维数组定义<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>相比于常量定义必须有初值，变量定义可以没有初值，修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">VarDef
+    : IDENT (L_BRACKT ConstExp R_BRACKT)* (ASSIGN InitVal)?
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>基本上没变。</p>
+<h3 id="变量初值-InitVal"><a href="#变量初值-InitVal" class="headerlink" title="变量初值 InitVal"></a>变量初值 InitVal</h3><pre class="line-numbers language-none"><code class="language-none">InitVal → Exp 
+	    | '{' [ InitVal { ',' InitVal } ] '}'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>可以是单变量，也可以是数组。可以修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">InitVal
+    : Exp
+    | (L_BRACE (InitVal (COMMA InitVal)*)? R_BRACE)
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>基本上没变。利用的同样是左大括号是否存在来判断分支，在判断的时候还考虑了 ‘{}’ 这种情况的出现，其实是没有必要的，因为 ‘{}’ 是 0 维的，语义约束要求了维度不能为 0。</p>
+<h3 id="函数定义-FuncDef"><a href="#函数定义-FuncDef" class="headerlink" title="函数定义 FuncDef"></a>函数定义 FuncDef</h3><pre class="line-numbers language-none"><code class="language-none">FuncDef → FuncType Ident '(' [FuncFParams] ')' Block <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>函数由函数类型，标识符，形参列表和函数体组成，SysY 中没有函数声明，只有函数定义。</p>
+<pre class="line-numbers language-none"><code class="language-none">FuncDef
+   : FuncType IDENT L_PAREN funcFParams? R_PAREN block
+   ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这里的函数定义并不包括主函数 <code>main</code>。根据是否是 INTTK 判断是否有形参表。</p>
+<h3 id="函数类型-FuncType"><a href="#函数类型-FuncType" class="headerlink" title="函数类型 FuncType"></a>函数类型 FuncType</h3><pre class="line-numbers language-none"><code class="language-none">FuncType → 'void' | 'int' <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">FuncType
+    : VOID_KW
+    | INT_KW
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="函数形参表-FuncFParams"><a href="#函数形参表-FuncFParams" class="headerlink" title="函数形参表 FuncFParams"></a>函数形参表 FuncFParams</h3><pre class="line-numbers language-none"><code class="language-none">FuncFParams → FuncFParam { ',' FuncFParam } <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>函数形参表至少有有一个参数，没参数的情况是直接没有形参表。修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">FuncFParams
+    : FuncFParam (COMMA FuncFParam)*
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>根据是否有逗号确定有几个形参。</p>
+<h3 id="函数形参-FuncFParam"><a href="#函数形参-FuncFParam" class="headerlink" title="函数形参 FuncFParam"></a>函数形参 FuncFParam</h3><pre class="line-numbers language-none"><code class="language-none">FuncFParam → BType Ident ['[' ']' { '[' ConstExp ']' }] <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>参数可以是整型，还可以是数组，但是数组的第一维一定是缺失的。</p>
+<pre class="line-numbers language-none"><code class="language-none">FuncFParam
+    : BType IDENT (L_BRACKT R_BRACKT (L_BRACKT Exp R_BRACKT)*)?
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>利用有无左大括号判断是否传入指针。</p>
+<h3 id="语句块-Block"><a href="#语句块-Block" class="headerlink" title="语句块 Block"></a>语句块 Block</h3><pre class="line-numbers language-none"><code class="language-none">Block → '{' { BlockItem } '}'<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>语句块就是花括号包裹的 0 到多个 <code>BlockItem</code> 。修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">Block
+    : L_BRACE BlockItem* R_BRACE
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="语句块项-BlockItem"><a href="#语句块项-BlockItem" class="headerlink" title="语句块项 BlockItem"></a>语句块项 BlockItem</h3><pre class="line-numbers language-none"><code class="language-none">BlockItem → Decl | Stmt <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>语句块项可以是声明和语句。修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">BlockItem
+    : VarDecl
+    | Stmt
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当是声明的时候，走声明分支，否则走语句分支，这是不严谨的。这建立于语句分支的 FIRST 中没有 int 和 const。</p>
+<h3 id="语句-Stmt"><a href="#语句-Stmt" class="headerlink" title="语句 Stmt"></a>语句 Stmt</h3><pre class="line-numbers language-none"><code class="language-none">Stmt → LVal '=' Exp ';' // 每种类型的语句都要覆盖
+| [Exp] ';' // 有无Exp两种情况
+| Block
+| 'if' '(' Cond ')' Stmt [ 'else' Stmt ] // 1.有else 2.无else
+| 'while' '(' Cond ')' Stmt
+| 'break' ';' 
+| 'continue' ';'
+| 'return' [Exp] ';' // 1.有Exp 2.无Exp
+| LVal '=' 'getint''('')'';'
+| 'printf''('FormatString{','Exp}')'';' // 1.有Exp 2.无Exp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里似乎过于复杂了，所以尝试引入多个来缓解。不过需要注意，这样语法成分就增多了，但是是值得的，而且并不会有太大的影响。</p>
+<p>语句总览：</p>
+<pre class="line-numbers language-none"><code class="language-none">Stmt
+    : AssignStmt
+    | ExpStmt
+    | Block
+    | ConditionStmt
+    | WhileStmt
+    | BreakStmt
+    | ContinueStmt
+    | ReturnStmt
+    | InStmt
+    | OutStmt
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于大部分的语句，都是有很明显的 $FIRST$ 可以将其与其他语句分开。但是对于 AssignStmt, InStmt, ExpStmt，他们的第一个元素都有可能是 LVal，所以这里用到了回退。先尝试解析一个 LVal，然后判断其后的元素是否是 = 号（其实类似于 LAST 的思想）。如果是，那么就从 AssignStmt 和 InStmt 中选择。否则从 ExpStmt 中选择，这里也造成了一定的不严谨性，所有的其他语句都会流入 ExpStmt。</p>
+<h4 id="赋值语句-AssignStmt"><a href="#赋值语句-AssignStmt" class="headerlink" title="赋值语句 AssignStmt"></a>赋值语句 AssignStmt</h4><pre class="line-numbers language-none"><code class="language-none">AssignStmt
+    : LVal ASSIGN Exp SEMICOLON
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>通过有没有分号来确定是否到达结尾，缺少分号不会造成问题，因为如果是空语句缺分号，那么就是空行了。</p>
+<h4 id="表达式语句-ExpStmt"><a href="#表达式语句-ExpStmt" class="headerlink" title="表达式语句 ExpStmt"></a>表达式语句 ExpStmt</h4><pre class="line-numbers language-none"><code class="language-none">ExpStmt
+    : Exp? SEMICOLON
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>可以发现 <code>AssignStmt</code> 和 <code>ExpStmt</code> 有很大的重复部分，比如 <code>a[1][1];</code> 和 <code>a[1][1] = 1;</code> 就是两个语句，但是除非解析到 <code>=</code> ，否则根本分不出来到底是啥，所以可能需要前瞻很多东西。但是在错误处理中就没有办法使用了。</p>
+<h4 id="输入语句-InStmt"><a href="#输入语句-InStmt" class="headerlink" title="输入语句 InStmt"></a>输入语句 InStmt</h4><pre class="line-numbers language-none"><code class="language-none">InStmt
+	: LVal ASSIGN GETINTTK L_PAREN R_PAREN SEMICOLON<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>发现似乎需要和 <code>AssignStmt</code> 一起处理。应该没事。</p>
+<h4 id="输出语句-OutStmt"><a href="#输出语句-OutStmt" class="headerlink" title="输出语句 OutStmt"></a>输出语句 OutStmt</h4><pre class="line-numbers language-none"><code class="language-none">OutStmt
+    : PRINTFTK L_PAREN FormatString (COMMA Exp)* R_PAREN
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="条件语句-ConditionStmt"><a href="#条件语句-ConditionStmt" class="headerlink" title="条件语句 ConditionStmt"></a>条件语句 ConditionStmt</h4><p>有趣的是，这些复杂的结构，我以为是翻译成 <code>Block</code>，但是却被翻译成了 <code>Stmt</code>。确实这样表达能力增强了。</p>
+<pre class="line-numbers language-none"><code class="language-none">ConditionStmt
+    : IF_KW L_PAREN Cond R_PAREN Stmt (ELSE_KW Stmt)?
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="循环语句-WhileStmt"><a href="#循环语句-WhileStmt" class="headerlink" title="循环语句 WhileStmt"></a>循环语句 WhileStmt</h4><pre class="line-numbers language-none"><code class="language-none">WhileStmt
+    : WHILE_KW L_PAREN Cond R_PAREN Stmt
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="跳出语句-BreakStmt"><a href="#跳出语句-BreakStmt" class="headerlink" title="跳出语句 BreakStmt"></a>跳出语句 BreakStmt</h4><pre class="line-numbers language-none"><code class="language-none">BreakStmt
+    : BREAK_KW SEMICOLON
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="继续语句-CotinueStmt"><a href="#继续语句-CotinueStmt" class="headerlink" title="继续语句 CotinueStmt"></a>继续语句 CotinueStmt</h4><pre class="line-numbers language-none"><code class="language-none">ContinueStmt
+    : CONTINUE_KW SEMICOLON
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="返回语句-ReturnStmt"><a href="#返回语句-ReturnStmt" class="headerlink" title="返回语句 ReturnStmt"></a>返回语句 ReturnStmt</h4><pre class="line-numbers language-none"><code class="language-none">ReturnStmt
+    : RETURN_KW (Exp)? SEMICOLON
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>依然是需要尝试解析，因为缺少分号会造成“连读”现象（虽然应该被语义约束了）。</p>
+<h3 id="条件表达式-Cond"><a href="#条件表达式-Cond" class="headerlink" title="条件表达式 Cond"></a>条件表达式 Cond</h3><pre class="line-numbers language-none"><code class="language-none">Cond → LOrExp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">Cond
+    : LOrExp
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="逻辑或表达式-LOrExp"><a href="#逻辑或表达式-LOrExp" class="headerlink" title="逻辑或表达式 LOrExp"></a>逻辑或表达式 LOrExp</h3><pre class="line-numbers language-none"><code class="language-none">LOrExp → LAndExp | LOrExp '||' LAndExp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>需要消去左递归，修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">LOrExp
+   : LAndExp (OR LAndExp)*
+   ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这样看就很显然了，因为 <code>OR</code> 优先级是低于 <code>AND</code> 和 <code>NOT</code> 的，所以把他放在最外侧。</p>
+<h3 id="逻辑与表达式-LAndExp"><a href="#逻辑与表达式-LAndExp" class="headerlink" title="逻辑与表达式 LAndExp"></a>逻辑与表达式 LAndExp</h3><pre class="line-numbers language-none"><code class="language-none">LAndExp → EqExp | LAndExp '&amp;&amp;' EqExp <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改为非左递归形式，如下</p>
+<pre class="line-numbers language-none"><code class="language-none">LAndExp
+    : EqExp (AND EqExp)*
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>这依然维持着优先级的构造顺序，优先级由高到低排列</p>
+<ul>
+<li>一元运算符：<code>!, +, -</code></li>
+<li>乘除运算符：<code>*, /, %</code></li>
+<li>加减运算符：<code>+,  -</code></li>
+<li>关系运算符：<code>&lt;, &lt;=, &gt;, &gt;=</code></li>
+<li>相等运算符：<code>==, !=</code></li>
+<li>逻辑与运算符：<code>&amp;&amp;</code></li>
+<li>逻辑或运算符：<code>||</code></li>
+</ul>
+<h3 id="相等性表达式-EqExp"><a href="#相等性表达式-EqExp" class="headerlink" title="相等性表达式 EqExp"></a>相等性表达式 EqExp</h3><pre class="line-numbers language-none"><code class="language-none">EqExp → RelExp | EqExp ('==' | '!=') RelExp <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>消去左递归，获得</p>
+<pre class="line-numbers language-none"><code class="language-none">EqExp
+    : RelExp (EqOp RelExp)*
+    ;
+    
+EqOp
+    : EQ
+    | NEQ
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="关系表达式-RelExp"><a href="#关系表达式-RelExp" class="headerlink" title="关系表达式 RelExp"></a>关系表达式 RelExp</h3><pre class="line-numbers language-none"><code class="language-none">RelExp → AddExp | RelExp ('&lt;' | '&gt;' | '&lt;=' | '&gt;=') AddExp <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>消除左递归，变为</p>
+<pre class="line-numbers language-none"><code class="language-none">RelExp
+    : AddExp (RelOp AddExp)*
+    ; // eliminate left-recursive
+
+RelOp
+    : LT
+    | GT
+    | LE
+    | GE
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="表达式-Exp"><a href="#表达式-Exp" class="headerlink" title="表达式 Exp"></a>表达式 Exp</h3><pre class="line-numbers language-none"><code class="language-none">Exp → AddExp <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>表达式直接为 AddExp，是一件十分神奇的事情，即使引入了浮点数计算，这里依然维持一个的对应关系。</p>
+<pre class="line-numbers language-none"><code class="language-none">Exp
+    : AddExp
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="加减表达式-AddExp"><a href="#加减表达式-AddExp" class="headerlink" title="加减表达式 AddExp"></a>加减表达式 AddExp</h3><pre class="line-numbers language-none"><code class="language-none">AddExp → MulExp | AddExp ('+' | '−') MulExp <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>消除左递归，修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">AddExp
+    : MulExp (AddOp MulExp)*
+    ; // eliminate left-recursive
+
+AddOp
+    : PLUS
+    | MINUS
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="乘除表达式-MulExp"><a href="#乘除表达式-MulExp" class="headerlink" title="乘除表达式 MulExp"></a>乘除表达式 MulExp</h3><pre class="line-numbers language-none"><code class="language-none">MulExp → UnaryExp | MulExp ('*' | '/' | '%') UnaryExp <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>消除左递归，修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">MulExp
+    : UnaryExp (MulOp UnaryExp)*
+    ; // eliminate left-recursive
+
+MulOp
+    : MUL
+    | DIV
+    | MOD
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="一元表达式-UnaryExp"><a href="#一元表达式-UnaryExp" class="headerlink" title="一元表达式 UnaryExp"></a>一元表达式 UnaryExp</h3><pre class="line-numbers language-none"><code class="language-none">UnaryExp → PrimaryExp 
+		 | Ident '(' [FuncRParams] ')'
+         | UnaryOp UnaryExp 
+
+FuncRParams → Exp { ',' Exp } <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一元表达式并非分解的重点，因为还有一元运算符</p>
+<pre class="line-numbers language-none"><code class="language-none">UnaryExp
+    : PrimaryExp
+    | Callee
+    | UnaryOp UnaryExp
+    ;
+    
+Callee
+    : IDENFR L_PAREN FuncRParams? R_PAREN
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>利用的是 UnaryOp 和 Callee 的 FIRST 判断，如果都不是就是 UnaryExp，这应该也是不严谨的。</p>
+<h3 id="基本表达式-PrimaryExp"><a href="#基本表达式-PrimaryExp" class="headerlink" title="基本表达式 PrimaryExp"></a>基本表达式 PrimaryExp</h3><pre class="line-numbers language-none"><code class="language-none">PrimaryExp → '(' Exp ')' | LVal | Number<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>到这里，可以说开始递归了。基本表达式没有任何运算符，基准情况只有左值和字面量两种。</p>
+<pre class="line-numbers language-none"><code class="language-none">PrimaryExp
+    : L_PAREN Exp R_PAREN
+    | LVal
+    | Number
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>先判断 Exp 和 LVal 的 FIRST，否则是 LVal，这应该会造成一定程度的不严谨。其实应该很好修，因为这仨的 FIRST 都是显然的。</p>
+<h3 id="一元运算符-UnaryOp"><a href="#一元运算符-UnaryOp" class="headerlink" title="一元运算符 UnaryOp"></a>一元运算符 UnaryOp</h3><pre class="line-numbers language-none"><code class="language-none">UnaryOp → '+' | '−' | '!' <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">UnaryOp
+    : PLUS
+    | MINUS
+    | NOT
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="左值表达式-LVal"><a href="#左值表达式-LVal" class="headerlink" title="左值表达式 LVal"></a>左值表达式 LVal</h3><pre class="line-numbers language-none"><code class="language-none">LVal → Ident {'[' Exp ']'} <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">LVal
+    : IDENFR (L_BRACKT Exp R_BRACKT)*
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>利用中括号判断维数信息，没有歧义。</p>
+<h3 id="函数实参表-FuncRParams"><a href="#函数实参表-FuncRParams" class="headerlink" title="函数实参表 FuncRParams"></a>函数实参表 FuncRParams</h3><pre class="line-numbers language-none"><code class="language-none">FuncRParams → Exp { ',' Exp } <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改为</p>
+<pre class="line-numbers language-none"><code class="language-none">FuncRParams
+    : Exp (COMMA Exp)*
+    ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h2 id="表达式优先级"><a href="#表达式优先级" class="headerlink" title="表达式优先级"></a>表达式优先级</h2><p>SysY 语言和 C 语言的优先级一致，我们在递归下降的时候，会利用优先级，如下所示</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>体现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[], ()</code></td>
+<td>修饰 PrimaryExp，LVal 的一部分是 <code>[]</code>，Callee 的一部分是 <code>()</code></td>
+</tr>
+<tr>
+<td><code>!, -, +</code></td>
+<td>修饰 UnaryExp</td>
+</tr>
+<tr>
+<td><code>*, /, %</code></td>
+<td>修饰 MulExp</td>
+</tr>
+<tr>
+<td><code>+, -</code></td>
+<td>修饰 AddExp</td>
+</tr>
+<tr>
+<td><code>&lt;, &lt;=, &gt;, &gt;=</code></td>
+<td>修饰 RelExp</td>
+</tr>
+<tr>
+<td><code>==, !=</code></td>
+<td>修饰 EqExp</td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>修饰 LAndExp</td>
+</tr>
+<tr>
+<td>`</td>
+<td></td>
+<td>`</td>
+<td>修饰 LOrExp</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S5%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S5课上</a>
+              <a href="/tags/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" rel="tag"><i class="fa fa-tag"></i> 编译技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/426b82c2/" rel="prev" title="编译技术-编译优化">
+      <i class="fa fa-chevron-left"></i> 编译技术-编译优化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/e715c45a/" rel="next" title="编译技术-错误处理">
+      编译技术-错误处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pansy-Parser"><span class="nav-text">Pansy Parser</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E8%AF%AD%E6%B3%95%E6%A0%91"><span class="nav-text">具体语法树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supporter"><span class="nav-text">Supporter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E5%86%99%E8%AF%AD%E6%B3%95%E4%B8%8E%E8%A7%A3%E6%9E%90%E5%AE%9E%E7%8E%B0"><span class="nav-text">改写语法与解析实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%8D%95%E5%85%83-CompUnit"><span class="nav-text">编译单元 CompUnit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E-Decl"><span class="nav-text">声明 Decl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%A3%B0%E6%98%8E-ConstDecl"><span class="nav-text">常量声明 ConstDecl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%AE%9A%E4%B9%89-ConstDef"><span class="nav-text">常量定义 ConstDef</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%88%9D%E5%80%BC-ConstInitVal"><span class="nav-text">常量初值 ConstInitVal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F-ConstExp"><span class="nav-text">常量表达式 ConstExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E-VarDecl"><span class="nav-text">变量声明 VarDecl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89-VarDef"><span class="nav-text">变量定义 VarDef</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%88%9D%E5%80%BC-InitVal"><span class="nav-text">变量初值 InitVal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89-FuncDef"><span class="nav-text">函数定义 FuncDef</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B-FuncType"><span class="nav-text">函数类型 FuncType</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BD%A2%E5%8F%82%E8%A1%A8-FuncFParams"><span class="nav-text">函数形参表 FuncFParams</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BD%A2%E5%8F%82-FuncFParam"><span class="nav-text">函数形参 FuncFParam</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97-Block"><span class="nav-text">语句块 Block</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E9%A1%B9-BlockItem"><span class="nav-text">语句块项 BlockItem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5-Stmt"><span class="nav-text">语句 Stmt</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E8%AF%AD%E5%8F%A5-AssignStmt"><span class="nav-text">赋值语句 AssignStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%AD%E5%8F%A5-ExpStmt"><span class="nav-text">表达式语句 ExpStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E8%AF%AD%E5%8F%A5-InStmt"><span class="nav-text">输入语句 InStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E8%AF%AD%E5%8F%A5-OutStmt"><span class="nav-text">输出语句 OutStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5-ConditionStmt"><span class="nav-text">条件语句 ConditionStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5-WhileStmt"><span class="nav-text">循环语句 WhileStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%B3%E5%87%BA%E8%AF%AD%E5%8F%A5-BreakStmt"><span class="nav-text">跳出语句 BreakStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%A7%E7%BB%AD%E8%AF%AD%E5%8F%A5-CotinueStmt"><span class="nav-text">继续语句 CotinueStmt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E8%AF%AD%E5%8F%A5-ReturnStmt"><span class="nav-text">返回语句 ReturnStmt</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%A1%A8%E8%BE%BE%E5%BC%8F-Cond"><span class="nav-text">条件表达式 Cond</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%88%96%E8%A1%A8%E8%BE%BE%E5%BC%8F-LOrExp"><span class="nav-text">逻辑或表达式 LOrExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E4%B8%8E%E8%A1%A8%E8%BE%BE%E5%BC%8F-LAndExp"><span class="nav-text">逻辑与表达式 LAndExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E7%AD%89%E6%80%A7%E8%A1%A8%E8%BE%BE%E5%BC%8F-EqExp"><span class="nav-text">相等性表达式 EqExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E8%A1%A8%E8%BE%BE%E5%BC%8F-RelExp"><span class="nav-text">关系表达式 RelExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F-Exp"><span class="nav-text">表达式 Exp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%87%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F-AddExp"><span class="nav-text">加减表达式 AddExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%98%E9%99%A4%E8%A1%A8%E8%BE%BE%E5%BC%8F-MulExp"><span class="nav-text">乘除表达式 MulExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%85%83%E8%A1%A8%E8%BE%BE%E5%BC%8F-UnaryExp"><span class="nav-text">一元表达式 UnaryExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%A1%A8%E8%BE%BE%E5%BC%8F-PrimaryExp"><span class="nav-text">基本表达式 PrimaryExp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6-UnaryOp"><span class="nav-text">一元运算符 UnaryOp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E8%A1%A8%E8%BE%BE%E5%BC%8F-LVal"><span class="nav-text">左值表达式 LVal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9E%E5%8F%82%E8%A1%A8-FuncRParams"><span class="nav-text">函数实参表 FuncRParams</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-text">表达式优先级</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

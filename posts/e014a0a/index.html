@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、PPT 总论1.1 排版解偶联在 LATEX 的讲解中，我意识到了可以将信息和排版解偶联，在PPT的学习中，我发觉似乎可以进一步解偶联，对于排版来说，可以解偶联成排版设计和排版实现两个部分，比如说对于以下这张slide  排版设计指的是选用大背景，背景图片要采用发布会图片（然后具体到某一章特定的图片），标题底下要有一个衬板，衬板的颜色要选择主题色，也就是橙色，衬板要有一个比较好的透明度，衬板要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="办公工具-PPT">
+<meta property="og:url" content="https://thysrael.github.io/posts/e014a0a/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、PPT 总论1.1 排版解偶联在 LATEX 的讲解中，我意识到了可以将信息和排版解偶联，在PPT的学习中，我发觉似乎可以进一步解偶联，对于排版来说，可以解偶联成排版设计和排版实现两个部分，比如说对于以下这张slide  排版设计指的是选用大背景，背景图片要采用发布会图片（然后具体到某一章特定的图片），标题底下要有一个衬板，衬板的颜色要选择主题色，也就是橙色，衬板要有一个比较好的透明度，衬板要">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210112013792.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210173409474.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210173444749.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210112013792.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210193713202.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210193858916.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/v2-38a246c40727b3e3d1a32361ea56f30b_r.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/v2-b740f34ff80cfadb338169ba46a665c3_r.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210194401515.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/v2-a0fc26fafcfe9e3aac1b4deb7686d137_r.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210195003354.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/v2-0bf9a01d9f8ff5995998661e218ae693_r.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210201206220.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220213151938090.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210201413251.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220213152314031.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220213152352771.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220213152941685.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210204947802.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210205057410.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210205355751.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210210318208.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220213153113375.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210210718030.png">
+<meta property="article:published_time" content="2022-02-09T07:37:01.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:47.809Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S3假期">
+<meta property="article:tag" content="办公工具">
+<meta property="article:tag" content="工具总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/e014a0a/image-20220210112013792.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/e014a0a/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>办公工具-PPT | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/e014a0a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          办公工具-PPT
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-09 15:37:01" itemprop="dateCreated datePublished" datetime="2022-02-09T15:37:01+08:00">2022-02-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8A%9E%E5%85%AC%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">办公工具</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、PPT-总论"><a href="#一、PPT-总论" class="headerlink" title="一、PPT 总论"></a>一、PPT 总论</h2><h3 id="1-1-排版解偶联"><a href="#1-1-排版解偶联" class="headerlink" title="1.1 排版解偶联"></a>1.1 排版解偶联</h3><p>在 LATEX 的讲解中，我意识到了可以将<strong>信息</strong>和<strong>排版</strong>解偶联，在PPT的学习中，我发觉似乎可以进一步解偶联，对于排版来说，可以解偶联成<strong>排版设计</strong>和<strong>排版实现</strong>两个部分，比如说对于以下这张slide</p>
+<p><img src="/posts/e014a0a/image-20220210112013792.png" alt="image-20220210112013792"></p>
+<p><strong>排版设计</strong>指的是选用大背景，背景图片要采用发布会图片（然后具体到某一章特定的图片），标题底下要有一个衬板，衬板的颜色要选择主题色，也就是橙色，衬板要有一个比较好的透明度，衬板要选择平行四边形，因此字体应应该选择斜体，然后主标题应该加粗，右上角要采用 AMD 的图标。这些称为排版设计。</p>
+<p><strong>排版实现</strong>指的是要把上面的设计<strong>需求</strong>实现所需要的技术，可以是用PPT，也可以用latex，用 PPT 有很多种方法，比如说这个四边形，我可以用矩形然后调整角度实现，也可以直接用四边形工具，里面的标题，我可以直接打在四边形的形状里，也可以放一个文本框，然后里面打字。AMD的图标，我可以截图以后抠图，也可以从图标官网上下载。这些具体的实现方法就被称为<strong>排版实现</strong>。</p>
+<p>为什么要将这两个部分解偶联呢，是因为这两个部分其实对能力的要求是不同的。对于<strong>排版设计</strong>而言，更多的要求体现在美学素养和排版积累上面；对于<strong>排版实现</strong>而言，更多的体现在PPT工具的流畅使用和对素材的检索能力上面。如果把制作PPT看成浑然一体的一个东西，很容易陷入“太复杂了，选择太多了，我不行”的困境，而将其分开来看，则可以逐个击破，达到提高PPT水平的目的。</p>
+<h3 id="1-2-PPT-中的信息"><a href="#1-2-PPT-中的信息" class="headerlink" title="1.2 PPT 中的信息"></a>1.2 PPT 中的信息</h3><p>PPT 与论文的信息是不同的，其<strong>本质区别</strong>在于，论文中呈现了作者想要表达的全部的信息，而 PPT 只有作者想要表达的部分信息，另一部分信息需要通过作者的<strong>讲演</strong>来进行传递。所以对于呈现在 PPT 上的信息，我觉得只有两种（稍微不严谨，下一段修正），一种是<strong>提纲</strong>，即文本内容的提纲，表现为<strong>无序列表</strong>的形式；另一种是图表，用来<strong>直观</strong>的提供信息，图表包括：图标、图片、表格、概念图、衬板等设计元素。</p>
+<p>此外，PPT 与 论文还有一个重要区别是论文是<strong>静态</strong>的，而 PPT 是动态的，这就要求 PPT 可以有时间序列上的设计（即哲学思想：人不可能踏入相同的河流）。比较直观的是动画的设计，其次还有一些<strong>强调</strong>设计，比如说下面的示例：</p>
+<p><img src="/posts/e014a0a/image-20220210173409474.png" alt="image-20220210173409474"></p>
+<p><img src="/posts/e014a0a/image-20220210173444749.png" alt="image-20220210173444749"></p>
+<p>这两张幻灯片的相似度即高，可以说当进行幻灯片切换的时候，让人又一种橘色光标由 HHC 移位到 ROCm 上的感觉，这就是动态的感觉。</p>
+<p>这只是动态的一种巧妙利用，我因为也是刚刚入门，所以只是粗浅的记录一下小小的心得，以后有机会再补充。</p>
+<h3 id="1-3-PPT-的提高"><a href="#1-3-PPT-的提高" class="headerlink" title="1.3 PPT 的提高"></a>1.3 PPT 的提高</h3><p>PPT 的排版设计跟所有的艺术创作一样，技术的高低跟记忆的数量有很大关系，面对一个题目，能不能迅速反应出相应的解决办法，是衡量水平的最重要评判标准。于此同时，排版设计有充满了固定性，只要稍微积累一些<strong>套路</strong>，就可以制作出工业级的PPT，可以说学习的周期和门槛并不高。</p>
+<p>PPT 的排版实现其实也不难，只是市面上的教程多为<strong>奇技淫巧</strong>，比如说用形状画一个蒙娜丽莎之类的在实践中完全不会用到的东西，或者是极其炫酷的动画，我反正觉得没啥用。实现应该看重的是<strong>效率</strong>，那么其实是操作的快捷键和母版的设计占大头，这个东西，当越精越好。</p>
+<hr>
+<h2 id="二、PPT-结构"><a href="#二、PPT-结构" class="headerlink" title="二、PPT 结构"></a>二、PPT 结构</h2><p>如果只是工作型PPT的话，那么可以将一个PPT的不同slide进行如下分类：</p>
+<ul>
+<li>封面页</li>
+<li>目录页</li>
+<li>过渡页</li>
+<li>正文页</li>
+<li>结尾页</li>
+</ul>
+<p>而每一种类型会分别对应特定的文字内容和排版设计，这个部分其实就是<strong>套路</strong>的积攒。</p>
+<h3 id="2-1-封面页"><a href="#2-1-封面页" class="headerlink" title="2.1 封面页"></a>2.1 封面页</h3><p><strong>全图型</strong>的封面是心头好啊，包括的元素是</p>
+<ul>
+<li>一张高清的背景图</li>
+<li>一个半透明的，主体颜色的衬布（衬布要是还有边缘的衬线就更好了）</li>
+<li>一个标题</li>
+</ul>
+<p><img src="/posts/e014a0a/image-20220210112013792.png" alt="image-20220210112013792"></p>
+<p><strong>半图型</strong>感觉会跟目录页冲突，</p>
+<p><img src="/posts/e014a0a/image-20220210193713202.png" alt="image-20220210193713202"></p>
+<p>要是找不到图，那么可以用大色块来充数，注意后面的图案，其实是<strong>图标放大</strong>的效果，可以说是非常牛逼了，商务感一下子就出来了。</p>
+<p><img src="/posts/e014a0a/image-20220210193858916.png" alt="image-20220210193858916"></p>
+<p><strong>图片墙</strong>也是一种好方法，其实不用垫一层蒙版，直接选择中间部分敲标题也不是不行</p>
+<p><img src="/posts/e014a0a/v2-38a246c40727b3e3d1a32361ea56f30b_r.jpg" alt="preview"></p>
+<h3 id="2-2-目录页"><a href="#2-2-目录页" class="headerlink" title="2.2 目录页"></a>2.2 目录页</h3><p>首先明晰目录中有哪些元素</p>
+<p><img src="/posts/e014a0a/v2-b740f34ff80cfadb338169ba46a665c3_r.jpg" alt="preview"></p>
+<p>我们的设计其实就是围绕这三个元素进行的。</p>
+<p>最简单的是<strong>半图型</strong>，包括：</p>
+<ul>
+<li>半个高清图</li>
+<li>一个主题颜色的衬板</li>
+<li>一些分割线，用于使目录挺拔</li>
+<li>不同小节前的图标（这个图标其实可以按时后面的内容形式）</li>
+<li>节标题</li>
+</ul>
+<p><img src="/posts/e014a0a/image-20220210194401515.png" alt="image-20220210194401515"></p>
+<p>当然这种形式的目录所包含的信息会比较少，而且冲击力就很弱，而且太依赖图片。</p>
+<p>四图型对信息的包含度会更高，而且更牛逼，而且可以兼有更多的信息。</p>
+<p><img src="/posts/e014a0a/v2-a0fc26fafcfe9e3aac1b4deb7686d137_r.jpg" alt="preview"></p>
+<p><strong>奇异型</strong>属于是骚出天际</p>
+<p><img src="/posts/e014a0a/image-20220210195003354.png" alt="image-20220210195003354"></p>
+<p>如果啥图都没有的话，那么就一定要利用好图标和色块，这样才能让整个目录页显得有条理：（这个slide没有<strong>线</strong>的元素，加上会更好），这张还为了提高逼格，用了大写英文。</p>
+<p><img src="/posts/e014a0a/v2-0bf9a01d9f8ff5995998661e218ae693_r.jpg" alt="preview"></p>
+<h3 id="2-3-过渡页"><a href="#2-3-过渡页" class="headerlink" title="2.3 过渡页"></a>2.3 过渡页</h3><p>这是我自己想到的，用来将演讲的结构划分的更加彻底（我不太喜欢顶部进度条的形式），所以只想出了一种设计，其实就是封面设计的退化版，这章里面用到了六边形衬布，并且把目录序号移到背景中，防止对题目造成干扰</p>
+<p><img src="/posts/e014a0a/image-20220210201206220.png" alt="image-20220210201206220"></p>
+<p>上面这种虽然很帅，但是蕴含的信息太少了，如果PPT的体积比较庞大的话，除了每节的标题以外，还有属于每一节的小标题，其实都可以在过渡页上显示，比如：</p>
+<p><img src="/posts/e014a0a/image-20220213151938090.png" alt="image-20220213151938090"></p>
+<p>这样处理的话，小标题信息也可以得到处理。甚至可以用“强调”的方式说明比较重要的小标题。</p>
+<h3 id="2-4-正文页"><a href="#2-4-正文页" class="headerlink" title="2.4 正文页"></a>2.4 正文页</h3><p>正文页比较关键的配置是“<strong>进度提示符</strong>”，比如说底下这个slide左上角提示这张slide属于“计算单元”这一节中的“CU结构”这一部分。</p>
+<p>此外，正文页中因为信息会比较多，所以跟要求大量的信息能够层次分明的显示，必须有所<strong>强调</strong>，强调的方法比较常见的：</p>
+<ul>
+<li>单独把强调内容放到一个色块中</li>
+<li>用主体色强调内容</li>
+<li>用加粗或者斜体强调</li>
+<li>用不同字体强调</li>
+</ul>
+<p><img src="/posts/e014a0a/image-20220210201413251.png" alt="image-20220210201413251"></p>
+<p>上面这个slide采用的是高清图加半透明蒙版的设置，我觉得还行。    </p>
+<p>如果是大段的文本信息，那么显然适合简单的无序列表的SmartArt就没法用来摆烂了，所以可以下图方法进行处理，简约整齐：</p>
+<p><img src="/posts/e014a0a/image-20220213152314031.png" alt="image-20220213152314031"></p>
+<p>或者再花哨一些：</p>
+<p><img src="/posts/e014a0a/image-20220213152352771.png" alt="image-20220213152352771"></p>
+<h3 id="2-5-结尾页"><a href="#2-5-结尾页" class="headerlink" title="2.5 结尾页"></a>2.5 结尾页</h3><p>我个人觉得，如果是科研PPT，那么全篇没有图是一个很正常的现象，那么如果不骚一下实在难受，所以想到可以在结尾的时候骚一下。</p>
+<p><img src="/posts/e014a0a/image-20220213152941685.png" alt="image-20220213152941685"></p>
+<p>高清图加半透明蒙版，骚一下很开行。</p>
+<hr>
+<h2 id="三、PPT-技术"><a href="#三、PPT-技术" class="headerlink" title="三、PPT 技术"></a>三、PPT 技术</h2><h3 id="3-1-快捷键"><a href="#3-1-快捷键" class="headerlink" title="3.1 快捷键"></a>3.1 快捷键</h3><ul>
+<li><code>Ctrl + G</code> 合并形状，<code>Ctrl + Shift + G</code> 解除合并形状。</li>
+<li><code>Ctrl + 鼠标点击</code> 拖拽多重复制。</li>
+</ul>
+<h3 id="3-2-资源网站"><a href="#3-2-资源网站" class="headerlink" title="3.2 资源网站"></a>3.2 资源网站</h3><ul>
+<li>灵感：www.zcool.com.cn</li>
+<li>图标：<a target="_blank" rel="noopener external nofollow noreferrer" href="http://iconfont.cn">http://iconfont.cn</a> （其实PPT内置的图标搜索功能还行）</li>
+<li>高清图片搜索：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://pixabay.com/">https://pixabay.com/</a></li>
+<li>普通图片搜索：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://cn.bing.com/images/trending?form=Z9LH（**过滤器功能强大**）">https://cn.bing.com/images/trending?form=Z9LH（**过滤器功能强大**）</a></li>
+<li>配色：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.materialpalette.com/colors">https://www.materialpalette.com/colors</a></li>
+<li>模板：<a target="_blank" rel="noopener external nofollow noreferrer" href="http://www.yanj.cn/">http://www.yanj.cn/</a></li>
+</ul>
+<p>有了资源网站还不够，还必须要<strong>学会搜索素材</strong>，比如说如果直接搜GPU，并不会跳出很多好东西，但是如果搜芯片，图片会更多，但是科技感不够，那么如果搜《黑客帝国》，那么就很容易解决问题了。如果搜索的东西是比较抽象的，比如“努力”，那么不如<strong>联想</strong>到其他具象的事务中，比如马拉松，但是要是我，我就搜《爆裂鼓手》。</p>
+<h3 id="3-3-使用母版"><a href="#3-3-使用母版" class="headerlink" title="3.3 使用母版"></a>3.3 使用母版</h3><p>母版其实就是网上说的模板的<strong>原理</strong>，这是一种特殊的视图，这样打开</p>
+<p><img src="/posts/e014a0a/image-20220210204947802.png" alt="image-20220210204947802"></p>
+<p>打开以后就会发现类似于PPT的slide，其实就是<strong>样式</strong>的概念，如下</p>
+<p><img src="/posts/e014a0a/image-20220210205057410.png" alt="image-20220210205057410"></p>
+<p>有两种插入操作，一种是插入母版（就是直接插入一整套样式），一种是插入版式，就是插入一个类型（比如封面，目录页啥的）。然后当回到普通模式之后，可以用一下操作调用设置好的版式：</p>
+<p><img src="/posts/e014a0a/image-20220210205355751.png" alt="image-20220210205355751"></p>
+<p>需要注意的是，版式的内容在正常模式下是没有办法修改的，除非使用<strong>占位符</strong>。</p>
+<h3 id="3-4-SmartArt"><a href="#3-4-SmartArt" class="headerlink" title="3.4 SmartArt"></a>3.4 SmartArt</h3><p>只能所SmartArt的应用很神奇，我并没有完全掌握，只能说这样可以用：</p>
+<p><img src="/posts/e014a0a/image-20220210210318208.png" alt="image-20220210210318208"></p>
+<p>对于修改SmartArt中的内容，可以采用这种方式：</p>
+<p><img src="/posts/e014a0a/image-20220213153113375.png" alt="image-20220213153113375"></p>
+<p>点击左侧的箭头，可以在弹出的侧栏修改内容。</p>
+<hr>
+<h2 id="四、排版思想"><a href="#四、排版思想" class="headerlink" title="四、排版思想"></a>四、排版思想</h2><h3 id="4-1-重章叠句"><a href="#4-1-重章叠句" class="headerlink" title="4.1 重章叠句"></a>4.1 重章叠句</h3><p>具体的原理已经在 1.2 节举例的时候介绍过了，就不在此赘述了。</p>
+<h3 id="4-2-配色"><a href="#4-2-配色" class="headerlink" title="4.2 配色"></a>4.2 配色</h3><p>首先科普一下颜色的知识，颜色有三个维度：<strong>色相，明度，灰度</strong>，色相就是用三原色不同比例调出来的颜色，明度是往颜色里面混黑色或者白色，灰度是往颜色里面混灰色。</p>
+<p>然后关于不同颜色的关系，大概就是这样：</p>
+<p><img src="/posts/e014a0a/image-20220210210718030.png" alt="image-20220210210718030"></p>
+<p>同一个PPT，最好不出现多于5中颜色，而且最好确定一个主题色。</p>
+<h3 id="4-3-字体选择"><a href="#4-3-字体选择" class="headerlink" title="4.3 字体选择"></a>4.3 字体选择</h3><p>一般所有的字都用黑体，黑体中我偏爱微软雅黑。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S3%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S3假期</a>
+              <a href="/tags/%E5%8A%9E%E5%85%AC%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 办公工具</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 工具总结</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/ed48217/" rel="prev" title="算法设计-单调队列">
+      <i class="fa fa-chevron-left"></i> 算法设计-单调队列
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3a4ac657/" rel="next" title="数学建模-美赛论文结构">
+      数学建模-美赛论文结构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81PPT-%E6%80%BB%E8%AE%BA"><span class="nav-text">一、PPT 总论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%8E%92%E7%89%88%E8%A7%A3%E5%81%B6%E8%81%94"><span class="nav-text">1.1 排版解偶联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-PPT-%E4%B8%AD%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-text">1.2 PPT 中的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-PPT-%E7%9A%84%E6%8F%90%E9%AB%98"><span class="nav-text">1.3 PPT 的提高</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81PPT-%E7%BB%93%E6%9E%84"><span class="nav-text">二、PPT 结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%B0%81%E9%9D%A2%E9%A1%B5"><span class="nav-text">2.1 封面页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E7%9B%AE%E5%BD%95%E9%A1%B5"><span class="nav-text">2.2 目录页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%BF%87%E6%B8%A1%E9%A1%B5"><span class="nav-text">2.3 过渡页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%AD%A3%E6%96%87%E9%A1%B5"><span class="nav-text">2.4 正文页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E7%BB%93%E5%B0%BE%E9%A1%B5"><span class="nav-text">2.5 结尾页</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81PPT-%E6%8A%80%E6%9C%AF"><span class="nav-text">三、PPT 技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">3.1 快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E8%B5%84%E6%BA%90%E7%BD%91%E7%AB%99"><span class="nav-text">3.2 资源网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E4%BD%BF%E7%94%A8%E6%AF%8D%E7%89%88"><span class="nav-text">3.3 使用母版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-SmartArt"><span class="nav-text">3.4 SmartArt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8E%92%E7%89%88%E6%80%9D%E6%83%B3"><span class="nav-text">四、排版思想</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E9%87%8D%E7%AB%A0%E5%8F%A0%E5%8F%A5"><span class="nav-text">4.1 重章叠句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E9%85%8D%E8%89%B2"><span class="nav-text">4.2 配色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%AD%97%E4%BD%93%E9%80%89%E6%8B%A9"><span class="nav-text">4.3 字体选择</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

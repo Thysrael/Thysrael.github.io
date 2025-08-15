@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数理统计首先要做的，是分清两种随机变量，一个是总体的分布相关的数字特征，另一个是我们根据取样产生的随机变量序列构造出的特殊的随机变量统计量。 我们用样本研究总体，其理论依据来源于概率论，当一个事件的概率大，那么我们就认为这件事情是真的。 标准分布是一个重要的思想。 在这一章里，我会进行大量的我个人色彩浓重的不严谨规范和定义，是因为以我的能力，还不足以严谨的把事情说清楚。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率统计-数理统计">
+<meta property="og:url" content="https://thysrael.github.io/posts/8ceebdaa/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="数理统计首先要做的，是分清两种随机变量，一个是总体的分布相关的数字特征，另一个是我们根据取样产生的随机变量序列构造出的特殊的随机变量统计量。 我们用样本研究总体，其理论依据来源于概率论，当一个事件的概率大，那么我们就认为这件事情是真的。 标准分布是一个重要的思想。 在这一章里，我会进行大量的我个人色彩浓重的不严谨规范和定义，是因为以我的能力，还不足以严谨的把事情说清楚。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-21T11:24:26.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.891Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S3复习">
+<meta property="article:tag" content="概率统计">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/8ceebdaa/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>概率统计-数理统计 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/8ceebdaa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          概率统计-数理统计
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-21 19:24:26" itemprop="dateCreated datePublished" datetime="2021-12-21T19:24:26+08:00">2021-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">概率统计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>数理统计首先要做的，是分清两种随机变量，一个是总体的分布相关的数字特征，另一个是我们根据取样产生的<strong>随机变量序列</strong>构造出的特殊的随机变量<strong>统计量</strong>。</p>
+<p>我们<strong>用样本研究总体</strong>，其理论依据来源于概率论，<strong>当一个事件的概率大，那么我们就认为这件事情是真的。</strong></p>
+<p><strong>标准分布</strong>是一个重要的思想。</p>
+<p>在这一章里，我会进行大量的我个人色彩浓重的不严谨规范和定义，是因为以我的能力，还不足以严谨的把事情说清楚。</p>
+<span id="more"></span>
+<h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><h3 id="1-1-总体"><a href="#1-1-总体" class="headerlink" title="1.1 总体"></a>1.1 总体</h3><p>有一种说法是，我们研究的对象的全体称为<strong>全体</strong>，比如说我想了解大学一年级学生的身高，那么全体就是大一年级学生。但是我不喜欢这种说法，因为它没有把我们到底要干什么说清楚，我喜欢的是另一种说法，我们关心的是研究对象的某个指标，也就是说是那个随机变量。在这个例子中，就是<strong>大学一年级学生的身高分布</strong>。但是这够精确了，但是跟我们的概率论还没有关系。因为身高不是随机变量，一个年级比如说有100个人，这100个人的身高是确定的，只要我挨个记录下了100个人的身高，那么这件事情就定死了，完全用不到概率论。之所以用到概率论，是因为我们放弃了<strong>一个一个数</strong>这种方法。转而采用抽样的方法。<strong>抽样的本质是一个试验</strong>，所以我们研究的就是这个试验。说到底，我们本质在研究抽样的试验结果这个<strong>随机变量</strong>。</p>
+<p>这个随机变量的概率分布是等于总体的频度分布的（这个才是客观的），而总体的频度分布才是我们最想知道的，只是我们没法研究，所以只能退而求其次，研究抽样试验的结果。</p>
+<p>总体随机变量会有分布特征和数字特征，这些都反映了总体的特征，这些指标我们会有一套符号体系，比如说 $\mu,\sigma$。但是需要注意的是，$\mu,\sigma$ 只是参数，是没有意义的，我们平时说“正态分布的期望等于 $\mu$ ”，不是说 $\mu$ 是正态分布的期望，而是 $\mu$ 恰好等于正态分布的期望。之所以强调这点，是因为“期望”这个词很容易让人想到<strong>求均值</strong>，而求均值就很容易让人想到 $\bar{x}$ ，而其实在这一章里，把他们区分开，就是最难的事情。</p>
+<p>此外，为什么说 $\mu,\sigma$ ，而不提其他参数呢，是因为我们的研究对象只局限于<strong>正态总体</strong>，因为好研究。但是对于非正态总体，似乎也可以利用中心极限定理（棣莫佛-拉普拉斯定理）做一定的研究。到时再说。</p>
+<h3 id="1-2-统计量"><a href="#1-2-统计量" class="headerlink" title="1.2 统计量"></a>1.2 统计量</h3><p>按理来说，我们就需要做一次试验就够了，比方说我们做了一次试验，那么就会得到一个随机变量 $X_1$ ，那么这个 $X_1$ 的分布其实就是总体的分布，但是这只是理论分析，因为一个试验做完以后，会有一个确定的结果（我们称其为观测值），比如叫 $x_1$ ，那么这个 $x_1$ 就不是随机变量了，所以我们才需要做多组试验，然后用一组观测值的频度分布，去推测总体的概率分布。</p>
+<p>上面引入了<strong>观测值</strong>这个概念，我不满意教材的地方是，它构造统计量的时候，公式推导大量用的是观测值，虽然说观测值确实是我们构造统计量时所采用的数据，但是因为观测值不是随机变量，所以由此构造出来的统计量也不是随机变量，那么考察统计量的分布，就是一件错误的事情了。</p>
+<p>为了解决上面提出的两个问题，我们采用的方法是引入<strong>随机变量序列</strong>的概念，也就是说，我们对其做很多次试验，每次试验的结果都看做一个随机变量，由这些随机变量组成的序列，我们称其为<strong>随机变量序列</strong>，也就是 $X_1, X_2, X_3, \cdots, X_n, \cdots$ 。这些随机变量是独立的、同分布的，而且分布是与总体分布相同的。</p>
+<p>有一个不自然的地方就是，我总认为，一旦试验的次数提高了，那么我们用从观测值分布就一定能够看出总体分布，甚至认为他们就是一个分布，但是这是不正确的。按照中心极限定理的说法，无论是什么分布，取出的样品的分布一定是正态分布（这里我可能有理解问题）。</p>
+<p>然后介绍<strong>统计量</strong>，统计量是由 $X_1, X_2, X_3, \cdots, X_n, \cdots$ 构造出的随机变量，那么为什么要构造他们呢？其实<strong>只是为了好算</strong>，好算指的是后面的计算<strong>置信区间</strong>的时候，可以直接查表。他们的构造，就跟为啥要构造标准正态分布是一个道理，所谓的卡方分布，或者是t分布，只是另一种形式意义上的标准正态分布而已，我们可以查表来算他们。如果不构造他们，其实也是可以算的，只不过算的时候，有一大堆没有办法用初等函数表示的积分，制造困难而已。统计量其实是<strong>随机变量的函数</strong>这一章的延伸。</p>
+<p>更更有趣的是，上面讲的其实如果依照课本来说，是错误的，因为课本中要求统计量中是不能有总体分布的参数出现，比如不能出现$\mu,\sigma$，而服从各种标准分布的随机变量，都是含有参数的，所以严格的讲，他们不能叫做统计量。</p>
+<p>所谓的标准分布，到底好在了哪里？好在了我们完全了解他们，我们知道他们的密度函数表达式是什么，虽然分布函数的表达式写不出来，但是我们有表，就等于知道了所有的概率分布。如果一个随机变量服从这些标准分布，我们就完全了解了这些随机变量，我们想求一个区间的概率密度，一查表，事情就解决了。</p>
+<p>不管我们构造的随机变量，长得多没有意义，看上去就像随便堆出来的，不管我们的标准分布，写出来有多么复杂，多么在现实中找不到应用的例子，<strong>我们只关注只要随机变量服从标准分布</strong>，那么事情就在我们控制的范围内，这就是意义。</p>
+<p>我不喜欢<strong>样本矩</strong>的说法，因为<strong>矩</strong>原本是用来形容<strong>一个</strong>随机变量的特征的，但是<strong>样本矩</strong>却是用来形容随机变量序列的特征的，所以这个概念有混淆的可能。所以我想取消这种说法。</p>
+<p>比较常用的统计量和符号</p>
+<script type="math/tex; mode=display">
+\bar{X} = \frac{1}{n}\sum^n_{i = 1}X_i</script><script type="math/tex; mode=display">
+S^2 = \frac{1}{n - 1}\sum^n_{i = 1}(X_i - \bar{X})^2</script><hr>
+<h2 id="二、标准分布的应用"><a href="#二、标准分布的应用" class="headerlink" title="二、标准分布的应用"></a>二、标准分布的应用</h2><h3 id="2-1-区间估计"><a href="#2-1-区间估计" class="headerlink" title="2.1 区间估计"></a>2.1 区间估计</h3><p>采用区间估计的核心思路步骤：</p>
+<ul>
+<li>构造出一个随机变量中既包括统计量，又包括未知参数，这个随机变量服从某标准分布。</li>
+<li>给定一个置信概率 $\alpha$，查表获得该随机变量的一个区间</li>
+<li>该随机变量的一个区间本质是这个随机变量的一个不等式方程或者方程组</li>
+<li>通过解这个不等式组，获得未知参数的取值范围，即置信区间</li>
+</ul>
+<p>在这一节里，所有的样品随机变量不在使用大写，而是使用小写，这标志着这是对一次观测值的构造。</p>
+<h4 id="2-1-1-sigma-已知的情况，对-mu-的估计"><a href="#2-1-1-sigma-已知的情况，对-mu-的估计" class="headerlink" title="2.1.1 $\sigma$ 已知的情况，对 $\mu$ 的估计"></a>2.1.1 $\sigma$ 已知的情况，对 $\mu$ 的估计</h4><p>原理：</p>
+<script type="math/tex; mode=display">
+\frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim N(0, 1)</script><p>通过查表，可以得到 $ z_{ 1-\frac{\alpha}{2} }$ </p>
+<script type="math/tex; mode=display">
+P(\mid\frac{\bar{x} - \mu}{\sigma/\sqrt{n}}\mid \leq z_{ 1-\frac{\alpha}{2} }) = 1 - \alpha</script><p>所以我们的问题就转化成了，解不等式</p>
+<script type="math/tex; mode=display">
+- z_{ 1-\frac{\alpha}{2} } \leq \frac{\bar{x} - \mu}{\sigma/\sqrt{n}} \leq  z_{ 1-\frac{\alpha}{2} }</script><p>经过整理以后就可以得到</p>
+<script type="math/tex; mode=display">
+[\bar{x} -  z_{ 1-\frac{\alpha}{2} } \frac{\sigma}{\sqrt{n}},\quad \bar{x} +  z_{ 1-\frac{\alpha}{2} }\frac{\sigma}{\sqrt{n}} ]</script><p>这就是我们的所求。我们完成了一个由置信概率到置信区间的映射。</p>
+<h4 id="2-1-2-sigma-未知的情况，对-mu-的估计"><a href="#2-1-2-sigma-未知的情况，对-mu-的估计" class="headerlink" title="2.1.2 $\sigma$ 未知的情况，对 $\mu$ 的估计"></a>2.1.2 $\sigma$ 未知的情况，对 $\mu$ 的估计</h4><p>原理：</p>
+<p>因为没有 $\sigma$ ，所以只能用样本方差来代替，但是相应的，构造出的变量也不再服从正态分布了，而是服从 $t$ 分布</p>
+<script type="math/tex; mode=display">
+\frac{\bar{X} - \mu}{S / \sqrt{n}} \sim t(n - 1)</script><p>结论：</p>
+<script type="math/tex; mode=display">
+[\bar{x} -  t(n-1)_{ 1-\frac{\alpha}{2} } \frac{\sigma}{\sqrt{n}},\quad \bar{x} +  t(n-1)_{ 1-\frac{\alpha}{2} }\frac{\sigma}{\sqrt{n}} ]</script><h4 id="2-1-3-估算-sigma"><a href="#2-1-3-估算-sigma" class="headerlink" title="2.1.3 估算 $\sigma $"></a>2.1.3 估算 $\sigma $</h4><p>原理：</p>
+<script type="math/tex; mode=display">
+(n - 1)\frac{S^2}{\sigma^2} \sim \chi^2(n-1)</script><p>结论：</p>
+<script type="math/tex; mode=display">
+[\frac{(n - 1)s^2}{\chi^2_{1-\frac{\alpha}{2}}(n-1)},\quad \frac{(n - 1)s^2}{\chi^2_{\frac{\alpha}{2}}(n-1)}]</script><p>之所以这个式子中既出现 $\chi^2<em>{1-\frac{\alpha}{2}}(n - 1)$ ，又出现 $\chi^2</em>{\frac{\alpha}{2}}(n - 1)$ 。是因为 $\chi^2$ 分布没有对称性。</p>
+<h4 id="2-1-4-两正态分布相关估计"><a href="#2-1-4-两正态分布相关估计" class="headerlink" title="2.1.4 两正态分布相关估计"></a>2.1.4 两正态分布相关估计</h4><h5 id="2-1-4-1-已知-sigma-1-sigma-2-，估算均值差："><a href="#2-1-4-1-已知-sigma-1-sigma-2-，估算均值差：" class="headerlink" title="2.1.4.1 已知 $\sigma_1, \sigma_2$，估算均值差："></a>2.1.4.1 已知 $\sigma_1, \sigma_2$，估算均值差：</h5><p>原理：</p>
+<script type="math/tex; mode=display">
+\frac{(\bar{x} - \bar{y}) - (\mu_1 - \mu_2)}{\sqrt{\sigma_1^2/m + \sigma_2^2/n}} \sim N(0,1)</script><h5 id="2-4-1-2-未知-sigma-1-sigma-2-，估算均值差："><a href="#2-4-1-2-未知-sigma-1-sigma-2-，估算均值差：" class="headerlink" title="2.4.1.2 未知 $\sigma_1, \sigma_2$，估算均值差："></a>2.4.1.2 未知 $\sigma_1, \sigma_2$，估算均值差：</h5><p>原理：</p>
+<p>因为 $t$ 分布不像卡方分布或者正态分布一样，同分布的相加后依然保持原分布，所以我们依然使用标准正态分布作为标准分布，但是这就要求m和n足够大。</p>
+<script type="math/tex; mode=display">
+\frac{(\bar{x} - \bar{y}) - (\mu_1 - \mu_2)}{\sqrt{s_1^2/m + s_2^2/n}} \sim N(0,1)</script><h5 id="2-4-1-3-未知-sigma-1-sigma-2-但-sigma-1-sigma-2-相等，估算均值差"><a href="#2-4-1-3-未知-sigma-1-sigma-2-但-sigma-1-sigma-2-相等，估算均值差" class="headerlink" title="2.4.1.3 未知 $\sigma_1, \sigma_2$ 但 $\sigma_1, \sigma_2$相等，估算均值差"></a>2.4.1.3 未知 $\sigma_1, \sigma_2$ 但 $\sigma_1, \sigma_2$相等，估算均值差</h5><p>原理：</p>
+<script type="math/tex; mode=display">
+\frac{(\bar{X_1} - \bar{X_2}) - (\mu_1 - \mu_2)}{(m - 1)S_1^2 + (n - 1)S_2^2}\cdot\sqrt{\frac{mn(m + n -2)}{m + n}} \sim t(m + n - 2)</script><h5 id="2-4-1-4-二正态总体方差比"><a href="#2-4-1-4-二正态总体方差比" class="headerlink" title="2.4.1.4 二正态总体方差比"></a>2.4.1.4 二正态总体方差比</h5><p>原理：</p>
+<script type="math/tex; mode=display">
+\frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2} \sim F(n-1, m - 1)</script><h3 id="2-2-参数检验"><a href="#2-2-参数检验" class="headerlink" title="2.2 参数检验"></a>2.2 参数检验</h3><p>参数检验的思想与区间估计的思想一致，就不在此一一赘述了。</p>
+<h3 id="2-3-分布检验"><a href="#2-3-分布检验" class="headerlink" title="2.3 分布检验"></a>2.3 分布检验</h3><h4 id="2-3-1-参数已知的分布检验"><a href="#2-3-1-参数已知的分布检验" class="headerlink" title="2.3.1 参数已知的分布检验"></a>2.3.1 参数已知的分布检验</h4><p>利用的是皮尔逊 $\chi^2$ 统计量，这种统计量服从 $\chi^2$ 分布。</p>
+<script type="math/tex; mode=display">
+K = \frac{\sum^{k}_{i = 1}(n_i - np_i)^2}{np_i} \sim \chi^2(k - 1)</script><p>其中我们需要将数轴分为 $k$ 个不相交的区间（如果是离散型，那么离散型随机变量有几个取值，就分几个就好了），这种说法应该是为了连续型随机变量，$p_i$ 是这些区间的<strong>理论概率</strong>，$n_i$ 是试验落在对应区间的个数。</p>
+<p> $K$ 的观测值如果过大，那么我们倾向于做出否定假设分布的判断。</p>
+<h4 id="2-3-2-参数未知的分布检验"><a href="#2-3-2-参数未知的分布检验" class="headerlink" title="2.3.2 参数未知的分布检验"></a>2.3.2 参数未知的分布检验</h4><p>如果参数是未知的，那么我们就需要先利用极大似然估计出参数，如果需要估计的参数有 r 个，那么相应的，我们自由度需要减去 r 。</p>
+<hr>
+<h2 id="三、其他统计知识"><a href="#三、其他统计知识" class="headerlink" title="三、其他统计知识"></a>三、其他统计知识</h2><h3 id="3-1-点估计"><a href="#3-1-点估计" class="headerlink" title="3.1 点估计"></a>3.1 点估计</h3><h4 id="3-1-1-点估计与区间估计的区别"><a href="#3-1-1-点估计与区间估计的区别" class="headerlink" title="3.1.1 点估计与区间估计的区别"></a>3.1.1 点估计与区间估计的区别</h4><p>点估计法中的矩估计法建立的前提是“可以用样本矩代替总体矩”，极大似然法建立的前提是“可以用求导的结果代替总体特征”。但是这其实只是一个主观认识，所以我们又发明了<strong>无篇</strong>、<strong>最小方差</strong>，<strong>一致</strong>三个评价指标去评价我们参数估计是否合格。本质是<strong>“先实践，再补救”</strong>的思路</p>
+<p>区间估计利用的建立在概率论体系的标准分布，通过给出能够接受的概率（比如大于0.95），获得一个参数的范围，本质是<strong>“先预测，再挑选”</strong>的方法。</p>
+<h4 id="3-1-2-矩估计法"><a href="#3-1-2-矩估计法" class="headerlink" title="3.1.2 矩估计法"></a>3.1.2 矩估计法</h4><p>这里首先要区别一个之前已经强调过的概念，参数不是矩，尽管有的时候，分布的期望与某个参数相等或者是某个参数的函数，但是这并不意味着两者相等。</p>
+<p>矩估计法的思路：</p>
+<ul>
+<li>用带参的分布，构造出<strong>带参的总体矩</strong></li>
+<li>用试验获得样本构造出无参确定的样本矩</li>
+<li>让总体矩等于对应的样本矩，获得方程组</li>
+<li>解出方程组，就是解出了参数</li>
+</ul>
+<h4 id="3-1-3-极大似然估计法"><a href="#3-1-3-极大似然估计法" class="headerlink" title="3.1.3 极大似然估计法"></a>3.1.3 极大似然估计法</h4><p>利用的对参数求导获得参数</p>
+<p>极大似然法的思路：</p>
+<ul>
+<li>构造</li>
+</ul>
+<script type="math/tex; mode=display">
+L(\theta) = \amalg_{i = 1}^n f(x_i;\theta)</script><ul>
+<li>对 $L(\theta)$ 或者 $\ln L(\theta)$ 求导，然后找到极大值点 $\hat{\theta}$ ，这组参数就是我们解出的参数</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S3%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S3复习</a>
+              <a href="/tags/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> 概率统计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/2173e956/" rel="prev" title="概率统计-概率论与客观世界的桥梁">
+      <i class="fa fa-chevron-left"></i> 概率统计-概率论与客观世界的桥梁
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/cb65a26b/" rel="next" title="大学物理-气体动理论">
+      大学物理-气体动理论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%80%BB%E4%BD%93"><span class="nav-text">1.1 总体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%BB%9F%E8%AE%A1%E9%87%8F"><span class="nav-text">1.2 统计量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A0%87%E5%87%86%E5%88%86%E5%B8%83%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-text">二、标准分布的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%8C%BA%E9%97%B4%E4%BC%B0%E8%AE%A1"><span class="nav-text">2.1 区间估计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-sigma-%E5%B7%B2%E7%9F%A5%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%8C%E5%AF%B9-mu-%E7%9A%84%E4%BC%B0%E8%AE%A1"><span class="nav-text">2.1.1 $\sigma$ 已知的情况，对 $\mu$ 的估计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-sigma-%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%8C%E5%AF%B9-mu-%E7%9A%84%E4%BC%B0%E8%AE%A1"><span class="nav-text">2.1.2 $\sigma$ 未知的情况，对 $\mu$ 的估计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3-%E4%BC%B0%E7%AE%97-sigma"><span class="nav-text">2.1.3 估算 $\sigma $</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-%E4%B8%A4%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E7%9B%B8%E5%85%B3%E4%BC%B0%E8%AE%A1"><span class="nav-text">2.1.4 两正态分布相关估计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-1-%E5%B7%B2%E7%9F%A5-sigma-1-sigma-2-%EF%BC%8C%E4%BC%B0%E7%AE%97%E5%9D%87%E5%80%BC%E5%B7%AE%EF%BC%9A"><span class="nav-text">2.1.4.1 已知 $\sigma_1, \sigma_2$，估算均值差：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-1-2-%E6%9C%AA%E7%9F%A5-sigma-1-sigma-2-%EF%BC%8C%E4%BC%B0%E7%AE%97%E5%9D%87%E5%80%BC%E5%B7%AE%EF%BC%9A"><span class="nav-text">2.4.1.2 未知 $\sigma_1, \sigma_2$，估算均值差：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-1-3-%E6%9C%AA%E7%9F%A5-sigma-1-sigma-2-%E4%BD%86-sigma-1-sigma-2-%E7%9B%B8%E7%AD%89%EF%BC%8C%E4%BC%B0%E7%AE%97%E5%9D%87%E5%80%BC%E5%B7%AE"><span class="nav-text">2.4.1.3 未知 $\sigma_1, \sigma_2$ 但 $\sigma_1, \sigma_2$相等，估算均值差</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-1-4-%E4%BA%8C%E6%AD%A3%E6%80%81%E6%80%BB%E4%BD%93%E6%96%B9%E5%B7%AE%E6%AF%94"><span class="nav-text">2.4.1.4 二正态总体方差比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%8F%82%E6%95%B0%E6%A3%80%E9%AA%8C"><span class="nav-text">2.2 参数检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%88%86%E5%B8%83%E6%A3%80%E9%AA%8C"><span class="nav-text">2.3 分布检验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E5%8F%82%E6%95%B0%E5%B7%B2%E7%9F%A5%E7%9A%84%E5%88%86%E5%B8%83%E6%A3%80%E9%AA%8C"><span class="nav-text">2.3.1 参数已知的分布检验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5%E7%9A%84%E5%88%86%E5%B8%83%E6%A3%80%E9%AA%8C"><span class="nav-text">2.3.2 参数未知的分布检验</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%85%B6%E4%BB%96%E7%BB%9F%E8%AE%A1%E7%9F%A5%E8%AF%86"><span class="nav-text">三、其他统计知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%82%B9%E4%BC%B0%E8%AE%A1"><span class="nav-text">3.1 点估计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-%E7%82%B9%E4%BC%B0%E8%AE%A1%E4%B8%8E%E5%8C%BA%E9%97%B4%E4%BC%B0%E8%AE%A1%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">3.1.1 点估计与区间估计的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E7%9F%A9%E4%BC%B0%E8%AE%A1%E6%B3%95"><span class="nav-text">3.1.2 矩估计法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B3%95"><span class="nav-text">3.1.3 极大似然估计法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

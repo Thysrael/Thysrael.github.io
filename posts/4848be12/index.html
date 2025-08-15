@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、除常数优化的定义对于任何处理器，进行除法计算所需要的时间都远远高于乘法和移位运算（当然这两者也不在一个量级上），所以我们有一种想法，就是把除法转换成乘法和移位操作，也就是  \tt{quotient &#x3D; \frac{dividend}{divisor} &#x3D; (dividend \times multiplier) &gt;&gt; shift}这个式子是一个很容易看懂的式子，不幸的是，这个式子是没有办法直">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译技术-除常数优化">
+<meta property="og:url" content="https://thysrael.github.io/posts/4848be12/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、除常数优化的定义对于任何处理器，进行除法计算所需要的时间都远远高于乘法和移位运算（当然这两者也不在一个量级上），所以我们有一种想法，就是把除法转换成乘法和移位操作，也就是  \tt{quotient &#x3D; \frac{dividend}{divisor} &#x3D; (dividend \times multiplier) &gt;&gt; shift}这个式子是一个很容易看懂的式子，不幸的是，这个式子是没有办法直">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/4848be12/image-20220830155012490.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/4848be12/image-20220830155803189.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/4848be12/image-20220830160025971.png">
+<meta property="article:published_time" content="2022-08-30T03:37:23.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.002Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S4假期">
+<meta property="article:tag" content="编译技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/4848be12/image-20220830155012490.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/4848be12/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>编译技术-除常数优化 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/4848be12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译技术-除常数优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-08-30 11:37:23" itemprop="dateCreated datePublished" datetime="2022-08-30T11:37:23+08:00">2022-08-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编译技术</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、除常数优化的定义"><a href="#一、除常数优化的定义" class="headerlink" title="一、除常数优化的定义"></a>一、除常数优化的定义</h2><p>对于任何处理器，进行除法计算所需要的时间都远远高于乘法和移位运算（当然这两者也不在一个量级上），所以我们有一种想法，就是把除法转换成乘法和移位操作，也就是</p>
+<script type="math/tex; mode=display">
+\tt{quotient = \frac{dividend}{divisor} = (dividend \times multiplier) >> shift}</script><p>这个式子是一个很容易看懂的式子，不幸的是，这个式子是没有办法直接应用到我们的处理器上的。</p>
+<p>如果想要应用到我们的处理器上，需要做出很多的妥协和让步，本文其实是一篇论文的注释，对于具体内容，大家可以参考论文：<strong>Division by Invariant Integers using Multiplication</strong>。</p>
+<hr>
+<h2 id="二、第-1-次溢出"><a href="#二、第-1-次溢出" class="headerlink" title="二、第 1 次溢出"></a>二、第 1 次溢出</h2><p>在机器上计算与数学计算最大的一个区别就是机器上的位宽是有限的，所以会存在溢出问题，我们可以审视一下在这个问题里哪里会有溢出问题。</p>
+<p>一个 32 位的除法是不会溢出的，商一定是一个 32 位以内的数，加减法是会溢出的，但是不是我们考虑的重点。乘法是会溢出的，也就是说 32 位的两个数相乘，积可能大于 32 位，所以我们才会在乘法计算中设置 Hi 和 Lo 两个寄存器，分别保存积的高 32 位结果和低 32 位结果。那么让我们审视变化中有一个结构</p>
+<script type="math/tex; mode=display">
+\tt{(dividend \times multiplier)}</script><p>这个东西有可能是一个大于 32 位的结果，所以我们必须选择挑选到底是 hi 还是 lo 作为上面这个的结果。那么结果十分显然，一定要挑 hi，这是因为 lo 有可能不对，而 hi 就没有这种顾虑。</p>
+<p>如果我们使用 Hi，那么就要保证上面的积一定是一个极大的数，一定要到 32 位以上，不然就没有意义了，如果我们不能保证 <code>dividend</code> 的大小，但是我们可以保证 <code>multiplier</code> 在一个很大的范围，这样就可以让两者的乘积超过 32 位。</p>
+<p>在采用了上面的思想后，我们的目标变成了</p>
+<script type="math/tex; mode=display">
+\tt{\lfloor \frac{dividend}{divisor} \rfloor = \lfloor \frac{dividend \times multiplier}{2 ^ {N + shift}} \rfloor}</script><p>其中 $N = 32$ 是机器字的字长。这个式子基本上就是真正的原理式了。</p>
+<p>而反映到处理器上，就是以下的指令（指令用大写字母表示）</p>
+<script type="math/tex; mode=display">
+\tt{SRL(MULUH(dividend, multiplier), shift)}</script><hr>
+<h2 id="三、第-2-次溢出"><a href="#三、第-2-次溢出" class="headerlink" title="三、第 2 次溢出"></a>三、第 2 次溢出</h2><p>不幸的是，因为我们希望第 1 次溢出，所以我们会把 <code>multiplier</code> 调整的很大（具体的调整方法后面介绍），有的时候就超过了 32 位字长可以表示的程度，那么就会导致没办法用 32 位的寄存器存储，发生了第二次溢出。</p>
+<p>那么为了让过大的 <code>multiplier</code> 可以被正确的计算，我们需要利用乘法分配律进行计算，有</p>
+<script type="math/tex; mode=display">
+\tt{dividend \times multiplier = dividend \times (2^{N} + multiplier - 2^{N}) = (dividend << N) + dividend \times (multiplier - 2^{N})}</script><p>反应到处理器上，就是以下的指令</p>
+<script type="math/tex; mode=display">
+\tt{SRL(ADD(dividend, MULUH(dividend - 2^{N}, multiplier)), shift)}</script><p>当计算出 <code>multiplier</code> 之后，我们需要对其大小进行一个判断，然后选择用哪种式子。</p>
+<hr>
+<h2 id="四、第-3-次溢出"><a href="#四、第-3-次溢出" class="headerlink" title="四、第 3 次溢出"></a>四、第 3 次溢出</h2><p>当我们发生了第 2 次溢出后，我们采用了如下措施</p>
+<script type="math/tex; mode=display">
+\tt{(dividend << N) + dividend \times (multiplier - 2^{N})}</script><p>但是我们没有意识到加法同样是可能溢出的，所以我们还需要进一步修正，但是我懒得写咋修正了（依然是利用乘法分配律），因为在最终代码中没有体现（这是应为现在讨论的是无符号数，而有符号数的范围会比较小，所以没有这个问题）。</p>
+<hr>
+<h2 id="五、向零取整"><a href="#五、向零取整" class="headerlink" title="五、向零取整"></a>五、向零取整</h2><p>对于有符号数来说，C 语言的特性是这样的，除法是向零取整的，也就是说 <code>3 / 4 = 0, -3 / 4 = 0</code>。但是对于位移来说，是向下取整的，也就是说 <code>3 &gt;&gt; 2 = 0, -3 &gt;&gt; 2 = -1</code>。因为我们用左移代替了除法，所以我们需要对于这里进行一定的修正。一共有两种修正，一种是对于除数是 2 的幂次的情况，那么我们修改被除数：</p>
+<script type="math/tex; mode=display">
+\tt{newDividend = oldDividend + divisor - 1}</script><p>另一种就是除数不为 2 的幂次，对于有符号除法，有如下公式（证明就不列了）</p>
+<p><img src="/posts/4848be12/image-20220830155012490.png" alt=""></p>
+<p>其中 $\tt{TRUNC}$ 是向零取整的意思。</p>
+<hr>
+<h2 id="六、选择-Multiplier-和-Shift"><a href="#六、选择-Multiplier-和-Shift" class="headerlink" title="六、选择 Multiplier 和 Shift"></a>六、选择 Multiplier 和 Shift</h2><p>这就要涉及一些神秘的数学证明了，在证明开始之前，我觉得先说一下咱们需要干啥，现在我们需要根据 <code>divisor</code> 来确定 <code>multiplier</code> 和 <code>shift</code> ，但是显然一个数没法确定两个数，所以我们要挑出 <code>multiplier</code> 和 <code>shift</code>。但是也不能瞎挑，我们要保证我们挑出的东西是可以满足底下这个效果的</p>
+<script type="math/tex; mode=display">
+\tt{\lfloor \frac{dividend}{divisor} \rfloor = \lfloor \frac{dividend \times multiplier}{2 ^ {N + shift}} \rfloor}</script><p>待会要证明的东西就是一个“挑“ 的指导方针，大致是这个</p>
+<p><img src="/posts/4848be12/image-20220830155803189.png" alt=""></p>
+<p>证明就不写了，因为懒，而且背不过。</p>
+<hr>
+<h2 id="七、精度"><a href="#七、精度" class="headerlink" title="七、精度"></a>七、精度</h2><p>待会的源码里还会有精度 <code>precision</code> 的说法，但是我对于这个东西的理解很肤浅，所以就不说了，论文中说的也不多，而且在有符号数里没有太多的用到，大致是这样的</p>
+<p><img src="/posts/4848be12/image-20220830160025971.png" alt=""></p>
+<hr>
+<h2 id="八、源码模拟"><a href="#八、源码模拟" class="headerlink" title="八、源码模拟"></a>八、源码模拟</h2><p>我用 CPP 写了一份有<code>符号数除法</code>的模拟源码，放在这里以供参考</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// div.h</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifndef</span> <span class="token expression">DIV_DIV_H</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">DIV_DIV_H</span></span>
+
+<span class="token comment">// 一个无符号的 word</span>
+<span class="token keyword">typedef</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> uword<span class="token punctuation">;</span>
+<span class="token comment">// 一个有符号的 word</span>
+<span class="token keyword">typedef</span> <span class="token keyword">int</span> sword<span class="token punctuation">;</span>
+<span class="token comment">// 一个无符号的 double word</span>
+<span class="token keyword">typedef</span> <span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">long</span> udword<span class="token punctuation">;</span>
+<span class="token comment">// 一个有符号的 double word</span>
+<span class="token keyword">typedef</span> <span class="token keyword">long</span> <span class="token keyword">long</span> sdword<span class="token punctuation">;</span>
+<span class="token comment">// machine word width</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> N <span class="token operator">=</span> <span class="token number">32</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 用于进行除常数优化的三个量
+ * 之所以有这个结构体，最重要的原因是 CPP 的返回值是单值的，所以没法返回多个东西
+ * 所以这个结构体的组织没有太多的逻辑
+ * multiplier 是乘元素
+ * shift 是移位元素
+ * log = ceil(log(divisor)) 即除数的 2 的对数向上取整
+ */</span>
+<span class="token keyword">struct</span> <span class="token class-name">Multiplier</span>
+<span class="token punctuation">{</span>
+    udword multiplier<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> shift<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> log<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 如果 a 是负数，则返回 -1，否则，返回 0
+ * @param a 一个有符号 32 位整数
+ * @return 如上
+ */</span>
+<span class="token keyword">int</span> <span class="token function">xsign</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 逻辑右移
+ * @param a
+ * @param shift
+ * @return
+ */</span>
+sword <span class="token function">shiftRightLogical</span><span class="token punctuation">(</span>sword a<span class="token punctuation">,</span> <span class="token keyword">int</span> shift<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 32 位有符号乘法的结果的高 32 位
+ * @param a 有符号数
+ * @param b 无符号数
+ * @return 结果的高 32 位
+ */</span>
+sword <span class="token function">signMulHi</span><span class="token punctuation">(</span>sword a<span class="token punctuation">,</span> uword b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+sword <span class="token function">clz</span><span class="token punctuation">(</span>uword a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 这个函数是一切的关键，我愿意称他为除数 divisor 的分析转换函数
+ * @param divisor 除数
+ * @param precision 除数的大小描述，有 divisor &lt; 2^precision
+ * 之所以有这个东西，是因为当 precision 小的时候，会让 multiplier 和 shift 变小，可以避免溢出
+ * @return 分析结构体
+ */</span>
+Multiplier <span class="token function">chooseMultiplier</span><span class="token punctuation">(</span>uword divisor<span class="token punctuation">,</span> <span class="token keyword">int</span> precision<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 除法的主函数
+ * @param dividend 被除数
+ * @param divisor 除数，要求不为 0
+ * @return quotient 商
+ */</span>
+sword <span class="token function">divide</span><span class="token punctuation">(</span>sword dividend<span class="token punctuation">,</span> sword divisor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span> <span class="token comment">//DIV_DIV_H</span></span>
+
+<span class="token comment">// div.cpp</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"div.h"</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+sword <span class="token function">divide</span><span class="token punctuation">(</span>sword dividend<span class="token punctuation">,</span> sword divisor<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// 商，是返回的结果</span>
+    <span class="token keyword">int</span> quotient<span class="token punctuation">;</span>
+
+    <span class="token keyword">bool</span> isDivisorNegative <span class="token operator">=</span> divisor <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    uword divisorAbs <span class="token operator">=</span> isDivisorNegative <span class="token operator">?</span> <span class="token operator">-</span>divisor <span class="token operator">:</span> divisor<span class="token punctuation">;</span>
+
+    Multiplier ret <span class="token operator">=</span> <span class="token function">chooseMultiplier</span><span class="token punctuation">(</span>divisorAbs<span class="token punctuation">,</span> N <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    udword multiplier <span class="token operator">=</span> ret<span class="token punctuation">.</span>multiplier<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> shift <span class="token operator">=</span> ret<span class="token punctuation">.</span>shift<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> log <span class="token operator">=</span> ret<span class="token punctuation">.</span>log<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>divisorAbs <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        quotient <span class="token operator">=</span> dividend<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// 如果是 2 的幂次</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>divisorAbs <span class="token operator">==</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> log<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        quotient <span class="token operator">=</span> <span class="token punctuation">(</span>dividend <span class="token operator">+</span> <span class="token function">shiftRightLogical</span><span class="token punctuation">(</span>dividend <span class="token operator">&gt;&gt;</span> <span class="token punctuation">(</span>log <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> N <span class="token operator">-</span> log<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&gt;&gt;</span> log<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// 下面两个都是不规则除数的处理</span>
+    <span class="token comment">// 针对的是 m 比较小的情况</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>multiplier <span class="token operator">&lt;</span> <span class="token number">0x80000000</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        quotient <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token function">signMulHi</span><span class="token punctuation">(</span>dividend<span class="token punctuation">,</span> multiplier<span class="token punctuation">)</span> <span class="token operator">&gt;&gt;</span> shift<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">xsign</span><span class="token punctuation">(</span>dividend<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// m 比较大的情况</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        quotient <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>dividend <span class="token operator">+</span> <span class="token function">signMulHi</span><span class="token punctuation">(</span>dividend<span class="token punctuation">,</span> <span class="token punctuation">(</span>sword<span class="token punctuation">)</span> <span class="token punctuation">(</span>multiplier <span class="token operator">-</span> <span class="token number">0x80000000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&gt;&gt;</span> shift<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token function">xsign</span><span class="token punctuation">(</span>dividend<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> isDivisorNegative<span class="token operator">?</span> <span class="token operator">-</span>quotient <span class="token operator">:</span> quotient<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+sword <span class="token function">shiftRightLogical</span><span class="token punctuation">(</span>sword a<span class="token punctuation">,</span> <span class="token keyword">int</span> shift<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    uword a1 <span class="token operator">=</span> a<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>sword<span class="token punctuation">)</span> <span class="token punctuation">(</span>a1 <span class="token operator">&gt;&gt;</span> shift<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+sword <span class="token function">xsign</span><span class="token punctuation">(</span>sword a<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a <span class="token operator">&gt;&gt;</span> <span class="token number">31</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+sword <span class="token function">signMulHi</span><span class="token punctuation">(</span>sword a<span class="token punctuation">,</span> uword b<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// 先将 a, b 转换成双字字长</span>
+    sdword a1 <span class="token operator">=</span> a<span class="token punctuation">;</span>
+    sdword b1 <span class="token operator">=</span> b<span class="token punctuation">;</span>
+    <span class="token comment">// 取高 32 位</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>sword<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>a1 <span class="token operator">*</span> b1<span class="token punctuation">)</span> <span class="token operator">&gt;&gt;</span> <span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+sword <span class="token function">clz</span><span class="token punctuation">(</span>uword a<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">__builtin_clz</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+Multiplier <span class="token function">chooseMultiplier</span><span class="token punctuation">(</span>uword divisor<span class="token punctuation">,</span> sword precision<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// log = ceil(log2(divisor))</span>
+    <span class="token keyword">int</span> log <span class="token operator">=</span> N <span class="token operator">-</span> <span class="token function">clz</span><span class="token punctuation">(</span>divisor <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// shift = log</span>
+    <span class="token keyword">int</span> shift <span class="token operator">=</span> log<span class="token punctuation">;</span>
+    <span class="token comment">// low = floor(2^(N + log) / divisor)</span>
+    udword low <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token function">udword</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>N <span class="token operator">+</span> shift<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> divisor<span class="token punctuation">;</span>
+    <span class="token comment">// high = floor((2^(N + log) + 2^(log + N - precision)) / divisor)</span>
+    udword high <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">udword</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>N <span class="token operator">+</span> shift<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token function">udword</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>shift <span class="token operator">+</span> N <span class="token operator">-</span> precision<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> divisor<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>low <span class="token operator">&gt;&gt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token punctuation">(</span>high <span class="token operator">&gt;&gt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> shift <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        low <span class="token operator">&gt;&gt;=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        high <span class="token operator">&gt;&gt;=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        shift<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>high<span class="token punctuation">,</span> shift<span class="token punctuation">,</span> log<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// main.cpp 用于测试正确性</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;random&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"div.h"</span></span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    random_device rd<span class="token punctuation">;</span>
+    mt19937 <span class="token function">mt</span><span class="token punctuation">(</span><span class="token function">rd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 产生位于[-2147483648, 2147483647]间的随机数</span>
+    uniform_int_distribution<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">randint</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2147483648</span><span class="token punctuation">,</span> <span class="token number">2147483647</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> dividend<span class="token punctuation">,</span> divisor<span class="token punctuation">,</span> testTimes <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  i <span class="token operator">&lt;</span> testTimes<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        dividend <span class="token operator">=</span> <span class="token function">randint</span><span class="token punctuation">(</span>mt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        divisor <span class="token operator">=</span> <span class="token function">randint</span><span class="token punctuation">(</span>mt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> standardAns <span class="token operator">=</span> dividend <span class="token operator">/</span> divisor<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> ans <span class="token operator">=</span> <span class="token function">divide</span><span class="token punctuation">(</span>dividend<span class="token punctuation">,</span> divisor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>standardAns <span class="token operator">!=</span> ans<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"dividend is "</span> <span class="token operator">&lt;&lt;</span> dividend <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"divisor is "</span> <span class="token operator">&lt;&lt;</span> divisor <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"standard answer is "</span> <span class="token operator">&lt;&lt;</span> standardAns <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"answer is "</span> <span class="token operator">&lt;&lt;</span> ans <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"dividend is "</span> <span class="token operator">&lt;&lt;</span> dividend <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"divisor is "</span> <span class="token operator">&lt;&lt;</span> divisor <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"AC"</span> <span class="token operator">&lt;&lt;</span> endl <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+<span class="token comment">//    int i, j;</span>
+<span class="token comment">//    for (i = -2147483648; i &lt; 2147483648; i++)</span>
+<span class="token comment">//    {</span>
+<span class="token comment">//        for (j = -2147483648; j &lt; 2147483648; j++)</span>
+<span class="token comment">//        {</span>
+<span class="token comment">//            if (j != 0)</span>
+<span class="token comment">//            {</span>
+<span class="token comment">//                int standardAns = i / j;</span>
+<span class="token comment">//                int ans = divide(i, j);</span>
+<span class="token comment">//                if (standardAns != ans)</span>
+<span class="token comment">//                {</span>
+<span class="token comment">//                    goto end;</span>
+<span class="token comment">//                }</span>
+<span class="token comment">//                else</span>
+<span class="token comment">//                {</span>
+<span class="token comment">//                    cout &lt;&lt; i &lt;&lt; "/" &lt;&lt; j &lt;&lt; " "  &lt;&lt; "AC" &lt;&lt; endl;</span>
+<span class="token comment">//                }</span>
+<span class="token comment">//            }</span>
+<span class="token comment">//        }</span>
+<span class="token comment">//    }</span>
+<span class="token comment">//    end:</span>
+<span class="token comment">//    cout &lt;&lt; i &lt;&lt; "  " &lt;&lt; j &lt;&lt; endl;</span>
+<span class="token comment">//    cout &lt;&lt; i / j &lt;&lt; "  " &lt;&lt; divide(i, j) &lt;&lt; endl;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>Division by Invariant Integers using Multiplication</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://zhuanlan.zhihu.com/p/151038723">https://zhuanlan.zhihu.com/p/151038723</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S4%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S4假期</a>
+              <a href="/tags/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" rel="tag"><i class="fa fa-tag"></i> 编译技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/d2c1893a/" rel="prev" title="吃喝玩乐-流浪南京">
+      <i class="fa fa-chevron-left"></i> 吃喝玩乐-流浪南京
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/a728a9c5/" rel="next" title="Ruby设计-基础语法">
+      Ruby设计-基础语法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%99%A4%E5%B8%B8%E6%95%B0%E4%BC%98%E5%8C%96%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">一、除常数优化的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%AC%AC-1-%E6%AC%A1%E6%BA%A2%E5%87%BA"><span class="nav-text">二、第 1 次溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%AC%AC-2-%E6%AC%A1%E6%BA%A2%E5%87%BA"><span class="nav-text">三、第 2 次溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%AC%AC-3-%E6%AC%A1%E6%BA%A2%E5%87%BA"><span class="nav-text">四、第 3 次溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%90%91%E9%9B%B6%E5%8F%96%E6%95%B4"><span class="nav-text">五、向零取整</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%80%89%E6%8B%A9-Multiplier-%E5%92%8C-Shift"><span class="nav-text">六、选择 Multiplier 和 Shift</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E7%B2%BE%E5%BA%A6"><span class="nav-text">七、精度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E6%BA%90%E7%A0%81%E6%A8%A1%E6%8B%9F"><span class="nav-text">八、源码模拟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

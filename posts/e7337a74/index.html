@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、编译原理在我一开始接触内联汇编的时候，我已经略懂编译的原理了，而这更让我困惑，比如说像这样的内联汇编： asm volatile(&quot;lw a0, 0(%0)&quot;     :     : &quot;r&quot;(addr)); 会改写寄存器 a0 的值，那如果 a0 原先就被程序中的某个变量占用了呢？那岂不是会造成原来那个变量所参与的行为发生错误？同时 addr 需要被放到一个寄存器中（我们称之为 rx），而 r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语言高阶-内联汇编">
+<meta property="og:url" content="https://thysrael.github.io/posts/e7337a74/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、编译原理在我一开始接触内联汇编的时候，我已经略懂编译的原理了，而这更让我困惑，比如说像这样的内联汇编： asm volatile(&quot;lw a0, 0(%0)&quot;     :     : &quot;r&quot;(addr)); 会改写寄存器 a0 的值，那如果 a0 原先就被程序中的某个变量占用了呢？那岂不是会造成原来那个变量所参与的行为发生错误？同时 addr 需要被放到一个寄存器中（我们称之为 rx），而 r">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-01-06T03:39:38.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.094Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S7课上">
+<meta property="article:tag" content="语言高阶">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/e7337a74/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>语言高阶-内联汇编 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/e7337a74/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          语言高阶-内联汇编
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-01-06 11:39:38" itemprop="dateCreated datePublished" datetime="2024-01-06T11:39:38+08:00">2024-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%AD%E8%A8%80%E9%AB%98%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">语言高阶</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、编译原理"><a href="#一、编译原理" class="headerlink" title="一、编译原理"></a>一、编译原理</h2><p>在我一开始接触内联汇编的时候，我已经略懂编译的原理了，而这更让我困惑，比如说像这样的内联汇编：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">asm</span> <span class="token keyword">volatile</span><span class="token punctuation">(</span><span class="token string">"lw a0, 0(%0)"</span>
+    <span class="token operator">:</span>
+    <span class="token operator">:</span> <span class="token string">"r"</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>会改写寄存器 <code>a0</code> 的值，那如果 <code>a0</code> 原先就被程序中的某个变量占用了呢？那岂不是会造成原来那个变量所参与的行为发生错误？同时 <code>addr</code> 需要被放到一个寄存器中（我们称之为 <code>rx</code>），而 <code>rx</code> 如果之前也被占用了呢？，为了把原来在内存中的变量搬运到 <code>rx</code> 寄存器中，是不是也会</p>
+<p>其实内联汇编并不是生硬地将 <code>lw a0, 0(rx)</code> 直接插入到代码里，因为这样确实会因为上述的原因导致程序错误。在实际情况中，内联汇编在编译角度应该被理解成一个类似于函数调用的处理逻辑。也就是说，如果内联汇编中用到了 <code>a0</code> ，那么在内联汇编前就会有一个机制保存 <code>a0</code> ，而在内联汇编后则有一个机制恢复原本的 <code>a0</code> 。也就是和“调用者保存寄存器”的逻辑是一样的。</p>
+<p>正因为如此，我们的内联汇编语法复杂晦涩，正是为了确保插入汇编时给编译器提供足够多的信息，避免引起错误。但是正因为内联汇编复杂，所以尽可能不要使用内联汇编。</p>
+<hr>
+<h2 id="二、语法"><a href="#二、语法" class="headerlink" title="二、语法"></a>二、语法</h2><h3 id="2-1-整体结构"><a href="#2-1-整体结构" class="headerlink" title="2.1 整体结构"></a>2.1 整体结构</h3><p>内联汇编（严格意义上说是“拓展内联汇编语法”）的结构如下所示：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">asm</span> <span class="token function">AsmQualifiers</span> <span class="token punctuation">(</span> AssemblerTemplate
+                 <span class="token operator">:</span> OutputOperands
+                 <span class="token punctuation">[</span> <span class="token operator">:</span> InputOperands
+                 <span class="token punctuation">[</span> <span class="token operator">:</span> Clobbers <span class="token punctuation">]</span> <span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">asm</span> <span class="token function">AsmQualifiers</span> <span class="token punctuation">(</span> AssemblerTemplate
+                      <span class="token operator">:</span> OutputOperands
+                      <span class="token operator">:</span> InputOperands
+                      <span class="token operator">:</span> Clobbers
+                      <span class="token operator">:</span> GotoLabels<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>出现在上面代码块中的 <code>[]</code> 表示可以省略。下面将分章节进行介绍各个部分。</p>
+<h3 id="2-2-asm"><a href="#2-2-asm" class="headerlink" title="2.2 asm"></a>2.2 asm</h3><p><code>asm</code> 是 GCC 支持的关键字，但不是 ISO C 中的关键字，如果我们开启了 <code>‐std=c99</code> 等启用 ISO C 的编译选项，代码将无法成功编译。然而，内联汇编对于许多 ISO C 程序是必须的，GCC 通过 <code>__asm__</code> 给程序员开了个后门。使用 <code>__asm__</code> 替代 <code>asm</code> 可以让程序作为 ISO C 程序成功编译（GCC 也可以编译 ISO C）。volatile 和 inline 也有加 <code>__</code> 的版本。</p>
+<p>也就是说，<code>asm</code> 是属于 GCC 特定的关键字，并不是通用的 ISO C 的关键字，所以如果希望兼容性考虑，应该使用 <code>__asm__</code> 来保证程序通过 ISO 标准。</p>
+<h3 id="2-3-AsmQualifiers"><a href="#2-3-AsmQualifiers" class="headerlink" title="2.3 AsmQualifiers"></a>2.3 AsmQualifiers</h3><p>AsmQualifiers 包括以下 3 个修饰符:</p>
+<ul>
+<li>volatile: 指示编译器不要对 asm 代码段进行优化，这个是十分必须的，因为在不考虑性能的前提下，我们使用汇编的目的往往是进行一些对系统寄存器的显式设置，我们要避免可能出现的指令重排和消除。</li>
+<li>inline: 指示编译器尽可能小的假设 asm 指令的大小，这条只是建议，所以和所有没用的 <code>inline</code> 指令一样，可以选择不加。</li>
+<li>goto：指示编译器可以在汇编指令中可以使用 C label 进行跳转，如果没有这个需求，可以不加。</li>
+</ul>
+<p>这三个似乎是互斥的，我不太确定。</p>
+<h3 id="2-4-AssemblerTemplate"><a href="#2-4-AssemblerTemplate" class="headerlink" title="2.4 AssemblerTemplate"></a>2.4 AssemblerTemplate</h3><p>汇编模板指的是一系列汇编“模板”的集合，也就是多条类汇编指令，如下所示：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token string">"add %0, %1, %2\n\t"</span>
+<span class="token string">"str %0, %3"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>之所以说他们是模板而非具体的指令，是因为里面有些并非汇编所有的占位符，比如说上面例子中的 <code>%0, %1, %2</code> 。这种东西和 C 语言中的格式化输出的 <code>%d, %s</code> 类似，在汇编中会被相应的 C 语言的输入/输出变量所替代。正是依靠这种机制，内联汇编建立了在<strong>C 语言变量</strong>和<strong>汇编语言操作数</strong>之间的联系。</p>
+<p>占位符主要有两种形式，一种是 <code>%0, %1, %2,...</code> ，这种可以分别对应到后面的第 0 个操作数，第 1 个操作数，第 2 个操作数。如下所示，对于如下代码，有 <code>c =&gt; %0</code>, <code>a =&gt; %1</code>, <code>b =&gt; %2</code>, <code>d =&gt; %3</code>。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">asm</span> <span class="token keyword">volatile</span> <span class="token punctuation">(</span>
+    <span class="token string">"add %0, %1, %2\n\t"</span>
+    <span class="token string">"str %0, %3"</span>
+    <span class="token operator">:</span> <span class="token string">"=r"</span> <span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+    <span class="token operator">:</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"m"</span> <span class="token punctuation">(</span>d<span class="token punctuation">)</span>
+    <span class="token operator">:</span> <span class="token string">"cc"</span>    <span class="token comment">// 添加 clobber，用于标识修改了条件码寄存器</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另一种是给占位符起名字，如下所示：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">__asm__ <span class="token keyword">volatile</span><span class="token punctuation">(</span>
+    <span class="token string">"msr S3_7_C7_C0_0, %[domain]"</span>
+    <span class="token operator">:</span>
+    <span class="token operator">:</span> <span class="token punctuation">[</span>domain<span class="token punctuation">]</span> <span class="token string">"r"</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此时有 <code>d =&gt; %[domain]</code> ，注意这里的语法是 <code>%[asmSymbolicName]]</code> ，不仅要在 AssemblerTemplate 中记录，同时需要在 Operands 处记录。</p>
+<p>此外，可以注意到每条指令后面都以 <code>\n\t</code> 结尾，这是因为 AssemblerTemplate 会用于生成汇编字符串并被汇编器读取，增加空白符可以提高兼容性。</p>
+<h3 id="2-5-InputOperands"><a href="#2-5-InputOperands" class="headerlink" title="2.5 InputOperands"></a>2.5 InputOperands</h3><p>之所以先介绍输入操作数，是因为输入操作数比输出操作数简单，更容易理解 C 变量和汇编操作数之间的联系。</p>
+<p>此外还需要强调，内联汇编的许多规范都是针对 X86 指令集的，X86 因为 CISC 的原因，指令集更为复杂，比如说可以直接用内存作为操作数，这种行为在 RISC 中是不可理解的，所以对于有些语法觉得画蛇添足也并不奇怪。</p>
+<p>InputOperands 的格式如下：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token punctuation">[</span> <span class="token punctuation">[</span>asmSymbolicName<span class="token punctuation">]</span> <span class="token punctuation">]</span> <span class="token function">constraint</span> <span class="token punctuation">(</span>cvariablename<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中 <code>asmSymbolicName</code> 已经介绍过了，<code>cvariablename</code> 表示输入给 asm 块的 C 变量，而 <code>constraint</code> 则决定了这个 C 变量会对应成汇编中的什么操作数，通用的有如下几种：</p>
+<ul>
+<li>r: 通用寄存器</li>
+<li>i: 在汇编时或运行时可以确定的立即数</li>
+<li>n: 可以直接确定的立即数,如整形字面量</li>
+<li>g: 任意通用寄存器、内存、立即数</li>
+<li>m: 内存</li>
+</ul>
+<p>我们可以同时指定多个 <code>constraints</code> ，比如说 <code>"rm"(output)</code> 就表示既可以将 <code>output</code> 对应一个内存操作数，也可以将其对应一个寄存器操作数。</p>
+<p>有些指令，如 X86 常用的 <code>mov</code> 指令，两个操作数既可以都是寄存器、也可以一个是寄存器一个是内存地址。这时就有三种组合，我们可以将 constraint 可以分为多个候选组合传递给 GCC，如:</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token operator">:</span> <span class="token string">"m,r,r"</span><span class="token punctuation">(</span>output<span class="token punctuation">)</span>
+<span class="token operator">:</span> <span class="token string">"r,m,r"</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>constraint 通过，分组，并且一一对应。上面的代码段相当于以下三个输出/输入列表组合在一起:</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token operator">:</span> <span class="token string">"m"</span> <span class="token punctuation">(</span>output<span class="token punctuation">)</span>
+<span class="token operator">:</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>input<span class="token punctuation">)</span>
+ <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+<span class="token operator">:</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>output<span class="token punctuation">)</span>
+<span class="token operator">:</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>input<span class="token punctuation">)</span>
+ <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span>
+<span class="token operator">:</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>output<span class="token punctuation">)</span>
+<span class="token operator">:</span> <span class="token string">"m"</span> <span class="token punctuation">(</span>input<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-6-OutputOperands"><a href="#2-6-OutputOperands" class="headerlink" title="2.6 OutputOperands"></a>2.6 OutputOperands</h3><p>OutputOperands 的结构如下所示：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token punctuation">[</span> <span class="token punctuation">[</span>asmSymbolicName<span class="token punctuation">]</span> <span class="token punctuation">]</span> modifier <span class="token function">constraint</span> <span class="token punctuation">(</span>cvariablename<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以看到基本上和 InputOperands 结构类似，多出来的是 <code>modifier</code> ，这个必须且只能用于输出操作数。modifier 常见的有 3 种：</p>
+<ul>
+<li>=: 操作对象是只写的。也就是最为普通的输出操作符</li>
+<li>+: 操作对象是读写的。也就是这个既是输出操作符，也是输入操作符</li>
+<li>&amp;: 指示该输出操作符一定不能和输入操作符重叠。这个说的是如下情况：</li>
+</ul>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token string">"mov [output], $1\n\t"</span>
+<span class="token string">"mov r1, [input]\n\t"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>按理说这个情况应该有 <code>output = 1</code> 但是如果不加上 <code>&amp;</code> ，<code>output</code> 是可以与 <code>input</code> 分到同一个寄存器的，所以就会导致最终效果是 <code>output = input</code> 。</p>
+<p>之所以会这样，是因为 GCC 默认输出变量应当在输入变量之后，所以输入变量可以和输出变量共享寄存器（简单的编译原理，寄存器生命周期问题），但是当存在多条指令的时候，这个假设就会导致错误。所以需要额外声明。</p>
+<h3 id="2-7-Clobbers"><a href="#2-7-Clobbers" class="headerlink" title="2.7 Clobbers"></a>2.7 Clobbers</h3><p>在使用内联汇编时,我们写的汇编代码可能会产生一些副作用，GCC 必须清楚地知道这些副作用才能调整自己的行为，生成正确的代码。</p>
+<p>举一个可能导致生成错误代码的例子。我们使用字符串复制指令 <code>movsb</code> 将一段内存复制到另一个地址, <code>movsb</code> 会读取、修改寄存器 <code>rsi</code> 和 <code>rdi</code> 的值，如果我们不告诉 GCC 我们写的汇编代码有“修改 <code>rsi</code>和 <code>rdi</code> ”的副作用，GCC 会认为 <code>rsi</code> 和 <code>rdi</code> 没有被修改，生成错误的代码。</p>
+<p>Clobber有以下几个：</p>
+<ul>
+<li>cc: 条件(标准)寄存器。如 X86 的 <code>EFLAGS</code> 寄存器。</li>
+<li>memory: 读/写内存。为了确保读取到正确的值，GCC 可能会在进入 asm 块前将某些寄存器写入内存中,也可能在必要的时候将内存中存储的寄存器值重新加载到寄存器中。</li>
+<li>寄存器名:如 x86 平台的 <code>rax</code> 等,直接写原名即可。</li>
+</ul>
+<h3 id="2-8-goto"><a href="#2-8-goto" class="headerlink" title="2.8 goto"></a>2.8 goto</h3><p>GCC 提供了在内联汇编中使用 C Label 的功能，但这个功能有限制，这只能在 asm 块没有输出时使用。C Label 在内联汇编中直接当成汇编的 label 使用即可，唯一要注意的是在内联汇编中 C label 的命名。</p>
+<p>示例如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">asm</span> <span class="token keyword">goto</span> <span class="token punctuation">(</span>
+        <span class="token string">"btl %1, %0\n\t"</span>
+        <span class="token string">"jc %l2"</span>
+        <span class="token operator">:</span> <span class="token comment">/* No outputs. */</span>
+        <span class="token operator">:</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>p1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"r"</span> <span class="token punctuation">(</span>p2<span class="token punctuation">)</span>
+        <span class="token operator">:</span> <span class="token string">"cc"</span>
+        <span class="token operator">:</span> carry<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+ carry<span class="token operator">:</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到跳转的时候用到的 target 是 <code>%l2</code> ，之所以用这个，是因为 <code>carry</code> 是第 3 个操作数，所以是 <code>l2</code> 。</p>
+<hr>
+<h2 id="三、平台特异性"><a href="#三、平台特异性" class="headerlink" title="三、平台特异性"></a>三、平台特异性</h2><h3 id="3-1-X86"><a href="#3-1-X86" class="headerlink" title="3.1 X86"></a>3.1 X86</h3><p>x86 平台有些些专门的 constraint , 如:</p>
+<ul>
+<li>a: ax 寄存器,在 32 位处理器上是 eax, 在 64 位处理器上是 rax</li>
+<li>b(bx), c(cx), d(dx), S(si), D(di): 类似与a</li>
+<li>q: 整数寄存器。32 位上是 <code>a</code>、<code>`b</code>、<code>c</code>、<code>d</code> ，64 位增加了 <code>r8</code> ~ <code>r15</code> 8 个寄存器</li>
+</ul>
+<p>X86 中一个大寄存器可以重叠地分为多个小寄存器,比如 <code>rax</code> 低 32 位可以作为 <code>eax</code> 单独使用，<code>eax</code> 低 16 位又可以作为 <code>ax</code> 单独使用，<code>ax</code> 高 8 位可以做为 <code>ah</code> 单独使用、低 8 位可以作为 <code>al</code> 单独使用。针对这种情况，GCC 在 x86 平台专门提供了一些修饰符来调整生成的汇编代码中寄存器、内存地址等的格式。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token class-name">uint16_t</span> num<span class="token punctuation">;</span>
+<span class="token keyword">asm</span> <span class="token keyword">volatile</span> <span class="token punctuation">(</span><span class="token string">"xchg %h0, %b0"</span> <span class="token operator">:</span> <span class="token string">"+a"</span> <span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="3-2-RISC-V"><a href="#3-2-RISC-V" class="headerlink" title="3.2 RISC-V"></a>3.2 RISC-V</h3><p>GCC 对 RISC-V 平台提供了以下额外的 constrait ：</p>
+<ul>
+<li>f: 浮点寄存器</li>
+<li>I: 12 比特立即数</li>
+<li>J: 整数 0</li>
+<li>K: 用于 CSR 访问指令的 5 比特的无符号立即数</li>
+<li>A: 存储在通用寄存器中的地址</li>
+</ul>
+<p>需要注意，GCC 没有提供对 RISC-V 特定寄存器的 constrait 。</p>
+<hr>
+<h2 id="四、杂项"><a href="#四、杂项" class="headerlink" title="四、杂项"></a>四、杂项</h2><h3 id="4-1-基本内联汇编"><a href="#4-1-基本内联汇编" class="headerlink" title="4.1 基本内联汇编"></a>4.1 基本内联汇编</h3><p>其实上面介绍的内联汇编语法应该被称为“拓展内联汇编语法”，还有一种语法被称为“基本内联汇编”，其结构与拓展语法相比，缺少了输入输出列表等（也就是没有 <code>:</code> 语法符号了），如下所示：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">asm</span> <span class="token function">asm_qualifiers</span> <span class="token punctuation">(</span> AssembleInstructions <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这种语法会直接将所有的 <code>AssemblerInstructions</code> 直接插入到代码里，也就是那种有可能会导致程序错误的直接插入。</p>
+<p>但是这种方法并非没有用处，比如说可以用于同步，如下所示：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">inline</span> <span class="token keyword">void</span> <span class="token function">sfenceVma</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">asm</span> <span class="token keyword">volatile</span><span class="token punctuation">(</span><span class="token string">"sfence.vma"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-2-内联寄存器"><a href="#4-2-内联寄存器" class="headerlink" title="4.2 内联寄存器"></a>4.2 内联寄存器</h3><p>GCC 没有提供对 RISC-V 特定寄存器的 constrait ，如果我们需要将变量分配到特定的寄存器（比如说通过 <code>an</code> 传入 sbi 的参数），只能通过分配寄存器变量的方式曲线救国。</p>
+<p>寄存器变量是 ISO C 的特性,语法为：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">register</span> type cvariable<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>ISO C 中的寄存器变量特性只是“建议”将某个变量分配到寄存器中，最终是否分配到寄存器中由编译器决定，并且没有提供指定寄存器的语法，分配到哪个寄存器也由编译器决定。GCC 拓展了 ISO C 中寄存器变量的特性，提供了指定寄存器的语法，只要分配的寄存器合法就会分配成功。</p>
+<p>语法结构如下：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">register</span> type cvariable <span class="token keyword">asm</span> <span class="token punctuation">(</span><span class="token string">"register"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">register</span> <span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">long</span> i <span class="token keyword">asm</span> <span class="token punctuation">(</span><span class="token string">"rax"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// x86</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>寄存器变量仅仅是指示编译器将变量放置在特定的寄存器中,不意味这在该变量的整个生命周期中该变量都独占该寄存器,该寄存器很可能会被分配为别的变量使用。程序员只可以假设在声明时变量在指定的寄存器中,之后的语句中不能假设该变量仍在该寄存器中,生成的任何指令都可能修改该寄存器的值。</p>
+<p>当 GCC 没有提供将变量分配到特定寄存器中的 constraint 时，我们将该变量声明为局部寄存器变量，并将其分配到特定的寄存器中。然后紧贴着写内联汇编，分配到寄存器中就使用r constrait。也就是说，这个拓展用法仅仅用于弥补在 riscv 内联汇编无法指定特定寄存器的缺陷。</p>
+<p>如下所示：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">inline</span> <span class="token keyword">void</span> <span class="token function">putcharSbi</span><span class="token punctuation">(</span><span class="token keyword">char</span> c<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">register</span> u64 a0 <span class="token keyword">asm</span><span class="token punctuation">(</span><span class="token string">"a0"</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span>u64<span class="token punctuation">)</span>c<span class="token punctuation">;</span>
+    <span class="token keyword">register</span> u64 a7 <span class="token keyword">asm</span><span class="token punctuation">(</span><span class="token string">"a7"</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span>u64<span class="token punctuation">)</span>SBI_CONSOLE_PUTCHAR<span class="token punctuation">;</span>
+    <span class="token keyword">asm</span> <span class="token keyword">volatile</span><span class="token punctuation">(</span><span class="token string">"ecall"</span>
+                 <span class="token operator">:</span> <span class="token string">"+r"</span><span class="token punctuation">(</span>a0<span class="token punctuation">)</span>
+                 <span class="token operator">:</span> <span class="token string">"r"</span><span class="token punctuation">(</span>a7<span class="token punctuation">)</span>
+                 <span class="token operator">:</span> <span class="token string">"memory"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-3-asm-的大小"><a href="#4-3-asm-的大小" class="headerlink" title="4.3 asm 的大小"></a>4.3 asm 的大小</h3><p>为了生成正确的代码，一些平台需要 GCC 跟踪每一条指令的长度。但是内联汇编由编译器完成，指令的长度却只有汇编器知道。</p>
+<p>GCC 使用比较保守的办法，假设每一条指令的长度都是该平台支持的最长指令长度。asm 块中所有语句分割符(如 <code>;</code> 等)和换行符都作为指令结束的标准。</p>
+<p>通常，这种办法都是正确的，但在遇到汇编器的伪指令和宏时可能会产生意想不到的错误。汇编器的伪指令和宏最终会被汇编器转换为多条指令，但是在编译器眼中它只是一条指令，从而产生误判，生成错误的代码。</p>
+<p>因此，尽量不要在 asm 块中使用伪指令和宏。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S7%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S7课上</a>
+              <a href="/tags/%E8%AF%AD%E8%A8%80%E9%AB%98%E9%98%B6/" rel="tag"><i class="fa fa-tag"></i> 语言高阶</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/4e4120d6/" rel="prev" title="科研可餍-会议概论">
+      <i class="fa fa-chevron-left"></i> 科研可餍-会议概论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/ab21fab4/" rel="next" title="海边拾贝-Nephele">
+      海边拾贝-Nephele <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86"><span class="nav-text">一、编译原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AF%AD%E6%B3%95"><span class="nav-text">二、语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-text">2.1 整体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-asm"><span class="nav-text">2.2 asm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-AsmQualifiers"><span class="nav-text">2.3 AsmQualifiers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-AssemblerTemplate"><span class="nav-text">2.4 AssemblerTemplate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-InputOperands"><span class="nav-text">2.5 InputOperands</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-OutputOperands"><span class="nav-text">2.6 OutputOperands</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-Clobbers"><span class="nav-text">2.7 Clobbers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-goto"><span class="nav-text">2.8 goto</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B9%B3%E5%8F%B0%E7%89%B9%E5%BC%82%E6%80%A7"><span class="nav-text">三、平台特异性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-X86"><span class="nav-text">3.1 X86</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-RISC-V"><span class="nav-text">3.2 RISC-V</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%9D%82%E9%A1%B9"><span class="nav-text">四、杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%9F%BA%E6%9C%AC%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96"><span class="nav-text">4.1 基本内联汇编</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%86%85%E8%81%94%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-text">4.2 内联寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-asm-%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-text">4.3 asm 的大小</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

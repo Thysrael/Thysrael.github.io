@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数理统计倒逼了概率论的发展。 分布只是分布，他是更为抽象的东西，他描述的是一种连续数据的组织形式，无论这组数据是采集到的样本，还是理论推导的概率。虽然它们已经是某种客观现象的抽象了，但它们依然都是分布的应用。 或许不只是分布，比如说期望，方差或者其他矩，都是更高维度的抽象。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率统计-随机变量及其分布">
+<meta property="og:url" content="https://thysrael.github.io/posts/11bdf502/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="数理统计倒逼了概率论的发展。 分布只是分布，他是更为抽象的东西，他描述的是一种连续数据的组织形式，无论这组数据是采集到的样本，还是理论推导的概率。虽然它们已经是某种客观现象的抽象了，但它们依然都是分布的应用。 或许不只是分布，比如说期望，方差或者其他矩，都是更高维度的抽象。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/11bdf502/分位点.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/11bdf502/image-20220103191314910.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/11bdf502/image-20220103191346220.png">
+<meta property="article:published_time" content="2021-12-18T07:55:26.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.891Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S3复习">
+<meta property="article:tag" content="概率统计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/11bdf502/分位点.jpg">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/11bdf502/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>概率统计-随机变量及其分布 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/11bdf502/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          概率统计-随机变量及其分布
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-18 15:55:26" itemprop="dateCreated datePublished" datetime="2021-12-18T15:55:26+08:00">2021-12-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">概率统计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>数理统计倒逼了概率论的发展。</p>
+<p>分布只是分布，他是更为抽象的东西，他描述的是一种<strong>连续数据的组织形式</strong>，无论这组数据是采集到的<strong>样本</strong>，还是理论推导的<strong>概率</strong>。虽然它们已经是某种客观现象的<strong>抽象</strong>了，但它们依然都是分布的<strong>应用</strong>。</p>
+<p>或许不只是分布，比如说期望，方差或者其他矩，都是更高维度的抽象。</p>
+<span id="more"></span>
+<h2 id="一、随机变量"><a href="#一、随机变量" class="headerlink" title="一、随机变量"></a>一、随机变量</h2><p>随机变量其实不是一个变量，而是一个函数，它实现的是将事件映射到一个实数的功能。至于为什么要这么干，据说是为了方便研究，那么为啥会方便研究，其实并不显然。在生活中，我们说“硬币朝上的概率是二分之一”，也不见得不简洁了。哪怕是复杂一点的问题，比如说贝叶斯公式或者高考概率题，我们完全可以不用随机变量进行描述。那么到底是什么因素，导致随机变量的出现。我觉得不在数学的简洁性，而在客观世界。</p>
+<p>我们知道，我们讨论的概率论体系，离开了中心极限定理，它并不会土崩瓦解，而是会变成一个与现实客观完全失去联系的东西，但是它依然是自洽的（因为是一个严密的数学公理体系），只是没有办法指导生产了。当我们思考为什么概率论体系中有这么一个不优雅的东西，其实原因就在于客观世界的真实，客观世界我们去做取样，那么反馈上来的必定是一组数据，为了研究这组数据，我们需要观察他的<strong>统计特征</strong>，而观察统计特征，本来就需要更加直观，把事件去做映射就很自然了，不然没法作图啊。所以我们发现有钟型曲线，然后反思为啥会出现钟型曲线，倒推出了正态分布。捎带手，倒逼出了随机变量。</p>
+<p>注意：定义在样本空间上的函数，不一定是随机变量，随机变量的本质是<strong>定义在样本空间上的一个可测函数</strong>。</p>
+<p>此外，我们还需要熟悉一下随机变量的表示方法</p>
+<script type="math/tex; mode=display">
+\{X \leq x\} = \{e\in S \mid X(e) \leq x\}</script><p>这个东西其实右侧才是比较好理解的形式，它指明了这是一个事件，组成这个事件的要求就是满足最右侧的关系，注意，这里的 $x$ 跟随机变量一毛钱关系也没有，它只是代表一个实数参数，那么为啥要用x这个容易混淆的量，而不用a，b这种参数模样的字母，是因为x在后面的分布函数中会变成变量，所以在这里就先行一步了。而左侧是比较常见的写法，在左侧，就更容易把大小写的x弄混淆了。</p>
+<hr>
+<h2 id="二、连续型随机变量"><a href="#二、连续型随机变量" class="headerlink" title="二、连续型随机变量"></a>二、连续型随机变量</h2><h3 id="2-1-分布函数"><a href="#2-1-分布函数" class="headerlink" title="2.1 分布函数"></a>2.1 分布函数</h3><p>正如上面指出的，上面的式子是一个事件，是事件就会有概率，所以有如下定义</p>
+<script type="math/tex; mode=display">
+F(x) = P(\{X \leq x\})</script><p>那么称 $F(x)$ 为随机变量 $X$ 的<strong>概率分布函数</strong>，简称分布函数。记为 $X \sim F(x)$ 。其实还有一种写法，叫做 $F_X(x)$ 这种写法（依然要注意大小写的区别）在后面的<strong>随机向量</strong>中较为常见。</p>
+<p>其实这个函数并不直观，因为它并不能很好的体现各种分布（分布分布，起码也应该分开啊，但是他却是讨论一个集合的概率，还是一个很不负责的集合），我们直观有印象的正态分布曲线，泊松分布律，其实跟这个完全没关系，在实际生活中去取样，也没有见过把低于某一值的东西分为一堆，然后通过调整这个值来作图的奇葩方法。它更像是一种<strong>计算方法</strong>，如果只有离散型的随机变量，那么估计他就不会出现了，但是因为有连续型变量，我们失去了对基本事件的完全控制，所以引入了<strong>概率分布函数和概率密度函数</strong>来补全描述。极端地说，离散型随机变量完全没有要考虑分布函数的意义！</p>
+<p>他的计算意义却是还是不错的，有</p>
+<script type="math/tex; mode=display">
+P(\{a\leq X \leq b\}) = F(a) - F(b)</script><p>可以看到，确实十分简洁。</p>
+<h3 id="2-2-密度函数"><a href="#2-2-密度函数" class="headerlink" title="2.2 密度函数"></a>2.2 密度函数</h3><script type="math/tex; mode=display">
+F(x) = \int^x_{\infty}f(t)dt</script><p>那么称 $f(x)$ 为随机变量 $X$ 的概率密度函数。</p>
+<p>概率密度函数才是我们认识的主体。我们每次作图，都是做密度函数的图。</p>
+<p>但是需要注意的是，密度函数的图的坐标轴数值没有意义，因为受限于曲线下区域积分必须为1，如果扩大横坐标轴，那么纵轴就会相应减少，而扩大坐标轴不过就是改变了一个随机变量的一个映射方式，并没有客观世界的差别，所以可见其纵轴没有意义，同理，横轴也没有意义。我们研究概率密度函数的<strong>焦点，不在数值，而在形状</strong>。密度函数前面的任何常量，都不需要考虑，因为并不会影响形状，我们对密度函数分类的依据，也不是常数，而是形状。</p>
+<p>但是形状也不严谨，因为<strong>形状</strong>只是用来帮助我们区分不同分布的，而对于同一种分布，方差大的正态分布与方差小的正态分布又是有区别的，那么区分它们的就是<strong>参数</strong>。</p>
+<p>哦，对于特殊的分布函数，除了要关注名字以外，还要关注他对应的符号。说道这里，符号，比如说均匀分布的 $U$ 或者正态分布的 $\phi$ ，对应的到底是密度函数，还是分布函数。我觉得都不是，名字真正对应的，是分布，而分布函数，密度函数，都是我们观测这种分布的一个角度。</p>
+<h3 id="2-3-常见分布"><a href="#2-3-常见分布" class="headerlink" title="2.3 常见分布"></a>2.3 常见分布</h3><h4 id="2-3-1-均匀分布"><a href="#2-3-1-均匀分布" class="headerlink" title="2.3.1 均匀分布"></a>2.3.1 均匀分布</h4><script type="math/tex; mode=display">
+f(x) = 
+\begin{cases}
+\frac {1}{b- a},\quad a\leq x\leq b\\
+0,\quad else
+\end{cases}
+\\
+F(x) = 
+\begin{cases}
+0,\quad x < a\\
+\frac{x - a}{b - a},\quad a\leq x < b\\
+1, \quad else
+\end{cases}</script><p>大概只需要记住均匀分布的符号是 $U$ 。</p>
+<h4 id="2-3-2-负指数分布"><a href="#2-3-2-负指数分布" class="headerlink" title="2.3.2 负指数分布"></a>2.3.2 负指数分布</h4><script type="math/tex; mode=display">
+f(x) = 
+\begin{cases}
+\lambda e^{-\lambda x},\quad x\geq0\\
+0,\quad x < 0
+\end{cases}
+\\
+F(x) = 
+\begin{cases}
+0,\quad x < 0\\
+1 - e^{-\lambda x}, \quad x \geq 0
+\end{cases}</script><p>可以看到指数一定是个负数，因为正数不收敛。说服从指数分布，需要强调是服从参数为 $\lambda$ 的指数分布。</p>
+<p>负指数分布在排队论中用的比较多，参数 $\lambda $ 表示事件发生的强度，其倒数可以表示两个事件发生的平均时间间隔。</p>
+<p>其期望为 $\frac{1}{\lambda}$ ，其方差为 $\frac{1}{\lambda^2}$ 。也不奇怪，$\lambda $ 越大，强度越大，衰减的越快，那么期望就越小，方差就越小。</p>
+<h4 id="2-3-3-正态分布"><a href="#2-3-3-正态分布" class="headerlink" title="2.3.3 正态分布"></a>2.3.3 正态分布</h4><script type="math/tex; mode=display">
+f(x) = \frac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(x - \mu)^2}{2\sigma^2}}</script><p>称 $X$ 服从参数为 $\mu,\sigma$ 的正态分布，记作 $X \sim N(\mu,\sigma^2)$ 。</p>
+<p>之所以没有分布函数，是因为正态分布的分布函数，是没有办法用初等函数表示的，所以我们在实际应用的时候，采取标准化以后查表的方法（再次体现分布函数的计算职能）。分布函数大概应该长得和逻辑斯谛方程挺像的。</p>
+<p>正态分布式二项分布n趋于无穷大的时候借由斯特林公式推导出来的，有趣的是，泊松分布也是二项分布n趋于无穷大的时候推导出来的，也不知道二者有何联系。</p>
+<h4 id="2-3-4-标准正态分布"><a href="#2-3-4-标准正态分布" class="headerlink" title="2.3.4 标准正态分布"></a>2.3.4 标准正态分布</h4><p>参数 $\mu = 0, \sigma = 1$ 的正态分布即 $N(0,1)$ ，被称为标准正态分布，其概率密度函数和分布函数分别用 $\phi(x)$ 和 $\Phi(x)$ 表示。</p>
+<p>之所以提出标准正态分布的概念，是因为为了方便实践，虽然正态分布函数没法用初等函数表示，但是我们可以通过查表来获得标准正态分布某个区间的概率。只要我们能在正态分布函数和标准正态分布函数中建立某种联系，我们就可以获得所有正态分布的区间概率。</p>
+<p>而且确实两者的关系很优雅：</p>
+<script type="math/tex; mode=display">
+F(x) = \Phi(\frac{x - \mu}{\sigma})</script><p>但是光有了这个联系，还是不足以辅助查表，因为在实际的应用中，我们的场景一般是“我要查查沿对称轴分布的区间多宽的时候概率是某个值 $\alpha$” ，所以我们还需要<strong>分位点</strong>（分割位置点）的概念。</p>
+<script type="math/tex; mode=display">
+\Phi(z_{\alpha}) = \alpha\\z_{\alpha} = \Phi^{-1}(\alpha)</script><p><img src="/posts/11bdf502/分位点.jpg" alt=""></p>
+<p>可以看到，还是很直观的。但是我们一般采用的是沿对称轴对称的区间，所以下面这个关系同样不能忽略。</p>
+<script type="math/tex; mode=display">
+P(\mid X \mid \leq Z_{1 - \frac{\alpha}{2}}) = 1 - \alpha</script><p>当然，如果说最本质的话，是对任何关于y轴对称分布的分布，其分位点都有如下性质</p>
+<script type="math/tex; mode=display">
+z_{1-\alpha} = -z_{\alpha}</script><hr>
+<h2 id="三、离散型随机变量分布律"><a href="#三、离散型随机变量分布律" class="headerlink" title="三、离散型随机变量分布律"></a>三、离散型随机变量分布律</h2><p>离散型随机变量的分布律是与连续性随机变量的概率密度函数平等的，如果要求一个非基本事件的概率，用到的也是多个离散事件累加的方法，与区间积分相似。</p>
+<h3 id="3-1-两点分布"><a href="#3-1-两点分布" class="headerlink" title="3.1 两点分布"></a>3.1 两点分布</h3><p>就是0-1分布，称 $X$ 服从参数为p的两点分布，尽管服从两点分布的试验又叫做伯努利试验，但是它的代号不是 $B$ ，$B$ 是二项分布的符号。</p>
+<h3 id="3-2-泊松分布"><a href="#3-2-泊松分布" class="headerlink" title="3.2 泊松分布"></a>3.2 泊松分布</h3><script type="math/tex; mode=display">
+P(X = k) = e^{-\lambda}\frac{\lambda^k}{k!}</script><p>其中参数 $\lambda$ 大于0，而且不一定小于1，记作 $X \sim \Pi(\lambda)$ 。</p>
+<h4 id="3-2-1-理解"><a href="#3-2-1-理解" class="headerlink" title="3.2.1 理解"></a>3.2.1 理解</h4><p>虽然这个式子看着挺花哨的，我们逐个分析。</p>
+<p>之所以会有 $e^{-\lambda}$ 结构，是因为要求 $\sum^{\infty}_{k=0}\frac{\lambda^k}{k!}$ 级数是$e^{\lambda}$ 。所以需要前面乘个常数来使其为1。所以这项就不用管了。</p>
+<p>后面的分式，这个式子当k趋于无穷的时候，一定等于0（阶乘的增长速度要比）。当k小于 $\lambda$ 的时候，$\frac{\lambda^k}{k!}$ 会随着k的增大而增大，当k大于 $\lambda$ 的时候，会随着k的增大而减小，所以峰值出现在k与 $\lambda$ 接近的时候。</p>
+<p>尽管泊松分布经过分析以后变得好理解了，但是其求和依然是个问题（只有求和我们才知道概率），这个问题不仅泊松分布有，其他离散分布律只要n一大，也同样会面临这个问题。对于泊松分布，我们可以查表。</p>
+<h4 id="3-2-2-性质"><a href="#3-2-2-性质" class="headerlink" title="3.2.2 性质"></a>3.2.2 性质</h4><p>泊松分布的<strong>期望</strong>和<strong>方差</strong>均是 $\lambda$ 。</p>
+<p>如果 $X\sim\Pi(\lambda_1),\space Y\sim\Pi(\lambda_2)$。则有 $Z = X + Y \sim \Pi(\lambda_1+\lambda_2)$。这个性质的证明利用的是离散形式的卷积，有</p>
+<script type="math/tex; mode=display">
+P\{X+Y = k\} = \sum^{k}_{i = 0}P\{X = i\}\cdot P\{Y = k - i\} \\=
+\sum^{k}_{i = 0} \frac{e^{-\lambda_1}\lambda_1^i}{i!}\cdot\frac{e^{-\lambda_2}\lambda_2^{k-i}}{(k-i)!} 
+= \frac{e^{-(\lambda_1+\lambda_2)}}{k!} \sum^{k}_{i = 0}\frac{k!}{i!(k-i)!} \lambda_1^i\lambda_2^{k-i}\\=
+\frac{e^{-(\lambda_1+\lambda_2)}}{k!}(\lambda_1+\lambda_2)^k</script><h3 id="3-3-超几何分布"><a href="#3-3-超几何分布" class="headerlink" title="3.3 超几何分布"></a>3.3 超几何分布</h3><p>主要是其与二项分布有区别，采用的是<strong>不放回</strong>的抽样方式</p>
+<script type="math/tex; mode=display">
+P(x = k)=\frac{C_N^kC^{n-k}_M}{C^n_{M+N}}</script><h3 id="3-4-二项分布"><a href="#3-4-二项分布" class="headerlink" title="3.4 二项分布"></a>3.4 二项分布</h3><script type="math/tex; mode=display">
+P(x = k)=C_n^k p^k (1-p)^{n-k}</script><p>称 $X$ 服从参数为n，p 的二项分布，记作 $X \sim B(n,p)$</p>
+<p>二项分布在n很大（大于10），p很小（小于0.1）的时候，可以近似为泊松分布，其中 $\lambda = np$ 。然后就可以借助泊松分布表进行查询了。跟标准化正态分布的处理有异曲同工之处。</p>
+<h3 id="3-5-一个离散型变量分布函数的易错点"><a href="#3-5-一个离散型变量分布函数的易错点" class="headerlink" title="3.5 一个离散型变量分布函数的易错点"></a>3.5 一个离散型变量分布函数的易错点</h3><p>尽管我们在离散型变量中更关注分布律，但是确实他也是有分布函数的，对于这种分布函数，有一个比较重要的点就是它<strong>不连续</strong>，如果不连续的话，那么有的时候就会造成意想不到的错误（尤其是<strong>我们习惯了连续型以后，对端点问题就考察会疏忽一些</strong>），比如</p>
+<p><img src="/posts/11bdf502/image-20220103191314910.png" alt="image-20220103191314910"></p>
+<p>此题答案是A，没有C，反例如下</p>
+<p><img src="/posts/11bdf502/image-20220103191346220.png" alt="image-20220103191346220"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S3%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S3复习</a>
+              <a href="/tags/%E6%A6%82%E7%8E%87%E7%BB%9F%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> 概率统计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/posts/b5d53dbf/" rel="next" title="概率统计-概率论公理体系">
+      概率统计-概率论公理体系 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F"><span class="nav-text">一、随机变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%BF%9E%E7%BB%AD%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F"><span class="nav-text">二、连续型随机变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0"><span class="nav-text">2.1 分布函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="nav-text">2.2 密度函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%B8%B8%E8%A7%81%E5%88%86%E5%B8%83"><span class="nav-text">2.3 常见分布</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E5%9D%87%E5%8C%80%E5%88%86%E5%B8%83"><span class="nav-text">2.3.1 均匀分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E8%B4%9F%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83"><span class="nav-text">2.3.2 负指数分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="nav-text">2.3.3 正态分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-%E6%A0%87%E5%87%86%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="nav-text">2.3.4 标准正态分布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%A6%BB%E6%95%A3%E5%9E%8B%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E5%88%86%E5%B8%83%E5%BE%8B"><span class="nav-text">三、离散型随机变量分布律</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%B8%A4%E7%82%B9%E5%88%86%E5%B8%83"><span class="nav-text">3.1 两点分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%B3%8A%E6%9D%BE%E5%88%86%E5%B8%83"><span class="nav-text">3.2 泊松分布</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E7%90%86%E8%A7%A3"><span class="nav-text">3.2.1 理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E6%80%A7%E8%B4%A8"><span class="nav-text">3.2.2 性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E8%B6%85%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83"><span class="nav-text">3.3 超几何分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E4%BA%8C%E9%A1%B9%E5%88%86%E5%B8%83"><span class="nav-text">3.4 二项分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E4%B8%80%E4%B8%AA%E7%A6%BB%E6%95%A3%E5%9E%8B%E5%8F%98%E9%87%8F%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0%E7%9A%84%E6%98%93%E9%94%99%E7%82%B9"><span class="nav-text">3.5 一个离散型变量分布函数的易错点</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

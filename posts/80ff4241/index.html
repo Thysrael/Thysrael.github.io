@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、圆周率计算方法综述1.1 几何1.1.1 线弧近似法由古希腊数学家阿基米德提出，它采用多边形周长的方法来近似圆周长，以此求出圆周率。 对于圆的周长计算，有圆周长公式如下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="补充数学-圆周率计算">
+<meta property="og:url" content="https://thysrael.github.io/posts/80ff4241/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、圆周率计算方法综述1.1 几何1.1.1 线弧近似法由古希腊数学家阿基米德提出，它采用多边形周长的方法来近似圆周长，以此求出圆周率。 对于圆的周长计算，有圆周长公式如下">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/80ff4241/image-20231119211203871.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/80ff4241/800px-Cutcircle.svg.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/80ff4241/800px-Liuhui_Pi_Inequality.svg.png">
+<meta property="article:published_time" content="2023-12-21T12:16:07.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.021Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S7课上">
+<meta property="article:tag" content="补充数学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/80ff4241/image-20231119211203871.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/80ff4241/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>补充数学-圆周率计算 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/80ff4241/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          补充数学-圆周率计算
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-12-21 20:16:07" itemprop="dateCreated datePublished" datetime="2023-12-21T20:16:07+08:00">2023-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%A1%A5%E5%85%85%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">补充数学</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、圆周率计算方法综述"><a href="#一、圆周率计算方法综述" class="headerlink" title="一、圆周率计算方法综述"></a>一、圆周率计算方法综述</h2><h3 id="1-1-几何"><a href="#1-1-几何" class="headerlink" title="1.1 几何"></a>1.1 几何</h3><h4 id="1-1-1-线弧近似法"><a href="#1-1-1-线弧近似法" class="headerlink" title="1.1.1 线弧近似法"></a>1.1.1 线弧近似法</h4><p>由古希腊数学家阿基米德提出，它采用多边形周长的方法来近似圆周长，以此求出圆周率。</p>
+<p>对于圆的周长计算，有圆周长公式如下</p>
+<script type="math/tex; mode=display">
+C = 2 \pi r</script><p>对于圆的内接或者外接正 $n$ 边形，有</p>
+<script type="math/tex; mode=display">
+C_{n} = n \times l_n</script><p>其中 $l_n$ 是内接正多边形的边长，对于正 $n$ 边形，它的 $l_n$ 可以通过递推关系获得，如下所示：</p>
+<script type="math/tex; mode=display">
+l_{2n} = \sqrt{(r - \sqrt{r^2 - \frac{l_n^2}{4}})^2 + \frac{l_n^2}{4}}</script><p>其中 $r$ 是内接正多边形的中心到其角的距离，也可以直观理解为半径。</p>
+<p>有了这两个公式，就可以用夹逼原理来计算 $\pi$ 了，如下所示</p>
+<script type="math/tex; mode=display">
+C_{内接 n 变形} \lt C_n \lt C_{外接 n 变形} \\
+\frac{n}{2r} l_{内接 n 变形} < \pi < \frac{n}{2r} l_{外接 n 变形}</script><p>$n$ 的取值越大，那么就可以使 $\pi$ 更加精确。其示意图如下</p>
+<p><img src="/posts/80ff4241/image-20231119211203871.png" alt="image-20231119211203871"></p>
+<p>阿基米德算到了当 $n = 96$ 的情况，但是因为每次迭代都需要进行开根计算，所以基本上迭代 4 次就是极限了（从 $n = 6$ 开始迭代，每次 $n$ 翻倍）。这不只是阿基米德的极限，也是人类手算的极限。</p>
+<h4 id="1-1-2-割圆术"><a href="#1-1-2-割圆术" class="headerlink" title="1.1.2 割圆术"></a>1.1.2 割圆术</h4><p>由三国时期魏国数学家刘徽发明，他也采用了用内接正多边形去逼近圆的思想，不过采用了面积逼近而不是和阿基米德一样的周长逼近，这是因为面积逼近可以使用他发明的“圆周率捷法”。</p>
+<p>在面积计算上，对于正 $2n$ 边形，有如下公式：</p>
+<script type="math/tex; mode=display">
+S_{2n} = \frac{nl_n}{2} \times r</script><p>这个公式的得出依靠刘徽发明的“出入相补术”（也就是图形的裁剪拼接法），将正 $2n$ 边形切成 n 份，然后重新拼接成一个矩形：</p>
+<p><img src="/posts/80ff4241/800px-Cutcircle.svg.png" alt="undefined"></p>
+<p>有了上面这个公式再结合 $l_{2n}$ 的递推公式，就可以进行类似的递推。</p>
+<p>此外刘徽还进步于它只利用了圆的内接正多边形，而没有使用圆的外接正多边形，在计算量上面减少了一半。</p>
+<p>刘徽实现这一点，是通过一种新的图形拼接构造，如下所示：</p>
+<p><img src="/posts/80ff4241/800px-Liuhui_Pi_Inequality.svg.png" alt="undefined"></p>
+<p>可以看到圆的面积是小于红色、绿色（$S_{2n} - S_n$）和黄色（$S_n$）的和，而红色的面积是等于绿色面积的（拼接可得），所以有</p>
+<script type="math/tex; mode=display">
+S \lt S_{red} + S_{green} + S_{yellow} = 2S_{2n} - S_n</script><p>所以夹逼方式变成了</p>
+<script type="math/tex; mode=display">
+S_n \lt S \lt 2S_{2n} - S_n</script><p>在这种方式下，刘徽计算到了 192 边形（可能是累了），但是刘徽并没有停止，他发现 $S<em>{2n} - Sn$ 呈现了某种不严谨的等比数列特征，公比的倒数（我们又称其为 $D_n = \frac{S</em>{2n} - S<em>{n}}{S</em>{4n} - S_{2n}}$）约为 3.95 ，所以最终利用这个性质，刘徽计算到了 $n = 1536$ 。这个方法被称为捷法。</p>
+<h4 id="1-1-3-辍术"><a href="#1-1-3-辍术" class="headerlink" title="1.1.3 辍术"></a>1.1.3 辍术</h4><p>祖冲之进一步发展了割圆术，分别得出来 $\pi$ 的两个分数强近似，即<strong>约率</strong> $\frac{22}{7}$ 和<strong>密率</strong> $\frac{355}{113}$ ，其中密率又被称为祖率，他约等于计算到了正 12288 边形。</p>
+<p>至于戳术是如何计算的，非常不幸已经失传了，人们猜测是改进了刘徽的捷法，在捷法中，涉及<strong>松弛因子</strong> $\omega$ ，这个参数和 $D_n$ 有如下联系</p>
+<script type="math/tex; mode=display">
+\omega = \frac{1}{D_{n} - 1}</script><p> $\omega$ 是加速计算的关键，因为割圆术夹逼的方式可以变形为</p>
+<script type="math/tex; mode=display">
+S \approx S_{2n} + \omega(S_{2n} - S_n)</script><p>所以选择一个好的 $\omega$ （也就是猜测 $D_n$ 的值）就成了计算的关键，如前所述，刘徽觉得 $D_n$ 约为 3.95，但是祖冲之通过继续计算（猜测内容），发现 $D_n$ 更可能约为 4（其实如果用代数法去看，就是 $D_n$ 最终收敛到哪个数的问题，但是因为极限概念没有建立，所以人们只能进行经验猜测），$D_n = 4$ 的计算效果更好，只需要割到 192 边形，就可以获得祖率。</p>
+<p>总结一下，捷法其实只有一个能力，就是在夹逼法之外，进一步估算 $\pi$ 的值，这是因为夹逼法只能给出 $\pi$ 的一个上下限，而捷法通过发现 $D_n$ 有收敛的倾向，因此可以进一步估算 $\pi$ ，这种估算会使得精度更进一步。</p>
+<h3 id="1-2-代数"><a href="#1-2-代数" class="headerlink" title="1.2 代数"></a>1.2 代数</h3><h4 id="1-2-1-韦达无穷乘积法"><a href="#1-2-1-韦达无穷乘积法" class="headerlink" title="1.2.1 韦达无穷乘积法"></a>1.2.1 韦达无穷乘积法</h4><p>韦达最早提出了计算圆周率的分析表达式，也就是第一次摆脱了图形计算的方式，只是很可惜这是一种无限乘积形式，而不是无穷级数形式。其表达式如下：</p>
+<script type="math/tex; mode=display">
+\frac{2}{\pi} = \frac{\sqrt{2}}{2} \cdot \frac{\sqrt{2 + \sqrt{2}}}{2} \cdot 
+\frac{\sqrt{2 + \sqrt{2 + \sqrt{2}}}}{2} \cdots</script><p>韦达发现这个公式是基于这样的思路：</p>
+<script type="math/tex; mode=display">
+\frac{2}{\pi} = \frac{S_4}{S} = \frac{S_4}{S_8} \cdot \frac{S_8}{S_{16}} \cdot \frac{S_{16}}{S_{32}} \cdots \frac{S_{\infin}}{S_{\infin}}</script><p>恰巧又发现了如下规律</p>
+<script type="math/tex; mode=display">
+\frac{S_4}{S_8} = \frac{\sqrt{2}}{2} \\
+\frac{S_8}{S_{16}} = \frac{\sqrt{2 + \sqrt{2}}}{2} \\
+\frac{S_{16}}{S_{32}} = \frac{\sqrt{2 + \sqrt{2 + \sqrt{2}}}}{2}</script><p>所以就得出了如下方法，因为当 $n$ 增大的时候，后面的比值会逐渐接近 1 ，所以可以只计算前面几项来获得一个近似的 $\pi$ 值。</p>
+<h4 id="1-2-2-欧拉公式"><a href="#1-2-2-欧拉公式" class="headerlink" title="1.2.2 欧拉公式"></a>1.2.2 欧拉公式</h4><p>欧拉用 Fourier 级数给出了公式</p>
+<script type="math/tex; mode=display">
+\frac{\pi^2}{6} = \sum^{\infin}_{n = 1} \frac{1}{n^2}</script><h4 id="1-2-3-梅钦公式"><a href="#1-2-3-梅钦公式" class="headerlink" title="1.2.3 梅钦公式"></a>1.2.3 梅钦公式</h4><p>由 Leibinitz 基于反正切展开给出的圆周率计算式得到 Machin 公式来计算。</p>
+<p>根据三角合差公式可知，若 $-\frac{\pi}{2} &lt; \arctan\frac{a_1}{b_1} + \arctan\frac{a_1}{b_1} &lt; \frac{\pi}{2}$ ，那么有</p>
+<script type="math/tex; mode=display">
+\arctan\frac{a_1}{b_1} + \arctan\frac{a_1}{b_1} = \arctan\frac{a_1b_2 + a_2b_1}{b_1b_2 - a_1a_2}</script><p>反复应用这一公式就可以得到 Machin 公式，推导如下：</p>
+<script type="math/tex; mode=display">
+2\arctan\frac{1}{5} = \arctan\frac{1}{5} + \arctan\frac{1}{5} = \arctan\frac{5}{12} \\
+4\arctan\frac{1}{5} = \arctan\frac{5}{12}+ \arctan\frac{5}{12} = \arctan\frac{120}{119} \\
+4\arctan\frac{1}{5} -\frac{\pi}{4} = 4\arctan{\frac{1}{5}} + \arctan{\frac{-1}{1}} = \arctan\frac{1}{239}</script><p>最终可推得：</p>
+<script type="math/tex; mode=display">
+\pi = 16\arctan\frac{1}{5} - 4\arctan\frac{1}{239}</script><p>结合反正切函数的泰勒展开计算 $\arctan\frac{1}{5}$ 和 $\arctan\frac{1}{239}$</p>
+<script type="math/tex; mode=display">
+\arctan x = \sum^{+\infin}_{n = 0} \frac{(-1)^n}{2n + 1}x^{2n + 1} = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \dots</script><p>就可以计算圆周率。</p>
+<h4 id="1-2-4-拉马努金公式"><a href="#1-2-4-拉马努金公式" class="headerlink" title="1.2.4 拉马努金公式"></a>1.2.4 拉马努金公式</h4><p>拉马努金公式如下所示：</p>
+<script type="math/tex; mode=display">
+\frac{1}{\pi} = \frac{2\sqrt{2}}{9801} \sum^{\infin}_{k = 0} \frac{(4k)!(1103 + 26390k)}{(k!)^4396^{4k}}</script><p>只能说这个公式很拉马努金，不过这个公式精确度惊人，收敛的十分快速。</p>
+<h4 id="1-2-5-其他"><a href="#1-2-5-其他" class="headerlink" title="1.2.5 其他"></a>1.2.5 其他</h4><p>可以采用数值积分的方式计算圆周率。可以用 Simpson 方法。</p>
+<p>此外还可以用随机模拟计算方法，也就是蒙特卡洛法。</p>
+<h3 id="1-3-对比"><a href="#1-3-对比" class="headerlink" title="1.3 对比"></a>1.3 对比</h3><p>在几何法上，思路比较单一和直观，都是采用内外接正多边形去近似圆的思路，而代数法上，思路则更加多样化，韦达公式依然可以看出几何法的影子，但是欧拉公式或者积分法都是依赖于微积分这个高等数学的大杀器存在，至于拉马努金公式，我个人觉得更像是数学发展到了更加进步的水平后，数学天才这种环境下，其敏锐的数学直觉可以捕获更加多的灵感。数值积分法和蒙特卡洛法都需要计算机技术的支持，那就是另一种美感了。</p>
+<p>从计算准确度上来说，几何法因为依赖于勾股定理或者三角，表达式中出现了大量的根号，而开根计算计算量大，很难进行多次迭代后达到一个很高精度，刘徽和祖冲之的优势不在于计算能力惊人，而是在几何法之后捕捉到了一些计算的代数特征，使得计算精度得到了提升。代数法因为有微积分和无穷级数等数学工具的发展，可以进一步分析 $\pi$ 的代数特征，将计算难度大的开根操作转成操作难度小的加减乘除操作，使得迭代次数提升，进而提高了计算准确度。</p>
+<h2 id="二、刘徽法与内插法比较"><a href="#二、刘徽法与内插法比较" class="headerlink" title="二、刘徽法与内插法比较"></a>二、刘徽法与内插法比较</h2><p>用单位圆计算圆周率所涉及递推数学计算公式如下所示：</p>
+<p> $l_n$ 是内接正多边形的边长，对于正 $n$ 边形，它的 $l_n$ 可以通过递推关系获得，如下所示：</p>
+<script type="math/tex; mode=display">
+l_{2n} = \sqrt{(r - \sqrt{r^2 - \frac{l_n^2}{4}})^2 + \frac{l_n^2}{4}}</script><p>我们可以用 python 中的 lambda 表达式描述这个递推方程</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">next_l <span class="token operator">=</span> <span class="token keyword">lambda</span> l <span class="token punctuation">:</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">2</span> <span class="token operator">+</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在面积计算上，对于正 $2n$ 边形，有如下公式：</p>
+<script type="math/tex; mode=display">
+S_{2n} = \frac{nl_n}{2} \times r</script><p>依然采用 lambda 进行描述</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">S_liuhui <span class="token operator">=</span> <span class="token keyword">lambda</span> n<span class="token punctuation">,</span> l <span class="token punctuation">:</span> n <span class="token operator">*</span> l <span class="token operator">/</span> <span class="token number">2.0</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>对于内插法，需要记录 $S<em>n$ 和 $S</em>{2n}$ 进而求得 $S<em>{2n} + \omega(S</em>{2n} - S_n)$</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">calculate_interpolation</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> omega<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    Sn <span class="token operator">=</span> calculate_Sn<span class="token punctuation">(</span>n <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+    S2n <span class="token operator">=</span> calculate_Sn<span class="token punctuation">(</span>n<span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> S2n <span class="token operator">+</span> omega <span class="token operator">*</span> <span class="token punctuation">(</span>S2n <span class="token operator">-</span> Sn<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>根据这两个公式，从 $n = 6$ 开始进行递推，即可进行计算。</p>
+<p>用 python 实现程序如下：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> math
+
+<span class="token comment"># ln 的递推方程</span>
+next_l <span class="token operator">=</span> <span class="token keyword">lambda</span> l <span class="token punctuation">:</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">2</span> <span class="token operator">+</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span>
+<span class="token comment"># 刘徽的面积算法</span>
+S_liuhui <span class="token operator">=</span> <span class="token keyword">lambda</span> n<span class="token punctuation">,</span> l <span class="token punctuation">:</span> n <span class="token operator">*</span> l <span class="token operator">/</span> <span class="token number">2.0</span>
+
+<span class="token keyword">def</span> <span class="token function">calculate_Sn</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> S<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    用于计算用于拟合圆的 2n 正多边形的面积
+
+    Args:
+        n(int): 正多边形的边数，取值为 6 * 2^k
+        S(lambda): 正多边形计算公式
+
+    Returns:
+        面积
+    """</span>
+    times <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>log<span class="token punctuation">(</span>n <span class="token operator">/</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 计算迭代次数</span>
+    ln <span class="token operator">=</span> <span class="token number">1.0</span> <span class="token comment"># 设置初值，有 l6 == 1</span>
+
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>times<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        ln <span class="token operator">=</span> next_l<span class="token punctuation">(</span>ln<span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> S<span class="token punctuation">(</span>n<span class="token punctuation">,</span> ln<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">calculate_direct</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> calculate_Sn<span class="token punctuation">(</span>n<span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">calculate_interpolation</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> omega<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    Sn <span class="token operator">=</span> calculate_Sn<span class="token punctuation">(</span>n <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+    S2n <span class="token operator">=</span> calculate_Sn<span class="token punctuation">(</span>n<span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> S2n <span class="token operator">+</span> omega <span class="token operator">*</span> <span class="token punctuation">(</span>S2n <span class="token operator">-</span> Sn<span class="token punctuation">)</span>
+
+pi_error <span class="token operator">=</span> <span class="token keyword">lambda</span> pi<span class="token punctuation">:</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>pi <span class="token operator">-</span> math<span class="token punctuation">.</span>pi<span class="token punctuation">)</span> <span class="token operator">/</span> math<span class="token punctuation">.</span>pi
+
+direct <span class="token operator">=</span> calculate_direct<span class="token punctuation">(</span><span class="token number">3072</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法直接计算 n == 3072 的结果为：</span><span class="token interpolation"><span class="token punctuation">{</span>direct<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法直接计算 n == 3072 的误差为：</span><span class="token interpolation"><span class="token punctuation">{</span>pi_error<span class="token punctuation">(</span>direct<span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+inter <span class="token operator">=</span> calculate_interpolation<span class="token punctuation">(</span><span class="token number">3072</span><span class="token punctuation">,</span> <span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">3.0</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法内插捷法 n == 3072 的结果为：</span><span class="token interpolation"><span class="token punctuation">{</span>inter<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法内插捷法 n == 3072 的误差为：</span><span class="token interpolation"><span class="token punctuation">{</span>pi_error<span class="token punctuation">(</span>inter<span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出如下</p>
+<pre class="line-numbers language-none"><code class="language-none">刘徽法直接计算 n == 3072 的结果为：3.1415921059992717
+刘徽法直接计算 n == 3072 的误差为：1.7430347653306335e-07
+刘徽法内插捷法 n == 3072 的结果为：3.141592653589679
+刘徽法内插捷法 n == 3072 的误差为：3.63290023616055e-14<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到在迭代次数相同的情况下，内插法更占优势。</p>
+<p>在夹逼法之外，进一步估算 $\pi$ 的值，这是因为夹逼法只能给出 $\pi$ 的一个上下限，而插值法通过发现 $D_n$ 有收敛的倾向，因此可以进一步估算 $\pi$ ，这种估算会使得精度更进一步。</p>
+<h2 id="三、辛普森数值积分法"><a href="#三、辛普森数值积分法" class="headerlink" title="三、辛普森数值积分法"></a>三、辛普森数值积分法</h2><p>现在考虑用抛物线代替直线，由辛普森数值积分可知，此时抛物线的面积为</p>
+<script type="math/tex; mode=display">
+S_{抛物线} = \frac{2l_n}{3}(r -\sqrt{r^2 - \frac{l_n^2}{4}})</script><p>此时计算出来的近似面积用 python lambda 表示为</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">S_simpson <span class="token operator">=</span> <span class="token keyword">lambda</span> n<span class="token punctuation">,</span> l <span class="token punctuation">:</span> n <span class="token operator">*</span> <span class="token punctuation">(</span>l <span class="token operator">/</span> <span class="token number">3.0</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">2.0</span> <span class="token operator">-</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>因为只是 $S_{2n}$ 的计算公式变换， $l_n$ 递推方程没有受到影响，所以稍微修改上面的程序即可运行，修改后程序如下：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> math
+
+<span class="token comment"># ln 的递推方程</span>
+next_l <span class="token operator">=</span> <span class="token keyword">lambda</span> l <span class="token punctuation">:</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">2</span> <span class="token operator">+</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span>
+<span class="token comment"># 刘徽的面积算法</span>
+S_liuhui <span class="token operator">=</span> <span class="token keyword">lambda</span> n<span class="token punctuation">,</span> l <span class="token punctuation">:</span> n <span class="token operator">*</span> l <span class="token operator">/</span> <span class="token number">2.0</span>
+<span class="token comment"># 用 simpson 抛物线法计算面积</span>
+S_simpson <span class="token operator">=</span> <span class="token keyword">lambda</span> n<span class="token punctuation">,</span> l <span class="token punctuation">:</span> n <span class="token operator">*</span> <span class="token punctuation">(</span>l <span class="token operator">/</span> <span class="token number">3.0</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">2.0</span> <span class="token operator">-</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">-</span> l<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">/</span> <span class="token number">4.0</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">calculate_Sn</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> S<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    用于计算用于拟合圆的 2n 正多边形的面积
+
+    Args:
+        n(int): 正多边形的边数，取值为 6 * 2^k
+        S(lambda): 正多边形计算公式
+
+    Returns:
+        面积
+    """</span>
+    times <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>log<span class="token punctuation">(</span>n <span class="token operator">/</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 计算迭代次数</span>
+    ln <span class="token operator">=</span> <span class="token number">1.0</span> <span class="token comment"># 设置初值，有 l6 == 1</span>
+
+    <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>times<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        ln <span class="token operator">=</span> next_l<span class="token punctuation">(</span>ln<span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> S<span class="token punctuation">(</span>n<span class="token punctuation">,</span> ln<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">calculate_direct</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> calculate_Sn<span class="token punctuation">(</span>n<span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">calculate_interpolation</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> omega<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    Sn <span class="token operator">=</span> calculate_Sn<span class="token punctuation">(</span>n <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+    S2n <span class="token operator">=</span> calculate_Sn<span class="token punctuation">(</span>n<span class="token punctuation">,</span> S_liuhui<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> S2n <span class="token operator">+</span> omega <span class="token operator">*</span> <span class="token punctuation">(</span>S2n <span class="token operator">-</span> Sn<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">calculate_simpson</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> calculate_Sn<span class="token punctuation">(</span>n<span class="token punctuation">,</span> S_simpson<span class="token punctuation">)</span>
+
+pi_error <span class="token operator">=</span> <span class="token keyword">lambda</span> pi<span class="token punctuation">:</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>pi <span class="token operator">-</span> math<span class="token punctuation">.</span>pi<span class="token punctuation">)</span> <span class="token operator">/</span> math<span class="token punctuation">.</span>pi
+
+direct <span class="token operator">=</span> calculate_direct<span class="token punctuation">(</span><span class="token number">3072</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法直接计算 n == 3072 的结果为：</span><span class="token interpolation"><span class="token punctuation">{</span>direct<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法直接计算 n == 3072 的误差为：</span><span class="token interpolation"><span class="token punctuation">{</span>pi_error<span class="token punctuation">(</span>direct<span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+inter <span class="token operator">=</span> calculate_interpolation<span class="token punctuation">(</span><span class="token number">3072</span><span class="token punctuation">,</span> <span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">3.0</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法内插捷法 n == 3072 的结果为：</span><span class="token interpolation"><span class="token punctuation">{</span>inter<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"刘徽法内插捷法 n == 3072 的误差为：</span><span class="token interpolation"><span class="token punctuation">{</span>pi_error<span class="token punctuation">(</span>inter<span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+simpson <span class="token operator">=</span> calculate_simpson<span class="token punctuation">(</span><span class="token number">3072</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"辛普森抛物线法 n == 3072 的结果为：</span><span class="token interpolation"><span class="token punctuation">{</span>simpson<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"辛普森抛物线法 n == 3072 的误差为：</span><span class="token interpolation"><span class="token punctuation">{</span>pi_error<span class="token punctuation">(</span>simpson<span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>程序计算结果如下</p>
+<pre class="line-numbers language-none"><code class="language-none">刘徽法直接计算 n == 3072 的结果为：3.1415921059992717
+刘徽法直接计算 n == 3072 的误差为：1.7430347653306335e-07
+刘徽法内插捷法 n == 3072 的结果为：3.141592653589679
+刘徽法内插捷法 n == 3072 的误差为：3.63290023616055e-14
+辛普森抛物线法 n == 3072 的结果为：3.1415926535896794
+辛普森抛物线法 n == 3072 的误差为：3.618764437576268e-14<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到辛普森法比刘徽直接法的收敛精度有很大的提高，但是只比刘徽内插法同数量级高一些。但是辛普森方法的计算量要远大于刘徽内插法，足以见得刘徽的超高智慧。</p>
+<h2 id="四、梅钦公式"><a href="#四、梅钦公式" class="headerlink" title="四、梅钦公式"></a>四、梅钦公式</h2><p>由 Leibinitz 基于反正切展开给出的圆周率计算式得到 Machin 公式来计算。</p>
+<p>根据三角合差公式可知，若 $-\frac{\pi}{2} &lt; \arctan\frac{a_1}{b_1} + \arctan\frac{a_1}{b_1} &lt; \frac{\pi}{2}$ ，那么有</p>
+<script type="math/tex; mode=display">
+\arctan\frac{a_1}{b_1} + \arctan\frac{a_1}{b_1} = \arctan\frac{a_1b_2 + a_2b_1}{b_1b_2 - a_1a_2}</script><p>反复应用这一公式就可以得到 Machin 公式，推导如下：</p>
+<script type="math/tex; mode=display">
+2\arctan\frac{1}{5} = \arctan\frac{1}{5} + \arctan\frac{1}{5} = \arctan\frac{5}{12} \\
+4\arctan\frac{1}{5} = \arctan\frac{5}{12}+ \arctan\frac{5}{12} = \arctan\frac{120}{119} \\
+4\arctan\frac{1}{5} -\frac{\pi}{4} = 4\arctan{\frac{1}{5}} + \arctan{\frac{-1}{1}} = \arctan\frac{1}{239}</script><p>最终可推得：</p>
+<script type="math/tex; mode=display">
+\pi = 16\arctan\frac{1}{5} - 4\arctan\frac{1}{239}</script><p>我们可以将写为 python，如下所示：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">near <span class="token operator">=</span> <span class="token number">16.0</span> <span class="token operator">*</span> arctan_taylor<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">5.0</span><span class="token punctuation">,</span> times<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">4.0</span> <span class="token operator">*</span> arctan_taylor<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">239.0</span><span class="token punctuation">,</span> times<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>结合反正切函数的泰勒展开计算 $\arctan\frac{1}{5}$ 和 $\arctan\frac{1}{239}$</p>
+<script type="math/tex; mode=display">
+\arctan x = \sum^{+\infin}_{n = 0} \frac{(-1)^n}{2n + 1}x^{2n + 1} = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \dots</script><p>这个泰勒展开需要指定项数 $n$ 和 $x$ 的值，可以用 python 代码如下编程：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">arctan_taylor <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">,</span> n<span class="token punctuation">:</span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">**</span>i <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">*</span> x<span class="token operator">**</span><span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+                            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>为了使得误差低于七位小数，我们需要一个循环去检测是否当前项数可以使得误差符合要求，如果不符合，那么就增大当前项数，代码如下所示：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">while</span> error <span class="token operator">&gt;=</span> <span class="token number">1e-7</span><span class="token punctuation">:</span>
+    near <span class="token operator">=</span> <span class="token number">16.0</span> <span class="token operator">*</span> arctan_taylor<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">5.0</span><span class="token punctuation">,</span> times<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">4.0</span> <span class="token operator">*</span> arctan_taylor<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">239.0</span><span class="token punctuation">,</span> times<span class="token punctuation">)</span>
+    error <span class="token operator">=</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>pi <span class="token operator">-</span> near<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"当求和项数为 </span><span class="token interpolation"><span class="token punctuation">{</span>times<span class="token punctuation">}</span></span><span class="token string"> 时，Pi 的估算值为 </span><span class="token interpolation"><span class="token punctuation">{</span>near<span class="token punctuation">}</span></span><span class="token string"> ，误差为 </span><span class="token interpolation"><span class="token punctuation">{</span>error<span class="token punctuation">}</span></span><span class="token string"> "</span></span><span class="token punctuation">)</span>
+    times <span class="token operator">=</span> times <span class="token operator">+</span> <span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>项目总代码如下</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> math
+
+arctan_taylor <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">,</span> n<span class="token punctuation">:</span> <span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">**</span>i <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">*</span> x<span class="token operator">**</span><span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+                            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+error <span class="token operator">=</span> <span class="token number">1.0</span>
+times <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token keyword">while</span> error <span class="token operator">&gt;=</span> <span class="token number">1e-7</span><span class="token punctuation">:</span>
+    near <span class="token operator">=</span> <span class="token number">16.0</span> <span class="token operator">*</span> arctan_taylor<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">5.0</span><span class="token punctuation">,</span> times<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">4.0</span> <span class="token operator">*</span> arctan_taylor<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">239.0</span><span class="token punctuation">,</span> times<span class="token punctuation">)</span>
+    error <span class="token operator">=</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>pi <span class="token operator">-</span> near<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"当求和项数为 </span><span class="token interpolation"><span class="token punctuation">{</span>times<span class="token punctuation">}</span></span><span class="token string"> 时，Pi 的估算值为 </span><span class="token interpolation"><span class="token punctuation">{</span>near<span class="token punctuation">}</span></span><span class="token string"> ，误差为 </span><span class="token interpolation"><span class="token punctuation">{</span>error<span class="token punctuation">}</span></span><span class="token string"> "</span></span><span class="token punctuation">)</span>
+    times <span class="token operator">=</span> times <span class="token operator">+</span> <span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出如下</p>
+<pre class="line-numbers language-none"><code class="language-none">当求和项数为 1 时，Pi 的估算值为 3.18326359832636 ，误差为 0.04167094473656707 
+当求和项数为 2 时，Pi 的估算值为 3.1405970293260603 ，误差为 0.0009956242637327861 
+当求和项数为 3 时，Pi 的估算值为 3.1416210293250346 ，误差为 2.837573524150372e-05 
+当求和项数为 4 时，Pi 的估算值为 3.1415917721821773 ，误差为 8.814076157825923e-07 
+当求和项数为 5 时，Pi 的估算值为 3.1415926824043994 ，误差为 2.8814606256588604e-08 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到当求和项数为 5 的时候，就可以计算出小数点后七位。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S7%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S7课上</a>
+              <a href="/tags/%E8%A1%A5%E5%85%85%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 补充数学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/374bc41e/" rel="prev" title="CPP 设计-内存管理">
+      <i class="fa fa-chevron-left"></i> CPP 设计-内存管理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/4d93d9f0/" rel="next" title="语言高阶-循环依赖">
+      语言高阶-循环依赖 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9C%86%E5%91%A8%E7%8E%87%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E7%BB%BC%E8%BF%B0"><span class="nav-text">一、圆周率计算方法综述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%87%A0%E4%BD%95"><span class="nav-text">1.1 几何</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-%E7%BA%BF%E5%BC%A7%E8%BF%91%E4%BC%BC%E6%B3%95"><span class="nav-text">1.1.1 线弧近似法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-%E5%89%B2%E5%9C%86%E6%9C%AF"><span class="nav-text">1.1.2 割圆术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-3-%E8%BE%8D%E6%9C%AF"><span class="nav-text">1.1.3 辍术</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E4%BB%A3%E6%95%B0"><span class="nav-text">1.2 代数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-%E9%9F%A6%E8%BE%BE%E6%97%A0%E7%A9%B7%E4%B9%98%E7%A7%AF%E6%B3%95"><span class="nav-text">1.2.1 韦达无穷乘积法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E6%AC%A7%E6%8B%89%E5%85%AC%E5%BC%8F"><span class="nav-text">1.2.2 欧拉公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-%E6%A2%85%E9%92%A6%E5%85%AC%E5%BC%8F"><span class="nav-text">1.2.3 梅钦公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-%E6%8B%89%E9%A9%AC%E5%8A%AA%E9%87%91%E5%85%AC%E5%BC%8F"><span class="nav-text">1.2.4 拉马努金公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-5-%E5%85%B6%E4%BB%96"><span class="nav-text">1.2.5 其他</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AF%B9%E6%AF%94"><span class="nav-text">1.3 对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%98%E5%BE%BD%E6%B3%95%E4%B8%8E%E5%86%85%E6%8F%92%E6%B3%95%E6%AF%94%E8%BE%83"><span class="nav-text">二、刘徽法与内插法比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%95%B0%E5%80%BC%E7%A7%AF%E5%88%86%E6%B3%95"><span class="nav-text">三、辛普森数值积分法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%A2%85%E9%92%A6%E5%85%AC%E5%BC%8F"><span class="nav-text">四、梅钦公式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

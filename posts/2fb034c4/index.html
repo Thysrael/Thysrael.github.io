@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、直观理解1.1 语法分析的目的语法分析是在进行完词法分析后进行的步骤，词法分析会将一个个的字母拆解成不同的符号，这些符号会被组成一个线性的数组交给语法分析部分，语法分析不会会将这个线性的数组重新组织成一个语法树，交给后面的语义分析部分。 至于为什么要组织成一个树形结构？其实也并不是一个必选项，其实本质是这个线性数组可以被语法规则完全的接受。只不过是因为特定的语法规则刚好可以被组织成一个语法树的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译技术-语法理论">
+<meta property="og:url" content="https://thysrael.github.io/posts/2fb034c4/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、直观理解1.1 语法分析的目的语法分析是在进行完词法分析后进行的步骤，词法分析会将一个个的字母拆解成不同的符号，这些符号会被组成一个线性的数组交给语法分析部分，语法分析不会会将这个线性的数组重新组织成一个语法树，交给后面的语义分析部分。 至于为什么要组织成一个树形结构？其实也并不是一个必选项，其实本质是这个线性数组可以被语法规则完全的接受。只不过是因为特定的语法规则刚好可以被组织成一个语法树的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20230209160923676.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116104329690.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116104454079.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116105548980.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116110349286.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116110507990.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116110634029.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116112037159.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221116112811168.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/层次结构.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20221108190515286.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/image-20230210150129057.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/2fb034c4/v2-b83de87c60a17edc7fa2f28e5f60dbd8_r.jpg">
+<meta property="article:published_time" content="2023-02-09T07:20:48.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.000Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S5假期">
+<meta property="article:tag" content="编译技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/2fb034c4/image-20230209160923676.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/2fb034c4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>编译技术-语法理论 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/2fb034c4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译技术-语法理论
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-09 15:20:48" itemprop="dateCreated datePublished" datetime="2023-02-09T15:20:48+08:00">2023-02-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编译技术</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>11 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、直观理解"><a href="#一、直观理解" class="headerlink" title="一、直观理解"></a>一、直观理解</h2><h3 id="1-1-语法分析的目的"><a href="#1-1-语法分析的目的" class="headerlink" title="1.1 语法分析的目的"></a>1.1 语法分析的目的</h3><p>语法分析是在进行完词法分析后进行的步骤，词法分析会将一个个的字母拆解成不同的符号，这些符号会被组成一个线性的数组交给语法分析部分，语法分析不会会将这个线性的数组重新组织成一个语法树，交给后面的语义分析部分。</p>
+<p>至于为什么要组织成一个<strong>树形结构</strong>？其实也并不是一个必选项，其实本质是这个线性数组可以被语法规则完全的接受。只不过是因为特定的语法规则刚好可以被组织成一个语法树的形式（语法树可以看做是语法分析的“历史记录”），而且语法树的结构又被后面的语义分析部分所需要，所以我们才恰好需要这棵语法树。</p>
+<h3 id="1-2-编译中的矛盾"><a href="#1-2-编译中的矛盾" class="headerlink" title="1.2 编译中的矛盾"></a>1.2 编译中的矛盾</h3><h4 id="1-2-1-推导和规约"><a href="#1-2-1-推导和规约" class="headerlink" title="1.2.1 推导和规约"></a>1.2.1 推导和规约</h4><p>推导（<strong>derivation</strong>）和规约（<strong>reducation</strong>）是针对语法规则进行的两个相反方向的过程，如下图所示</p>
+<p><img src="/posts/2fb034c4/image-20230209160923676.png" alt="image-20230209160923676"></p>
+<p>如果结合语法树来看，推导是有一种让语法树“向下遍历”的趋势的（越来越具体），规约是有一种让语法树“向上遍历”的趋势的（越来越抽象）。两者的本质都是依赖于语法规则。</p>
+<p>那么到底我们平时是用哪一种呢？这其实对应了 LL 和 LR 两种语法设计思路，在 LL 中采用的是推导的方式，而在 LR 中采用的是规约的方式。具体的对比需要之后说，这里只是一个铺垫。</p>
+<h4 id="1-2-2-规范规约"><a href="#1-2-2-规范规约" class="headerlink" title="1.2.2 规范规约"></a>1.2.2 规范规约</h4><p>不可否认，无论是规约还是推导，都可以有多种思路的，先推左边的，后推右边的，想怎么推怎么推，想怎么规约就怎么规约。</p>
+<p>在众多的方式中，有一种推导被我们称为了<strong>规范推导</strong>，也就是这样这样的</p>
+<script type="math/tex; mode=display">
+xUy \rightarrow xuy, y \in V_t^*</script><p>在这个推导中，我们进行了这样的 $U \rightarrow u$，这个的最关键的地方是，$y \in V_t^*$ 这个条件，这说明 $U$ 后面的东西都推导完了，才可以推导 $U$ 。更加直观的说，按照这个方法推导，一个句子的最右侧会最先诞生（也就是终结符会从最右侧诞生），然后直到整个句子全部变成终结符。</p>
+<p>这是一个相当反直觉的事情，因为正常人都是从左往右去看一个字符串的，当你尝试推导的时候，一定是从左侧开始尝试，比如说 $FIRST$ 集就是一个看左侧是啥字符来判断推导哪个语法规则的辅助工具，没有人会从后面开始推。所以应该这样理解，这个东西本身就是不自然的，那么为什么一个不自然的东西会被称为“规范”呢？那是因为它是“规范规约”的<strong>逆过程</strong>，而<strong>规范规约</strong>才是真正自然的事情。</p>
+<p>规范规约描述的是这样的过程，当我们进行规约的时候，优先规约当前规约的句柄，也就是<strong>优先规约最左简单短语</strong>。这就是一个很自然的事情，因为我们依然是从左向右读取字符串，所以读一点就规约一点，就是一个十分自然的事情。</p>
+<p>再说得武断一些，“规范”概念的提出，就是为了服务“自底向上”的语法分析方法，也就是建立在<strong>规约</strong>基础上的分析方法。</p>
+<h4 id="1-2-3-句柄"><a href="#1-2-3-句柄" class="headerlink" title="1.2.3 句柄"></a>1.2.3 句柄</h4><p>可以首先解释一下对于“柄（handler）”的概念，这个东西如果直译是“把手”的意思，我对其的理解是，一个复杂的物体，我们没办法直面它，所以只能先用一个它的简单的“把柄”来操控它。这个理解相对于网上常见的“柄是一个东西的代表”增加了“复杂和简单”的概念，同时模糊了“柄和它所指代的物品之间的同质性”，是我比较满意的地方。</p>
+<p>比如说在 C 语言中，有 <code>File Handler</code> 的东西，这是因为实际上我们并没有办法直接操作文件，所以我们只能借由一个文件句柄来操作它。又或者方向盘也可以看做是车的 <code>handler</code>，我们没有办法直接操控车的轮子和引擎，但是我们可以操纵车的方向盘，但是我们并不可以说方向盘是车的代表。</p>
+<p>之所以要强调这个，是因为在语法分析中，句柄相对于句型或者句子（这取决于这个句型是否全是终结符），大致与上面探讨的关系类似，句柄可以“暗示”句型的语法树的部分特征，“指导”部分的规约的进行。</p>
+<p>之所以有这个效果，是因为句柄的定义是“最左简单短语”，“简单”的深层次理解是这样的，它代表了一种“一个语法规则”的应用，因为显然一个语法规则对应着一个高度为 2 的语法子树，这和简单短语的定义有着一定的相似性，换句话说，简单短语限制了规约“必须是一步一步的进行”的这个特点，而“最左”则限制了规约发生的位置。</p>
+<h4 id="1-2-4-LL-和-LR"><a href="#1-2-4-LL-和-LR" class="headerlink" title="1.2.4 LL 和 LR"></a>1.2.4 LL 和 LR</h4><p>教材中这个部分的内容十分的分散，我将其整合起来，希望得到一定好的对比</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>entry</th>
+<th>LL</th>
+<th>LR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基础</td>
+<td>推导（derivation）</td>
+<td>规约（reducation）</td>
+</tr>
+<tr>
+<td>产物</td>
+<td>最左推导</td>
+<td>最左规约（而不是所谓的“规范推导”）</td>
+</tr>
+<tr>
+<td>方向</td>
+<td>自顶向下</td>
+<td>自底向上</td>
+</tr>
+<tr>
+<td>树遍历</td>
+<td>前序遍历</td>
+<td>后序遍历</td>
+</tr>
+<tr>
+<td>动作</td>
+<td>前瞻（Prediction）、匹配（Match）</td>
+<td>移进（Shift）、规约（Reducation）</td>
+</tr>
+<tr>
+<td>前瞻目的</td>
+<td>确定推导的方向</td>
+<td>确定动作是移进还是规约</td>
+</tr>
+<tr>
+<td>典型</td>
+<td>递归下降法、LL(1)</td>
+<td>算符优先法，SLR，LR(1)，LALR</td>
+</tr>
+<tr>
+<td>使用范围</td>
+<td>小</td>
+<td>大</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>关于为啥 LR 的使用范围比同级（也就是前瞻相同的符号个数）的 LL 要强，可能在于他们前瞻的目的是不同的，LL 依赖与前瞻去决定推导方向，这是重中之重，但是 LR 仅仅是用于解决动作的冲突。这可能是由于 LR 的前期预处理工作做得更好，对于语法的分析更加细致导致的。</p>
+<h3 id="1-3-多种概念的直观理解"><a href="#1-3-多种概念的直观理解" class="headerlink" title="1.3 多种概念的直观理解"></a>1.3 多种概念的直观理解</h3><p><strong>每个句型对应一个语法树</strong></p>
+<p><strong>短语的全称：</strong></p>
+<ul>
+<li>属于某个<strong>句型</strong></li>
+<li>相对于<strong>某个非终结符</strong></li>
+</ul>
+<p>当我们找短语的时候，首先先根据句型画出语法树，然后遍历语法树的子树（这个子树包括语法树本身，其实就是遍历非叶子节点）（不遍历叶子节点的原因是叶子节点没有推导过程，而定义中要求最少经过一步推导，所以叶子节点一定不是），非叶子节点的叶子子孙（也就是不必须是子代节点）组成了短语，这个非叶子节点就是“相对于<strong>某个非终结符</strong>”的那个“非终结符”。如果叶子节点都是这个节点的子代，那么就被称为简单短语。</p>
+<p>不过我们一般不强调“相对于<strong>某个非终结符</strong>”这个属性，所以说到短语，直说他是某个句型的短语。</p>
+<p>$E$</p>
+<p><img src="/posts/2fb034c4/image-20221116104329690.png" alt="image-20221116104329690"></p>
+<p>它没有非叶子节点，所以就没有短语，所以啥都没有</p>
+<p>$T$</p>
+<p><img src="/posts/2fb034c4/image-20221116104454079.png" alt="image-20221116104454079"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非叶子节点</th>
+<th>短语</th>
+<th>简单短语</th>
+<th>句柄</th>
+<th>素短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$i$</p>
+<p><img src="/posts/2fb034c4/image-20221116105548980.png" alt="image-20221116105548980"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非叶子节点</th>
+<th>短语</th>
+<th>简单短语</th>
+<th>句柄</th>
+<th>素短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>i</td>
+<td></td>
+<td></td>
+<td>i</td>
+</tr>
+<tr>
+<td>T</td>
+<td>i</td>
+<td></td>
+<td></td>
+<td>i</td>
+</tr>
+<tr>
+<td>F</td>
+<td>i</td>
+<td>i</td>
+<td>i</td>
+<td>i</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$T * F$</p>
+<p><img src="/posts/2fb034c4/image-20221116110349286.png" alt="image-20221116110349286"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非叶子节点</th>
+<th>短语</th>
+<th>简单短语</th>
+<th>句柄</th>
+<th>素短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>T * F</td>
+<td></td>
+<td></td>
+<td>T * F</td>
+</tr>
+<tr>
+<td>T</td>
+<td>T * F</td>
+<td>T * F</td>
+<td>T * F</td>
+<td>T * F</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$F * F$</p>
+<p><img src="/posts/2fb034c4/image-20221116110507990.png" alt="image-20221116110507990"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非叶子节点</th>
+<th>短语</th>
+<th>简单短语</th>
+<th>句柄</th>
+<th>素短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>F * F</td>
+<td></td>
+<td></td>
+<td>F * F</td>
+</tr>
+<tr>
+<td>T1</td>
+<td>F * F</td>
+<td></td>
+<td></td>
+<td>F * F</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$i * F$</p>
+<p><img src="/posts/2fb034c4/image-20221116110634029.png" alt="image-20221116110634029"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非叶子节点</th>
+<th>短语</th>
+<th>简单短语</th>
+<th>句柄</th>
+<th>素短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>i * F</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T1</td>
+<td>i * F</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T2</td>
+<td>i</td>
+<td></td>
+<td></td>
+<td>i</td>
+</tr>
+<tr>
+<td>F2</td>
+<td>i</td>
+<td>i</td>
+<td>i</td>
+<td>i</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$F * i$</p>
+<p><img src="/posts/2fb034c4/image-20221116112037159.png" alt="image-20221116112037159"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非叶子节点</th>
+<th>短语</th>
+<th>简单短语</th>
+<th>句柄</th>
+<th>素短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>F * i</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T1</td>
+<td>F * i</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T2</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td></td>
+</tr>
+<tr>
+<td>F1</td>
+<td>i</td>
+<td>i</td>
+<td></td>
+<td>i</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$F + F + F$</p>
+<p><img src="/posts/2fb034c4/image-20221116112811168.png" alt="image-20221116112811168"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非叶子节点</th>
+<th>短语</th>
+<th>简单短语</th>
+<th>句柄</th>
+<th>素短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1</td>
+<td>F + F + F</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>E2</td>
+<td>F + F</td>
+<td></td>
+<td></td>
+<td>F + F</td>
+</tr>
+<tr>
+<td>T1</td>
+<td>F</td>
+<td>F</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>E3</td>
+<td>F</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T2</td>
+<td>F</td>
+<td>F</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T3</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>不得不说，这种列表法是有一定问题的，对于短语和简单短语，确实是可以每个非叶子节点都立即得出的，而对于句柄，其实是在得到所有的简单短语后，挑选最左面的简单短语获得的；而对于素短语，则是得到所有的短语后，从中挑出含有非终结符的最短短语。</p>
+</blockquote>
+<h3 id="1-4-语法范围"><a href="#1-4-语法范围" class="headerlink" title="1.4 语法范围"></a>1.4 语法范围</h3><p>如图所示</p>
+<p><img src="/posts/2fb034c4/层次结构.jpg" alt=""></p>
+<p>有如下规律：</p>
+<ul>
+<li>LR 一定包括同级的 LL</li>
+<li>LR(1) 的功能最强，适应范围最广，但是实现的代价最大</li>
+<li>LALR(1) 可用于大多数程序设计语言，用途最广</li>
+<li>SLR 最容易实现，但是功能最弱</li>
+</ul>
+<hr>
+<h2 id="二、自顶向下方法"><a href="#二、自顶向下方法" class="headerlink" title="二、自顶向下方法"></a>二、自顶向下方法</h2><h3 id="2-1-递归下降法"><a href="#2-1-递归下降法" class="headerlink" title="2.1 递归下降法"></a>2.1 递归下降法</h3><h4 id="2-1-1-直观理解"><a href="#2-1-1-直观理解" class="headerlink" title="2.1.1 直观理解"></a>2.1.1 直观理解</h4><p>递归下降法当然很好理解了，但是递归的简洁性掩盖了递归下降法和 LL(1) 的相似性，其实它俩基本上就是一个方法，递归下降法也可以用栈来实现，栈里的内容刚好是 LL(1) 中栈的内容，越靠近栈底，层次越高。</p>
+<p>当然递归下降法还是和 LL(1) 有所区别的，因为 LL(1) 相当于仅仅是利用 $FIRST$ 集合，如果是 LL(2) 则是利用了 $FIRST, SECOND$ 集合，而递归下降在使用的时候则没有那么多的讲究，是一个相当工程化的方法。</p>
+<p>斗胆猜测，LL 方法正式递归下降法的形式化表述。</p>
+<h4 id="2-1-2-消除左递归"><a href="#2-1-2-消除左递归" class="headerlink" title="2.1.2 消除左递归"></a>2.1.2 消除左递归</h4><p>首先是对于直接左递归的消除，核心在于这条规则，如果有左递归式呈现这种样式</p>
+<script type="math/tex; mode=display">
+A ::= a \space|\space b \space|\space c \space|\space d \space|\space ... \space|\space Au</script><p>那么消除左递归后为</p>
+<script type="math/tex; mode=display">
+A ::= (a \space|\space b \space|\space c \space|\space d \space|\space ...)\{u\}</script><p>这个转换分为两个部分 $(a \space|\space b \space|\space c \space|\space d \space|\space …)$ 和 $Au$ 。第一个只重复一遍，后面的重复 0 到多次。这个在教材中被称为“规则2”，那么规则 1 是什么？是为了应付这种情况</p>
+<script type="math/tex; mode=display">
+A ::= a \space|\space b \space|\space c \space|\space d \space|\space ... \space|\space Au \space|\space Av</script><p>规则 1 为提取公因式，说的是这种现象</p>
+<script type="math/tex; mode=display">
+Au \space|\space Av = A(u \space | \space v)</script><p>只要利用这个规则，就可以将上面的式子整理成了</p>
+<script type="math/tex; mode=display">
+A ::= a \space|\space b \space|\space c \space|\space d \space|\space ... \space|\space A(u \space|\space v)</script><p>然后利用规则 2，消除左递归</p>
+<script type="math/tex; mode=display">
+A ::= (a \space|\space b \space|\space c \space|\space d \space|\space ...)\{u \space | \space v\}</script><p>对于间接左递归，需要先对语法规则进行排序，然后依次进行消除左递归和带入。</p>
+<p>排序的规则是<strong>后面规则的右部中包含前面规则左部的非终结符</strong>。其本质是让通过带入法，让间接左递归转变成直接左递归。这个规则的本质是一种“有序”的“一遍带入”。</p>
+<p>以题为例：</p>
+<script type="math/tex; mode=display">
+S ::= Qc \space|\space c \\
+Q ::= Rb \space|\space b \\
+R ::= Sa \space|\space a</script><p>需要注意，排序的时候只需要保证紧挨着的俩有上面的性质即可。所以非常容易，排序后</p>
+<script type="math/tex; mode=display">
+S ::= Qc \space|\space c \\
+R ::= Sa \space|\space a \\
+Q ::= Rb \space|\space b \\</script><p>对于 $S ::= Qc \space | \space c$ 没有直接左递归，所以带入下一个式子，得到 $R : Qca \space|\space ca \space|\space a$ </p>
+<p>依然没有直接左递归，所以带入下一个式子，得到 $Q ::= Qcab \space|\space cab \space|\space ab \space | \space b$，消除左递归后得到 $Q ::= (cab \space|\space ab \space | \space b){cab}$ 。</p>
+<p>此外，如果是考虑压缩文法，其实把 $S$ 放在最下面比较好，因为 $S$ 是起始符号。之所以这样操作，是因为为了说明这种排序规则的结果并不具有唯一性，多种结果都满足这种排序规则，就好像在二元一次方程组中，用 $x$ 可以表示 $y$ ，也可以用 $y$ 表示 $x$。</p>
+<h3 id="2-2-LL-1-分析法"><a href="#2-2-LL-1-分析法" class="headerlink" title="2.2 LL(1) 分析法"></a>2.2 LL(1) 分析法</h3><h4 id="2-2-1-FIRST-和-FOLLOW"><a href="#2-2-1-FIRST-和-FOLLOW" class="headerlink" title="2.2.1 FIRST 和 FOLLOW"></a>2.2.1 FIRST 和 FOLLOW</h4><p>正如前所述，LL 分析法需要利用前瞻（Prediction）去判断到底要匹配哪一条推导规则。这正是 $FIRST$ 和 $FOLLOW$ 的由来。$FIRST$ 很好理解，对于一个</p>
+<script type="math/tex; mode=display">
+A \rightarrow \alpha</script><p>我们确定使用这个规则去推导，是因为我们前瞻的结果刚好属于 $FIRST(\alpha)$ ，不然我们就不用这条规则去推导了，但是有一条规则是例外的，就是当</p>
+<script type="math/tex; mode=display">
+\alpha = \varepsilon</script><p>的时候，那么回到 $FIRST(\alpha)$ 为空，但是有的时候确实需要应用这条规则，其情况就是当遇到 $FOLLOW(\alpha)$ 中元素的时候，就需要应用这条 $A \rightarrow \varepsilon$ 的规则。</p>
+<h4 id="2-2-2-FIRST-的求解"><a href="#2-2-2-FIRST-的求解" class="headerlink" title="2.2.2 FIRST 的求解"></a>2.2.2 FIRST 的求解</h4><p>$FIRST$ 的求解有如下规则：</p>
+<ul>
+<li>当 $A \rightarrow t\beta$ 其中 $t$ 是终结符的时候，可以推断出 $t \in FIRST(A)$ 。这个就是 $FIRST$ 最符合常理的定义，即第一个终结符。</li>
+<li>当 $A \rightarrow \varepsilon$ 时，可以推断出 $\varepsilon \in FIRST(A)$，这个其实并不会在填写 LL 表的时候用到，但是一但出现 $\varepsilon \in FIRST(A)$ ，这就会导致一些特殊的性质（在第三条）</li>
+<li>当 $A \rightarrow B_1B_2\dots B_n$，令 $i = 1$，进行如下循环：<ul>
+<li>当 $\varepsilon \notin FIRST(B_i)$ 时，将 $FIRST(B_i)$ 加入 $FIRST(A)$ 中，终止循环。</li>
+<li>当 $\varepsilon \in FIRST(B_i)$ 时，将 $FIRST(B_i)$ 加入 $FIRST(A)$ 中，让 $i++$ 。</li>
+</ul>
+</li>
+</ul>
+<p>第三条规则演示了右部有非终结符的时候的做法，其实很容易理解，就是一个个的去看，如果存在 $\varepsilon$ 那么就需要再往后看一个非终结符（严谨的说是字符串）。</p>
+<p>因为第三条规则的存在，导致一个非终结符的 $FIRST$ 是可能依赖于其他非终结符（要看具体的语法规则），而语法规则会导致一种图结构，没有办法只进行一遍遍历就完成所有的 $FIRST$ 的求解（起码是非常困难的），所以这是一个<strong>不动点算法</strong>。</p>
+<p>有文法 $G[S]$</p>
+<script type="math/tex; mode=display">
+S \rightarrow aABbcd | \varepsilon \\
+A \rightarrow ASd | \varepsilon \\
+B \rightarrow Sah | eC | \varepsilon \\
+C \rightarrow Sf | Cg | \varepsilon</script><p>最后的求解是</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非终结符</th>
+<th>$FIRST$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$S$</td>
+<td>$a, \epsilon$</td>
+</tr>
+<tr>
+<td>$A$</td>
+<td>$\epsilon, a, d$</td>
+</tr>
+<tr>
+<td>$B$</td>
+<td>$a, \epsilon, e$</td>
+</tr>
+<tr>
+<td>$C$</td>
+<td>$a, \epsilon, g, f$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这里有两个在做题中容易出现的错误，一个是在</p>
+<script type="math/tex; mode=display">
+A \rightarrow ASd | \varepsilon</script><p>中，$\varepsilon \in FIRST(A)$ ，所以将 $FIRST(S)$ 加入 $FIRST(A)$ 中，但是却忘记考虑 $\varepsilon \in FIRST(S)$  这件事情，导致没有将 $d$ 加入 $FIRST(A)$ 中，这是由于对于规则 3 的把握不熟练造成的。</p>
+<p>另一个是对于这种</p>
+<script type="math/tex; mode=display">
+A \rightarrow ASd</script><p>左递归形式，其实就是如果被递归的 $FIRST$ 集中没有 $\varepsilon$ ，那么就不用考虑了，如果有的话，那么就考虑下面的，没有什么过于稀奇的（依然是有一些稀奇的）。</p>
+<h4 id="2-2-3-FOLLOW-的求解"><a href="#2-2-3-FOLLOW-的求解" class="headerlink" title="2.2.3 FOLLOW 的求解"></a>2.2.3 FOLLOW 的求解</h4><p><img src="/posts/2fb034c4/image-20221108190515286.png" alt="image-20221108190515286"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>非终结符</th>
+<th>$FIRST$</th>
+<th>$FOLLOW$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$S$</td>
+<td>$a, \epsilon$</td>
+<td>$d, a, f, #$</td>
+</tr>
+<tr>
+<td>$A$</td>
+<td>$a, d, \epsilon$</td>
+<td>$a, e, b, d$</td>
+</tr>
+<tr>
+<td>$B$</td>
+<td>$a, e, \epsilon$</td>
+<td>$b$</td>
+</tr>
+<tr>
+<td>$C$</td>
+<td>$a, \epsilon, g, f$</td>
+<td>$g, b$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="2-2-4-LL-1-表的构建"><a href="#2-2-4-LL-1-表的构建" class="headerlink" title="2.2.4 LL(1) 表的构建"></a>2.2.4 LL(1) 表的构建</h4><p>LL(1)  表是一个二维表，这个表的每一列的列首都是一个终结符或者是 # ，每一行的行首都是一个非终结符，我们的目的是利用 first 和 follow 填写这个二维表。填写的方式如下：</p>
+<p>遍历每一条语法规则 $A \rightarrow \alpha$，如果有：</p>
+<ul>
+<li>对 $FIRST(\alpha)$ 中的每一个终结符 $t$，置 $(A, t)$ 为 $A \rightarrow \alpha$ 。</li>
+<li>对 $\varepsilon \in FIRST(\alpha)$ ，则对 $FOLLOW(\alpha)$ 中的每个终结符 $t$ ，置 $(A, t)$ 为 $A \rightarrow \varepsilon$ 。</li>
+</ul>
+<hr>
+<h2 id="三、自底向上方法"><a href="#三、自底向上方法" class="headerlink" title="三、自底向上方法"></a>三、自底向上方法</h2><h3 id="3-1-算符优先分析法"><a href="#3-1-算符优先分析法" class="headerlink" title="3.1 算符优先分析法"></a>3.1 算符优先分析法</h3><h4 id="3-1-1-基础知识"><a href="#3-1-1-基础知识" class="headerlink" title="3.1.1 基础知识"></a>3.1.1 基础知识</h4><p>这里细致讨论一下算法优先算法的意义，还是以这个简单的表达式文法举例</p>
+<script type="math/tex; mode=display">
+E::= E + T \space\space|\space\space T \\
+ E::= T * F \space\space|\space\space F \\
+ F::= (E) \space\space|\space\space i</script><p>对于 i + i <em> i 这种东西，我们希望先算 i </em> i （也就是先规约它），然后再规约 i * T 之类的。</p>
+<p>那么最直观的办法就是加括号，只要将其变成 $((i) + ((i)*(i)))$ ，规约顺序就一目了然了。</p>
+<p>所以为了构造这种括号，我们发明了算法优先分析法，通过终结符的优先级，构造出这种括号，就像这样</p>
+<p>$&lt;<i> + &lt;<i>*<i>&gt;$ 其中的 $&lt;, &gt;$ 符号就是根据终结符的优先级表生成的。</i></i></i></p>
+<p>为了构造这种优先级顺序，我们需要考察规约的优先级，而规约的优先级，本质上是语法导出的，而语法中优先级的判断，其实是判断语法产生式的某种“深度”，比如说 <em> 法优先级高于 + 法，是因为先推出 +，后推出 </em>。</p>
+<p>EqExp -&gt; RelExp -&gt; AddExp -&gt; MulExp -&gt; UnaryExp -&gt; PrimaryExp</p>
+<p>这就导致 <code>==, !=</code> 的优先级最低，而 <code>!, -</code> 的优先级最高。</p>
+<p>然后介绍一下各种定义：</p>
+<ul>
+<li>算符文法（Operator Grammer，OG）：文法中没有 $U::=…VW…$ 的规则，就被称为算符文法，这个的意思是说，非终结符间一定由终结符连接，就好像 $A + B * C$ 一样</li>
+<li>算符优先关系（Operator Priority）：<ul>
+<li><code>a == b</code> 当且仅当有 $U::=\dots ab \dots$ 或者 $U::= \dots aVb \dots$ 。这个很好理解，比如说 $A + B - C$ ，那么加减法就是相等的，$((A + B) * C)$ 两个 $($ 的优先级就是相等的。</li>
+<li><code>a &lt; b</code> 当且仅当有 $U::= \dots aW \dots$ 且 $W \Rightarrow b \dots, W \Rightarrow Vb\dots $  。这个同样好理解，说白了就是 $+A*B$ 或者 $+-A$ ，显然 $+$ 的优先级要低于乘法和负号。</li>
+<li><code>a &gt; b</code> 当且仅当有 $U::=\dots Wb \dots$ 且 $W \Rightarrow \dots a, W \Rightarrow \dots aV$ 。和上面相同理解 </li>
+<li>此外，最重要的一点，这里的比较关系并没有可逆性，也就是说，即使有 <code>a &lt; b</code> 也不一定有 <code>b &gt; a</code> 所以 ab 的关系需要考量两次。</li>
+</ul>
+</li>
+<li>算符优先文法（Operator Priority Grammer，OPG），任意两个终结符之间，在 $=, &lt;, &gt;$ 间只有至多一种关系成立，则成为算法优先文法。说白了就是和表达式很像的文法，各个子部件的优先级是稳定的。</li>
+</ul>
+<p>我们有了算符优先关系，就可以进行算符优先分析了。至于怎么构造，其实是一个很浅显的方法，首先构造两个集合：</p>
+<ul>
+<li>FIRSTVT</li>
+<li>LASTVT</li>
+</ul>
+<p>定义繁多，就不敲了，这两个集合都是相对于某个非终结符而言的，说白了，都是这个非终结符中的运算符，比如说 Exp 中就有 ${+, -, \times, \div, !}$ ，而 item 里只有 ${\times, \div, !}$ 。有了这些，如果某个终结符和非终结符平级，那么就说明它的优先级是比里面的元素低的。</p>
+<p>如果再说的详细一些，FIRSTVT 指的是当前非终结符可以推出的第一个终结符，比如说对于 AddExp，可以由 i + i 推出 +，也可以由 i <em> i + 1 推出 </em>，还可以由 (i + i) 推出 (，而LASTVT 则是指由当前非终结符可以推出的最后一个非终结符，比如说由 i + i - i 推出 -，由  i - i / i 推出 /，这一类的操作。</p>
+<p>至于算法，又是一个不动点问题，虽然用栈包装了一下，但是依然很难。可以考虑先把同级的写出来，然后在拓展（注意是逆向拓展），比如说对于</p>
+<p>$AddExp -&gt; MulExp -&gt; PrimaryExp$ </p>
+<p>可以有</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>第一次</th>
+<th>第二次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AddExp</td>
+<td>+, -</td>
+<td>+, -, *, /, !</td>
+</tr>
+<tr>
+<td>MulExp</td>
+<td>*, /</td>
+<td>*, /, !</td>
+</tr>
+<tr>
+<td>PrimaryExp</td>
+<td>!</td>
+<td>!</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>最后总结一下</p>
+<ul>
+<li>首先求 FIRSTTK 和 LASTTK，求解的方法可以列表，因为要迭代，不要列表的话，可能不方便，注意这里要把所有的 FISRT 写在一起，LAST 写在一起</li>
+<li>然后根据语法规则开始填表（这个表是一个行首为终结符，列首也为终结符的二维表）：<ul>
+<li>首先扫描同级的，把 = 写好，注意，对于 $(Exp)$ 这种东西，只有 $( = )$ ，没有 $) = ($</li>
+<li>然后扫描发现这样 $+ E$ 这种结构，然后让 $+ &lt; FIRSTTK(E)$，此时应该是在 + <strong>这一行</strong>填写</li>
+<li>然后扫描发现这样 $E+$ 这种结构，然后让 $LASTRK(E) &gt; +$ ，此时应该在 + <strong>这一列</strong>填写</li>
+<li>对于 # 符号，可以将其视为最大的大括号，让 # &lt; $FIRST(S)$ 和 $LAST(S)$ &gt; # 即可。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-1-2-例题"><a href="#3-1-2-例题" class="headerlink" title="3.1.2 例题"></a>3.1.2 例题</h4><p>用算法优先分析法做题本身很简单，但是如果想要快速的做题，大概可以从两点优化：</p>
+<ul>
+<li>改变填写表格的顺序</li>
+<li>对于比较典型的表达式，不用查表即可给出优先关系</li>
+</ul>
+<p>对于第一点，表头应当是“步骤，符号栈，输入字符串，优先关系，动作”。因为只有符号栈和输入字符串确定了，优先关系比较的是符号栈的栈顶和输入字符串的头部元素，当优先关系确定后，才可以确定具体要进行的动作，而当动作确定后，才可以确定下一行的符号栈和输入字符串。</p>
+<p>对于第二点，其实只要牢记，当 &gt; 出现的时候，就需要规约了，然后用意识辅助判断即可</p>
+<p>以 $i * i + i$ 为例</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>符号栈</th>
+<th>输入串</th>
+<th>优先关系</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>#</td>
+<td>i * i + i #</td>
+<td># &lt; i</td>
+<td>移进</td>
+</tr>
+<tr>
+<td>2</td>
+<td># i</td>
+<td>* i + i #</td>
+<td>i &gt; *</td>
+<td>规约</td>
+</tr>
+<tr>
+<td>3</td>
+<td># E</td>
+<td>* i + i #</td>
+<td># &lt; *</td>
+<td>移进</td>
+</tr>
+<tr>
+<td>4</td>
+<td># E *</td>
+<td>i + i #</td>
+<td>* &lt; i</td>
+<td>移进</td>
+</tr>
+<tr>
+<td>5</td>
+<td># E * i</td>
+<td>+ i #</td>
+<td>i &gt; +</td>
+<td>规约</td>
+</tr>
+<tr>
+<td>6</td>
+<td># E * E</td>
+<td>+ i #</td>
+<td>* &gt; +</td>
+<td>规约</td>
+</tr>
+<tr>
+<td>7</td>
+<td># E</td>
+<td>+ i #</td>
+<td># &lt; +</td>
+<td>移进</td>
+</tr>
+<tr>
+<td>8</td>
+<td># E +</td>
+<td>i #</td>
+<td>+ &lt; i</td>
+<td>移进</td>
+</tr>
+<tr>
+<td>9</td>
+<td># E + i</td>
+<td>#</td>
+<td>i &gt; #</td>
+<td>规约</td>
+</tr>
+<tr>
+<td>10</td>
+<td># E + E</td>
+<td>#</td>
+<td>+ &gt; #</td>
+<td>规约</td>
+</tr>
+<tr>
+<td>11</td>
+<td># E</td>
+<td>#</td>
+<td></td>
+<td>接受</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="3-1-3-素短语与规约"><a href="#3-1-3-素短语与规约" class="headerlink" title="3.1.3 素短语与规约"></a>3.1.3 素短语与规约</h4><p>首先声明，素短语的概念和实际的解题并没有关系，素短语的提出是为了在理论上更好的解释算符优先分析法。</p>
+<p>我们是这样描述的，在算符优先分析法中，每次规约的都是<strong>最左素短语</strong>。</p>
+<p><strong>素短语</strong>和<strong>简单短语</strong>有一定的相似性，比如说<strong>素短语</strong>强调了一定的<strong>最小性</strong>，素短语内部是不可以嵌套素短语的，这就使得素短语是一个“较小”的短语，同时素短语也要求必须含有至少一个终结符，这是其特性。</p>
+<p>在与 LR 的对比中，可以发现，因为素短语并不一定是简单短语，所以规约是<strong>有可能是利用了多个语法规则的</strong>，比如说下面的语法树，按照算符优先分析，应当如此递归</p>
+<p><img src="/posts/2fb034c4/image-20230210150129057.png" alt="image-20230210150129057"></p>
+<p>会发现在第二次递归的时候直接递归了两步，这是一个十分神奇而且我觉得其实是不严谨的地方。在某种意义上说，这意味着我们并没有按照语法规则去递归建树，我们将语法规则翻译成算符优先表之后，就彻底抛弃了原来的语法规则。</p>
+<h3 id="3-2-SLR"><a href="#3-2-SLR" class="headerlink" title="3.2 SLR"></a>3.2 SLR</h3><h4 id="3-2-1-活前缀和下推自动机"><a href="#3-2-1-活前缀和下推自动机" class="headerlink" title="3.2.1 活前缀和下推自动机"></a>3.2.1 活前缀和下推自动机</h4><p>活前缀指的是在一个句型中，不包括“句柄之后的符号”的其他部分组成的前缀。</p>
+<p>那么活前缀代表着什么？LR 有两个基本动作“移进”和“规约”，如果一个活前缀不包括句柄，那么它就可以通过不断的移进操作增加它的长度，直到包括了句柄为止，而当一个活前缀包括句柄时，就可以通过规约操作改变活前缀，然后继续重复“移进-规约”的循环。这个过程似乎是可以用一个 DFA 来描述的，因为 DFA 会有一种记录自己状态的感觉，当前状态到起始状态的连线就是当前的活前缀。</p>
+<p>然后我们来考虑一下正则语法是怎样和 DFA 联系在一起的呢，对于左线性正则来说，每一步都是规约，所以只需要一直规约到起始符即可，而对于右线性正则来说，每一步都是推导，所以只要一直移入到终止符即可。但是对于更加常见的二型文法来说，“移进-规约”是一个循环，也就是说，在发生移进的时候，可以进行类似于“一步一步走”的操作，但是在发生规约的时候，会导致之前的活前缀发生大量变化（不只是减少，还有改变），这就导致在状态图上可能需要后退，甚至跳转到某一个不太相关的状态。也就是说，DFA 那种“<strong>只记录当前状态</strong>“ 的思路是没有办法支持二型文法的。</p>
+<p>为了解决这个问题，我们提出了<strong>下推自动机</strong>，相比于 DFA 只记录当前状态的特性，下推自动机拥有一个栈结构，在进行状态转移的同时，也会进行压栈或者弹栈操作，同时，栈顶的元素也会参与状态转移的决策。相比于 DFA，下推自动机拥有了记忆功能，所以功能更为强大。在 LR 分析中，栈中会有状态和符号，但是仔细观察就可以得知，符号是并不参与 LR 分析流程的，他们的存在只是为了让语法分析的结果更加的漂亮（将符号移到一个新开的栈中也是可以的），所以栈里最本质的东西就是状态，换句话说，LR 的下推自动机唯一强于 DFA 就是他用栈结构存储了状态，方便他进行“历史状态的撤销和修改”。</p>
+<p>那么如果用下推自动机的角度考虑算符优先分析法，可以发现基本上一个算符就代表了一种状态，但是如果要具体解释，就显得有些牵强，所以并不在此胡诌了。</p>
+<h4 id="3-2-2-不同的-LR"><a href="#3-2-2-不同的-LR" class="headerlink" title="3.2.2 不同的 LR"></a>3.2.2 不同的 LR</h4><blockquote>
+<p>​    那时，我在想，为什么会发明这么多的分析算法？ 我为什么不递归下降一把梭解决所有问题呢？ 而当我学习了LR后，才发现这些算法其实是一脉相承，每一个都是针对上一个的痛点作出改进而诞生:</p>
+<ul>
+<li>SLR 使用 <strong>follow 集</strong>来减少LR(0)的规约/移入冲突问题</li>
+<li>LR 通过<strong>展望符（搜索符）</strong>预测来解决 Follow 集预测不准确的问题</li>
+<li>而 LR 又存在将状态划分得过细，导致状态数过多的问题，因此又诞生了 LALR，该算法剪除了 LR 中相同性质的状态，缩减了状态数,但是又带来了延迟报错的问题.……</li>
+</ul>
+</blockquote>
+<p>现在我们尝试用一个例子来解释一下 LR 面对的问题（其本质是规约和规约的冲突，规约和移入的冲突）</p>
+<p><img src="/posts/2fb034c4/v2-b83de87c60a17edc7fa2f28e5f60dbd8_r.jpg" alt="img"></p>
+<p>构建这个图很简单，就是不断的移动那个点就好了，然后求出一个闭包即可。</p>
+<p>我们来看一下一个移进过程具体是怎样的，对于 $id * id$ 这个输入来说，首先看到的是 $id$，那么移进就是在当前状态和输入考虑状态转移，所以我们考虑转移到 $I_5$ ，然后发现 $I_5$ 里的项目有一个特征</p>
+<script type="math/tex; mode=display">
+F \rightarrow id.</script><p>它的 <code>.</code> 是在最后的，这是要发生规约的标志，所以我们考虑发生规约，发生规约后我们可以利用栈结构重新回到 $I_0$，然后根据 $I_0$ 和规约出的 $F$，判断出要转到 $I_3$ ，$I_3$ 中也是发生规约，所以又转到 $I_2$，然后就发生了有趣的事情</p>
+<script type="math/tex; mode=display">
+E \rightarrow T.\\
+T \rightarrow T.*F</script><p>这个里面有两个项目，那么我们是要按照第一个进行规约呢？还是要按照后一个进行移进呢？这就是一个冲突，SLR 第一次尝试回应这个冲突。</p>
+<p>我们规定当前字符是是 $c$ ，然后考虑是否可以规约，比如说对于</p>
+<script type="math/tex; mode=display">
+E \rightarrow T.</script><p>一旦规约了，那么就意味着出现了 $Ec$ 这种结构，所以也就是说 $c \in FOLLOW(E)$ ，这正是判断能够进行规约的标准，如果 $c \notin FOLLOW(E)$ ，那么就是无法进行规约的。</p>
+<p>对于移进，也是同理，如果想要转移，那么当前状态 $I<em>{cur}$ 必须有一条边通向 $I</em>{next}$ ，这条边恰好是 $c$ ，所以如果没有这条边的，那么就是不能发生移进的。</p>
+<p>但是可以想见，这些要求会指导一定的动作冲突，但是还是有可能导致冲突，这也正式 SLR 无力的地方，在某种意义上，SLR 将“可规约”的情况预测多了，所以我们才有了 LR(1) 来减少这件事情。</p>
+<h4 id="3-2-3-例子"><a href="#3-2-3-例子" class="headerlink" title="3.2.3 例子"></a>3.2.3 例子</h4><p><strong>构建 LR(0) 项目集，构建 SLR 表</strong></p>
+<p>本来应该是两个事情，但是考虑到项目集状态图太大了，所以其实可以先用 GOTO 图去记录状态图的边，然后将 GOTO 图改造成 SLR 表，示例如下</p>
+<script type="math/tex; mode=display">
+r_0: S\rightarrow E \\
+r_1: E \rightarrow T \\
+r_2: E \rightarrow E + T \\
+r_3: T \rightarrow P \\
+r_4: T \rightarrow T * P \\
+r_5: P \rightarrow F \\
+r_6: P \rightarrow F \uparrow P \\
+r_7: F \rightarrow i \\
+r_8: F \rightarrow (E)</script><p>构造出的 SR 分析表如图：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>+</th>
+<th>*</th>
+<th>$\uparrow$</th>
+<th>i</th>
+<th>(</th>
+<th>)</th>
+<th>#</th>
+<th>S</th>
+<th>E</th>
+<th>T</th>
+<th>P</th>
+<th>F</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td>S5</td>
+<td>S6</td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>S7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>acc</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>r1</td>
+<td>S8</td>
+<td></td>
+<td></td>
+<td></td>
+<td>r1</td>
+<td>r1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>r3</td>
+<td>r3</td>
+<td></td>
+<td></td>
+<td></td>
+<td>r3</td>
+<td>r3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>r5</td>
+<td>r5</td>
+<td>S9</td>
+<td></td>
+<td></td>
+<td>r5</td>
+<td>r5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>r7</td>
+<td>r7</td>
+<td>r7</td>
+<td></td>
+<td></td>
+<td>r7</td>
+<td>r7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td></td>
+<td></td>
+<td></td>
+<td>S5</td>
+<td>S6</td>
+<td></td>
+<td></td>
+<td></td>
+<td>10</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>7</td>
+<td></td>
+<td></td>
+<td></td>
+<td>S5</td>
+<td>S6</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>11</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>8</td>
+<td></td>
+<td></td>
+<td></td>
+<td>S5</td>
+<td>S6</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>12</td>
+<td>4</td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td></td>
+<td></td>
+<td>S5</td>
+<td>S6</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>13</td>
+<td>4</td>
+</tr>
+<tr>
+<td>10</td>
+<td>S7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>S14</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>r2</td>
+<td>S8</td>
+<td></td>
+<td></td>
+<td></td>
+<td>r2</td>
+<td>r2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>r4</td>
+<td>r4</td>
+<td></td>
+<td></td>
+<td></td>
+<td>r4</td>
+<td>r4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>r6</td>
+<td>r6</td>
+<td></td>
+<td></td>
+<td></td>
+<td>r6</td>
+<td>r6</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>r8</td>
+<td>r8</td>
+<td>r8</td>
+<td></td>
+<td></td>
+<td>r8</td>
+<td>r8</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在构建的时候需要求出 follow 集判定是否可以进行递归，follow 集如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>FOLLOW</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S</td>
+<td>#</td>
+</tr>
+<tr>
+<td>E</td>
+<td>+, ), #</td>
+</tr>
+<tr>
+<td>T</td>
+<td>*, +, ), #</td>
+</tr>
+<tr>
+<td>P</td>
+<td>*, +, ), #</td>
+</tr>
+<tr>
+<td>F</td>
+<td>$\uparrow$ , *, +, ), #</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>SLR 使用</strong></p>
+<p>$i + i \uparrow (i * i)$</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>状态栈</th>
+<th>输入串</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>#0</td>
+<td>i + i ^ (i * i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>#0i5</td>
+<td>+ i ^  (i * i)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td>3</td>
+<td>#0F4</td>
+<td>+ i ^ (i * i)#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>#0P3</td>
+<td>+ i ^ (i * i)#</td>
+<td>r3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>#0T2</td>
+<td>+ i ^ (i * i)#</td>
+<td>r1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>#0E1</td>
+<td>+ i ^ (i * i)#</td>
+<td>S7</td>
+</tr>
+<tr>
+<td>7</td>
+<td>#0E1+7</td>
+<td>i ^ (i * i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>8</td>
+<td>#0E1+7i5</td>
+<td>^ (i * i)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td>9</td>
+<td>#0E1+7F4</td>
+<td>^ (i * i)#</td>
+<td>S9</td>
+</tr>
+<tr>
+<td>10</td>
+<td>#0E1+7F4^9</td>
+<td>(i * i)#</td>
+<td>S6</td>
+</tr>
+<tr>
+<td>11</td>
+<td>#0E1+7F4^9(6</td>
+<td>i * i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>#0E1+7F4^9(6i5</td>
+<td>* i)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td>13</td>
+<td>#0E1+7F4^9(6F4</td>
+<td>* i)#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td>14</td>
+<td>#0E1+7F4^9(6P3</td>
+<td>* i)#</td>
+<td>r3</td>
+</tr>
+<tr>
+<td>15</td>
+<td>#0E1+7F4^9(6T2</td>
+<td>* i)#</td>
+<td>S8</td>
+</tr>
+<tr>
+<td>16</td>
+<td>#0E1+7F4^9(6T2*8</td>
+<td>i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>17</td>
+<td>#0E1+7F4^9(6T2*8i5</td>
+<td>)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td>18</td>
+<td>#0E1+7F4^9(6T2*8F4</td>
+<td>)#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td>19</td>
+<td>#0E1+7F4^9(6T2*8P12</td>
+<td>)#</td>
+<td>r4</td>
+</tr>
+<tr>
+<td>20</td>
+<td>#0E1+7F4^9(6T2</td>
+<td>)#</td>
+<td>r1</td>
+</tr>
+<tr>
+<td>21</td>
+<td>#0E1+7F4^9(6E10</td>
+<td>)#</td>
+<td>S14</td>
+</tr>
+<tr>
+<td>22</td>
+<td>#0E1+7F4^9(6E10)14</td>
+<td>#</td>
+<td>r8</td>
+</tr>
+<tr>
+<td>23</td>
+<td>#0E1+7F4^9F4</td>
+<td>#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td>24</td>
+<td>#0E1+7F4^9P13</td>
+<td>#</td>
+<td>r6</td>
+</tr>
+<tr>
+<td>25</td>
+<td>#0E1+7P3</td>
+<td>#</td>
+<td>r3</td>
+</tr>
+<tr>
+<td>26</td>
+<td>#0E1+7T11</td>
+<td>#</td>
+<td>r2</td>
+</tr>
+<tr>
+<td>27</td>
+<td>#0E1</td>
+<td>#</td>
+<td>acc</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>$(i * i) \uparrow (i + i)$</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>状态栈</th>
+<th>输入串</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>#0</td>
+<td>(i * i) ^ (i + i)#</td>
+<td>S6</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6</td>
+<td>i * i) ^ (i + i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6i5</td>
+<td>* i) ^ (i + i)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6F4</td>
+<td>* i) ^ (i + i)#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6P3</td>
+<td>* i) ^ (i + i)#</td>
+<td>r3</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6T2</td>
+<td>* i) ^ (i + i)#</td>
+<td>S8</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6T2*8</td>
+<td>i) ^ (i + i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6T2*8i5</td>
+<td>) ^ (i + i)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6T2*8F4</td>
+<td>) ^ (i + i)#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6T2*8P12</td>
+<td>) ^ (i + i)#</td>
+<td>r4</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6T2</td>
+<td>) ^ (i + i)#</td>
+<td>r1</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6E10</td>
+<td>) ^ (i + i)#</td>
+<td>S14</td>
+</tr>
+<tr>
+<td></td>
+<td>#0(6E10)14</td>
+<td>^ (i + i)#</td>
+<td>r8</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4</td>
+<td>^ (i + i)#</td>
+<td>S9</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9</td>
+<td>(i + i)#</td>
+<td>S6</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6</td>
+<td>i + i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6i5</td>
+<td>+ i)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6F4</td>
+<td>+ i)#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6P3</td>
+<td>+ i)#</td>
+<td>r3</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6T2</td>
+<td>+ i)#</td>
+<td>r1</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10</td>
+<td>+ i)#</td>
+<td>S7</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10+7</td>
+<td>i)#</td>
+<td>S5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10+7i5</td>
+<td>)#</td>
+<td>r7</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10+7F4</td>
+<td>)#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10+7P3</td>
+<td>)#</td>
+<td>r3</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10+7T11</td>
+<td>)#</td>
+<td>r2</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10</td>
+<td>)#</td>
+<td>S14</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9(6E10)14</td>
+<td>#</td>
+<td>r8</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9F4</td>
+<td>#</td>
+<td>r5</td>
+</tr>
+<tr>
+<td></td>
+<td>#0F4^9P13</td>
+<td>#</td>
+<td>r6</td>
+</tr>
+<tr>
+<td></td>
+<td>#0P3</td>
+<td>#</td>
+<td>r3</td>
+</tr>
+<tr>
+<td></td>
+<td>#0T2</td>
+<td>#</td>
+<td>r1</td>
+</tr>
+<tr>
+<td></td>
+<td>#0E1</td>
+<td>#</td>
+<td>acc</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S5%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S5假期</a>
+              <a href="/tags/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" rel="tag"><i class="fa fa-tag"></i> 编译技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/60ed3714/" rel="prev" title="编译技术-词法理论">
+      <i class="fa fa-chevron-left"></i> 编译技术-词法理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/c7fcf57a/" rel="next" title="编译技术-优化理论">
+      编译技术-优化理论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3"><span class="nav-text">一、直观理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="nav-text">1.1 语法分析的目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%BC%96%E8%AF%91%E4%B8%AD%E7%9A%84%E7%9F%9B%E7%9B%BE"><span class="nav-text">1.2 编译中的矛盾</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-%E6%8E%A8%E5%AF%BC%E5%92%8C%E8%A7%84%E7%BA%A6"><span class="nav-text">1.2.1 推导和规约</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E8%A7%84%E8%8C%83%E8%A7%84%E7%BA%A6"><span class="nav-text">1.2.2 规范规约</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-%E5%8F%A5%E6%9F%84"><span class="nav-text">1.2.3 句柄</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-LL-%E5%92%8C-LR"><span class="nav-text">1.2.4 LL 和 LR</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%A4%9A%E7%A7%8D%E6%A6%82%E5%BF%B5%E7%9A%84%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3"><span class="nav-text">1.3 多种概念的直观理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E8%AF%AD%E6%B3%95%E8%8C%83%E5%9B%B4"><span class="nav-text">1.4 语法范围</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95"><span class="nav-text">二、自顶向下方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%80%92%E5%BD%92%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-text">2.1 递归下降法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3"><span class="nav-text">2.1.1 直观理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-%E6%B6%88%E9%99%A4%E5%B7%A6%E9%80%92%E5%BD%92"><span class="nav-text">2.1.2 消除左递归</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-LL-1-%E5%88%86%E6%9E%90%E6%B3%95"><span class="nav-text">2.2 LL(1) 分析法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-FIRST-%E5%92%8C-FOLLOW"><span class="nav-text">2.2.1 FIRST 和 FOLLOW</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-FIRST-%E7%9A%84%E6%B1%82%E8%A7%A3"><span class="nav-text">2.2.2 FIRST 的求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-FOLLOW-%E7%9A%84%E6%B1%82%E8%A7%A3"><span class="nav-text">2.2.3 FOLLOW 的求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-LL-1-%E8%A1%A8%E7%9A%84%E6%9E%84%E5%BB%BA"><span class="nav-text">2.2.4 LL(1) 表的构建</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%87%AA%E5%BA%95%E5%90%91%E4%B8%8A%E6%96%B9%E6%B3%95"><span class="nav-text">三、自底向上方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E5%88%86%E6%9E%90%E6%B3%95"><span class="nav-text">3.1 算符优先分析法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">3.1.1 基础知识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E4%BE%8B%E9%A2%98"><span class="nav-text">3.1.2 例题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-%E7%B4%A0%E7%9F%AD%E8%AF%AD%E4%B8%8E%E8%A7%84%E7%BA%A6"><span class="nav-text">3.1.3 素短语与规约</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-SLR"><span class="nav-text">3.2 SLR</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E6%B4%BB%E5%89%8D%E7%BC%80%E5%92%8C%E4%B8%8B%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-text">3.2.1 活前缀和下推自动机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E4%B8%8D%E5%90%8C%E7%9A%84-LR"><span class="nav-text">3.2.2 不同的 LR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E4%BE%8B%E5%AD%90"><span class="nav-text">3.2.3 例子</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

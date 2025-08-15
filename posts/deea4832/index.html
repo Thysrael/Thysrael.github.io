@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、Shell 相关知识1.1 外部命令与内建命令我认为 shell 其实可以看作由一个字符串处理的前端加一个调用其他文件的后端组成。前端将用户输入的字符串进行解析，然后将解析的结果传给后端，让后端去调用其他文件。这里的文件指的是“外部命令”。之所以叫这个名字，正是因为外部命令的功能实现并不在 shell 之内。正是因为 shell 不需要实现外部命令，所以这次大作业的难度并不高。相对应的内部命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux-简易shell">
+<meta property="og:url" content="https://thysrael.github.io/posts/deea4832/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、Shell 相关知识1.1 外部命令与内建命令我认为 shell 其实可以看作由一个字符串处理的前端加一个调用其他文件的后端组成。前端将用户输入的字符串进行解析，然后将解析的结果传给后端，让后端去调用其他文件。这里的文件指的是“外部命令”。之所以叫这个名字，正是因为外部命令的功能实现并不在 shell 之内。正是因为 shell 不需要实现外部命令，所以这次大作业的难度并不高。相对应的内部命令">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502091842428.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502154900162.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502154907257.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502104717781.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/总流程图.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/解析流程.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502141228026.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502141539489-16514778413731.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502141845941.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502142119184.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502142724586.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502143158920.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502143811643.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502144059458.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502144444943.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502145446084.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/deea4832/image-20220502145540395.png">
+<meta property="article:published_time" content="2022-05-02T07:46:16.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.859Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="S4课上">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/deea4832/image-20220502091842428.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/deea4832/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Linux-简易shell | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/deea4832/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux-简易shell
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-02 15:46:16" itemprop="dateCreated datePublished" datetime="2022-05-02T15:46:16+08:00">2022-05-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、Shell-相关知识"><a href="#一、Shell-相关知识" class="headerlink" title="一、Shell 相关知识"></a>一、Shell 相关知识</h2><h3 id="1-1-外部命令与内建命令"><a href="#1-1-外部命令与内建命令" class="headerlink" title="1.1 外部命令与内建命令"></a>1.1 外部命令与内建命令</h3><p>我认为 shell 其实可以看作由一个字符串处理的前端加一个调用其他文件的后端组成。前端将用户输入的字符串进行解析，然后将解析的结果传给后端，让后端去调用其他文件。这里的文件指的是“外部命令”。之所以叫这个名字，正是因为外部命令的功能实现并不在 shell 之内。正是因为 shell 不需要实现外部命令，所以这次大作业的难度并不高。相对应的内部命令，其功能的实现是在 shell 之内的（也就是需要在 shell 的代码中实现），幸好大作业并不要求实现内部命令。</p>
+<p>关于一个命令是内部命令还是外部命令，可以用 <code>type</code> 命令查看，比如输入</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">type</span> <span class="token builtin class-name">cd</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>就会有输出</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> 是 shell 内建<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>说明是内部命令，而当输入</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">type</span> <span class="token function">less</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>输出是</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">less</span> 是 /usr/bin/less<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>说明是外部命令。</p>
+<h3 id="1-2-文件描述符"><a href="#1-2-文件描述符" class="headerlink" title="1.2 文件描述符"></a>1.2 文件描述符</h3><p>在“一切皆文件”的设计哲学下，我们所说的“重定向”，就是用我们自己选择的文件去代替标准输入输出文件的过程。这里会涉及一些操作系统的知识，下面展开介绍：</p>
+<p><img src="/posts/deea4832/image-20220502091842428.png" alt="image-20220502091842428">    上图是一个完整的关于进程与文件关系的示意图。在最左侧是一个为每个进程独有的文件描述符表，他的本质是一个文件检索表，我们可以用文件描述符（file descriptor, fd)来检索对应的表项。</p>
+<p>这里先介绍一下 fd 的性质：</p>
+<ul>
+<li>每个进程具有自己的 fd 递增空间。已关闭的fd所占用的正整数是可能被重复利用的。单个进程能同时打开的fd数量是受到系统<code>limit</code>设置限制的。</li>
+<li>按照约定，所有的<code>shell</code>在启动新应用程序的时候，总是将<code>0</code>、<code>1</code>、<code>2</code>这三个数字的描述符打开为<code>stdin</code>、<code>stdout</code>、<code>stderr</code>。它们在 C 中用宏命名，分别是 <code>STDIN_FILENO</code>，<code>STDOUT_FILENO</code>，<code>STDERR_FILENO</code>。</li>
+</ul>
+<p>我们检索出的表项会指向叫做文件条目（file table entry）的东西，这个东西依然不是真实的文件。它可以看作是文件的状态，它记录这我们对这个文件的权限，当前读写的偏移量之类的信息。很容易想到，两个不同的文件条目可以对应同一个文件，只是存在权限和偏移量等状态信息的差异。这个文件条目表是所有进程共享的。</p>
+<p>文件条目会含有一个指向 <code>v-node</code> 节点的指针，在这个上面才是记录着文件静态信息的控制块，才是每个文件与每个 <code>v-node</code> 一一对应。</p>
+<p>总之我们在 C 语言编程时，要么使用 <code>fd</code>（最本质），要么使用 <code>FILE*</code> 去操控文件（应该是 C 提供的封装）。这里我们使用 fd ，因为我们一般用其实现重定向和管道，相关的系统调用的参数都是文件描述符。</p>
+<h3 id="1-3-文件的打开与关闭"><a href="#1-3-文件的打开与关闭" class="headerlink" title="1.3 文件的打开与关闭"></a>1.3 文件的打开与关闭</h3><p>在用户进程里可以通过系统调用实现，对于打开文件，我们有</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>filename<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">,</span> <span class="token keyword">int</span> mode<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以利用。这个函数会打开文件名为 <code>filename</code> 的文件，其权限由 <code>flags</code> 描述，我们有一系列的宏，并且支持与操作</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>宏</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O_RDONLY</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>O_WRONLY</td>
+<td>只写</td>
+</tr>
+<tr>
+<td>O_RDWR</td>
+<td>可读可写</td>
+</tr>
+<tr>
+<td>O_CREAT</td>
+<td>如果文件不存在，就创建一个截断的（truncated, 即空的）文件</td>
+</tr>
+<tr>
+<td>O_TRUNC</td>
+<td>如果文件已经存在，就截断它</td>
+</tr>
+<tr>
+<td>O_APPEND</td>
+<td>在每次写操作前，设置文件位置到结尾处</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code>mode</code> 指定了新文件的访问权限位，同样是有宏定义的，但是就不展开了，一般用 <code>0666</code> 就不会发生问题。</p>
+<p>这个函数会返回打开文件的文件描述符 <code>fd</code> 。</p>
+<p>当我们需要关闭一个文件的时候，可以这样</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="1-4-读写文件"><a href="#1-4-读写文件" class="headerlink" title="1.4 读写文件"></a>1.4 读写文件</h3><p>这个其实跟 shell 的实现没啥关系，但是还是第一次了解，记录一下，就是我们每次读写文件都会进行系统调用，但是这无疑是高代价的，因为频繁的在用户态和内核态间进行切换。</p>
+<p>我们平常使用的 <code>getc</code> 之类的函数，叫做有缓冲的读写函数，他说的是，他会打开文件以后读取一整个缓冲区大小的信息，然后随着 <code>getc</code> 的调用，一个个从缓冲区往外递送，直到没有的时候，就再次系统调用填满整个缓冲区，比较方便。</p>
+<h3 id="1-5-重定向"><a href="#1-5-重定向" class="headerlink" title="1.5 重定向"></a>1.5 重定向</h3><p>有了上面的知识，就可以介绍重定向了，我们用到的函数是</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">dup2</span><span class="token punctuation">(</span><span class="token keyword">int</span> oldfd<span class="token punctuation">,</span> <span class="token keyword">int</span> newfd<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个函数说的是将 <code>oldfd</code> 对应的描述符表项复制到 <code>newfd</code> 表项。如果 <code>newfd</code> 没有对应文件，那么再次使用 <code>newfd</code> 的时候，其对应的文件就是 <code>oldfd</code> 文件对应的表项了。如果 <code>newfd</code> 有对应的文件，那么 <code>dup2</code> 会在复制 <code>oldfd</code> 之前关闭 <code>newfd</code>。返回值如果是负数，则说明失败了。</p>
+<p>举个例子，则是未调用前</p>
+<p><img src="/posts/deea4832/image-20220502154900162.png" alt="image-20220502154900162"></p>
+<p>执行语句</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">dup2</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>就成了这样</p>
+<p><img src="/posts/deea4832/image-20220502154907257.png" alt="image-20220502154907257"></p>
+<p>其实这就是对于 <code>stdout</code> 的重定向，以后所有对于 <code>stdout</code> 的操作都会指向 <code>fd=4</code> 的文件。</p>
+<h3 id="1-6-管道"><a href="#1-6-管道" class="headerlink" title="1.6 管道"></a>1.6 管道</h3><p>管道也是要建立在前面的理解上的</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">pipe</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>执行成功返回 <code>0</code>，否则返回 <code>-1</code>。</p>
+<p>成功时会修改 <code>fd</code> 数组内容，有规定：fd[0] → r； fd[1] → w。向管道文件读写数据其实是在读写内核缓冲区。无需 <code>open</code>，但需要手动 <code>close</code>。</p>
+<p>其执行有示意图：</p>
+<p><img src="/posts/deea4832/image-20220502104717781.png" alt="image-20220502104717781"></p>
+<h3 id="1-7-调用外部命令"><a href="#1-7-调用外部命令" class="headerlink" title="1.7 调用外部命令"></a>1.7 调用外部命令</h3><p>我们可以使用如下函数</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">execvp</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> command<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>需要注意的是，这个函数一般不会返回，也就是不会执行其之后的语句，所以如果执行了，那么就是报错。此外，<code>argv</code> 的最后一项一定是 <code>NULL</code>。</p>
+<p>举个例子，比如说我们要输入如下命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> -a -l ~<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>那么对应的参数应该是</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">command <span class="token operator">=</span> <span class="token string">"ls"</span><span class="token punctuation">;</span>
+argv <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"ls"</span><span class="token punctuation">,</span> <span class="token string">"-a"</span><span class="token punctuation">,</span> <span class="token string">"-l"</span><span class="token punctuation">,</span> <span class="token string">"~"</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="二、基本功能"><a href="#二、基本功能" class="headerlink" title="二、基本功能"></a>二、基本功能</h2><h3 id="2-1-需求分析"><a href="#2-1-需求分析" class="headerlink" title="2.1 需求分析"></a>2.1 需求分析</h3><p>一开始的时候我十分害怕，因为觉得 shell 是跟操作系统沾边的，所以可能因为操作系统的知识不足，导致写不出来。后来随着深度的调研，我发现其实写一个 shell 并没有那么困难，一个简单的不实现重定向、管道、内置命令和后台命令的 shell，用 100 多行就可以写完了，其实其本质可以概括为自己实现一个 <code>system</code> 函数 。</p>
+<p>对于重定向，其实只要在解析命令的时候将重定向符号 <code>&lt;,&gt;,&gt;&gt;</code> 单独识别出来，然后记录重定向的文件即可。在调用外部命令前先进行文件的重定向操作，再进行调用即可。</p>
+<p>对于管道命令，因为题目要求只需要实现两个命令的管道连接即可，可以维护两个命令变量，然后在解析的时候识别出 <code>|</code> 的位置，然后据此将其切割为两个命令，然后分别进行重定向，就可以满足要求。但是“两个命令”不具有一般性，所以我拓展成了任意个管道命令的连接，效果会在后面演示，实现原理也会在后面介绍。</p>
+<h3 id="2-2-shell-程序流"><a href="#2-2-shell-程序流" class="headerlink" title="2.2 shell 程序流"></a>2.2 shell 程序流</h3><p><img src="/posts/deea4832/总流程图.drawio.png" alt="总流程图.drawio"></p>
+<p>因为解析过程较为复杂，在总流程图中展示过于冗杂。故画子流程图描述解析过程。</p>
+<p><img src="/posts/deea4832/解析流程.drawio.png" alt="解析流程.drawio"></p>
+<h3 id="2-3-功能展示"><a href="#2-3-功能展示" class="headerlink" title="2.3 功能展示"></a>2.3 功能展示</h3><h4 id="2-3-1-具有身份特征的命令行提示符"><a href="#2-3-1-具有身份特征的命令行提示符" class="headerlink" title="2.3.1 具有身份特征的命令行提示符"></a>2.3.1 具有身份特征的命令行提示符</h4><p><img src="/posts/deea4832/image-20220502141228026.png" alt="image-20220502141228026"></p>
+<p>可以看到，在我的 shell 启动的时候，会首先打印 shell 名称 <code>Thysrael Shell</code>，然后在每一行的命令提示符的最左侧，都具有 <code>ThyShell</code> 的字样，这些都是具有编写者身份特征的字符。</p>
+<h4 id="2-3-2-运行不带参数的外部命令"><a href="#2-3-2-运行不带参数的外部命令" class="headerlink" title="2.3.2 运行不带参数的外部命令"></a>2.3.2 运行不带参数的外部命令</h4><p><img src="/posts/deea4832/image-20220502141539489-16514778413731.png" alt="image-20220502141539489"></p>
+<p>我们挑选 <code>ls</code> 作为检验对象，发现可以运行。</p>
+<h4 id="2-3-3-支持-I-O-重定向"><a href="#2-3-3-支持-I-O-重定向" class="headerlink" title="2.3.3 支持 I/O 重定向"></a>2.3.3 支持 I/O 重定向</h4><p>标准输出的重定向，可以看到无论是 <code>&gt;</code> 还是 <code>&gt;&gt;</code> 均功能正常</p>
+<p><img src="/posts/deea4832/image-20220502141845941.png" alt="image-20220502141845941"></p>
+<p>输入重定向</p>
+<p><img src="/posts/deea4832/image-20220502142119184.png" alt="image-20220502142119184"></p>
+<p>功能正常</p>
+<h4 id="2-3-4-管道命令"><a href="#2-3-4-管道命令" class="headerlink" title="2.3.4 管道命令"></a>2.3.4 管道命令</h4><p>可以通过管道连接两个命令</p>
+<p><img src="/posts/deea4832/image-20220502142724586.png" alt="image-20220502142724586"></p>
+<h4 id="2-3-5-管道与重定向组合"><a href="#2-3-5-管道与重定向组合" class="headerlink" title="2.3.5 管道与重定向组合"></a>2.3.5 管道与重定向组合</h4><p>可以看到，无论是输入重定向还是输出重定向与管道结合都没有问题。</p>
+<p><img src="/posts/deea4832/image-20220502143158920.png" alt="image-20220502143158920"></p>
+<h4 id="2-3-6-代码量"><a href="#2-3-6-代码量" class="headerlink" title="2.3.6 代码量"></a>2.3.6 代码量</h4><p><code>ThyShell</code> 所有代码均在 <code>ThyShell.c</code> 中实现，一共是 322 行，符合题意要求。</p>
+<h3 id="2-4-实现与系统调用"><a href="#2-4-实现与系统调用" class="headerlink" title="2.4 实现与系统调用"></a>2.4 实现与系统调用</h3><h2 id="三、高级功能"><a href="#三、高级功能" class="headerlink" title="三、高级功能"></a>三、高级功能</h2><h3 id="3-1-打印并压缩路径"><a href="#3-1-打印并压缩路径" class="headerlink" title="3.1 打印并压缩路径"></a>3.1 打印并压缩路径</h3><p>在命令提示符处，我打印了路径，并且实现了路径的压缩，即当路径中出现家目录的时候，会将 <code>/home/user_name</code> 压缩成 <code>~</code></p>
+<p><img src="/posts/deea4832/image-20220502143811643.png" alt="image-20220502143811643"></p>
+<p>具体的实现方法是调用 <code>getcwd</code> 函数，就可以获得当前路径，在借助 <code>getenv</code> 函数，就可以获得当前的家目录路径，然后就可以进行比较并压缩，具体的实现代码如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">print_prompt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>path <span class="token operator">=</span> <span class="token function">getcwd</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>home <span class="token operator">=</span> <span class="token function">getenv</span><span class="token punctuation">(</span><span class="token string">"HOME"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strstr</span><span class="token punctuation">(</span>home<span class="token punctuation">,</span> path<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        path<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'~'</span><span class="token punctuation">;</span>
+        <span class="token class-name">size_t</span> len_home <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>home<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">size_t</span> len_path <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">memmove</span><span class="token punctuation">(</span>path <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> path <span class="token operator">+</span> len_home<span class="token punctuation">,</span> len_path <span class="token operator">-</span> len_home<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        path<span class="token punctuation">[</span>len_path <span class="token operator">-</span> len_home <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'\0'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"ThyShell \033[0;32m%s\033[0m $ "</span><span class="token punctuation">,</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">free</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2-quit-内置命令"><a href="#3-2-quit-内置命令" class="headerlink" title="3.2 quit 内置命令"></a>3.2 quit 内置命令</h3><p>实现效果如下</p>
+<p><img src="/posts/deea4832/image-20220502144059458.png" alt="image-20220502144059458"></p>
+<p>具体的方法是将 quit 也视为一个命令，然后在调用外部命令之前先进行判断，如果符合，则直接退出，实现代码如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">builtin_command</span><span class="token punctuation">(</span>Command command<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span>command<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"quit"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+		<span class="token function">quit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcmp</span><span class="token punctuation">(</span>command<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"cd"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">chdir</span><span class="token punctuation">(</span>command<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">fprintf</span><span class="token punctuation">(</span><span class="token constant">stderr</span><span class="token punctuation">,</span> <span class="token string">"Error: cannot cd :%s\n"</span><span class="token punctuation">,</span> command<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3-cd-内置命令"><a href="#3-3-cd-内置命令" class="headerlink" title="3.3 cd 内置命令"></a>3.3 cd 内置命令</h3><p>效果演示如下</p>
+<p><img src="/posts/deea4832/image-20220502144444943.png" alt="image-20220502144444943"></p>
+<p>可以看到在用户权限下自由切换，实现的方法是使用 <code>chdir</code> 函数。具体的代码在 3.2 节。</p>
+<h3 id="3-4-错误检测"><a href="#3-4-错误检测" class="headerlink" title="3.4 错误检测"></a>3.4 错误检测</h3><p>除了正常功能的运行，<code>ThyShell</code> 还具有异常检测功能，其可以检测 fork 异常，waitpid 异常和语法异常，具体的实现为将系统调用函数进行包装，这样既保证了功能的正常，也使代码具有简洁性，具体实现如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">unix_error</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>msg<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">fprintf</span><span class="token punctuation">(</span><span class="token constant">stderr</span><span class="token punctuation">,</span> <span class="token string">"%s: %s\n"</span><span class="token punctuation">,</span> msg<span class="token punctuation">,</span> <span class="token function">strerror</span><span class="token punctuation">(</span>errno<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token class-name">pid_t</span> <span class="token function">Fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token class-name">pid_t</span> pid<span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		<span class="token function">unix_error</span><span class="token punctuation">(</span><span class="token string">"Fork error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> pid<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">Wait</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">int</span> status<span class="token punctuation">;</span>
+	<span class="token function">waitpid</span><span class="token punctuation">(</span>pid<span class="token punctuation">,</span> <span class="token operator">&amp;</span>status<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">WIFEXITED</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"child %d terminated abnormally\n"</span><span class="token punctuation">,</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-5-多管道命令"><a href="#3-5-多管道命令" class="headerlink" title="3.5 多管道命令"></a>3.5 多管道命令</h3><p><code>ThyShell</code> 可以实现多管道命令，具体演示如下：</p>
+<p><img src="/posts/deea4832/image-20220502145446084.png" alt="image-20220502145446084"></p>
+<p>输入 <code>cat filename | wc -l | less</code> 可以出现如下图样</p>
+<p><img src="/posts/deea4832/image-20220502145540395.png" alt="image-20220502145540395"></p>
+<p>说明功能正常。</p>
+<p>具体的实现可以参照流程图，思想是将命令行抽象成一个单独的层次，命令行可以包括一个或者多个命令。当出现管道命令的时候，需要开启管道后进行重定向。</p>
+<h3 id="3-6-带参数命令"><a href="#3-6-带参数命令" class="headerlink" title="3.6 带参数命令"></a>3.6 带参数命令</h3><p>这个在解析命令行的时候即可实现，参数会作为 <code>execvp</code> 的参数传递，具体实现如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">execvp</span><span class="token punctuation">(</span>command<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> command<span class="token punctuation">.</span>argv<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S4%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S4课上</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/f7813372/" rel="prev" title="面向对象-电梯">
+      <i class="fa fa-chevron-left"></i> 面向对象-电梯
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/1a401c6d/" rel="next" title="CPP设计-寸步难行">
+      CPP设计-寸步难行 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Shell-%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86"><span class="nav-text">一、Shell 相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%A4%96%E9%83%A8%E5%91%BD%E4%BB%A4%E4%B8%8E%E5%86%85%E5%BB%BA%E5%91%BD%E4%BB%A4"><span class="nav-text">1.1 外部命令与内建命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-text">1.2 文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E4%B8%8E%E5%85%B3%E9%97%AD"><span class="nav-text">1.3 文件的打开与关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6"><span class="nav-text">1.4 读写文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-text">1.5 重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E7%AE%A1%E9%81%93"><span class="nav-text">1.6 管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E8%B0%83%E7%94%A8%E5%A4%96%E9%83%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">1.7 调用外部命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="nav-text">二、基本功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-text">2.1 需求分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-shell-%E7%A8%8B%E5%BA%8F%E6%B5%81"><span class="nav-text">2.2 shell 程序流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%8A%9F%E8%83%BD%E5%B1%95%E7%A4%BA"><span class="nav-text">2.3 功能展示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E5%85%B7%E6%9C%89%E8%BA%AB%E4%BB%BD%E7%89%B9%E5%BE%81%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8F%90%E7%A4%BA%E7%AC%A6"><span class="nav-text">2.3.1 具有身份特征的命令行提示符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E8%BF%90%E8%A1%8C%E4%B8%8D%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%A4%96%E9%83%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">2.3.2 运行不带参数的外部命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-%E6%94%AF%E6%8C%81-I-O-%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-text">2.3.3 支持 I&#x2F;O 重定向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-%E7%AE%A1%E9%81%93%E5%91%BD%E4%BB%A4"><span class="nav-text">2.3.4 管道命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-5-%E7%AE%A1%E9%81%93%E4%B8%8E%E9%87%8D%E5%AE%9A%E5%90%91%E7%BB%84%E5%90%88"><span class="nav-text">2.3.5 管道与重定向组合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-6-%E4%BB%A3%E7%A0%81%E9%87%8F"><span class="nav-text">2.3.6 代码量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E5%AE%9E%E7%8E%B0%E4%B8%8E%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-text">2.4 实现与系统调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD"><span class="nav-text">三、高级功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%89%93%E5%8D%B0%E5%B9%B6%E5%8E%8B%E7%BC%A9%E8%B7%AF%E5%BE%84"><span class="nav-text">3.1 打印并压缩路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-quit-%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4"><span class="nav-text">3.2 quit 内置命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-cd-%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4"><span class="nav-text">3.3 cd 内置命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E9%94%99%E8%AF%AF%E6%A3%80%E6%B5%8B"><span class="nav-text">3.4 错误检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E5%A4%9A%E7%AE%A1%E9%81%93%E5%91%BD%E4%BB%A4"><span class="nav-text">3.5 多管道命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-%E5%B8%A6%E5%8F%82%E6%95%B0%E5%91%BD%E4%BB%A4"><span class="nav-text">3.6 带参数命令</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

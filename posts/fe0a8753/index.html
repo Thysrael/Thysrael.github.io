@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、需求分析1.1 需求描述1.1.1 背景调研第八次全国学生体质与健康调研结果显示，大学生体质下滑的问题，仍然没有得到有效遏制。高校体育如何从世界百年未有之大变局和中华民族伟大复兴战略全局中认识新机遇、洞察新挑战、顺应新变化？高校体育如何担起培养社会主义现代化强国的建设者和接班人的伟大使命？作为为祖国培养“健康工作七十年的红色工程师”的北京航空航天大学，应当以怎样的技术和平台来支持学生体育事业。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DBMS-设计报告">
+<meta property="og:url" content="https://thysrael.github.io/posts/fe0a8753/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、需求分析1.1 需求描述1.1.1 背景调研第八次全国学生体质与健康调研结果显示，大学生体质下滑的问题，仍然没有得到有效遏制。高校体育如何从世界百年未有之大变局和中华民族伟大复兴战略全局中认识新机遇、洞察新挑战、顺应新变化？高校体育如何担起培养社会主义现代化强国的建设者和接班人的伟大使命？作为为祖国培养“健康工作七十年的红色工程师”的北京航空航天大学，应当以怎样的技术和平台来支持学生体育事业。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/健康云.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/用户侧写.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/调查问卷.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/总体数据流图.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/image-20221223201541868.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/课程数据流图.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/image-20221223201655389.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/实体%20ER%20图.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/关系%20ER%20图.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/fe0a8753/系统基本%20ER%20图.png">
+<meta property="article:published_time" content="2023-01-05T04:19:30.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:47.768Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="DBMS">
+<meta property="article:tag" content="S5课上">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/fe0a8753/健康云.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/fe0a8753/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>DBMS-设计报告 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/fe0a8753/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DBMS-设计报告
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-05 12:19:30" itemprop="dateCreated datePublished" datetime="2023-01-05T12:19:30+08:00">2023-01-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DBMS/" itemprop="url" rel="index"><span itemprop="name">DBMS</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>9.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>9 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一、需求分析"><a href="#一、需求分析" class="headerlink" title="一、需求分析"></a>一、需求分析</h1><h2 id="1-1-需求描述"><a href="#1-1-需求描述" class="headerlink" title="1.1 需求描述"></a>1.1 需求描述</h2><h3 id="1-1-1-背景调研"><a href="#1-1-1-背景调研" class="headerlink" title="1.1.1 背景调研"></a>1.1.1 背景调研</h3><p>第八次全国学生体质与健康调研结果显示，大学生体质下滑的问题，仍然没有得到有效遏制。高校体育如何从世界百年未有之大变局和中华民族伟大复兴战略全局中认识新机遇、洞察新挑战、顺应新变化？高校体育如何担起培养社会主义现代化强国的建设者和接班人的伟大使命？作为为祖国培养“健康工作七十年的红色工程师”的北京航空航天大学，应当以怎样的技术和平台来支持学生体育事业。这些问题都值得我们深入思考。</p>
+<p>首先，应当意识到，高校体育是一个完整的生态闭环，体育课程，体育比赛，官方体育活动，社团活动等都是高校体育建设不可或缺的一部分。高校体育建设不应当仅仅局限于每周固定时长的体育课程，恰恰相反，他应当融入大学生的生活中。也就是构建“<strong>立体化</strong>”的高校体育体系，拓展大学体育课程体系的长度、宽度和高度。学校体育课程要为学生走向社会和未来生活做准备，让大学生掌握体育知识、运动技能并能运用于生活之中，保持健康的体魄，促进自己的全面发展，帮助大学生适应未来，引导大学生创造未来。</p>
+<p>其次，建设高校体育离不开方法体系优化、技术手段革新。随着电子信息技术的发展，校园体育网站在北航的体育建设中发挥了举足轻重的作用，北航学生可以登录健康云查看自己的体育锻炼分数，也可以查看自己的体检报告；学校举办的运动会，也会在各个院系的公众号上宣发，同学们可以与通过与院系体育委员联系参加活动；对于体育部开展的活动，一般是以微信群的方式进行管理，比如说夜跑打卡活动和趣味运动会活动等。</p>
+<p>但是，现有的高校体育信息管理存在以下不足，首先是信息管理分散化，冗余度高。学生需要在“博雅网站、健康云、微信群、公众号”等多个平台参加体育活动，这无疑提高了操作的复杂度，打击了同学们参加活动的积极性；其次，现有的体育系统开发简陋，数据不安全，更新不及时，存在多处“脚手架”情况出现（如下图所示）；再其次，现有功能并不完全支持高校体育建设需求，大量的功能依靠人力实现，这是由于现有系统的功能边界过于逼仄造成的。</p>
+<p><img src="/posts/fe0a8753/健康云.png" style="zoom: 33%;"></p>
+<p>正因如此，4H16B 团队希望开发一个需求集成，功能强大，数据安全的校园体育系统。多方位，立体化的支持北航的体育建设，这就是 Go 走马校园体育体系统的开发初衷。</p>
+<h3 id="1-1-2-用户画像"><a href="#1-1-2-用户画像" class="headerlink" title="1.1.2 用户画像"></a>1.1.2 用户画像</h3><p>校园体育系统的用户主要有 4 种类型：</p>
+<ul>
+<li>体育课程学生</li>
+<li>体育课程老师</li>
+<li>体育活动组织者</li>
+<li>体育活动参与者</li>
+</ul>
+<p>对此我们进行了初步的用户画像侧写，如下所示：</p>
+<p><img src="/posts/fe0a8753/用户侧写.png" style="zoom:80%;"></p>
+<h3 id="1-1-3-用户调研"><a href="#1-1-3-用户调研" class="headerlink" title="1.1.3 用户调研"></a>1.1.3 用户调研</h3><p>对于学生需求，我们采用调查问卷的方式进行调查，部分调查问卷如下所示：</p>
+<p><img src="/posts/fe0a8753/调查问卷.png" style="zoom:80%;"></p>
+<p>初步总结需求如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>体育课程学生</th>
+<th>体育课程老师</th>
+<th>体育活动组织者</th>
+<th>体育活动参与者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可以将所有课程集中在同一个网站</td>
+<td>可以统一的收取作业</td>
+<td>可以满足基本功能</td>
+<td>有一个统一的平台</td>
+</tr>
+<tr>
+<td>可以方便的提交作业文件</td>
+<td>可以管理多个班级</td>
+<td>场地冲突问题</td>
+<td>可以向用户推荐活动</td>
+</tr>
+<tr>
+<td>可以方便地查询分数</td>
+<td>可以方便的发出通知</td>
+<td></td>
+<td>可以寻找相似的朋友</td>
+</tr>
+<tr>
+<td>可以知悉上课的时间地点</td>
+<td>可以方便统计成绩</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>可以方便知道老师的通知</td>
+<td>可以解决场地冲突问题</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="1-1-4-需求总结"><a href="#1-1-4-需求总结" class="headerlink" title="1.1.4 需求总结"></a>1.1.4 需求总结</h3><p>经过上面的侧写分析和用户和背景调研，我们可以总结出需求如下：</p>
+<p>对于<strong>学生</strong>：</p>
+<ol>
+<li>每个学期都需要加入所选课程的老师管理的班级。</li>
+<li>具有上传文件的权限，以方便每个学期上传作业和打卡资料。</li>
+<li>具有查询成绩和体测信息的权限。</li>
+<li>具有查询课程信息和课程公告的权限。</li>
+</ol>
+<p>对于<strong>老师</strong>：</p>
+<ol>
+<li>具有管理多个班级的权限，可以方便的创建班级，填写班级的基本信息，发布课程公告，将同学拉入自己的班级。</li>
+<li>具有收取作业的权限，可以便捷的收取同学们上传的文件，同时统计作业收取情况。</li>
+<li>可以方便的管理成绩。</li>
+</ol>
+<p>对于<strong>活动参与者</strong></p>
+<ol>
+<li>具有参加活动的权限，可以方便的参加自己心仪的活动。</li>
+<li>具有浏览活动的权限，可以浏览所有的活动，并且查看具体的信息，以臻选自己心仪的活动。</li>
+<li>具有搜索和被推荐的权限，以便根据自己喜欢的关键词进行全局或局部搜索。</li>
+<li>具有管理自己活动的权限，可以浏览和退出自己已经参加的活动，并且获得关于这些活动的统计数据。</li>
+</ol>
+<p>对于<strong>活动组织者</strong>：</p>
+<ol>
+<li>具有创建活动的权限，包括登记活动的基本信息，确定活动的奖励。</li>
+<li>管理参与活动的参与者。</li>
+</ol>
+<p>此外，对于<strong>数据库管理员</strong>：</p>
+<ol>
+<li>具有管理课程的权限，可以检索，修改，增加，删除所有的课程信息。</li>
+<li>具有管理用户的权限，可以检索，修改，增加，删除所有的用户信息。</li>
+</ol>
+<p>可见，Go走马 具有庞大的需求市场,具有光明的应用前景,开发该系统的价值性很高。且五种潜在用户的需求都十分明确, 开发该系统是切实可行的。</p>
+<h2 id="1-2-数据流图"><a href="#1-2-数据流图" class="headerlink" title="1.2 数据流图"></a>1.2 数据流图</h2><h3 id="1-2-1-总体数据流图"><a href="#1-2-1-总体数据流图" class="headerlink" title="1.2.1 总体数据流图"></a>1.2.1 总体数据流图</h3><p><img src="/posts/fe0a8753/总体数据流图.png" alt="image-20221223201435808" style="zoom:50%;"></p>
+<h3 id="1-2-2-用户管理部分数据流图"><a href="#1-2-2-用户管理部分数据流图" class="headerlink" title="1.2.2 用户管理部分数据流图"></a>1.2.2 用户管理部分数据流图</h3><p><img src="/posts/fe0a8753/image-20221223201541868.png" alt="image-20221223201541868"></p>
+<h3 id="1-2-3-课程部分数据流图"><a href="#1-2-3-课程部分数据流图" class="headerlink" title="1.2.3 课程部分数据流图"></a>1.2.3 课程部分数据流图</h3><p><img src="/posts/fe0a8753/课程数据流图.png" alt="课程数据流图"></p>
+<h3 id="1-2-4-活动部分数据流图"><a href="#1-2-4-活动部分数据流图" class="headerlink" title="1.2.4 活动部分数据流图"></a>1.2.4 活动部分数据流图</h3><p><img src="/posts/fe0a8753/image-20221223201655389.png" alt="image-20221223201655389"></p>
+<h2 id="1-3-数据元素表"><a href="#1-3-数据元素表" class="headerlink" title="1.3 数据元素表"></a>1.3 数据元素表</h2><h3 id="1-3-1-用户管理部分"><a href="#1-3-1-用户管理部分" class="headerlink" title="1.3.1 用户管理部分"></a>1.3.1 用户管理部分</h3><p><strong>学生表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>email</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>邮箱</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(10)</td>
+<td>NO</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td>password</td>
+<td>varchar(20)</td>
+<td>NO</td>
+<td>密码</td>
+</tr>
+<tr>
+<td>student_id</td>
+<td>varchar(8)</td>
+<td>NO</td>
+<td>学生编号</td>
+</tr>
+<tr>
+<td>grade</td>
+<td>int</td>
+<td>NO</td>
+<td>入学年份</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>教师表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>email</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>邮箱</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(10)</td>
+<td>NO</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td>password</td>
+<td>varchar(20)</td>
+<td>NO</td>
+<td>密码</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="1-3-2-课程管理部分"><a href="#1-3-2-课程管理部分" class="headerlink" title="1.3.2 课程管理部分"></a>1.3.2 课程管理部分</h3><p><strong>课程表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>课程编号</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(40)</td>
+<td>NO</td>
+<td>课程名称</td>
+</tr>
+<tr>
+<td>time</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>上课时间</td>
+</tr>
+<tr>
+<td>location</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>上课地点</td>
+</tr>
+<tr>
+<td>manager_email_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>课程负责人邮箱</td>
+</tr>
+<tr>
+<td>semester</td>
+<td>int</td>
+<td>NO</td>
+<td>课程开设学期（春/秋）</td>
+</tr>
+<tr>
+<td>year</td>
+<td>int</td>
+<td>NO</td>
+<td>课程开设学年</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>学生选课表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c_id_id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>课程编号</td>
+</tr>
+<tr>
+<td>s_email_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>学生编号</td>
+</tr>
+<tr>
+<td>grade</td>
+<td>int</td>
+<td>YES</td>
+<td>成绩</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>教师-课程表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c_id_id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>课程编号</td>
+</tr>
+<tr>
+<td>t_email_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>老师编号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>作业表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>作业编号</td>
+</tr>
+<tr>
+<td>ddl</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>作业截止日期</td>
+</tr>
+<tr>
+<td>content</td>
+<td>varchar(300)</td>
+<td>NO</td>
+<td>作业内容</td>
+</tr>
+<tr>
+<td>author_email_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>作业发布者</td>
+</tr>
+<tr>
+<td>course_id_id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>作业对应的课程</td>
+</tr>
+<tr>
+<td>time</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>作业创建时间</td>
+</tr>
+<tr>
+<td>title</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>作业标题</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>作业提交表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>time</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>作业提交时间</td>
+</tr>
+<tr>
+<td>fileTitle</td>
+<td>varchar(100)</td>
+<td>NO</td>
+<td>文件名称</td>
+</tr>
+<tr>
+<td>fileContent</td>
+<td>varchar(100)</td>
+<td>NO</td>
+<td>文件所在地址</td>
+</tr>
+<tr>
+<td>homeworkId_id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>作业编号</td>
+</tr>
+<tr>
+<td>submitterEmail_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>提交者邮箱</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>通知表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>通知编号</td>
+</tr>
+<tr>
+<td>time</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>通知时间</td>
+</tr>
+<tr>
+<td>content</td>
+<td>varchar(1000)</td>
+<td>NO</td>
+<td>通知内容</td>
+</tr>
+<tr>
+<td>title</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>通知标题</td>
+</tr>
+<tr>
+<td>author_email_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>通知发布者</td>
+</tr>
+<tr>
+<td>course_id_id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>通知对应的课程</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="1-3-3-活动管理部分"><a href="#1-3-3-活动管理部分" class="headerlink" title="1.3.3 活动管理部分"></a>1.3.3 活动管理部分</h3><p><strong>活动表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>活动编号</td>
+</tr>
+<tr>
+<td>content</td>
+<td>varchar(1000)</td>
+<td>NO</td>
+<td>活动内容</td>
+</tr>
+<tr>
+<td>title</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>活动标题</td>
+</tr>
+<tr>
+<td>position</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>活动地点</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>活动创建时间</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>活动开始时间</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>活动结束时间</td>
+</tr>
+<tr>
+<td>author_email</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>活动创建者邮箱</td>
+</tr>
+<tr>
+<td>tag</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>活动标签</td>
+</tr>
+<tr>
+<td>TD</td>
+<td>int</td>
+<td>NO</td>
+<td>活动加的TD数量</td>
+</tr>
+<tr>
+<td>img_id</td>
+<td>bigint</td>
+<td>YES</td>
+<td>活动图片</td>
+</tr>
+<tr>
+<td>BY</td>
+<td>int</td>
+<td>NO</td>
+<td>活动加的博雅数量</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>学生-活动表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>time</td>
+<td>datetime(6)</td>
+<td>NO</td>
+<td>活动参与时间</td>
+</tr>
+<tr>
+<td>status</td>
+<td>varchar(2)</td>
+<td>NO</td>
+<td>参与状态（未开始/已完成/已过期）</td>
+</tr>
+<tr>
+<td>activity_id</td>
+<td>bigint</td>
+<td>NO</td>
+<td>活动编号</td>
+</tr>
+<tr>
+<td>student_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>学生编号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="1-3-4-个人信息部分"><a href="#1-3-4-个人信息部分" class="headerlink" title="1.3.4 个人信息部分"></a>1.3.4 个人信息部分</h3><p><strong>学生-体测成绩表</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>数据类型</th>
+<th>可否为空</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>year</td>
+<td>int</td>
+<td>NO</td>
+<td>学年</td>
+</tr>
+<tr>
+<td>tdSpring</td>
+<td>int</td>
+<td>YES</td>
+<td>春季 td</td>
+</tr>
+<tr>
+<td>tdAutumn</td>
+<td>int</td>
+<td>YES</td>
+<td>秋季 td</td>
+</tr>
+<tr>
+<td>examineResult</td>
+<td>varchar(200)</td>
+<td>NO</td>
+<td>体测结果</td>
+</tr>
+<tr>
+<td>student_id</td>
+<td>varchar(30)</td>
+<td>NO</td>
+<td>学生</td>
+</tr>
+<tr>
+<td>byAutumn</td>
+<td>int</td>
+<td>YES</td>
+<td>秋季博雅</td>
+</tr>
+<tr>
+<td>bySpring</td>
+<td>int</td>
+<td>YES</td>
+<td>春季博雅</td>
+</tr>
+<tr>
+<td>height</td>
+<td>double</td>
+<td>YES</td>
+<td>学生身高</td>
+</tr>
+<tr>
+<td>score</td>
+<td>int</td>
+<td>YES</td>
+<td>学生体测分数</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>double</td>
+<td>YES</td>
+<td>学生体重</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h1 id="二、数据库概念模式设计"><a href="#二、数据库概念模式设计" class="headerlink" title="二、数据库概念模式设计"></a>二、数据库概念模式设计</h1><h2 id="2-1-系统初步-ER-图"><a href="#2-1-系统初步-ER-图" class="headerlink" title="2.1 系统初步 ER 图"></a>2.1 系统初步 ER 图</h2><h3 id="2-1-1-实体-ER-图"><a href="#2-1-1-实体-ER-图" class="headerlink" title="2.1.1 实体 ER 图"></a>2.1.1 实体 ER 图</h3><p><img src="/posts/fe0a8753/实体 ER 图.png" style="zoom:30%;"></p>
+<h3 id="2-1-2-关系-ER-图"><a href="#2-1-2-关系-ER-图" class="headerlink" title="2.1.2 关系 ER 图"></a>2.1.2 关系 ER 图</h3><p>下图分别为课程管理模块、活动模块、成绩查询模块对应的 ER 图。</p>
+<p><img src="/posts/fe0a8753/关系 ER 图.drawio.png" alt=""></p>
+<h2 id="2-2-系统基本-ER-图"><a href="#2-2-系统基本-ER-图" class="headerlink" title="2.2 系统基本 ER 图"></a>2.2 系统基本 ER 图</h2><p>分析系统初步 E-R 图，我们发现可以消除以下 1:1 联系：</p>
+<ul>
+<li>活动与活动图片是 1:1 的关系，因此在实现的时候没有必要将活动图片作为一个单独的实体，将其作为活动的个一个属性即可。</li>
+</ul>
+<p>合并并消除冗余之后得到的系统基本 ER 图有 7 个实体，如下图所示：</p>
+<p><img src="/posts/fe0a8753/系统基本 ER 图.png" alt=""></p>
+<h1 id="三、数据库逻辑模式设计"><a href="#三、数据库逻辑模式设计" class="headerlink" title="三、数据库逻辑模式设计"></a>三、数据库逻辑模式设计</h1><h2 id="3-1-数据库关系模式"><a href="#3-1-数据库关系模式" class="headerlink" title="3.1 数据库关系模式"></a>3.1 数据库关系模式</h2><p>关系模式可以形式化表示为<code>R(U, D, DOM, F)</code>。U 为组成该关系的属性名，D为 U 中属性所来自的域，DOM 指的是属性与域的映射，F 指的是属性间的依赖关系集合。以下约定 N 表示正整数，FLOAT 表示浮点数，S 为任意字符组成的字符 S，T 表示时间，B 表示布尔值。码以下划线标识。</p>
+<p>以下是由 ER 图得到的关系模式。</p>
+<h3 id="3-1-1-实体"><a href="#3-1-1-实体" class="headerlink" title="3.1.1 实体"></a>3.1.1 实体</h3><ol>
+<li><p><strong>学生</strong> </p>
+<p>students({<u>邮箱</u>, 密码, 姓名, 学号, 年级}, D, DOM, F)</p>
+<p>D = {STR, N}</p>
+<p>DOM = {DOM(年级) = N, DOM(邮箱) = DOM(密码) = DOM(姓名) = DOM(学号) = STR}</p>
+<p>F = {邮箱→其他属性, 学号→密码, 学号→姓名, 学号→邮箱, 学号→年级} </p>
+</li>
+<li><p><strong>教师</strong></p>
+<p>teachers({<u>邮箱</u>, 密码, 姓名}, D, DOM, F)</p>
+<p>D = {STR, N}</p>
+<p>DOM = {DOM(邮箱) = DOM(密码) = DOM(姓名) = STR}</p>
+<p>F = {邮箱→密码, 邮箱→姓名} </p>
+</li>
+<li><p><strong>课程</strong></p>
+<p>courses({<u>ID</u>, 名称, 开设年份, 开设学期, 上课时间, 上课地点}, D, DOM, F)</p>
+<p>D = {STR, N}</p>
+<p>DOM = {DOM(ID) = DOM(开设年份) = DOM(开设学期) = N, DOM(名称) = DOM(上课地点) = DOM(上课时间) = STR}</p>
+<p>F = {ID→其他属性}</p>
+</li>
+<li><p><strong>活动</strong></p>
+<p>activities({<u>ID</u>, 活动主题, 具体内容, 标签, 开始时间, 结束时间, TD, 博雅}, D, DOM, F)</p>
+<p>D = {STR, N, T}</p>
+<p>DOM = {DOM(ID) = DOM(TD) = DOM(博雅) = N, DOM(活动主题) = DOM(具体内容) = DOM(标签) = STR,  DOM(开始时间) = DOM(结束时间) = T}</p>
+<p>F = {ID→其他属性}</p>
+</li>
+<li><p><strong>作业</strong></p>
+<p>homeworks({<u>ID</u>, 标题, 内容, 截止日期}, D, DOM, F)</p>
+<p>D = {STR, N, T}</p>
+<p>DOM = {DOM(ID) = N, DOM(标题) = DOM(内容) = STR,  DOM(截止时间) = T}</p>
+<p>F = {ID→其他属性}</p>
+</li>
+<li><p><strong>通知</strong></p>
+<p>notices({<u>ID</u>, 发布时间, 内容, 标题}, D, DOM, F)</p>
+<p>D = {STR, N, T}</p>
+<p>DOM = {DOM(ID) = N, DOM(标题) = DOM(内容) = STR,  DOM(发布时间) = T}</p>
+<p>F = {ID→其他属性}</p>
+</li>
+<li><p><strong>体测成绩与TD</strong></p>
+<p>examineResultAndTd({<u>学生email, 学年</u>, 累计 TD 数量, 体重, 身高, 体育项目结果}, D, DOM, F)</p>
+<p>D = {STR, N, F}</p>
+<p>DOM = {DOM(学年) = DOM(累计 TD 数量) = N, DOM(学生 email) = DOM(体育项目结果) = STR, DOM(身高) = DOM(体重) = F}</p>
+<p>F = {(学生email, 学年)→其他属性}</p>
+</li>
+</ol>
+<h3 id="3-1-2-联系"><a href="#3-1-2-联系" class="headerlink" title="3.1.2 联系"></a>3.1.2 联系</h3><p>约定以下函数依赖集合省略非主属性对码的完全函数依赖。</p>
+<h4 id="3-1-2-1-多对多联系"><a href="#3-1-2-1-多对多联系" class="headerlink" title="3.1.2.1 多对多联系"></a>3.1.2.1 多对多联系</h4><ol>
+<li><p><strong>学生-课程</strong></p>
+<p>studentCourse({<u>student, course</u>, grade}, D, DOM, F)</p>
+<p>D = {STR, N}</p>
+<p>DOM = {DOM(student) = STR, DOM(course) = DOM(grade) = N}</p>
+<p><strong><em>外码</em></strong>：student 对应学生表的主码 student.email, course 对应课程表的主码 course.ID</p>
+</li>
+<li><p><strong>老师-课程</strong></p>
+<p>teacherCourse({<u>teacher, course</u>}, D, DOM, F)</p>
+<p>D = {STR, N}</p>
+<p>DOM = {DOM(teacher) = STR, DOM(course) = N}</p>
+<p><strong><em>外码</em></strong>: teacher 对应老师表的主码 teacher.email, course 对应课程表的主码 course.ID</p>
+</li>
+<li><p><strong>学生-活动</strong></p>
+<p>studentActivity({<u>student, activity</u>, time}, D, DOM, F)</p>
+<p>D = {STR, N, T}</p>
+<p>DOM = {DOM(student) = STR, DOM(activity) = N, DOM(time) = T}</p>
+<p><strong><em>外码</em></strong>：student 对应学生表的主码 student.email, activity 对应活动表的主码 activity.ID</p>
+</li>
+<li><p><strong>作业提交表</strong><br>hwSubmission({<u>student, homework</u>, time, file}, D, DOM, F)</p>
+<p>D = {STR, N, T}</p>
+<p> DOM = {DOM(student) = STR, DOM(homework) = N, DOM(time) = T, DOM(file) = STR}</p>
+<p> <strong><em>外码</em></strong>：student 对应学生表的主码 student.email, homework 对应作业表的主码 homework.ID</p>
+</li>
+</ol>
+<h4 id="3-1-2-2-一对多联系"><a href="#3-1-2-2-一对多联系" class="headerlink" title="3.1.2.2 一对多联系"></a>3.1.2.2 一对多联系</h4><p>   对于 1:n 联系，表的主码是 n 对应的实体。</p>
+<ol>
+<li><p><strong>活动创建表</strong><br>activityCreate({<u>activity</u>, student}, D, DOM, F)</p>
+<p>D = {STR, N}</p>
+<p>DOM = {DOM(activity) = N, DOM(student) = STR}</p>
+<p><strong><em>外码</em></strong>：activity 对应活动表的主码 activity.ID, student 对应学生表的主码 student.email</p>
+</li>
+<li><p><strong>学生-体测成绩和TD 对应表</strong><br>studentExamineResultAndTd({<u>examineResultAndTd</u>, student}, D, DOM, F)</p>
+<p>D = {STR, N}</p>
+<p>DOM = {DOM(student) = STR, DOM(examineResultAndTd) = N}</p>
+<p><strong><em>外码</em></strong>：student 对应学生表的主码 student.email, examineResultAndTd 对应体测成绩和TD 表的主码 examineResultAndTd.ID</p>
+</li>
+<li><p><strong>课程-通知表</strong><br>courseNotice({<u>notice</u>, course}, D, DOM, F)</p>
+<p>D = {N}</p>
+<p>DOM = {DOM(course) = DOM(notice) = N}</p>
+<p> <strong><em>外码</em></strong>：course 对应课程表的主码 course.ID, notice 对应通知表的主码 notice.ID</p>
+</li>
+<li><p><strong>教师-通知表</strong><br>teacherNotice({<u>notice</u>, teacher}, D, DOM, F)</p>
+<p> D = {STR, N}</p>
+<p> DOM = {DOM(teacher) = STR, DOM(notice) = N}</p>
+<p> <strong><em>外码</em></strong>：teacher 对应教师表的主码 teacher.email, notice 对应通知表的主码 notice.ID</p>
+</li>
+<li><p><strong>教师-负责的课程表</strong><br>managerCourse({<u>course</u>, teacher}, D, DOM, F)</p>
+<p> D = {STR, N}</p>
+<p> DOM = {DOM(teacher) = STR, DOM(course) = N}</p>
+<p> <strong><em>外码</em></strong>：teacher 对应教师表的主码 teacher.email, course 对应课程表的主码 course.ID</p>
+</li>
+<li><p><strong>课程-作业表</strong><br>courseHomework({<u>homework</u>, course}, D, DOM, F)</p>
+<p> D = {N}</p>
+<p> DOM = {DOM(course) = DOM(homework) = N}</p>
+<p> <strong><em>外码</em></strong>：course 对应课程表的主码 course.ID, homework 对应作业表的主码 homework.ID</p>
+</li>
+<li><p><strong>教师-作业表</strong><br>teacherHomework({<u>homework</u>, teacher}, D, DOM, F)</p>
+<p> D = {STR, N}</p>
+<p> DOM = {DOM(teacher) = STR, DOM(homework) = N}</p>
+<p> <strong><em>外码</em></strong>：teacher 对应教师表的主码 teacher.email, homework 对应作业表的主码 homework.ID</p>
+</li>
+</ol>
+<h2 id="3-2-关系模式范式等级的判定与规范"><a href="#3-2-关系模式范式等级的判定与规范" class="headerlink" title="3.2 关系模式范式等级的判定与规范"></a>3.2 关系模式范式等级的判定与规范</h2><p>   分别对上述表进行范式等级判断，然后将未达到 3NF 的表规范到 3NF。</p>
+<h3 id="3-2-1-实体"><a href="#3-2-1-实体" class="headerlink" title="3.2.1 实体"></a>3.2.1 实体</h3><ol>
+<li><p><strong>学生</strong> </p>
+<p>students({<u>邮箱</u>, 密码, 姓名, 学号, 年级}, D, DOM, F)</p>
+<p>F = {邮箱→其他属性, 学号→密码, 学号→姓名, 学号→邮箱, 学号→年级} </p>
+<p>对于学生表，邮箱是主码，学号是一个候选码，满足对于所有函数依赖 $X\rightarrow Y$ ，X 都是码，所以学生表 $\in BCNF$ ，学生表 $\in 3NF$ 。</p>
+</li>
+<li><p><strong>教师</strong></p>
+<p>teachers({<u>邮箱</u>, 密码, 姓名}, D, DOM, F)</p>
+<p>F = {邮箱→密码, 邮箱→姓名} </p>
+<p>对于该表，非主属性仅仅依赖于唯一的主码，因此属于 BCNF，也属于 3NF。</p>
+</li>
+<li><p><strong>课程</strong></p>
+<p>courses({<u>ID</u>, 名称, 开设年份, 开设学期, 上课时间, 上课地点}, D, DOM, F)</p>
+<p>F = {ID→其他属性}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+<li><p><strong>活动</strong></p>
+<p>activities({<u>ID</u>, 活动主题, 具体内容, 标签, 开始时间, 结束时间, TD, 博雅}, D, DOM, F)</p>
+<p>F = {ID→其他属性}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+<li><p><strong>作业</strong></p>
+<p>homeworks({<u>ID</u>, 标题, 内容, 截止日期}, D, DOM, F)</p>
+<p>F = {ID→其他属性}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+<li><p><strong>通知</strong></p>
+<p>notices({<u>ID</u>, 发布时间, 内容, 标题}, D, DOM, F)</p>
+<p>F = {ID→其他属性}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+<li><p><strong>体测成绩与TD</strong></p>
+<p>examineResultAndTd({<u>学生email, 学年</u>, 累计 TD 数量, 体重, 身高, 体育项目结果}, D, DOM, F)</p>
+<p>F = {(学生email, 学年)→其他属性}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+</ol>
+<h3 id="3-2-2-联系"><a href="#3-2-2-联系" class="headerlink" title="3.2.2 联系"></a>3.2.2 联系</h3><p>约定以下函数依赖集合省略非主属性对码的完全函数依赖。</p>
+<h4 id="3-2-2-1-多对多联系"><a href="#3-2-2-1-多对多联系" class="headerlink" title="3.2.2.1 多对多联系"></a>3.2.2.1 多对多联系</h4><ol>
+<li><p><strong>学生-课程</strong></p>
+<p>studentCourse({<u>student, course</u>, grade}, D, DOM, F)</p>
+<p>F = {(student, course)→grade}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+<li><p><strong>老师-课程</strong></p>
+<p>teacherCourse({<u>teacher, course</u>}, D, DOM, F)</p>
+<p>所有属性都是主码，因此属于 3NF，主属性之间不存在函数依赖，因此属于 BCNF。</p>
+</li>
+<li><p><strong>学生-活动</strong></p>
+<p>studentActivity({<u>student, activity</u>, time}, D, DOM, F)</p>
+<p>F = {(student, activity)→time}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+<li><p><strong>作业提交表</strong><br>hwSubmission({<u>student, homework</u>, time, file}, D, DOM, F)</p>
+<p>F = {(student, homework)→time, (student, homework)→ file}</p>
+<p>对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。</p>
+</li>
+</ol>
+<h4 id="3-2-2-2-一对多联系"><a href="#3-2-2-2-一对多联系" class="headerlink" title="3.2.2.2 一对多联系"></a>3.2.2.2 一对多联系</h4><p>   对于 1:n 联系，表的主码是 n 对应的实体。在具体实现的时候可以将 n 对应的实体表和联系表合并，不会影响范式等级。</p>
+<ol>
+<li><p><strong>活动创建表</strong><br>activityCreate({<u>activity</u>, student}, D, DOM, F)</p>
+<p>F = {activites→student}</p>
+<p>函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。</p>
+</li>
+<li><p><strong>学生-体测成绩和TD 对应表</strong><br>studentExamineResultAndTd({<u>examineResultAndTd</u>, student}, D, DOM, F)</p>
+<p>F = {examineResultAndTd→student}</p>
+<p>函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。</p>
+</li>
+<li><p><strong>课程-通知表</strong><br>courseNotice({<u>notice</u>, course}, D, DOM, F)</p>
+<p>F = {notice→course}</p>
+<p>函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。</p>
+</li>
+<li><p><strong>教师-通知表</strong><br>teacherNotice({<u>notice</u>, teacher}, D, DOM, F)</p>
+<p>F = {notice→teacher}</p>
+<p>函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。</p>
+</li>
+<li><p><strong>教师-负责的课程表</strong><br>managerCourse({<u>course</u>, teacher}, D, DOM, F)</p>
+<p>F = {course→teacher}</p>
+<p>函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。</p>
+</li>
+<li><p><strong>课程-作业表</strong><br>courseHomework({<u>homework</u>, course}, D, DOM, F)</p>
+<p>F = {homework→course}</p>
+<p>函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。</p>
+</li>
+<li><p><strong>教师-作业表</strong><br>teacherHomework({<u>homework</u>, teacher}, D, DOM, F)</p>
+<p>F = {homework→teacher}</p>
+<p>函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。</p>
+</li>
+</ol>
+<h2 id="3-3-数据库设计优化"><a href="#3-3-数据库设计优化" class="headerlink" title="3.3 数据库设计优化"></a>3.3 数据库设计优化</h2><h3 id="3-3-1-索引优化"><a href="#3-3-1-索引优化" class="headerlink" title="3.3.1 索引优化"></a>3.3.1 索引优化</h3><p>   对于所有的表，我们都建立了主码的索引，因为大多数查询是基于主码进行的。</p>
+<p>   对于学生表，由于除了通过邮箱（主码）查询学生信息，还可能通过学生学号进行查询，索引我们在学生学号上建立了唯一索引，以便于通过学号查询学生信息。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">unique</span> <span class="token keyword">index</span> student_id <span class="token keyword">on</span> tb_students<span class="token punctuation">(</span>student_id<span class="token punctuation">)</span><span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>   对于关系表，同样以其主码为索引，同时对于经常需要查询的字段，也建立了索引。例如对于学生-活动表，我们用以下语句分别建立了 (学生, 活动)索引，学生索引，活动索引，以便于查询学生参加的活动，活动的参加学生，以及学生是否参加了某个活动。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">unique</span> <span class="token keyword">index</span> SA <span class="token keyword">on</span> tb_student_activity<span class="token punctuation">(</span>student_id<span class="token punctuation">,</span> activity_id<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+<span class="token keyword">create</span> <span class="token keyword">index</span> student_id <span class="token keyword">on</span> tb_student_activity<span class="token punctuation">(</span>student_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">create</span> <span class="token keyword">index</span> activity_id <span class="token keyword">on</span> tb_student_activity<span class="token punctuation">(</span>activity_id<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>   其余的索引建立语句基于以上原则，由于篇幅原因这里不再列出。</p>
+<h3 id="3-3-2-使用外键"><a href="#3-3-2-使用外键" class="headerlink" title="3.3.2 使用外键"></a>3.3.2 使用外键</h3><p>   使用外键来保证数据的关联性并提高访问速度，同时在使用过程中保证数据的参照完整性。在本项目的后端数据库中，各表具有完备的外键联系，通过遵循这种外键关系进行实际数据库的建立，将从逻辑的角度保证数据库的设计功能能够完全正确执行到位。</p>
+<h3 id="3-3-3-优化查询语句"><a href="#3-3-3-优化查询语句" class="headerlink" title="3.3.3 优化查询语句"></a>3.3.3 优化查询语句</h3><p>   可以优化的地方有如下几点：</p>
+<ul>
+<li><p>在大多数情况下，联表查询比嵌套查询更有效，因此能使用联表查询的地方尽可能使用联表查询比较高效</p>
+</li>
+<li><p>尽可能不将查询语句放在循环内也是一种优化的方法</p>
+</li>
+<li><p>避免在查询中使用复杂的函数以及 LIKE 关键词也是一种优化方法</p>
+<p>通过使用较好的 ORM 框架可以解决以上问题。</p>
+</li>
+</ul>
+<h3 id="3-3-4-合并相同主码的表"><a href="#3-3-4-合并相同主码的表" class="headerlink" title="3.3.4 合并相同主码的表"></a>3.3.4 合并相同主码的表</h3><p>   对于主码相同的表，可以在设计的时候将其合并，例如将<em>活动创建表</em>和<em>活动表</em>合并，直接将活动的创建人和创建时间存入<em>活动表</em>，这样做的好处是在同时需要查询两个表中的数据时，减少了一次连接操作，提高效率。</p>
+<h3 id="3-3-5-严格约束加入数据库的数据"><a href="#3-3-5-严格约束加入数据库的数据" class="headerlink" title="3.3.5 严格约束加入数据库的数据"></a>3.3.5 严格约束加入数据库的数据</h3><p>   通过建表时添加约束、用触发器实现约束等方法，严格约束对数据库的增删操作，避免将异常数据插入数据表。</p>
+<ul>
+<li>建表时可以添加的约束有主键约束、UNIQUE 约束、外码约束等。</li>
+<li>用触发器可以更灵活的实现想要的约束，例如检查某个整数的取值在一定范围内。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/DBMS/" rel="tag"><i class="fa fa-tag"></i> DBMS</a>
+              <a href="/tags/S5%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S5课上</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/ea36b7db/" rel="prev" title="Ruby设计-开发日志">
+      <i class="fa fa-chevron-left"></i> Ruby设计-开发日志
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/c89ebf90/" rel="next" title="DBMS-实现报告">
+      DBMS-实现报告 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-text">一、需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E9%9C%80%E6%B1%82%E6%8F%8F%E8%BF%B0"><span class="nav-text">1.1 需求描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E8%83%8C%E6%99%AF%E8%B0%83%E7%A0%94"><span class="nav-text">1.1.1 背景调研</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F"><span class="nav-text">1.1.2 用户画像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-%E7%94%A8%E6%88%B7%E8%B0%83%E7%A0%94"><span class="nav-text">1.1.3 用户调研</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-%E9%9C%80%E6%B1%82%E6%80%BB%E7%BB%93"><span class="nav-text">1.1.4 需求总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE"><span class="nav-text">1.2 数据流图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E6%80%BB%E4%BD%93%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE"><span class="nav-text">1.2.1 总体数据流图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E9%83%A8%E5%88%86%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE"><span class="nav-text">1.2.2 用户管理部分数据流图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E8%AF%BE%E7%A8%8B%E9%83%A8%E5%88%86%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE"><span class="nav-text">1.2.3 课程部分数据流图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-4-%E6%B4%BB%E5%8A%A8%E9%83%A8%E5%88%86%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE"><span class="nav-text">1.2.4 活动部分数据流图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%95%B0%E6%8D%AE%E5%85%83%E7%B4%A0%E8%A1%A8"><span class="nav-text">1.3 数据元素表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E9%83%A8%E5%88%86"><span class="nav-text">1.3.1 用户管理部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E8%AF%BE%E7%A8%8B%E7%AE%A1%E7%90%86%E9%83%A8%E5%88%86"><span class="nav-text">1.3.2 课程管理部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3-%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86%E9%83%A8%E5%88%86"><span class="nav-text">1.3.3 活动管理部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-4-%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E9%83%A8%E5%88%86"><span class="nav-text">1.3.4 个人信息部分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E5%BF%B5%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1"><span class="nav-text">二、数据库概念模式设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%B3%BB%E7%BB%9F%E5%88%9D%E6%AD%A5-ER-%E5%9B%BE"><span class="nav-text">2.1 系统初步 ER 图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E5%AE%9E%E4%BD%93-ER-%E5%9B%BE"><span class="nav-text">2.1.1 实体 ER 图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-%E5%85%B3%E7%B3%BB-ER-%E5%9B%BE"><span class="nav-text">2.1.2 关系 ER 图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC-ER-%E5%9B%BE"><span class="nav-text">2.2 系统基本 ER 图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1"><span class="nav-text">三、数据库逻辑模式设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F"><span class="nav-text">3.1 数据库关系模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E5%AE%9E%E4%BD%93"><span class="nav-text">3.1.1 实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E8%81%94%E7%B3%BB"><span class="nav-text">3.1.2 联系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-1-%E5%A4%9A%E5%AF%B9%E5%A4%9A%E8%81%94%E7%B3%BB"><span class="nav-text">3.1.2.1 多对多联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-2-%E4%B8%80%E5%AF%B9%E5%A4%9A%E8%81%94%E7%B3%BB"><span class="nav-text">3.1.2.2 一对多联系</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E8%8C%83%E5%BC%8F%E7%AD%89%E7%BA%A7%E7%9A%84%E5%88%A4%E5%AE%9A%E4%B8%8E%E8%A7%84%E8%8C%83"><span class="nav-text">3.2 关系模式范式等级的判定与规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%AE%9E%E4%BD%93"><span class="nav-text">3.2.1 实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E8%81%94%E7%B3%BB"><span class="nav-text">3.2.2 联系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-1-%E5%A4%9A%E5%AF%B9%E5%A4%9A%E8%81%94%E7%B3%BB"><span class="nav-text">3.2.2.1 多对多联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-2-%E4%B8%80%E5%AF%B9%E5%A4%9A%E8%81%94%E7%B3%BB"><span class="nav-text">3.2.2.2 一对多联系</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%BC%98%E5%8C%96"><span class="nav-text">3.3 数据库设计优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96"><span class="nav-text">3.3.1 索引优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E4%BD%BF%E7%94%A8%E5%A4%96%E9%94%AE"><span class="nav-text">3.3.2 使用外键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-%E4%BC%98%E5%8C%96%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="nav-text">3.3.3 优化查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-4-%E5%90%88%E5%B9%B6%E7%9B%B8%E5%90%8C%E4%B8%BB%E7%A0%81%E7%9A%84%E8%A1%A8"><span class="nav-text">3.3.4 合并相同主码的表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-5-%E4%B8%A5%E6%A0%BC%E7%BA%A6%E6%9D%9F%E5%8A%A0%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-text">3.3.5 严格约束加入数据库的数据</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这篇总结并不是一个很好的知识体系，他只是为了考试而临时搭建的一个考试体系。 通常把存放一个二进制单位的物理器件称为存储元，地址码相同的多个存储元构成一个存储单元（这个定义一针见血！）。若干个存储单元构成一个存储体（又被称为存储矩阵），其特点就是会用到地址这个概念。 这个没有更新完，是因为我有看了关于虚拟机的部分内容，感觉挺有意思的，想写一个更加融汇贯通的，所以搭建文章脉络的周期会延长，考试前可能更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成-存储系统">
+<meta property="og:url" content="https://thysrael.github.io/posts/dc316254/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="这篇总结并不是一个很好的知识体系，他只是为了考试而临时搭建的一个考试体系。 通常把存放一个二进制单位的物理器件称为存储元，地址码相同的多个存储元构成一个存储单元（这个定义一针见血！）。若干个存储单元构成一个存储体（又被称为存储矩阵），其特点就是会用到地址这个概念。 这个没有更新完，是因为我有看了关于虚拟机的部分内容，感觉挺有意思的，想写一个更加融汇贯通的，所以搭建文章脉络的周期会延长，考试前可能更">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/dc316254/image-20220108142811614.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/dc316254/image-20220107120238544.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/dc316254/image-20220107120320101.png">
+<meta property="article:published_time" content="2022-01-06T13:05:35.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:49.058Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S3复习">
+<meta property="article:tag" content="计算机组成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/dc316254/image-20220108142811614.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/dc316254/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>计算机组成-存储系统 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/dc316254/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机组成-存储系统
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-06 21:05:35" itemprop="dateCreated datePublished" datetime="2022-01-06T21:05:35+08:00">2022-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">计算机组成</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这篇总结并不是一个很好的知识体系，他只是为了考试而临时搭建的一个考试体系。</p>
+<p>通常把存放一个二进制单位的物理器件称为<strong>存储元</strong>，<strong>地址码相同的多个存储元构成一个存储单元</strong>（这个定义一针见血！）。若干个存储单元构成一个存储体（又被称为存储矩阵），其特点就是会用到<strong>地址</strong>这个概念。</p>
+<p>这个没有更新完，是因为我有看了关于虚拟机的部分内容，感觉挺有意思的，想写一个更加融汇贯通的，所以搭建文章脉络的周期会延长，考试前可能更不了了。</p>
+<span id="more"></span>
+<h2 id="一、存储概念"><a href="#一、存储概念" class="headerlink" title="一、存储概念"></a>一、存储概念</h2><h3 id="1-1-存储器性质"><a href="#1-1-存储器性质" class="headerlink" title="1.1 存储器性质"></a>1.1 存储器性质</h3><h4 id="1-1-1-存取方式"><a href="#1-1-1-存取方式" class="headerlink" title="1.1.1 存取方式"></a>1.1.1 存取方式</h4><ul>
+<li>随机存储器（RAM）：存储器的任何一个<strong>存储单元</strong>（就是<strong>编址单位</strong>）的内容都可以随机存取，用作主存或者Cache。</li>
+<li>只读存储器（ROM）：内容可以随机读出，但是不能写入。还比如U盘</li>
+<li>顺序存取存储器：只能按照某种顺序存取，存取时间的长短与信息在存储体上的物理位置有关，特点是存取速度慢，比如磁带。</li>
+<li>直接存取存储器：不像顺序存取存储器完全按位置访问，也不像RAM可以随机访问，存取信息的时候通常先寻找整个存储器中的某一个小区域，然后在这个小区域内顺序查找，比如说磁盘，光盘（CD-ROM）</li>
+</ul>
+<h4 id="1-1-2-信息的可保存性"><a href="#1-1-2-信息的可保存性" class="headerlink" title="1.1.2 信息的可保存性"></a>1.1.2 信息的可保存性</h4><p>断点后，存储信息即消失的存储器，称为<strong>易失性</strong>存储器，比如说RAM，而断点后仍保有信息的存储器，被称为<strong>非易失性</strong>存储器。如ROM和磁盘。</p>
+<p>若某个存储器的存储单元被读出时，原存储信息被破坏，那么就称为破坏性读出，比如说DRAM。具有破坏性读出性能的存储器，每次读出操作以后，必须紧接一个再生操作，以恢复被破坏信息。</p>
+<h3 id="1-2-RAM"><a href="#1-2-RAM" class="headerlink" title="1.2 RAM"></a>1.2 RAM</h3><h4 id="1-2-1-SRAM和DRAM对比"><a href="#1-2-1-SRAM和DRAM对比" class="headerlink" title="1.2.1 SRAM和DRAM对比"></a>1.2.1 SRAM和DRAM对比</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SRAM</th>
+<th>DRAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结构</td>
+<td>双稳态六晶体管触发器</td>
+<td>单晶体管电容</td>
+</tr>
+<tr>
+<td>破坏性读出</td>
+<td>非</td>
+<td>是</td>
+</tr>
+<tr>
+<td>刷新</td>
+<td>不需要</td>
+<td>需要</td>
+</tr>
+<tr>
+<td>送行列地址</td>
+<td>同时送</td>
+<td>分两次送</td>
+</tr>
+<tr>
+<td>集成度</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>功耗</td>
+<td>大</td>
+<td>小</td>
+</tr>
+<tr>
+<td>用途</td>
+<td>高速缓存</td>
+<td>主存</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="1-2-2-DRAM刷新"><a href="#1-2-2-DRAM刷新" class="headerlink" title="1.2.2 DRAM刷新"></a>1.2.2 DRAM刷新</h4><p>因为DRAM电容上的电荷只能维持$1\sim2$ 秒，所以必须在信息消失前进行刷新。此外，即使DRAM的破坏读出后会有恢复过程，那么也必须刷新，可能是应为没法精确定位。</p>
+<p>首先介绍<strong>刷新周期</strong>的概念，刷新周期指的是信息的<strong>保存时间</strong>，注意，刷新的最小间隔不是刷新周期，刷新一次用的时间也不是刷新周期。刷新周期说的是在这个时间间隔内，我们必须刷新一次，而不是刷新一次要花一个刷新周期的时间。就好比我们每年放七天假，一年一个年假，刷新周期就类似于一年，而不是七天。</p>
+<p>DRAM是按照行刷新的，每次刷新都刷一行，DRAM芯片中有很多行，所以要在一个刷新周期中安排不同的刷新。就好像在一年的时间里要给不同的人安排不同日期的假期一样。以此我们产生了多种方式</p>
+<p><img src="/posts/dc316254/image-20220108142811614.png" alt="image-20220108142811614"></p>
+<ul>
+<li>集中刷新，就是在一段固定的时间里，对所有行逐行刷新，就好像把所有人的假期都安排到一定的顺序时间里，在这个期间内停止对存储器的读写，称为“死时间”，又称访存“死区”。</li>
+<li>分散刷新，将对每行的刷新分散到各个工作周期中，每个工作周期分为两部分：前半部分用于正常的读写或者保持，后半部分用于刷新（这样一个刷新周期，每行应该就会刷新多次）。这样就没有“死时间”了。但是系统的存取周期会加长，降低了整机的速度。（这个跟图就有点不一样了，不知道具体到底哪个对）。</li>
+<li>异步刷新：用刷新周期除以行数，得到两次刷新操作之间的时间间隔t，然后每隔t产生一次刷新请求。这样避免CPU的连续等待（但是依然是有死时间的），而且减少了刷新次数。</li>
+</ul>
+<h3 id="1-3-ROM分类"><a href="#1-3-ROM分类" class="headerlink" title="1.3 ROM分类"></a>1.3 ROM分类</h3><ul>
+<li>掩模式ROM：MROM，内容在生产过程中写入，不可更改。</li>
+<li>一次可编程ROM：PROM，允许用户自己编程，但是一旦写入，不可更改。</li>
+<li>可擦出可编程ROM：EPROM：可以改写，但是编程次数有限，而且写入时间过长。</li>
+<li>闪存：Flash Memory可以快速擦除和重写，价格便宜。</li>
+<li>固态硬盘：继承了Flash Memory的优点，但是价格较贵。</li>
+</ul>
+<hr>
+<h2 id="二、存储器的拓展"><a href="#二、存储器的拓展" class="headerlink" title="二、存储器的拓展"></a>二、存储器的拓展</h2><h3 id="2-1-存储芯片结构"><a href="#2-1-存储芯片结构" class="headerlink" title="2.1 存储芯片结构"></a>2.1 存储芯片结构</h3><p>在介绍芯片之前，首先介绍一下<strong>存储矩阵</strong>的概念，它说的是存储单元在存储芯片中的<strong>硬件排列</strong>结构，排成一个矩阵，有行数和列数，根据行数和列数，我们可以取出特定的存储单元。但是行选择线的输入信号是地址，列选择线的信号也是地址。所以不存在行是<strong>字线</strong>，列是<strong>位线</strong>这种说法，这是把存储矩阵与存储芯片弄混的结果。</p>
+<p>之说以会弄混，是因为存储芯片同样也可以被视为二维结构，比如说 $1K\times 8$ 。但是我们说，此时的两轴，变成了<strong>地址线（字线）和数据线（位线）</strong>。之前的存储矩阵，相当于把地址线分为<strong>行选线和列选线</strong>两部分。正如前一句话说的，存储器芯片最重要的就是这两个参数，一个是<strong>有多少位（即地址线的表示范围）</strong>，另一个是<strong>字是多少位的（即数据线位数）</strong>。我们做拓展，就是从这两个方向入手。</p>
+<p>总结一下，存储芯片的端口有如下几种：地址线，数据线，片选端，读写控制端。</p>
+<h3 id="2-2-译码器"><a href="#2-2-译码器" class="headerlink" title="2.2 译码器"></a>2.2 译码器</h3><p>我们这里特指把地址翻译成独热码的过程，<strong>独热码</strong>是个特殊的码，其特殊之处就在于其不仅可以作为信号表示信息，而且还有<strong>实际作用</strong>，比如驱动字选线。我之所以没有意识到它的作用，是因为在译码器是集成在存储芯片内部的。</p>
+<p>当我们做位拓展的时候，需要用到片选信号，此时是需要外置译码器的。</p>
+<h3 id="2-3-芯片拓展"><a href="#2-3-芯片拓展" class="headerlink" title="2.3 芯片拓展"></a>2.3 芯片拓展</h3><p>经过上面的介绍，可以明确，一个存储器我们最看重的两个指标，<strong>一个是地址的范围，一个是字的位数</strong>，也就是这两个标志 $a \times b$。a就是地址的范围，b就是字的宽度。因为单个存储芯片与实际存储区存在差异，所以我们才需要拓展，拓展的对象就是这两个参数。</p>
+<h4 id="2-3-1-字拓展"><a href="#2-3-1-字拓展" class="headerlink" title="2.3.1 字拓展"></a>2.3.1 字拓展</h4><p>注意这里说字拓展，不是把字拓展，而是拓展字的数量，也就是说，拓展地址范围，此时地址线的位数增加，那么多出的地址线，就会用于控制片选信号，控制前需要经过一个外置的<strong>译码器</strong>，结构如图：</p>
+<p><img src="/posts/dc316254/image-20220107120238544.png" alt="image-20220107120238544"></p>
+<h4 id="2-3-2-位拓展"><a href="#2-3-2-位拓展" class="headerlink" title="2.3.2 位拓展"></a>2.3.2 位拓展</h4><p>就是说对数据位进行拓展，是很简单的操作。装置如下：</p>
+<p><img src="/posts/dc316254/image-20220107120320101.png" alt="image-20220107120320101"></p>
+<hr>
+<h2 id="三、高速缓存"><a href="#三、高速缓存" class="headerlink" title="三、高速缓存"></a>三、高速缓存</h2><p>块和页都是复制的单位</p>
+<p>块和页的大小决定了偏移量的位数</p>
+<p>全相连会使命中率提到最高，但是同时比较tag的代价达到最高，我们要在比较付出的代价和缺失付出的代价中权衡。所以越低的层次（比如虚拟存储），就用的是全相连</p>
+<p>写直达操作就是访存，所以在底层一般用写回，这样访存次数减少。</p>
+<h2 id="四、虚拟存储"><a href="#四、虚拟存储" class="headerlink" title="四、虚拟存储"></a>四、虚拟存储</h2><p>因为缺页代价惊人，所以我们选择了全相连，后来有因为全相连查找机制代价太高了（拿一个地址去整个内存中进行比较），所以我们选择了用页表（本质是一个索引）来进行查找</p>
+<p>页表用虚页号做索引，查找内容是实页号。</p>
+<p>页表，程序计数器以及寄存器，确定了一个虚拟机的状态，我们通常称这个状态为一个进程。</p>
+<p>由于页表包含了每个可能的虚拟页的映射，所以不需要tag位，页表的地址就是由虚页号组成的。</p>
+<p>写直达策略一般采用写缓冲机制作为完善补充</p>
+<p>有了虚拟存储以后，cache是按照物理地址进行访问的</p>
+<p>虚拟存储为的好像不只是更大的存储系统，而是可以共享的存储系统</p>
+<p>虚拟机没有那么可怕，它可以类比于线程</p>
+<p>虚拟存储的虚拟二字，或许是与虚拟机同义的</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S3%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S3复习</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" rel="tag"><i class="fa fa-tag"></i> 计算机组成</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/c9751615/" rel="prev" title="计算机组成-数据表示">
+      <i class="fa fa-chevron-left"></i> 计算机组成-数据表示
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/22819985/" rel="next" title="离散数学-集合论">
+      离散数学-集合论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AD%98%E5%82%A8%E6%A6%82%E5%BF%B5"><span class="nav-text">一、存储概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%AD%98%E5%82%A8%E5%99%A8%E6%80%A7%E8%B4%A8"><span class="nav-text">1.1 存储器性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-%E5%AD%98%E5%8F%96%E6%96%B9%E5%BC%8F"><span class="nav-text">1.1.1 存取方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-%E4%BF%A1%E6%81%AF%E7%9A%84%E5%8F%AF%E4%BF%9D%E5%AD%98%E6%80%A7"><span class="nav-text">1.1.2 信息的可保存性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-RAM"><span class="nav-text">1.2 RAM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-SRAM%E5%92%8CDRAM%E5%AF%B9%E6%AF%94"><span class="nav-text">1.2.1 SRAM和DRAM对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-DRAM%E5%88%B7%E6%96%B0"><span class="nav-text">1.2.2 DRAM刷新</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-ROM%E5%88%86%E7%B1%BB"><span class="nav-text">1.3 ROM分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E6%8B%93%E5%B1%95"><span class="nav-text">二、存储器的拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%AD%98%E5%82%A8%E8%8A%AF%E7%89%87%E7%BB%93%E6%9E%84"><span class="nav-text">2.1 存储芯片结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%AF%91%E7%A0%81%E5%99%A8"><span class="nav-text">2.2 译码器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%8A%AF%E7%89%87%E6%8B%93%E5%B1%95"><span class="nav-text">2.3 芯片拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E5%AD%97%E6%8B%93%E5%B1%95"><span class="nav-text">2.3.1 字拓展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E4%BD%8D%E6%8B%93%E5%B1%95"><span class="nav-text">2.3.2 位拓展</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98"><span class="nav-text">三、高速缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8"><span class="nav-text">四、虚拟存储</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

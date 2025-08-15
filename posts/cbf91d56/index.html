@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文提出了一种用户态缺页异常处理框架，可以轻松适配不同的处理策略，适用于高并发环境。其亮点在于：  框架的易用性： 基于 Linux 的 Semi-Microkernel 设计 透明   性能： 采用了微内核和外核思想中的 upcall 设计 采用了先进的异步批处理 IO 后端 io_ring     一、背景1.1 特化内存管理从软件层去看，目前内存密集型应用越来越多，如 TB 级的机器学习、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海边拾贝-ExtMem">
+<meta property="og:url" content="https://thysrael.github.io/posts/cbf91d56/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="本文提出了一种用户态缺页异常处理框架，可以轻松适配不同的处理策略，适用于高并发环境。其亮点在于：  框架的易用性： 基于 Linux 的 Semi-Microkernel 设计 透明   性能： 采用了微内核和外核思想中的 upcall 设计 采用了先进的异步批处理 IO 后端 io_ring     一、背景1.1 特化内存管理从软件层去看，目前内存密集型应用越来越多，如 TB 级的机器学习、">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/userfaultsd.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/extmem.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/userfaultfd1.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/extmem2.drawio.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/io_uring.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/benchmark-1-1724747043453-9.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/image-20240827164626572.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/image-20240827165459110.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/image-20240827170114740.png">
+<meta property="og:image" content="https://thysrael.github.io/posts/cbf91d56/image-20240827170458158.png">
+<meta property="article:published_time" content="2024-08-26T12:31:23.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.894Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="S8假期">
+<meta property="article:tag" content="海边拾贝">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thysrael.github.io/posts/cbf91d56/userfaultsd.drawio.png">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/cbf91d56/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>海边拾贝-ExtMem | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/cbf91d56/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          海边拾贝-ExtMem
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-26 20:31:23" itemprop="dateCreated datePublished" datetime="2024-08-26T20:31:23+08:00">2024-08-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" itemprop="url" rel="index"><span itemprop="name">海边拾贝</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>本文提出了一种用户态缺页异常处理框架，可以轻松适配不同的处理策略，适用于高并发环境。其亮点在于：</p>
+<ul>
+<li>框架的易用性：<ul>
+<li>基于 Linux 的 Semi-Microkernel 设计</li>
+<li>透明</li>
+</ul>
+</li>
+<li>性能：<ul>
+<li>采用了微内核和外核思想中的 upcall 设计</li>
+<li>采用了先进的异步批处理 IO 后端 io_ring</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><h3 id="1-1-特化内存管理"><a href="#1-1-特化内存管理" class="headerlink" title="1.1 特化内存管理"></a>1.1 特化内存管理</h3><p>从软件层去看，目前内存密集型应用越来越多，如 TB 级的机器学习、大型图计算，内存数据库等。从硬件层去看，硬件新特性有很多，比如分离式内存、分层内存等。这些新的变化都对内存管理策略提出了新的挑战。</p>
+<p>通用操作系统的内存管理策略并不适用于内存密集型应用，也不能针对性的利用硬件新特性。有研究表明最大的系统瓶颈是内存管理而不是设备带宽。</p>
+<p>特化的内存管理策略（offload，prefetch，swap policy…）可以大大缓解这一现象。但是<strong>特化策略的普适性并不好</strong>。</p>
+<h3 id="1-2-内核态内存管理"><a href="#1-2-内核态内存管理" class="headerlink" title="1.2 内核态内存管理"></a>1.2 内核态内存管理</h3><p>因为 Linux 内存管理模块十分基础、关键和复杂，所以在内核中开发、测试和部署一个新的内存管理策略开销非常大。大约 20 行代码即可描述的算法需要修改 20 个文件；测试开发需要 17 个月（和前面的不是同一个例子）；即使做出了，也很难被内核社区所接纳。</p>
+<h3 id="1-3-用户内存管理框架"><a href="#1-3-用户内存管理框架" class="headerlink" title="1.3 用户内存管理框架"></a>1.3 用户内存管理框架</h3><p>“特化内存管理策略的有效性、不普适性和内核态内存策略的高昂开销”都在呼唤一个用户态的内存管理框架，也就是可以为多种内存管理策略提供支持的基础设施。</p>
+<p>Linux 提供了 userfaultfd 机制来作为管理框架，用户基于此来实现用户态内存管理策略。框架的实现可以看作在进程中存在一个 manager thread，当一个 thread 发生 page fault 的时候，会通过基于 fd 的 IPC 方式（类似管道）给 manager thread 发信息报告自己缺失的地址等信息，manager thread 会根据相关信息进行处理。</p>
+<p>本文认为这种方式并不适合高并发环境，采用 upcall 的方式和 ExoKernel 的理念去实现框架。</p>
+<hr>
+<h2 id="二、设计"><a href="#二、设计" class="headerlink" title="二、设计"></a>二、设计</h2><h3 id="2-1-upcall"><a href="#2-1-upcall" class="headerlink" title="2.1 upcall"></a>2.1 upcall</h3><p>Upcall 指的是从内核调用用户函数，可以看作是一种反向 syscall，常见于微内核系统，比如 chcore 中的 thread migration 机制。</p>
+<p>传统的 userfaultfd 在高并发环境下存在延迟问题，这主要是由两方面原因组成：</p>
+<p>一方面，线程的调度和切换开销很大，userfaultfd 下的 fault thread 和 MM thread 之间可能会插入多个其他无关线程（灰色虚线部分）：</p>
+<p><img src="/posts/cbf91d56/userfaultsd.drawio.png" alt="userfaultsd.drawio"></p>
+<p>而 upcall 可以由内核指定 MM thread 运行，并不需要调度：</p>
+<p><img src="/posts/cbf91d56/extmem.drawio.png" alt="extmem.drawio"></p>
+<p>另一方面，userfaultfd 的 MM thread 会串行处理 page fault，当多个线程都发生 page fault 的时候，会有排队现象：</p>
+<p><img src="/posts/cbf91d56/userfaultfd1.drawio.png" alt="userfaultfd1.drawio"></p>
+<p>但是利用 upcall 可以构造出 self-paging 机制，即 page fault handler 的本质是一个每个进程都有的库函数，发生 page fault 后内核会 upcall 进程自己的 handler 函数，这样多个 page fault handle 就可以并行了：</p>
+<p><img src="/posts/cbf91d56/extmem2.drawio.png" alt="extmem2.drawio"></p>
+<h3 id="2-2-io-uring"><a href="#2-2-io-uring" class="headerlink" title="2.2 io_uring"></a>2.2 io_uring</h3><p>内存管理可以分成前后端：前端负责处理 page fault 请求，分配页面完成映射；后端负责设备 I/O。</p>
+<p>ExtMem 对于后端只要求 Direct I/O（也就是绕过 Linux 系统的 page cache），并没有对后端的同步和异步做出限制，ExtMem 自己使用了最为先进的 io_uring 机制。</p>
+<p>之所以要强调这一点，是因为在后面的测试中，采用相同策略的 Linux 内核和 ExtMem 相对比，ExtMem 更占优势，它给出的解释是 ExtMem 在 evict 的代码更少，但是我觉得可能 io_uring 也发挥了一定的作用。</p>
+<p>总得来说，io_uring 是 Linux 提供的一个先进的，异步的，非常适合批处理的 IO 接口：</p>
+<p><img src="/posts/cbf91d56/io_uring.png" alt="img"></p>
+<p>Linux 内部的 IO 使用的是中断驱动模式（应该是，不保真），而 io_uring 可以使用轮询模式。在高性能设备上，IO 的开销是小于上下文切换的开销的，所以轮询模式更优。</p>
+<p><img src="/posts/cbf91d56/benchmark-1-1724747043453-9.png" alt="img"></p>
+<hr>
+<h2 id="三、实现"><a href="#三、实现" class="headerlink" title="三、实现"></a>三、实现</h2><h3 id="3-1-三层设计"><a href="#3-1-三层设计" class="headerlink" title="3.1 三层设计"></a>3.1 三层设计</h3><p>在设计上，该框架分为 3 层：</p>
+<ul>
+<li>core：和内核交互，实现监视虚拟地址，完成映射，IO 等基础功能</li>
+<li>observability：提供对内存“冷热”等属性的信息</li>
+<li>policy：提供实现具体策略所需要的 API。</li>
+</ul>
+<h3 id="3-2-链接与拦截"><a href="#3-2-链接与拦截" class="headerlink" title="3.2 链接与拦截"></a>3.2 链接与拦截</h3><p>为了用户的透明性（只 <code>mmap()</code> 等内存管理函数不需要修改），ExtMem 通过改变链接器的 <code>LD_PRELOAD</code> 变量实现了对于原有库函数的覆盖，通过使用 Intel libsyscall_intercept 技术实现了对于系统调用的覆盖。</p>
+<h3 id="3-3-改写-UserFaultFD，SIGBUS"><a href="#3-3-改写-UserFaultFD，SIGBUS" class="headerlink" title="3.3 改写 UserFaultFD，SIGBUS"></a>3.3 改写 UserFaultFD，SIGBUS</h3><p>upcall 并不是 Linux 的原生机制，所以需要修改 Linux 内核支持 upcall：</p>
+<p>一方面，ExtMem 复用了 Linux 信号机制中的 SIGBUS 信号，因为信号机制可以看作内核调用用户 handler，和 upcall 的语义近似。但是信号对于 handler 可重入性和线程安全的要求较高，为了功能的正常高效运行，ExtMem 削弱了一些原本的约束。</p>
+<p>一方面，ExtMem 修改了 userfaultfd，使其不再通过基于 fd  的 IPC 通信，而是通过信号通信。</p>
+<hr>
+<h2 id="四、评估"><a href="#四、评估" class="headerlink" title="四、评估"></a>四、评估</h2><h3 id="4-1-评估环境"><a href="#4-1-评估环境" class="headerlink" title="4.1 评估环境"></a>4.1 评估环境</h3><p>如表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>2.30GHz 的 Intel Xeon 5218 处理器</td>
+</tr>
+<tr>
+<td>核心</td>
+<td>16 个核心，每个核心 32 个硬件线程</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>198GB 的 DDR4 内存</td>
+</tr>
+<tr>
+<td>外存</td>
+<td>读取速率为 2700 MB/s 的 NVMe SSD</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td>Linux 5.15</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="4-2-单次延迟"><a href="#4-2-单次延迟" class="headerlink" title="4.2 单次延迟"></a>4.2 单次延迟</h3><p>处理单个 page fault 的延迟如下：</p>
+<p><img src="/posts/cbf91d56/image-20240827164626572.png" alt="image-20240827164626572"></p>
+<p>其中 Upcall 指的是进行过性能优化的 SIGBUS 方法。</p>
+<p>可以看到 UFFD 的方式在高并发环境下表现不良。而 ExtMem 则更好。</p>
+<h3 id="4-3-相同策略吞吐"><a href="#4-3-相同策略吞吐" class="headerlink" title="4.3 相同策略吞吐"></a>4.3 相同策略吞吐</h3><p>他们在 ExtMem 上实现了和 Linux 相同的 2Q-LRU 逐出策略并进行测试。</p>
+<p>使用 <code>mmap</code>  microbenchmark 去测试吞吐量，将 RAM 限制到 8G 来触发 page fault。</p>
+<p>它测试了随机访存和顺序访存两种 pattern 下的吞吐</p>
+<p><img src="/posts/cbf91d56/image-20240827165459110.png" alt="image-20240827165459110"></p>
+<p>可以看到 ExtMem 都是优于 Linux，它论文中解释原因为 evict 的代码更简洁：</p>
+<blockquote>
+<p>The EXTMEM implementation evicts pages more quickly than Linux does, because its eviction code path is simpler, thereby explaining its performance advantage</p>
+</blockquote>
+<h3 id="4-4-预取"><a href="#4-4-预取" class="headerlink" title="4.4 预取"></a>4.4 预取</h3><p>在使用了预取策略后，我们评估 ExtMem 保留工作集的能力：</p>
+<p><img src="/posts/cbf91d56/image-20240827170114740.png" alt="image-20240827170114740"></p>
+<h3 id="4-5-CSR"><a href="#4-5-CSR" class="headerlink" title="4.5 CSR"></a>4.5 CSR</h3><p>压缩稀疏行（Compressed Sparse Row，CSR）是一种广泛用于内存图分析的数据结构。为使用 CSR 的应用开发一种新的内存管理策略：”将关键数据尽可能保存在内存中，并且利用一个滑动窗口的思想来指导数据的读入和逐出“，被称为 ”PR“。</p>
+<p>运行 Twitter dataset using GAP benchmark suite 效果对比如下：</p>
+<p><img src="/posts/cbf91d56/image-20240827170458158.png" alt="image-20240827170458158"></p>
+<hr>
+<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>本文设计了一个用户态的内存管理策略框架，采用 upcall 机制来优化其在高并发环境下的表现，并且使用了一些工程技术来使得这个框架的易用性很好。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/S8%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S8假期</a>
+              <a href="/tags/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" rel="tag"><i class="fa fa-tag"></i> 海边拾贝</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/94e7864c/" rel="prev" title="面向对象-设计模式">
+      <i class="fa fa-chevron-left"></i> 面向对象-设计模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/cf617ad0/" rel="next" title="并行计算-并行原语">
+      并行计算-并行原语 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%83%8C%E6%99%AF"><span class="nav-text">一、背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%89%B9%E5%8C%96%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">1.1 特化内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%86%85%E6%A0%B8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">1.2 内核态内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E7%94%A8%E6%88%B7%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%A1%86%E6%9E%B6"><span class="nav-text">1.3 用户内存管理框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AE%BE%E8%AE%A1"><span class="nav-text">二、设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-upcall"><span class="nav-text">2.1 upcall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-io-uring"><span class="nav-text">2.2 io_uring</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">三、实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%B8%89%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-text">3.1 三层设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E9%93%BE%E6%8E%A5%E4%B8%8E%E6%8B%A6%E6%88%AA"><span class="nav-text">3.2 链接与拦截</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%94%B9%E5%86%99-UserFaultFD%EF%BC%8CSIGBUS"><span class="nav-text">3.3 改写 UserFaultFD，SIGBUS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%AF%84%E4%BC%B0"><span class="nav-text">四、评估</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E8%AF%84%E4%BC%B0%E7%8E%AF%E5%A2%83"><span class="nav-text">4.1 评估环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%8D%95%E6%AC%A1%E5%BB%B6%E8%BF%9F"><span class="nav-text">4.2 单次延迟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E7%9B%B8%E5%90%8C%E7%AD%96%E7%95%A5%E5%90%9E%E5%90%90"><span class="nav-text">4.3 相同策略吞吐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E9%A2%84%E5%8F%96"><span class="nav-text">4.4 预取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-CSR"><span class="nav-text">4.5 CSR</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-text">五、总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

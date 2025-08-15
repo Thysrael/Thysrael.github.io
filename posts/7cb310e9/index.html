@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="期中物理总结一、数学知识1.1 向量知识 \frac{d(\vec{a}\cdot\vec{b})}{dt}&#x3D;\vec{a}\cdot\frac{\vec{b}}{dt}+\vec{b}\cdot\frac{\vec{a}}{dt} \frac{d(\vec{a}\times\vec{b})}{dt}&#x3D;\vec{a}\times\frac{\vec{b}}{dt}+\vec{b}\times\fr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大学物理-经典力学">
+<meta property="og:url" content="https://thysrael.github.io/posts/7cb310e9/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="期中物理总结一、数学知识1.1 向量知识 \frac{d(\vec{a}\cdot\vec{b})}{dt}&#x3D;\vec{a}\cdot\frac{\vec{b}}{dt}+\vec{b}\cdot\frac{\vec{a}}{dt} \frac{d(\vec{a}\times\vec{b})}{dt}&#x3D;\vec{a}\times\frac{\vec{b}}{dt}+\vec{b}\times\fr">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-16T08:24:05.000Z">
+<meta property="article:modified_time" content="2025-08-15T12:16:48.759Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="知识总结">
+<meta property="article:tag" content="大学物理">
+<meta property="article:tag" content="S2复习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/7cb310e9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>大学物理-经典力学 | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">68</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">195</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/Roam-Site/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/7cb310e9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          大学物理-经典力学
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 16:24:05" itemprop="dateCreated datePublished" datetime="2022-01-16T16:24:05+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大学物理</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="期中物理总结"><a href="#期中物理总结" class="headerlink" title="期中物理总结"></a>期中物理总结</h1><h2 id="一、数学知识"><a href="#一、数学知识" class="headerlink" title="一、数学知识"></a>一、数学知识</h2><h3 id="1-1-向量知识"><a href="#1-1-向量知识" class="headerlink" title="1.1 向量知识"></a>1.1 向量知识</h3><script type="math/tex; mode=display">
+\frac{d(\vec{a}\cdot\vec{b})}{dt}=\vec{a}\cdot\frac{\vec{b}}{dt}+\vec{b}\cdot\frac{\vec{a}}{dt}</script><script type="math/tex; mode=display">
+\frac{d(\vec{a}\times\vec{b})}{dt}=\vec{a}\times\frac{\vec{b}}{dt}+\vec{b}\times\frac{\vec{a}}{dt}</script><script type="math/tex; mode=display">
+(\vec{a}\times\vec{b})\times\vec{c}=(\vec{c}\cdot\vec{a})\times\vec{b}-(\vec{c}\cdot\vec{b})\times\vec{a}</script><h3 id="1-2-积分知识"><a href="#1-2-积分知识" class="headerlink" title="1.2 积分知识"></a>1.2 积分知识</h3><script type="math/tex; mode=display">
+I_n=\int_0^{\frac{\pi}{2}}\cos^n\theta=\int_0^{\frac{\pi}{2}}\sin^n\theta</script><p>$I<em>n=\frac{n-1}{n}I</em>{n-2}$    $I_1=1$    $I_0=\frac{\pi}{2}$</p>
+<hr>
+<h2 id="二、质点运动学"><a href="#二、质点运动学" class="headerlink" title="二、质点运动学"></a>二、质点运动学</h2><h3 id="2-1-经典力学速度合成公式"><a href="#2-1-经典力学速度合成公式" class="headerlink" title="2.1 经典力学速度合成公式"></a>2.1 经典力学速度合成公式</h3><script type="math/tex; mode=display">
+v(t)=v^,(t)+u(t)</script><p>$u(t)$ 是<strong>动系</strong>相对于<strong>静系</strong>的瞬时速度，简称之<strong>牵连速度</strong>。</p>
+<h3 id="2-2-角速度"><a href="#2-2-角速度" class="headerlink" title="2.2 角速度"></a>2.2 角速度</h3><script type="math/tex; mode=display">
+\vec{v}=\vec{w}\times\vec{r}</script><p>这个公式不仅能判别v的方向：将叉乘的第一个量的方向指向手心，四指向叉乘第二个量的方向弯曲，大拇指指的方向就是结果向量的方向。其实只要把这三个量写成一个环，那么任意两个量方向已知，就可以判定第三个量的方向。比如让r指向掌心，四指向v的方向弯曲，大拇指指的方向就是w的方向。</p>
+<p>直观理解：当顺时针转动时，$\vec{w}$ 的方向竖直向上；当逆时针转动时，方向竖直向下。</p>
+<h3 id="2-3-自然坐标系"><a href="#2-3-自然坐标系" class="headerlink" title="2.3 自然坐标系"></a>2.3 自然坐标系</h3><p>$e<em>\tau$ 是单位切向量，$e_n$ 是单位法向量。对切向量 $e</em>\tau$ 求导会得到 $e<em>n$，但是对法向量 $e_n$ 求导，却会得到 $-e</em>\tau$。</p>
+<hr>
+<h2 id="三、牛顿力学的基本规律"><a href="#三、牛顿力学的基本规律" class="headerlink" title="三、牛顿力学的基本规律"></a>三、牛顿力学的基本规律</h2><h3 id="3-1-力学相对性原理"><a href="#3-1-力学相对性原理" class="headerlink" title="3.1 力学相对性原理"></a>3.1 力学相对性原理</h3><p>伽利略将其概括为<strong>力学规律对一切惯性系都是等价的</strong>，这会在最后被爱因斯坦推广为<strong>物理规律对一切惯性系都是等价的</strong>。</p>
+<h3 id="3-2-科里奥利力"><a href="#3-2-科里奥利力" class="headerlink" title="3.2 科里奥利力"></a>3.2 科里奥利力</h3><script type="math/tex; mode=display">
+F_c=2m\vec{v}\times\vec{w}=2m\vec{v_\theta}\times\vec{w}+2m\vec{v_r}\times\vec{w}</script><p>首先应当明确，科氏力在现实中有诸多现象，但是为啥它这么给我感觉不自然呢？这是因为我总下意识的认为地面是一个惯性系，实际上地球不断自转，我们是处在一个<strong>转动的非惯性系</strong>下，就像在一个过山车上或者一个海盗船上，力学规律并不像在<strong>平地上</strong>那么<strong>自然</strong>，但是这就是事实。我们只要一相对地面移动，就会受到<strong>科氏力</strong>，这是事实。</p>
+<hr>
+<h2 id="四、动量变化定理与动量守恒"><a href="#四、动量变化定理与动量守恒" class="headerlink" title="四、动量变化定理与动量守恒"></a>四、动量变化定理与动量守恒</h2><hr>
+<h2 id="五、机械能变化定理和机械能守恒"><a href="#五、机械能变化定理和机械能守恒" class="headerlink" title="五、机械能变化定理和机械能守恒"></a>五、机械能变化定理和机械能守恒</h2><h3 id="5-1-保守力和保守力场中的势能"><a href="#5-1-保守力和保守力场中的势能" class="headerlink" title="5.1 保守力和保守力场中的势能"></a>5.1 保守力和保守力场中的势能</h3><p>做功与路径无关的力称为<strong>保守力</strong>，常见的保守力有<strong>重力、引力、弹力、库仑力</strong>。保守力做功也可描写为：<strong>沿任意闭合环路保守力做功为零</strong>。</p>
+<p>因为保守力做功的大小只与运动的起始和终止位置有关，所以我们对物体某一刻运动的描述（包括<strong>位置</strong>和<strong>速度</strong>）就可以概括出一个新的不变量，即<strong>动能</strong>和这个量的和，这个量被称为<strong>势能</strong>。<strong>势能</strong>和<strong>动能</strong>的和被称为<strong>机械能</strong>，就是我们寻找的那个<strong>守恒量</strong>。</p>
+<p>但是机械能不一定时时刻刻都是守恒的，因为在保守力场中运动的物体还可能受到非保守力的作用，比如<strong>摩擦力、推拉力、支持力</strong>，运动物体的机械能改变量等于非保守力所做的功，这被称为<strong>机械能变化定理</strong>。相应的，当物体运动时，不存在非保守力或者保守力不做功，那么机械能是守恒的，被称为<strong>机械能守恒定律</strong>。</p>
+<h3 id="5-2-三种宇宙速度"><a href="#5-2-三种宇宙速度" class="headerlink" title="5.2 三种宇宙速度"></a>5.2 三种宇宙速度</h3><p>应当有意识，<strong>第二和第三宇宙速度</strong>都是在<strong>机械能为0</strong>的情况下解出来的，只不过一个是相对于地球，一个是相对于太阳。那么在进一步讲，其实速度并不满足机械能为0，因为还有其他天体的<strong>引力势能</strong>，用第二宇宙速度脱离地球以后，飞船会被太阳的引力势能束缚，成为<strong>太阳系人造天体</strong>，用第三宇宙速度脱离太阳以后，飞船会被<strong>银河系其他天体</strong>束缚，成为<strong>银河系人造天体</strong>，有心力场可以<strong>叠加</strong>，势能也可以<strong>叠加</strong>。</p>
+<h3 id="5-3-恢复系数与约化质量"><a href="#5-3-恢复系数与约化质量" class="headerlink" title="5.3 恢复系数与约化质量"></a>5.3 恢复系数与约化质量</h3><script type="math/tex; mode=display">
+\Delta E_k=-(1-e^2)\frac{1}{2}\mu(v_{10}-v_{20})^2</script><p>这是<strong>一维对心正碰</strong>动能亏损的计算公式。</p>
+<p>其中 $e$ 是<strong>恢复系数</strong>，数值定义式如下，其数值仅有材料物性来决定，所以恢复系数可以用来度量材料的弹性，是一个小于等于1的数值，恢复系数为0.8的材料弹性要比恢复系数为0.6的材料弹性好。</p>
+<script type="math/tex; mode=display">
+e=\frac{v_1-v_0}{v_{20}-v_{10}}</script><p>$\mu$ 是<strong>约化质量</strong>，将多次出现在<strong>两体问题</strong>中。</p>
+<script type="math/tex; mode=display">
+\mu=\frac{m_1m_2}{m_1+m_2}</script><h3 id="5-4-二维碰撞散射"><a href="#5-4-二维碰撞散射" class="headerlink" title="5.4 二维碰撞散射"></a>5.4 二维碰撞散射</h3><p><strong>速度方向不同</strong>的两个质点的碰撞，或两个弹性球的<strong>非对心碰撞</strong>，将呈现<strong>散射</strong>图像，碰撞是必然<strong>共面</strong>的。</p>
+<hr>
+<h2 id="六、角动量变化定理与角动量守恒"><a href="#六、角动量变化定理与角动量守恒" class="headerlink" title="六、角动量变化定理与角动量守恒"></a>六、角动量变化定理与角动量守恒</h2><h3 id="6-1-角动量"><a href="#6-1-角动量" class="headerlink" title="6.1 角动量"></a>6.1 角动量</h3><p>角动量被定义为<strong>位矢</strong>与<strong>动量</strong>的叉乘，应当注意到，<strong>角动量</strong>的方向是与<strong>角速度</strong>方向相同的。此外，还应知道，用角动量描述运动次序注意其是对哪个参考点而言的。</p>
+<script type="math/tex; mode=display">
+L=r\times mv</script><h3 id="6-2-力矩"><a href="#6-2-力矩" class="headerlink" title="6.2 力矩"></a>6.2 力矩</h3><p><strong>力矩</strong>被定义为<strong>位矢</strong>与<strong>力</strong>的叉乘。存在力 $F$ 而 $M=0$ 的条件，可以是</p>
+<ul>
+<li><p>$r=0$</p>
+</li>
+<li><p>$\alpha=0 ||\alpha=\pi$</p>
+</li>
+</ul>
+<p>所以对于有心力场，参考点一般选为<strong>力心</strong>，这样<strong>保守力矩</strong>为0，较易分析。</p>
+<h3 id="6-3-角动量变化定理"><a href="#6-3-角动量变化定理" class="headerlink" title="6.3 角动量变化定理"></a>6.3 角动量变化定理</h3><script type="math/tex; mode=display">
+dL=Mdt</script><p>可以看到，角动量的改变量等于力矩对时间的积分，角动量对时间的微分等于力矩。当<strong>力矩为零</strong>时，角动量守恒。在运用角动量变化定理时，角动量与力矩必须是针对同一参考点而言的。</p>
+<h3 id="6-4-有心运动守恒"><a href="#6-4-有心运动守恒" class="headerlink" title="6.4 有心运动守恒"></a>6.4 有心运动守恒</h3><p>凡两体相互作用力具有 $F\propto r^ne_r$ 形式，皆系有心力场。因为有心力场是一个保守力场，所以物体的<strong>机械能守恒</strong>，同时，有心力与位矢平行或反平行，所以<strong>角动量守恒</strong>。分析有心运动应该从这两个方程展开。</p>
+<p>角动量守恒具有两个推论：<strong>平面轨道</strong>、<strong>掠面速度不变</strong>。平面轨道是因为角动量的方向不变，所以轨道必须限制在一个平面内（这个平面包括速度和位矢）。掠面速度不变推导如下：</p>
+<script type="math/tex; mode=display">
+dS=\frac{1}{2}(r\sin\theta)vdt=v_sdt</script><script type="math/tex; mode=display">
+v_s=\frac{1}{2}rv\sin\theta=\frac{1}{2m}rmv\sin\theta=\frac{1}{2m}\lvert L\rvert</script><hr>
+<h2 id="七、质心力学定理"><a href="#七、质心力学定理" class="headerlink" title="七、质心力学定理"></a>七、质心力学定理</h2><h3 id="7-1-分析质点组运动的一种新视角"><a href="#7-1-分析质点组运动的一种新视角" class="headerlink" title="7.1 分析质点组运动的一种新视角"></a>7.1 分析质点组运动的一种新视角</h3><p>首先着眼于把握质点组的总体运动，再分析各质点之间的相对运动。即我们将质点组的复杂运动分解为两种运动的叠加。质点组的质心及其运动就可以作为质点组总体运动的代表。</p>
+<h3 id="7-2-质点组动量、角动量变化定理"><a href="#7-2-质点组动量、角动量变化定理" class="headerlink" title="7.2 质点组动量、角动量变化定理"></a>7.2 质点组动量、角动量变化定理</h3><p>一对内力的动量和和角动量和都为0。质点组的动量改变量等于合外力的冲量。质点组的角动量改变量等于合外力角冲量。</p>
+<h3 id="7-3-质心参考系"><a href="#7-3-质心参考系" class="headerlink" title="7.3 质心参考系"></a>7.3 质心参考系</h3><p><strong>质心系</strong>是随质心一起平动的参照系，一般选质心为参考点。质心系可能是一个惯性系，也可能是一个非惯性系。在质心系中，质心速度恒为0。引入质心参考系是为了分析的<strong>下一步</strong>，即用质点组概括宏观运动、然后<strong>各个质点相对质心分析</strong>。</p>
+<h3 id="7-4-质心动量定理"><a href="#7-4-质心动量定理" class="headerlink" title="7.4 质心动量定理"></a>7.4 质心动量定理</h3><script type="math/tex; mode=display">
+Mv_c=\sum m_iv_i</script><p>这个公式就是在<strong>假想</strong>在质心位置有一个等于<strong>质点组全部质量</strong>的质点，尽管不一定真的有。</p>
+<p>质心动量的改变量就等于合外力的冲量，<strong>如同</strong>将全部合外力合成一个力，作用于质量为 $\sum m_i$ 且在质心位置的<strong>质点</strong>上。</p>
+<p>在质心参考系下，质点组的动量恒为0。</p>
+<p>应该意识到，<strong>动量</strong>和<strong>速度</strong>的联系十分紧密，题目中往往问质心的速度，但其实就是在问质心的<strong>动量</strong>。</p>
+<h3 id="7-5-质心动能定理"><a href="#7-5-质心动能定理" class="headerlink" title="7.5 质心动能定理"></a>7.5 质心动能定理</h3><h4 id="7-5-1-科尼希定理"><a href="#7-5-1-科尼希定理" class="headerlink" title="7.5.1 科尼希定理"></a>7.5.1 科尼希定理</h4><p><strong>质点组的总动能</strong>等于<strong>质心动能</strong>与<strong>相对质心动能</strong>之和。</p>
+<script type="math/tex; mode=display">
+E_k=E_C+E_{rC}</script><h4 id="7-5-2-两体动能公式"><a href="#7-5-2-两体动能公式" class="headerlink" title="7.5.2 两体动能公式"></a>7.5.2 两体动能公式</h4><script type="math/tex; mode=display">
+E_{rC}=\frac{1}{2}\mu v_r^2</script><p>其中 $\mu$ 是<strong>约化质量</strong>，$v_r$ 是<strong>相对速度</strong>。</p>
+<p>用这个公式可以导出碰撞动能亏损公式。</p>
+<h3 id="7-6-质心角动量定理"><a href="#7-6-质心角动量定理" class="headerlink" title="7.6 质心角动量定理"></a>7.6 质心角动量定理</h3><h4 id="7-6-1-质点组角动量等于质心角动量和相对质心角动量之和"><a href="#7-6-1-质点组角动量等于质心角动量和相对质心角动量之和" class="headerlink" title="7.6.1 质点组角动量等于质心角动量和相对质心角动量之和"></a>7.6.1 质点组角动量等于质心角动量和相对质心角动量之和</h4><p>这个形式跟<strong>动能</strong>柯尼希定理的形式很像，但是与<strong>动量</strong>不同，动量的表述是：<strong>质点组的总动量等于质心动量</strong>。</p>
+<script type="math/tex; mode=display">
+L_k=L_C+L_{rC}</script><h4 id="7-6-2-质心角动量变化定理"><a href="#7-6-2-质心角动量变化定理" class="headerlink" title="7.6.2 质心角动量变化定理"></a>7.6.2 质心角动量变化定理</h4><p>质心角动量的变化就等于合外力集中于质心时产生力矩的冲量，与单质点情况相同。</p>
+<h4 id="7-6-3-相对质心的角动量变化定理"><a href="#7-6-3-相对质心的角动量变化定理" class="headerlink" title="7.6.3 相对质心的角动量变化定理"></a>7.6.3 相对质心的角动量变化定理</h4><script type="math/tex; mode=display">
+dL_{rC}=M_{rC}dt</script><p>也就是说，即使质心相对于惯性系有加速度，质心系非惯性系，公式依然成立。有了这个定理，我们就可以进行两步的分析。第一步，先用<strong>质心角动量变化定理</strong>求出质心的状态（一般都是为0或者守恒），第二步，用<strong>相对质心的角动量变化定理</strong>来求出相对质心的质点组的运动状态，因为这个比较好求。最后将运动理解成两种运动的合成。</p>
+<hr>
+<h2 id="八、刚体力学"><a href="#八、刚体力学" class="headerlink" title="八、刚体力学"></a>八、刚体力学</h2><h3 id="8-1-刚体运动学"><a href="#8-1-刚体运动学" class="headerlink" title="8.1 刚体运动学"></a>8.1 刚体运动学</h3><h4 id="8-1-1-刚体运动的自由度"><a href="#8-1-1-刚体运动的自由度" class="headerlink" title="8.1.1 刚体运动的自由度"></a>8.1.1 刚体运动的自由度</h4><p>用以确定对象运动位置的独立坐标的数目，简称为对象运动的<strong>自由度</strong>。物体运动的自由度m，决定了其独立的动力学微分方程的数目，一共有m个，每一个方程均是<strong>二阶微分方程</strong>，若运动被<strong>限制</strong>或者<strong>约束</strong>，其自由度就会减少，多一个<strong>约束条件</strong>，就减少一个自由度。</p>
+<p>对于刚体运动来说，其运动可以被拆解为<strong>平动</strong>和<strong>转动</strong>两部分，平动的部分可以用位置坐标（x，y，z）确定，就是<strong>3个自由度</strong>，转动的部分可以用<strong>三个旋转角度</strong>确定（想想SolidWorks里面的<strong>数据迁移旋转</strong>），那么一共就是<strong>6个自由度</strong>。如果不是刚体的话，还有可能会更多，比如一个质点组，各个点之间不存在<strong>约束关系</strong>。</p>
+<p>但是我们去总结概括刚体运动时，会利用<strong>约束条件</strong>对其进行分类，大抵可以有以下几类：</p>
+<ul>
+<li><p>定点转动：就是说对于转动，没有任何约束条件，刚体的<strong>转动自由度</strong>为3。</p>
+</li>
+<li><p>定轴转动：只能绕一个定轴转动，那么<strong>转动自由度</strong>降为1。</p>
+</li>
+<li><p>平面运动：不仅限制<strong>转动</strong>只能是<strong>定轴转动</strong>，还限制<strong>平动</strong>必须在平面中进行，也就是说平动自由度下降为2，总的自由度为3。</p>
+<p>当运动的形式为<strong>平面运动</strong>的时候，我们可以提取出<strong>基面</strong>和<strong>基轴</strong>和<strong>基点</strong>三个要素，<strong>基轴</strong>就是选定的任一轨道平面，与基轴垂直的任意直线上的各点，运动状态相同，具有相同的速度和相同的加速度。基面上的各个点的运动被分解为<strong>基点的运动</strong>加上<strong>绕基点的转动</strong>，如果选择<strong>质心为基点</strong>，那么就会有公式</p>
+<script type="math/tex; mode=display">
+v=v_C+w\times R</script><p>也就是说，在解题的时候，可以先用<strong>质心动量定理</strong>求解出质心的速度，然后再用<strong>定轴转动定理</strong>求解出 $w$ 然后再通过分析得出 $v$ 的特征，比如说<strong>纯滚</strong>就是 $v=0$ ，就可以列出方程组了。</p>
+</li>
+</ul>
+<h4 id="8-1-2-刚体的特性"><a href="#8-1-2-刚体的特性" class="headerlink" title="8.1.2 刚体的特性"></a>8.1.2 刚体的特性</h4><p>刚体有如下特性：</p>
+<ul>
+<li>任意两点的速度矢量，在其连线方向的投影分量总是相等的。</li>
+<li>刚体内部一对内力做功之和恒为0。</li>
+<li>刚体的瞬时角速度存在<strong>唯一性</strong>，根源来自物体的<strong>刚性</strong>。</li>
+</ul>
+<h3 id="8-2-定轴转动惯量"><a href="#8-2-定轴转动惯量" class="headerlink" title="8.2 定轴转动惯量"></a>8.2 定轴转动惯量</h3><h4 id="8-2-1-转动惯量的定义"><a href="#8-2-1-转动惯量的定义" class="headerlink" title="8.2.1 转动惯量的定义"></a>8.2.1 转动惯量的定义</h4><script type="math/tex; mode=display">
+I=\sum R_i^2\Delta m_i</script><p>其中 $R_i$ 为质量元 $\Delta m_i$ 位置与轴的距离，可以看到，转动惯量是一个<strong>标量</strong>，它的大小与<strong>转轴</strong>和<strong>质量分布</strong>，也就是<strong>形状</strong>都有关系。离轴越远，<strong>转动惯量</strong>越大。</p>
+<p>我们利用转动惯量可以计算角动量<strong>沿转轴的分量</strong>：</p>
+<script type="math/tex; mode=display">
+L_z=Iw</script><p>这表明，定轴转动角动量的轴分量与<strong>角速度</strong>成正比，其比例系数为<strong>转动惯量</strong>。转动惯量对角动量分量的影响，如同<strong>惯性质量</strong>对<strong>动量</strong>的影响，转动惯量是对刚体在定轴转动时表现出的惯性的一种量度。</p>
+<h4 id="8-2-2-常见物体的转动惯量"><a href="#8-2-2-常见物体的转动惯量" class="headerlink" title="8.2.2 常见物体的转动惯量"></a>8.2.2 常见物体的转动惯量</h4><ul>
+<li>圆环，以过圆心垂直于圆平面的轴： $mR^2$</li>
+<li>圆盘，以过圆心垂直于圆平面的轴： $\frac{1}{2}mR^2$</li>
+<li>球壳，以任一直径为轴： $\frac{2}{3}mR^2$</li>
+<li>球体，以任一直径为轴： $\frac{2}{5}mR^2$</li>
+<li>圆柱体，以过<strong>中心线一半</strong>且平行于地面的直线为轴： $\frac{1}{4}mR^2+\frac{1}{12}ml^2$</li>
+</ul>
+<h4 id="8-2-3-转动惯量计算公式"><a href="#8-2-3-转动惯量计算公式" class="headerlink" title="8.2.3 转动惯量计算公式"></a>8.2.3 转动惯量计算公式</h4><ul>
+<li><p>平行轴定理</p>
+<p>与质心轴平行的转轴，其相应的转动惯量 $I$ 与质心轴的转动惯量 $I_c$ 满足关系，其中 $d$ 为两轴之间的垂直距离，可以看到，在众多转轴中，那个通过质心轴的转动惯量最小，也就是说<strong>相同力矩</strong>，绕质心轴转动的角速度最大。</p>
+<script type="math/tex; mode=display">
+I=I_c+md^2</script></li>
+<li><p>薄板正交定理</p>
+<p>针对质量呈面分布的定理，我们根据这个定理可以计算圆环和圆盘<strong>绕直径转动</strong>时的转动惯量：</p>
+<script type="math/tex; mode=display">
+I_z=I_x+I_y</script></li>
+</ul>
+<h3 id="8-3-定轴转动定理"><a href="#8-3-定轴转动定理" class="headerlink" title="8.3 定轴转动定理"></a>8.3 定轴转动定理</h3><h4 id="8-3-1-定轴转动定理"><a href="#8-3-1-定轴转动定理" class="headerlink" title="8.3.1 定轴转动定理"></a>8.3.1 定轴转动定理</h4><script type="math/tex; mode=display">
+I\frac{dw}{dt}=M_z</script><p>这个定理<strong>对偶</strong>于<strong>牛顿第二定律</strong>，表明<strong>定轴转动的角加速度</strong>正比于外力矩的轴分量 $M<em>z$ ，反比于刚体的转动惯量。应当注意到，沿轴分量的力矩只与 $F</em>{xy}$ 有关，呈以下关系：</p>
+<script type="math/tex; mode=display">
+M_z=R\times F_{xy}=|RF_{xy}\sin\alpha|e_R\times e_F</script><p>也就是说，可以用右手螺旋定则判断力矩的方向，而大小则是我们常说的<strong>力乘力臂</strong>，<strong>力臂</strong>是施力方向至轴的垂直距离。</p>
+<h4 id="8-3-2-轴承约束力"><a href="#8-3-2-轴承约束力" class="headerlink" title="8.3.2 轴承约束力"></a>8.3.2 轴承约束力</h4><p>转动物体受到的外力，既有外资的主动力F，也有<strong>被动的隐蔽的</strong>的轴承给予的力——约束力。只是约束力对力矩没有贡献，是因为其方向总是越轴距R反平行，用于提供向心力。尽管<strong>约束力</strong>不影响<strong>角动量守恒</strong>，但是它会使<strong>动量不再守恒</strong>。</p>
+<h4 id="8-3-3-定轴转动动能公式"><a href="#8-3-3-定轴转动动能公式" class="headerlink" title="8.3.3 定轴转动动能公式"></a>8.3.3 定轴转动动能公式</h4><script type="math/tex; mode=display">
+E_k=\frac{1}{2}Iw^2</script><h4 id="8-3-4-动力学分析"><a href="#8-3-4-动力学分析" class="headerlink" title="8.3.4 动力学分析"></a>8.3.4 动力学分析</h4><p>在我们补充了转动的分析公式后，我们就可以对转动的物体进行分析了，一般的题目需要求解的<strong>方程</strong>一般来自这么几个方面：</p>
+<ul>
+<li><p><strong>运动学</strong>：纯滚（$v=0$）、角速度和线速度转换、角加速度和线加速度转换。</p>
+<p>我们有如下公式</p>
+<script type="math/tex; mode=display">
+v=v_C+w\times R\\
+a=a_C+\beta\times R\\
+v_C=w\times R_{OC}\\
+a_{Cn}=w^2R_{OC}\\
+a_{C\tau}=\beta\times R_{OC}</script></li>
+<li><p><strong>转动</strong>：一般为<strong>定轴转动定理</strong>。</p>
+</li>
+<li><p><strong>牛顿受力分析</strong>：因为以刚体居多，所以大部分依靠<strong>质心动量定理</strong>。</p>
+</li>
+</ul>
+<h3 id="8-3-进动与章动"><a href="#8-3-进动与章动" class="headerlink" title="8.3 进动与章动"></a>8.3 进动与章动</h3><p>进动与章动不再是我们熟悉的<strong>定轴转动</strong>的讨论范畴了，而是一种<strong>定点转动</strong></p>
+<p>我们可以认为人们是希望陀螺保持<strong>定轴转动</strong>的，而进动与章动可以看做造成陀螺由<strong>定轴转动</strong>变成<strong>定点转动</strong>的现象。</p>
+<p>角动量大的陀螺，它的<strong>定轴性</strong>就更好，就可以用来指示方向（角动量的方向）。所以想要造出精密的陀螺仪，应该有大质量，大密度，高转速的陀螺。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="tag"><i class="fa fa-tag"></i> 知识总结</a>
+              <a href="/tags/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/" rel="tag"><i class="fa fa-tag"></i> 大学物理</a>
+              <a href="/tags/S2%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S2复习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/9965eed7/" rel="prev" title="数学建模-MATLAB语法基础">
+      <i class="fa fa-chevron-left"></i> 数学建模-MATLAB语法基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/8a28482e/" rel="next" title="大学物理-电磁学">
+      大学物理-电磁学 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%9F%E4%B8%AD%E7%89%A9%E7%90%86%E6%80%BB%E7%BB%93"><span class="nav-text">期中物理总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86"><span class="nav-text">一、数学知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%90%91%E9%87%8F%E7%9F%A5%E8%AF%86"><span class="nav-text">1.1 向量知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%A7%AF%E5%88%86%E7%9F%A5%E8%AF%86"><span class="nav-text">1.2 积分知识</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%B4%A8%E7%82%B9%E8%BF%90%E5%8A%A8%E5%AD%A6"><span class="nav-text">二、质点运动学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E7%BB%8F%E5%85%B8%E5%8A%9B%E5%AD%A6%E9%80%9F%E5%BA%A6%E5%90%88%E6%88%90%E5%85%AC%E5%BC%8F"><span class="nav-text">2.1 经典力学速度合成公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%A7%92%E9%80%9F%E5%BA%A6"><span class="nav-text">2.2 角速度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%87%AA%E7%84%B6%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-text">2.3 自然坐标系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%89%9B%E9%A1%BF%E5%8A%9B%E5%AD%A6%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%BE%8B"><span class="nav-text">三、牛顿力学的基本规律</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E5%8A%9B%E5%AD%A6%E7%9B%B8%E5%AF%B9%E6%80%A7%E5%8E%9F%E7%90%86"><span class="nav-text">3.1 力学相对性原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E7%A7%91%E9%87%8C%E5%A5%A5%E5%88%A9%E5%8A%9B"><span class="nav-text">3.2 科里奥利力</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8A%A8%E9%87%8F%E5%8F%98%E5%8C%96%E5%AE%9A%E7%90%86%E4%B8%8E%E5%8A%A8%E9%87%8F%E5%AE%88%E6%81%92"><span class="nav-text">四、动量变化定理与动量守恒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%9C%BA%E6%A2%B0%E8%83%BD%E5%8F%98%E5%8C%96%E5%AE%9A%E7%90%86%E5%92%8C%E6%9C%BA%E6%A2%B0%E8%83%BD%E5%AE%88%E6%81%92"><span class="nav-text">五、机械能变化定理和机械能守恒</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E4%BF%9D%E5%AE%88%E5%8A%9B%E5%92%8C%E4%BF%9D%E5%AE%88%E5%8A%9B%E5%9C%BA%E4%B8%AD%E7%9A%84%E5%8A%BF%E8%83%BD"><span class="nav-text">5.1 保守力和保守力场中的势能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E4%B8%89%E7%A7%8D%E5%AE%87%E5%AE%99%E9%80%9F%E5%BA%A6"><span class="nav-text">5.2 三种宇宙速度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E6%81%A2%E5%A4%8D%E7%B3%BB%E6%95%B0%E4%B8%8E%E7%BA%A6%E5%8C%96%E8%B4%A8%E9%87%8F"><span class="nav-text">5.3 恢复系数与约化质量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E4%BA%8C%E7%BB%B4%E7%A2%B0%E6%92%9E%E6%95%A3%E5%B0%84"><span class="nav-text">5.4 二维碰撞散射</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E8%A7%92%E5%8A%A8%E9%87%8F%E5%8F%98%E5%8C%96%E5%AE%9A%E7%90%86%E4%B8%8E%E8%A7%92%E5%8A%A8%E9%87%8F%E5%AE%88%E6%81%92"><span class="nav-text">六、角动量变化定理与角动量守恒</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E8%A7%92%E5%8A%A8%E9%87%8F"><span class="nav-text">6.1 角动量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E5%8A%9B%E7%9F%A9"><span class="nav-text">6.2 力矩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E8%A7%92%E5%8A%A8%E9%87%8F%E5%8F%98%E5%8C%96%E5%AE%9A%E7%90%86"><span class="nav-text">6.3 角动量变化定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-%E6%9C%89%E5%BF%83%E8%BF%90%E5%8A%A8%E5%AE%88%E6%81%92"><span class="nav-text">6.4 有心运动守恒</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E8%B4%A8%E5%BF%83%E5%8A%9B%E5%AD%A6%E5%AE%9A%E7%90%86"><span class="nav-text">七、质心力学定理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E5%88%86%E6%9E%90%E8%B4%A8%E7%82%B9%E7%BB%84%E8%BF%90%E5%8A%A8%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B0%E8%A7%86%E8%A7%92"><span class="nav-text">7.1 分析质点组运动的一种新视角</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E8%B4%A8%E7%82%B9%E7%BB%84%E5%8A%A8%E9%87%8F%E3%80%81%E8%A7%92%E5%8A%A8%E9%87%8F%E5%8F%98%E5%8C%96%E5%AE%9A%E7%90%86"><span class="nav-text">7.2 质点组动量、角动量变化定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-%E8%B4%A8%E5%BF%83%E5%8F%82%E8%80%83%E7%B3%BB"><span class="nav-text">7.3 质心参考系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-%E8%B4%A8%E5%BF%83%E5%8A%A8%E9%87%8F%E5%AE%9A%E7%90%86"><span class="nav-text">7.4 质心动量定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-5-%E8%B4%A8%E5%BF%83%E5%8A%A8%E8%83%BD%E5%AE%9A%E7%90%86"><span class="nav-text">7.5 质心动能定理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-5-1-%E7%A7%91%E5%B0%BC%E5%B8%8C%E5%AE%9A%E7%90%86"><span class="nav-text">7.5.1 科尼希定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-5-2-%E4%B8%A4%E4%BD%93%E5%8A%A8%E8%83%BD%E5%85%AC%E5%BC%8F"><span class="nav-text">7.5.2 两体动能公式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-%E8%B4%A8%E5%BF%83%E8%A7%92%E5%8A%A8%E9%87%8F%E5%AE%9A%E7%90%86"><span class="nav-text">7.6 质心角动量定理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-6-1-%E8%B4%A8%E7%82%B9%E7%BB%84%E8%A7%92%E5%8A%A8%E9%87%8F%E7%AD%89%E4%BA%8E%E8%B4%A8%E5%BF%83%E8%A7%92%E5%8A%A8%E9%87%8F%E5%92%8C%E7%9B%B8%E5%AF%B9%E8%B4%A8%E5%BF%83%E8%A7%92%E5%8A%A8%E9%87%8F%E4%B9%8B%E5%92%8C"><span class="nav-text">7.6.1 质点组角动量等于质心角动量和相对质心角动量之和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-6-2-%E8%B4%A8%E5%BF%83%E8%A7%92%E5%8A%A8%E9%87%8F%E5%8F%98%E5%8C%96%E5%AE%9A%E7%90%86"><span class="nav-text">7.6.2 质心角动量变化定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-6-3-%E7%9B%B8%E5%AF%B9%E8%B4%A8%E5%BF%83%E7%9A%84%E8%A7%92%E5%8A%A8%E9%87%8F%E5%8F%98%E5%8C%96%E5%AE%9A%E7%90%86"><span class="nav-text">7.6.3 相对质心的角动量变化定理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%88%9A%E4%BD%93%E5%8A%9B%E5%AD%A6"><span class="nav-text">八、刚体力学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8%E5%AD%A6"><span class="nav-text">8.1 刚体运动学</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-1-%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8%E7%9A%84%E8%87%AA%E7%94%B1%E5%BA%A6"><span class="nav-text">8.1.1 刚体运动的自由度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-2-%E5%88%9A%E4%BD%93%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-text">8.1.2 刚体的特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E5%AE%9A%E8%BD%B4%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F"><span class="nav-text">8.2 定轴转动惯量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-1-%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">8.2.1 转动惯量的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-2-%E5%B8%B8%E8%A7%81%E7%89%A9%E4%BD%93%E7%9A%84%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F"><span class="nav-text">8.2.2 常见物体的转动惯量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-3-%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="nav-text">8.2.3 转动惯量计算公式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E5%AE%9A%E8%BD%B4%E8%BD%AC%E5%8A%A8%E5%AE%9A%E7%90%86"><span class="nav-text">8.3 定轴转动定理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-1-%E5%AE%9A%E8%BD%B4%E8%BD%AC%E5%8A%A8%E5%AE%9A%E7%90%86"><span class="nav-text">8.3.1 定轴转动定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-2-%E8%BD%B4%E6%89%BF%E7%BA%A6%E6%9D%9F%E5%8A%9B"><span class="nav-text">8.3.2 轴承约束力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-3-%E5%AE%9A%E8%BD%B4%E8%BD%AC%E5%8A%A8%E5%8A%A8%E8%83%BD%E5%85%AC%E5%BC%8F"><span class="nav-text">8.3.3 定轴转动动能公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-4-%E5%8A%A8%E5%8A%9B%E5%AD%A6%E5%88%86%E6%9E%90"><span class="nav-text">8.3.4 动力学分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E8%BF%9B%E5%8A%A8%E4%B8%8E%E7%AB%A0%E5%8A%A8"><span class="nav-text">8.3 进动与章动</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">195</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">19:56</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
