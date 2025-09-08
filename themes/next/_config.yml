@@ -122,7 +122,7 @@ menu:
   archives: /archives/ || fa fa-archive
   Resource: /resource/ || fa fa-book
   Links: /links/ || fa fa-link
-  Roam: /Roam-Site/ || fa fa-sitemap
+  Roam: /obsidian-quartz/ || fa fa-sitemap
   about: /about/ || fa fa-user
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /baidusitemap.xml || fa fa-sitemap
