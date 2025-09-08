@@ -64,9 +64,9 @@ comments: false
 
 在我进入大四后，我着手修改我的博客系统，毕竟谁也没有想到它能坚持这么久。原先博客的一个缺陷在于使用 Hexo 写博客是一个非常正式的事情，这种“正式”所带来的高成本使我在之前的几年里抵触写一些稍纵即逝的想法或者一些小东西。
 
-为了解决上述问题，我借鉴了 Roam-Reasrch 的思想，搭建了自己的 Roam 站点，你可以在博客的上方导航栏中找到一个叫做 **Roam** 的栏目，进入后就是我的 [Roam-Site](https://thysrael.github.io/Roam-Site/) 。
+为了解决上述问题，我借鉴了 Roam-Reasrch 的思想，搭建了自己的 Roam 站点，你可以在博客的上方导航栏中找到一个叫做 **Roam** 的栏目，进入后就是我的 [Roam-Site](https://thysrael.github.io/obsidian-quartz/) 。
 
-关于我是如何设计我的 Roam 站点的，您可以参考这个[链接](https://thysrael.github.io/Roam-Site/#880b2c98-b3a3-40c2-baa9-bbd0ad9e1a92) 。我的 Roam-Site 很乱，不过您可以从[这个节点](https://thysrael.github.io/Roam-Site/#1d40ec33-ad1b-4bfe-b857-85251724ec43)开始探索。
+关于我是如何设计我的 Roam 站点的，您可以参考这个[链接](https://thysrael.github.io/obsidian-quartz/%E6%B7%B7%E5%90%88%E7%AC%94%E8%AE%B0) 。我的 Roam-Site 很乱，不过您可以从[这个节点](https://thysrael.github.io/obsidian-quartz/ROOT)开始探索。
 
 写到这里我突然很想哭，本科已经结束了，我真的只剩下这些文字了。在最后放上我朋友的一段话，是我设计这个栏目的初衷，也是在百般寂寥外的一点我也不知道是什么的东西：
 
