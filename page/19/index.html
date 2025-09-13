@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">196</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">197</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,103 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/1020f479/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/1020f479/" class="post-title-link" itemprop="url">Linux-Unix备考</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-08 23:25:33" itemprop="dateCreated datePublished" datetime="2022-06-08T23:25:33+08:00">2022-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>18k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>16 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、发展与历史"><a href="#一、发展与历史" class="headerlink" title="一、发展与历史"></a>一、发展与历史</h2><p>体系结构包括指令集，存储组织，I/O，总线结构。写到这里的时候真的觉得一切都值了。</p>
+<h3 id="1-1-操作系统迭代"><a href="#1-1-操作系统迭代" class="headerlink" title="1.1 操作系统迭代"></a>1.1 操作系统迭代</h3><p>一开始的操作系统是<strong>批处理式</strong>的。批处理的意思就是把一堆任务集中到一起，然后一起处理，这样的好处是实现了初步的流水线化。但是计算机要读取任务，要通过磁带，而磁带上的内容，要通过读卡器读取卡片（可能就是一堆打着孔的硬纸板吧）写到磁盘上，如果读一个任务写一个磁带，然后读一个磁带，处理一个任务，这就太慢了。所以就考虑可以先用读卡器将一堆任务的卡片都一起读到磁带上，然后一起把这些磁带上的任务处理了。这就是所谓的批处理。那么这个时候，操作系统的主要作用就是自动地一个任务一个任务的完成。</p>
+<p>之后就变成了<strong>多道程序设计</strong>。尽管我们把写磁带这个功能给分割开来，让计算机可以安心处理磁带上的任务，但是计算机依然是需要读取磁盘上的内容的，这段 I/O 所占的时间 CPU 是不会工作的。为了把这段时间利用起来，我们可以考虑在内存中存放多个任务，这样当有一个任务在进行 I/O 的时候，CPU 可以去运算其他任务，这就是“多道程序设计”。所谓的“多道”，就是说在内存中存在多个任务。可以看作是在内存空间上实现了并行。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1020f479/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -726,104 +823,6 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/1a401c6d/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/1a401c6d/" class="post-title-link" itemprop="url">CPP设计-寸步难行</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-02 17:17:10" itemprop="dateCreated datePublished" datetime="2022-05-02T17:17:10+08:00">2022-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPP%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">CPP设计</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7.9k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>7 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、二义性和无义性"><a href="#一、二义性和无义性" class="headerlink" title="一、二义性和无义性"></a>一、二义性和无义性</h2><p>我们都知道程序是接受不了二义性的，当一条语句可以有两个执行结果的时候，那么程序就会接受不了。但是我们常常忽略“无义性”，这是我取得概念，意思是这条语句的执行结果是不确定的，这种不确定不是说结果不确定，比如 C 里面局部变量刚声明的时候值也是不确定的，但是没关系，而是说执行的规则是不确定的，那么就是不可以的。</p>
-<p>但是由于 CPP 高度的自由性，所以他希望所有的规则都是使用者来制定，但是这种自定义规则制定前，也必然是存在一定的规则的，但是这个规则需要我们自己去了解。</p>
-<hr>
-<h2 id="二、声明、定义、初始化"><a href="#二、声明、定义、初始化" class="headerlink" title="二、声明、定义、初始化"></a>二、声明、定义、初始化</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/1a401c6d/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -895,7 +894,7 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">196</span>
+          <span class="site-state-item-count">197</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -965,7 +964,7 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">19:57</span>
+    <span title="Reading time total">20:01</span>
 </div>
 
         
