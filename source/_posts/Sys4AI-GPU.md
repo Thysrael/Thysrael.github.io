@@ -101,3 +101,67 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 ### 2.1 CTA
 
 理解 CTA 的关键，在于理解软件编程模型与硬件之间的对应关系。
+
+是不是有了 warp 这个概念，我们剩下的事情就是在软件层面设计 warp 内的指令就够了。其实并没有，首先，warp 是局限于一个 SM 内的，而且是没有办法在不同的 SM 之间迁移的。所以如果我们希望充分利用不同的 SM，那么就要引入 CTA（Collaborative Thread Array） 的概念，一个 CTA 必须在一个特定的 SM 上，不同的 CTA 可以在不同的 SM 上，一个 SM 上可以有多个 CTA。CTA 是非常像软件 thread 的概念，一个 thread 同时仅能在一个 CPU Core 上运行，不同 thread 可以在不同的 CPU Core 上运行。有了这个概念后，我们就可以利用 `ctaid` 来在软件中使用不同的 SM，当然这种使用，有一部分是依赖于 GPU 内部的硬件调度器，这就像我们没法简单指定某个 thread 一定要与某个 CPU Core 绑定一样。
+
+那是不是 CTA 这个“软件线程”就直接用 warp 这个“硬件线程”来一一对应就好了呢？并不是，这是因为 warp 内的 thread 数目是静态的 32 ，是不可调整的。而在软件编程中，我们希望在一个 SM 中启动的 thread 数目（也就是 CTA 中 thread 的数目）是动态的。这是因为一个 SM 内的许多资源，都不是 warp 独占，而是 warp 共享的，比如说 shared memory，两个不同的 warp 是可以利用同一片资源的。也就是说，如果 CTA 内可以包含多个 warp，那么同一个 CTA 中的不同 warp 就是可以协作的。因此，CTA 中 thread 的数目往往是 32 的倍数。
+
+正如前所述，还有 CTA 名字中的 Collaborative 的暗示，在同一个 CTA 中的 thread 具有很好的协作性，这主要体现在两点：
+
+- 共享内存：如前所述，同一个 CTA 中的 thread 可以读取相同的 shared memory。
+- 同步：同一个 CTA 内的线程可以通过 `__syncthreads()` 这样的同步指令（Barrier）来协调彼此的执行进度。不过这点有些多余，因为不同 CTA 往往是在不同 SM 上，资源竞争的可能性小了很多。
+
+在 CUDA 中，CTA 也被称作 Block，而 CTA 组被称为 Grid。如果我们希望定位到一个 thread，我们可以使用如下代码：
+
+```c++
+int idx = blockIdx.x * blockDim.x + threadIdx.x;
+```
+
+而这段代码如果对应成 PTX 代码，如下所示：
+
+```assembly
+mov.u32 %idx, %tid.x;          // idx = threadIdx.x
+mov.u32 %r2, %ntid.x;          // r2 = blockDim.x
+mov.u32 %r3, %ctaid.x;         // r3 = blockIdx.x
+mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx
+```
+
+从这点也可以看出，SIMT 模型是从硬件层面支持的，而不是用编译器，从汇编层面支持的。
+
+### 2.2 Memory Type
+
+不同于简单的 CPU 编程，只用操作一种内存。当我们使用 CUDA 的时候，可以操纵多种不同类型的内存。
+
+CUDA 使用 `__device__` 来声明一个全局变量，可以被所有 kernel 访问。如下所示：
+
+```cpp
+__device__ unsigned long long g_total_sum = 0;
+```
+
+而局部变量的使用更为复杂。我们在 kernel 中声明的局部变量，优先存放在寄存器中。而如果局部变量如果过多，就会存放到 local memory 中，这种 local memory 也是 thread 独享的。那是不是很快呢？并不是，local memory 是在显存上的一片区域，考虑到 GPU 那孱弱的 cache，local memory 的访问时延非常高。
+
+那有没有什么时延更低的方案呢？有的，就是 Shared Memory，我们可以在局部变量前增加 `__shared__` 来表示放在共享内存中的变量：
+
+```cpp
+__global__ void myKernel(...) {
+    __shared__ float shared_data[BLOCK_SIZE];
+    // ...
+}
+```
+
+在对共享内存进行计算之前，必须确保所有线程都已经完成了上一步的数据加载。否则，一些线程可能会读到旧的、无效的数据（竞态条件 Race Condition）。使用 `__syncthreads()` 来实现同步。
+
+### 2.3 Sync and Stream
+
+CPU 和 GPU 协作的方式是异步的，也就是说，CPU 在向 GPU 发送指令后，是不会等待指令返回的，它就会自己往下运行了，所以如果 CPU 想要获得 GPU 的运行结果，需要先执行同步操作：
+
+```cpp
+cudaDeviceSynchronize();
+```
+
+不过 GPU 本身，默认是串行执行指令的，这就导致 kernel 是没有办法并行执行的，也就没有办法进行一些访存延迟隐藏之类的优化。为了改善这一点，CUDA 提出了 Stream 的概念。
+
+在你不使用 Stream 的情况下，所有 CUDA 操作（比如在 GPU 上计算、在 CPU 和 GPU 之间拷贝数据）都默认放入一个叫做 “默认流”（Default Stream） 的大队列里。我们只需要声明多个 Stream，就可以实现并发。同一个 Stream 内的指令是顺序执行的，而不同 Stream 中的指令是可以并发执行的。
+
+---
+
