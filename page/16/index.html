@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">197</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">198</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,114 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/d7aec70a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/d7aec70a/" class="post-title-link" itemprop="url">IEArch-矩阵乘法模块</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-26 17:43:46" itemprop="dateCreated datePublished" datetime="2022-10-26T17:43:46+08:00">2022-10-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IEArch/" itemprop="url" rel="index"><span itemprop="name">IEArch</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>7.7k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><blockquote>
+<p>回答 4.1.5 疑问中的疑问,</p>
+<p>问题 1 —— 第二个矩阵计算为何出错,</p>
+<p>问题 2 —— MAC.v 是否有修改的必要</p>
+</blockquote>
+<h3 id="1-1-问题-1"><a href="#1-1-问题-1" class="headerlink" title="1.1 问题 1"></a>1.1 问题 1</h3><p>第一个矩阵出错的原因是在第二个矩阵计算中，在第一个矩阵中涉及到了负数</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token number">111</span><span class="token punctuation">,</span>   <span class="token number">25</span><span class="token punctuation">,</span>   <span class="token number">32</span><span class="token punctuation">,</span>   <span class="token number">66</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">12</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">99</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">28</span><span class="token punctuation">,</span>   <span class="token number">16</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">95</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">[</span>  <span class="token number">63</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">90</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">102</span><span class="token punctuation">,</span>   <span class="token number">40</span><span class="token punctuation">,</span>   <span class="token number">73</span><span class="token punctuation">,</span>   <span class="token number">16</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">53</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">33</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">27</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">[</span> <span class="token operator">-</span><span class="token number">39</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">79</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">12</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">83</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">112</span><span class="token punctuation">,</span>   <span class="token number">59</span><span class="token punctuation">,</span>   <span class="token number">34</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">49</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">57</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">[</span> <span class="token operator">-</span><span class="token number">18</span><span class="token punctuation">,</span>  <span class="token number">103</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">86</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">51</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">104</span><span class="token punctuation">,</span>   <span class="token number">36</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">105</span><span class="token punctuation">,</span>  <span class="token number">112</span><span class="token punctuation">,</span>   <span class="token number">58</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">[</span>  <span class="token number">52</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">12</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">52</span><span class="token punctuation">,</span>    <span class="token number">1</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">95</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">123</span><span class="token punctuation">,</span>   <span class="token number">34</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">89</span><span class="token punctuation">,</span>   <span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">[</span>  <span class="token number">50</span><span class="token punctuation">,</span>  <span class="token number">123</span><span class="token punctuation">,</span>   <span class="token number">90</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">74</span><span class="token punctuation">,</span>   <span class="token number">99</span><span class="token punctuation">,</span>  <span class="token number">100</span><span class="token punctuation">,</span>   <span class="token number">95</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">12</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">97</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">[</span>  <span class="token number">12</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">94</span><span class="token punctuation">,</span>   <span class="token number">55</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">14</span><span class="token punctuation">,</span>  <span class="token number">115</span><span class="token punctuation">,</span>   <span class="token number">84</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">110</span><span class="token punctuation">,</span>   <span class="token number">64</span><span class="token punctuation">,</span>   <span class="token number">18</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">[</span>  <span class="token number">74</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">105</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">111</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">43</span><span class="token punctuation">,</span>   <span class="token number">63</span><span class="token punctuation">,</span>  <span class="token number">107</span><span class="token punctuation">,</span>  <span class="token number">111</span><span class="token punctuation">,</span>   <span class="token number">56</span><span class="token punctuation">,</span>  <span class="token operator">-</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/d7aec70a/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -699,104 +807,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/bb314391/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/bb314391/" class="post-title-link" itemprop="url">DBSM-Web开发直观</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-09-26 10:16:17" itemprop="dateCreated datePublished" datetime="2022-09-26T10:16:17+08:00">2022-09-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DBMS/" itemprop="url" rel="index"><span itemprop="name">DBMS</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.3k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>因为我没有上过走软，所以这是我第一次接触 Web 应用开发，在感觉十分新奇有趣的同时，却在编程（其实大部分时候是提需求的产品经理）总感觉自己是浮在云端的。</p>
-<p>当我写 C 的时候我是不会这样的，我知道我写的是一门高级语言，这门语言会通过编译器编译成二进制可执行文件，二进制文件会在流水线处理器上执行，处理器会根据指令进行计算和访存，最终通过写显示器的端口输出信息，在我写 Java 的时候，我知道 Java 会先编译成 <code>.class</code> 字节码，然后利用 JDK 环境在 JVM 上解释执行，解释器会调用各种库，最终完成效果。</p>
-<p>但是当我在写 <code>html, css, javasript</code> 的时候，我是完全没有概念的，我知道最后成果可以在浏览器上显示，但是为啥？浏览器在我的理解里，就是一个和互联网沟通的应用程序，我点开它，然后互联网就冲我挥手了，感觉似乎没有浏览器，互联网它老人家也找得到我。当我去了解后端的时候，我知道了服务器，我之前理解的服务器，就是那种深埋地下，占地和鸟巢差不多大的东西，每天都要靠全太平洋的水去降温，从事的是计算世界末日啥时候发生的重要事件，关于 URL，我以为就是一个按钮，我点一下他，互联网就来了，贼灵。</p>
-<p>这个其实一个计算机领域很常见的现象，“<strong>封装和抽象</strong>”，人们并不需要了解每个技术的具体实现细节，只需要享受这个技术暴露在外的接口构造的抽象即可。所以将互联网理解成一个宝库一样的东西，浏览器理解成一个探寻宝库的手电，甚至将其与电视做类比，并不是一件很奇怪的事情，谁也不是先学计组，后学 C 语言的，有一个虚假的抽象不丢人。不过这层抽象和以往的抽象不同的是，这层抽象需要被几乎所有人接受，而不是像 C 一样，只需要被一部分程序员接受即可。所以“互联网-浏览器”这层抽象才那么的厚重，那么的虚幻，因为他必须简单到被所有可以上网的人理解。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/bb314391/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -868,7 +878,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">197</span>
+          <span class="site-state-item-count">198</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -938,7 +948,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:02</span>
+    <span title="Reading time total">20:04</span>
 </div>
 
         
