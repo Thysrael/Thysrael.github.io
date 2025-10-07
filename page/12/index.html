@@ -131,12 +131,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">69</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">70</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">198</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">199</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,158 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c7fcf57a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/c7fcf57a/" class="post-title-link" itemprop="url">编译技术-优化理论</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-11 18:11:46" itemprop="dateCreated datePublished" datetime="2023-02-11T18:11:46+08:00">2023-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编译技术</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、构造控制流图（CFG）"><a href="#一、构造控制流图（CFG）" class="headerlink" title="一、构造控制流图（CFG）"></a>一、构造控制流图（CFG）</h2><blockquote>
+<p>关于优化，真的是一个令人生畏的事情，大致来说，一个优化分为两个部分：</p>
+<ul>
+<li>分析</li>
+<li>改写</li>
+</ul>
+<p>但是在课程中大多只交第一个部分，而不讲第二个部分，这就导致一种“无意义性”，如果分析不能用于改造程序，那么就没有什么学习的动力。所以如果想要学好理论，那么必须要有一个宏观的角度去看发生的一切事情。</p>
+<p>按照 《Engineering a Complier》的观点，按照优化的范围去给优化分类，大致可以分为以下四类</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>范围</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>局部优化</td>
+<td>限制在某个基本块中</td>
+<td>公共子表达式提取，局部值编号，树高平衡，窥孔优化</td>
+</tr>
+<tr>
+<td>区域性优化</td>
+<td>某几个有联系的基本块</td>
+<td>循环展开</td>
+</tr>
+<tr>
+<td>全局优化（过程内优化）</td>
+<td>组成一个完整过程的基本块</td>
+<td>图着色寄存器分配</td>
+</tr>
+<tr>
+<td>过程间优化</td>
+<td>多个过程</td>
+<td>函数内联，过程间常数传递</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>至于为什么有这么多分类，是因为优化是一个很严谨而且需求具有多样性的事情，不同的范围对应的条件和限制是不一样的，那么可以进行优化的力度和策略也就是不一样的。</p>
+<p>对于局部优化，因为它在一个基本块内，所以有两个极好的性质可以应用</p>
+<ul>
+<li>语句是顺序执行的。</li>
+<li>如果一条语句被执行，那么整个基本块的语句都会被执行。</li>
+</ul>
+<p>从某种意义上讲，基本块让人们不再直面指令，而是变成面对一个数据流图。</p>
+<p>而其他三种方法，都需要建立在对于 CFG 图上，也就是说，首先就是分析 CFG 图。另外还有一段话很有意思：</p>
+<p>在进行区域性优化的时候，我们可以考虑通过某种图论性质定义的 CFG 子集，比如说支配图或者强联通分量。</p>
+</blockquote>
+<p>通过一道题来介绍一下分法，不过介绍之前，还是说一下，此时的代码一定是 ir 了，但是对于课设用到的是那种 ir 呢？应该是某种神秘的四元式（这里插一嘴，llvm 也可以被认为成一种神秘四元式，即只有一小部分指令有大于 2 个的操作数）。</p>
+<p>有三条规则：</p>
+<ul>
+<li>程序入口第一条语句</li>
+<li>任何可以被当做跳转目标的语句</li>
+<li>跳转语句后面的一条语句</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/c7fcf57a/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -942,108 +1094,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/d5ddbdee/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/d5ddbdee/" class="post-title-link" itemprop="url">吃喝玩乐-流浪长安</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-21 11:59:42" itemprop="dateCreated datePublished" datetime="2023-01-21T11:59:42+08:00">2023-01-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/" itemprop="url" rel="index"><span itemprop="name">吃喝玩乐</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>6.2k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>6 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>十分让人成长的一次旅行，如果说上一次的南京让人觉得“旅行的意义是遇到意料之外的喜悦”，这次的西安则是“旅行的态度是昂扬向上的”。这次的旅行是匆忙的，我没有做很多的攻略，香老师也有一些积压的事情，导致我们在第一天的时候手忙脚乱的，但是可以骄傲地说，我们凭借着自己的勇气和智慧，让我们的旅途变得妙趣横生起来。或许这就是某种启示：“没有人可以确保意外不发生，但是人们却可以做到在意外发生后依然乐观生活，甚至浪漫诗意的生活”。</p>
-<p>人生百年，白驹过隙，苦难和欢乐都是短暂的。我个人觉得，因为苦难而放弃追寻“新奇的体验”的想法，是不太可取的。苦中作乐或许才是正确的人生态度。</p>
-<hr>
-<h2 id="二、地理交通"><a href="#二、地理交通" class="headerlink" title="二、地理交通"></a>二、地理交通</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/d5ddbdee/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1111,7 +1165,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">198</span>
+          <span class="site-state-item-count">199</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1124,7 +1178,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1181,7 +1235,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:04</span>
+    <span title="Reading time total">20:10</span>
 </div>
 
         
