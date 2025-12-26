@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">199</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,151 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/ad0b1f6a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/ad0b1f6a/" class="post-title-link" itemprop="url">操作系统-初期小结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-23 00:36:51" itemprop="dateCreated datePublished" datetime="2022-03-23T00:36:51+08:00">2022-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>30k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>27 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、ELF-部分"><a href="#一、ELF-部分" class="headerlink" title="一、ELF 部分"></a>一、ELF 部分</h2><h3 id="1-1-types-h"><a href="#1-1-types-h" class="headerlink" title="1.1 types.h"></a>1.1 types.h</h3><h4 id="1-1-1-typedef"><a href="#1-1-1-typedef" class="headerlink" title="1.1.1 typedef"></a>1.1.1 typedef</h4><p>这是 <code>types.h</code> 文件，主要是给一些基本的数据类型起一个简单一点的别名。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/*	$OpenBSD: types.h,v 1.12 1997/11/30 18:50:18 millert Exp $	*/</span>
+<span class="token comment">/*	$NetBSD: types.h,v 1.29 1996/11/15 22:48:25 jtc Exp $	*/</span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifndef</span> <span class="token expression">_INC_TYPES_H_</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">_INC_TYPES_H_</span></span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifndef</span> <span class="token expression"><span class="token constant">NULL</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">NULL</span> <span class="token expression"><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">)</span> <span class="token number">0</span><span class="token punctuation">)</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span> <span class="token comment">/* !NULL */</span></span>
+
+
+<span class="token keyword">typedef</span> <span class="token keyword">unsigned</span> <span class="token keyword">char</span>            <span class="token class-name">u_int8_t</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">short</span>                     <span class="token class-name">int16_t</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">unsigned</span> <span class="token keyword">short</span>          <span class="token class-name">u_int16_t</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">int</span>                       <span class="token class-name">int32_t</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span>            <span class="token class-name">u_int32_t</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">long</span> <span class="token keyword">long</span>                 <span class="token class-name">int64_t</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">long</span>      <span class="token class-name">u_int64_t</span><span class="token punctuation">;</span>
+
+<span class="token keyword">typedef</span> <span class="token class-name">int32_t</span>                 <span class="token class-name">register_t</span><span class="token punctuation">;</span>
+
+<span class="token keyword">typedef</span>	<span class="token keyword">unsigned</span> <span class="token keyword">char</span>	u_char<span class="token punctuation">;</span>
+<span class="token keyword">typedef</span>	<span class="token keyword">unsigned</span> <span class="token keyword">short</span>	u_short<span class="token punctuation">;</span>
+<span class="token keyword">typedef</span>	<span class="token keyword">unsigned</span> <span class="token keyword">int</span>	u_int<span class="token punctuation">;</span>
+<span class="token keyword">typedef</span>	<span class="token keyword">unsigned</span> <span class="token keyword">long</span>	u_long<span class="token punctuation">;</span>
+
+<span class="token keyword">typedef</span>	<span class="token class-name">u_int64_t</span>	<span class="token class-name">u_quad_t</span><span class="token punctuation">;</span>	<span class="token comment">/* quads */</span>
+<span class="token keyword">typedef</span>	<span class="token class-name">int64_t</span>		<span class="token class-name">quad_t</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span>	<span class="token class-name">quad_t</span> <span class="token operator">*</span>	<span class="token class-name">qaddr_t</span><span class="token punctuation">;</span>
+
+
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">MIN</span><span class="token expression"><span class="token punctuation">(</span>_a<span class="token punctuation">,</span> _b<span class="token punctuation">)</span>	</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token punctuation">(</span><span class="token punctuation">{</span>		</span><span class="token punctuation">\</span>
+		<span class="token expression"><span class="token keyword">typeof</span><span class="token punctuation">(</span>_a<span class="token punctuation">)</span> __a <span class="token operator">=</span> <span class="token punctuation">(</span>_a<span class="token punctuation">)</span><span class="token punctuation">;</span>	</span><span class="token punctuation">\</span>
+		<span class="token expression"><span class="token keyword">typeof</span><span class="token punctuation">(</span>_b<span class="token punctuation">)</span> __b <span class="token operator">=</span> <span class="token punctuation">(</span>_b<span class="token punctuation">)</span><span class="token punctuation">;</span>	</span><span class="token punctuation">\</span>
+		<span class="token expression">__a <span class="token operator">&lt;=</span> __b <span class="token operator">?</span> __a <span class="token operator">:</span> __b<span class="token punctuation">;</span>	</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token punctuation">}</span><span class="token punctuation">)</span></span></span>
+
+<span class="token comment">/* Static assert, for compile-time assertion checking */</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">static_assert</span><span class="token expression"><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token keyword">switch</span> <span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token keyword">case</span> <span class="token number">0</span><span class="token operator">:</span> <span class="token keyword">case</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token operator">:</span></span></span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">offsetof</span><span class="token expression"><span class="token punctuation">(</span>type<span class="token punctuation">,</span> member<span class="token punctuation">)</span>  <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">size_t</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token punctuation">(</span><span class="token punctuation">(</span>type <span class="token operator">*</span><span class="token punctuation">)</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span>member<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+
+<span class="token comment">/* Rounding; only works for n = power of two */</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">ROUND</span><span class="token expression"><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">)</span>	<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>u_long<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token operator">~</span><span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">ROUNDDOWN</span><span class="token expression"><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">)</span>	<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>u_long<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token operator">~</span><span class="token punctuation">(</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span> <span class="token comment">/* !_INC_TYPES_H_ */</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/ad0b1f6a/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -696,104 +841,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/6feda75c/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/6feda75c/" class="post-title-link" itemprop="url">Linux-Shell脚本</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-06 19:40:12" itemprop="dateCreated datePublished" datetime="2022-03-06T19:40:12+08:00">2022-03-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>9.7k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>9 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、shell-总论"><a href="#一、shell-总论" class="headerlink" title="一、shell 总论"></a>一、shell 总论</h2><p>shell 就是“壳程序”，这个名字是针对 kernel 来说的，也就是在操作系统外围的程序（严格的讲，已经不是操作系统了）。宏观上的 shell 是所有的应用程序，而狭义上的 shell，指的是命令行方面的操作系统界面。我们通过 shell 将我们输入的命令与内核沟通，好让内核可以控制硬件来正确无误地工作。</p>
-<p>我们在终端上经常敲的 <code>ls</code> 、<code>cd</code> 等命令，其实都是一组一组得引用程序（存放在 <code>\bin</code>） 里，我们通过 shell 调用这些程序来执行我们的指令。</p>
-<p>bash 是 shell 的一种，linux 上还可以有多种 shell 程序。</p>
-<p>关于 shell 本身的使用，只有两点需要强调，就是如果一个命令过长，那么可以使用反斜杠 <code>\</code> 进行换行输出。此外，如果觉得输入命令太麻烦，可以使用别名设置，比如强大需求的 <code>ll</code>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/6feda75c/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -865,7 +912,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">199</span>
+          <span class="site-state-item-count">200</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -935,7 +982,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:20</span>
+    <span title="Reading time total">20:22</span>
 </div>
 
         

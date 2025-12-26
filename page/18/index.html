@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">199</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,111 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/5af22558/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/5af22558/" class="post-title-link" itemprop="url">Ruby设计-高级语法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-09-04 15:25:19" itemprop="dateCreated datePublished" datetime="2022-09-04T15:25:19+08:00">2022-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ruby%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">Ruby设计</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、面向对象基础"><a href="#一、面向对象基础" class="headerlink" title="一、面向对象基础"></a>一、面向对象基础</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><pre class="line-numbers language-ruby" data-language="ruby"><code class="language-ruby"><span class="token keyword">class</span> <span class="token class-name">Point</span>
+    <span class="token keyword">def</span> <span class="token method-definition"><span class="token function">initialize</span></span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+        <span class="token variable">@x</span> <span class="token operator">=</span> x
+        <span class="token variable">@y</span> <span class="token operator">=</span> y
+    <span class="token keyword">end</span>
+<span class="token keyword">end</span>
+
+point <span class="token operator">=</span> <span class="token constant">Point</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+puts point<span class="token punctuation">.</span>is_a<span class="token operator">?</span> <span class="token constant">Point</span>		<span class="token comment"># true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中 <code>initialize</code> 方法充当了构造器，以 <code>@</code> 开头的变量是<strong>实例变量</strong>，也就是说是 Java 中的属性。</p>
+<p>我们利用 <code>new</code> 方法创造一个变量，类似于一个工厂方法。如果往深里探究，应该是 <code>new</code> 方法是一个<strong>类对象方法</strong>，也就是说，<code>Point</code> 可以作为一个类，同时它也是 <code>Class</code> 这个类的一个对象，他作为对象有一个方法是 <code>new</code> 。这个 <code>new</code> 会调用实例方法（就是 java 中的非静态方法） <code>new</code> ，然后完成构造。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/5af22558/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -719,138 +824,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/582ee379/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/582ee379/" class="post-title-link" itemprop="url">CPP设计-jsonxx</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-06-22 19:47:11" itemprop="dateCreated datePublished" datetime="2022-06-22T19:47:11+08:00">2022-06-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CPP%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">CPP设计</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>9.2k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>8 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、基本信息"><a href="#一、基本信息" class="headerlink" title="一、基本信息"></a>一、基本信息</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>条目</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>姓名</td>
-<td>提斯雷尔</td>
-</tr>
-<tr>
-<td>学号</td>
-<td>9527</td>
-</tr>
-<tr>
-<td>学院</td>
-<td>丽春院</td>
-</tr>
-<tr>
-<td>班级</td>
-<td></td>
-</tr>
-<tr>
-<td>项目名</td>
-<td>JSON++，json 文件的解析器</td>
-</tr>
-<tr>
-<td>项目地址</td>
-<td><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/hjiang/jsonxx">https://github.com/hjiang/jsonxx</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr>
-<h2 id="二、项目概览"><a href="#二、项目概览" class="headerlink" title="二、项目概览"></a>二、项目概览</h2><h3 id="2-1-项目需求"><a href="#2-1-项目需求" class="headerlink" title="2.1 项目需求"></a>2.1 项目需求</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/582ee379/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -922,7 +895,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">199</span>
+          <span class="site-state-item-count">200</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -992,7 +965,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:20</span>
+    <span title="Reading time total">20:22</span>
 </div>
 
         

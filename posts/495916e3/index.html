@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-wall.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-wall.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-jsxllPgZAX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Ma Shan Zheng:300,300italic,400,400italic,700,700italic|JetBrains Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"thysrael.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、总论虽然我已经在之前的文章中讨论过一遍张量是如何求导的了，并且附上了详细的数学推导。但是我觉得那次的讨论还是有些过于偏向于数学的严谨，而忽略了实际使用中的直观。 所以我打算再推一遍，省略一些数学细节，但是更加注重实际的使用，包括对于计算和内存开销的估算，矩阵的形状等。  二、规律">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sys4AI-Gradient">
+<meta property="og:url" content="https://thysrael.github.io/posts/495916e3/index.html">
+<meta property="og:site_name" content="钟鼓楼">
+<meta property="og:description" content="一、总论虽然我已经在之前的文章中讨论过一遍张量是如何求导的了，并且附上了详细的数学推导。但是我觉得那次的讨论还是有些过于偏向于数学的严谨，而忽略了实际使用中的直观。 所以我打算再推一遍，省略一些数学细节，但是更加注重实际的使用，包括对于计算和内存开销的估算，矩阵的形状等。  二、规律">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-26T07:07:38.000Z">
+<meta property="article:modified_time" content="2025-12-26T12:11:43.074Z">
+<meta property="article:author" content="Thysrael">
+<meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="Sys4AI">
+<meta property="article:tag" content="S11课上">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://thysrael.github.io/posts/495916e3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Sys4AI-Gradient | 钟鼓楼</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="钟鼓楼" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+      <a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/thysrael" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">钟鼓楼</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">钟楼瘦，鼓楼胖</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">31</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">70</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
+
+  </li>
+        <li class="menu-item menu-item-resource">
+
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+
+  </li>
+        <li class="menu-item menu-item-roam">
+
+    <a href="/obsidian-quartz/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/495916e3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Sys4AI-Gradient
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-12-26 15:07:38 / Modified: 20:11:43" itemprop="dateCreated datePublished" datetime="2025-12-26T15:07:38+08:00">2025-12-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Sys4AI/" itemprop="url" rel="index"><span itemprop="name">Sys4AI</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>虽然我已经在之前的文章中讨论过一遍张量是如何求导的了，并且附上了详细的数学推导。但是我觉得那次的讨论还是有些过于偏向于数学的严谨，而忽略了实际使用中的直观。</p>
+<p>所以我打算再推一遍，省略一些数学细节，但是更加注重实际的使用，包括对于计算和内存开销的估算，矩阵的形状等。</p>
+<hr>
+<h2 id="二、规律"><a href="#二、规律" class="headerlink" title="二、规律"></a>二、规律</h2><h3 id="2-1-LOSS-是标量"><a href="#2-1-LOSS-是标量" class="headerlink" title="2.1 LOSS 是标量"></a>2.1 LOSS 是标量</h3><blockquote>
+<p>无论 LLM Forward 最终是生成一个 token，还是一段 output 序列，还是一个 batch 的 output 序列组，最终的 loss 都是一个标量。</p>
+</blockquote>
+<p>这点似乎还是有些反直觉的，这是因为在很多科普文章中，为了简化描述，往往只会用一个 token 来举例子，而实际上，训练往往是以 batch 的形式进行，并且与不是只生成一个 token，而是一串 token。</p>
+<p>在实际生产中，大模型 forward 的结果其实一个形状为 $[B, S, V]$ 的三维张量，用于表示概率，其中有：</p>
+<ul>
+<li>$B$：Batch Size</li>
+<li>$S$：Sequence Length</li>
+<li>$V$：Vocabulary Size</li>
+</ul>
+<p>对于每个 token 来说，它生成的是一个概率分布，形状是与词表大小相同的一维向量 ，它会与一个标量的 label（可以理解为“正确答案”）去计算交叉熵，也就是看一下这个概率分布合理与否。最终会得到一个标量的 loss 。</p>
+<p>那么此时，我们会得到一个 loss 矩阵 $L$ ，形状是 $[B, S]$ 。问题在于，我们会直接拿着这个二维张量去进行 backward 吗？并不会，我们会对 $L$ 进行 reduce，最终得到一个标量 $l$：</p>
+<script type="math/tex; mode=display">
+l = \frac{\sum^B_j \sum^S_i L_{i, j}}{BS}</script><p>至于为什么不直接用二维张量去 backward，我觉得是出于计算的简便性的考虑。我们都知道雅可比矩阵（Jacobian Matrix）是一个二维张量，而其实因变量和自变量都是一维张量。之所以会发生“升维”，是因为我们要描述“每个自变量的分量”对于“每个因变量的分量”的影响，所以维度就升高了。</p>
+<p>如果我们直接使用 $[B, S]$ 的 $L$ 进行 backward，显然梯度的形状应该会变成高维张量，这显然不利于我们进行梯度下降。而且最关键的是，就算我们能忍受高维张量，到最终这些高维张量还是要 reduce 后再更新模型的。</p>
+<p>也就是即使我们维护了“权重张量对于不同输出的影响”这个张量，最后我们还是要把不同输出对应的影响全加起来，然后再更新权重，相当于没变化。</p>
+<p>总结一下，我们将上面的标量 loss 记录为 $l$ 。</p>
+<h3 id="2-2-形状相同"><a href="#2-2-形状相同" class="headerlink" title="2.2 形状相同"></a>2.2 形状相同</h3><blockquote>
+<p>梯度的形状是与原张量的形状是相同的。</p>
+</blockquote>
+<p>这个规律其实和前面的规律息息相关。</p>
+<p>然后我们需要理解一下在 backward 中提到的“梯度下降法”的具体含义。梯度最重要的，是确定“因变量”和“自变量”。自变量很好理解，我们需要计算哪个张量的梯度，哪个张量就作为自变量。而因变量就比较迷惑了，先说结论，它一直是 $l$ 。</p>
+<p>那么为什么说因变量比较迷惑呢？这是因为 backward 中充分应用了链式法则，在链式法则中，会引入很多的“临时梯度”，这些临时梯度的因变量不再是 $l$ 了。当这些“临时梯度”与“最终梯度”一起出现在公式中的时候，就容易让人感到迷惑了。</p>
+<p>那么考虑一个在 LLM 中出现的张量 $X$ ，无论 $X$ 在模型的哪个位置（是最后一层，还是第一层），发挥什么作用（是 FFN 的权重，还是 Attention 的权重，还是激活值，还是偏移值），形状如何（是一维向量，还是二维矩阵，还是考虑 batch 的高维张量），它其中的每个分量都会影响 $l$ 。</p>
+<p>所以因此我们得到的梯度 $\frac{\partial l}{\partial X}$ 的形状就一定和 $X$ 保持相同，因为它就表示了 $X$ 中的每个分量对于 $l$ 的影响。</p>
+<p>为了强调这个规律，我们引入了新的标记：</p>
+<script type="math/tex; mode=display">
+X_{G} = \frac{\partial l}{\partial X}</script><p>其中 $X_G$ 与 $X$ 的形状完全相同。</p>
+<p>当然梯度下降法也就很好表示了，因为形状相同（这么看形状也必须相同），说白了就是：</p>
+<script type="math/tex; mode=display">
+X_{new} = X_{old} - \eta X_{G}</script><h3 id="2-3-矩阵乘法很简单"><a href="#2-3-矩阵乘法很简单" class="headerlink" title="2.3 矩阵乘法很简单"></a>2.3 矩阵乘法很简单</h3><blockquote>
+<p>对于 Forward 过程：</p>
+<script type="math/tex; mode=display">
+Y = A \cdot B</script><p>无论 $A, B$ 的形状是什么，有 backward 过程：</p>
+<script type="math/tex; mode=display">
+A_{G} = Y_{G} \cdot B^T</script><script type="math/tex; mode=display">
+B_{G} = Y_{G}^T \cdot A</script></blockquote>
+<p>也就是说，虽然理解并推导链式法则 backward 是一件很困难的事情，但是最终的结论是非常简单且 general 的。当我们拿到一个因变量的梯度的时候，自变量的梯度计算会变得很容易记忆。</p>
+<p>如果有两个自变量，那么某个自变量的梯度就是因变量梯度与另一个自变量的乘积（当然可能还需要转置）。</p>
+<p>那难道 LLM 中就都是 $Y = AB$ 这种简单形式吗？难道 Attention 和 FFN 这种复杂的网络结构，也能用矩阵乘法表示吗？还这能，这是因为：</p>
+<ul>
+<li>我们并不限制 $A, B$ 的形状，也就是无论他们是一维的，还是二维的，上面的式子都成立。</li>
+<li>虽然 Attention 这种结构乍一看很复杂，但是它都可以被拆成很多个矩阵乘法，比如说 $QK$ 和 $PV$ 等。</li>
+<li>确实激活函数或者 norm 函数（包括 softmax）无法用这个模式硬套，但是用这种 vec2vec 的梯度下降，本身也不是计算的大头。</li>
+</ul>
+<hr>
+<h2 id="三、应用"><a href="#三、应用" class="headerlink" title="三、应用"></a>三、应用</h2><p>在这一章里面，我们用上面介绍的规律来实战一下，其实主要就是矩阵乘法梯度的规律。</p>
+<h3 id="3-1-FFN"><a href="#3-1-FFN" class="headerlink" title="3.1 FFN"></a>3.1 FFN</h3><p>可以被理解成两个线性映射层：</p>
+<script type="math/tex; mode=display">
+Y = WX</script><p>我们已经拿到了 $Y_G$ ，带入上面的规律可知：</p>
+<script type="math/tex; mode=display">
+W_G = Y_G \cdot X^T \\
+X_G = Y_G^T \cdot W</script><p>在计算 $W_G$ 的时候，需要使用到激活值 $X$，这就要求在 forward 的时候，要将这个临时的激活值进行保留。</p>
+<p>我们计算 $W_G$ 是出于更新 $W$ 的目的，那么我们为什么要计算 $X_G$，这是因为 $X$ 此时是自变量，而它同时也是因变量，所以需要计算它保证链式传播。</p>
+<h3 id="3-2-Attention"><a href="#3-2-Attention" class="headerlink" title="3.2 Attention"></a>3.2 Attention</h3><p>Attention 看起来很复杂，但是实际上经过拆解，并不难。在 forward 过程中，有：</p>
+<script type="math/tex; mode=display">
+S = Q \cdot K^T \\
+P = Softmax(S) \\
+O = P \cdot V</script><p>经过这么一拆解，就算不算，也知道 backward 可以表示成一个很简单的形式了。</p>
+<p>我们已经拿到了 $O_G$ ，然后有：</p>
+<script type="math/tex; mode=display">
+V_G = O_G \cdot P^T</script><p>同时有：</p>
+<script type="math/tex; mode=display">
+P_G = O_G^T \cdot V</script><p>这两个计算的开销是非常大的，因为我们要保留形状为 $[n, n]$ 的 $P, P_G$ （$n$ 是序列长度），这都是非常高昂的开销。</p>
+<p>我们不考虑 $softmax$ 的梯度，但是总之 $S_G$ 的形状也是 $[n, n]$ 。</p>
+<p>当我们有了 $S_G$ 后，我们就可以推算 $Q_G, K_G$ 了，有：</p>
+<script type="math/tex; mode=display">
+Q_G = S_G \cdot K \\
+K_G = Q^T \cdot S_G</script><p>FlashAttention 之所以这么厉害，不止是因为它在 forward 的卓越贡献，能够避免 $[n, n]$ 矩阵，在 backward 中，它利用保存在 SRAM 里的 Block 形式的 $Q, K, V$ 重新算一遍 Forward，当场算出局部的 $P$，随即算出梯度，直接加和，同样不需要保存 $[n, n]$ 矩阵。</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/Sys4AI/" rel="tag"><i class="fa fa-tag"></i> Sys4AI</a>
+              <a href="/tags/S11%E8%AF%BE%E4%B8%8A/" rel="tag"><i class="fa fa-tag"></i> S11课上</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/dbe4a116/" rel="prev" title="吃喝玩乐-流浪扬州">
+      <i class="fa fa-chevron-left"></i> 吃喝玩乐-流浪扬州
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+<script src="https://utteranc.es/client.js"
+        repo="Thysrael/blog-comment"
+        issue-term="title"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%BB%E8%AE%BA"><span class="nav-text">一、总论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%A7%84%E5%BE%8B"><span class="nav-text">二、规律</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-LOSS-%E6%98%AF%E6%A0%87%E9%87%8F"><span class="nav-text">2.1 LOSS 是标量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%BD%A2%E7%8A%B6%E7%9B%B8%E5%90%8C"><span class="nav-text">2.2 形状相同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E5%BE%88%E7%AE%80%E5%8D%95"><span class="nav-text">2.3 矩阵乘法很简单</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BA%94%E7%94%A8"><span class="nav-text">三、应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-FFN"><span class="nav-text">3.1 FFN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Attention"><span class="nav-text">3.2 Attention</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Thysrael"
+      src="/images/avatar2.png">
+  <p class="site-author-name" itemprop="name">Thysrael</p>
+  <div class="site-description" itemprop="description">Can you hear me ?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">200</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="">
+    <a target="_blank" class="social-link" href="/atom.xml" style="color: burlywood;">
+      <span class="icon">
+        <i class="fa fa-rss"></i>
+      </span>
+      <span class="label">RSS</span>
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/thysrael" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;thysrael" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:thysrael@163.com" title="E-Mail → mailto:thysrael@163.com" rel="noopener external nofollow noreferrer" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021.12.18 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Thysrael</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">20:22</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

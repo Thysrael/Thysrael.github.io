@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">199</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,156 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c699b1c8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/c699b1c8/" class="post-title-link" itemprop="url">编译技术-其他理论</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-11 21:20:22" itemprop="dateCreated datePublished" datetime="2023-02-11T21:20:22+08:00">2023-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E8%AF%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">编译技术</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>4.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>4 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、理论"><a href="#一、理论" class="headerlink" title="一、理论"></a>一、理论</h2><ul>
+<li>前端：分析部分，包括词法和语法分析，符号表建立，语义分析，中间代码生成，错误处理</li>
+<li>后端：综合部分，包括与机器有关的代码优化，目标代码生成，符号表操作，错误处理</li>
+<li>编译有 5 个阶段，分别是：<strong>词法分析，语法分析，语义分析和中间代码生成，代码优化，生成目标程序</strong>。有两个事件贯穿其中，即<strong>符号表管理和错误处理</strong>。也就组成了 7 个逻辑部分。</li>
+<li>字母表和符号串<ul>
+<li>符号：可以理解为一个个的字母，比如说 $a, b, c, \phi$</li>
+<li>字母表：是符号的集合，比如说 $\sum = {a,b,\phi}$</li>
+<li>符号串：是符号的序列：比如说 $abababa$</li>
+<li>空符号串：无任何符号的符号串，即 $\epsilon$</li>
+<li>符号串集合：由符号串构成的集合</li>
+<li>语言：一种特殊的符号串集合</li>
+</ul>
+</li>
+<li>文法就是语法，规定了语言的结构。</li>
+<li>左递归文法只是无法采用自顶向下的分析方法，并不是一无是处</li>
+<li><p>运行时存储组织与管理要回答的问题是</p>
+<ul>
+<li>数据结构在内存里是如何表示的</li>
+<li><p>函数在内存中是如何表示的</p>
+<ul>
+<li>需要记住调用前的状态,以便在调用结束后返回。</li>
+<li>需要提供一种办法,在调用函数和被调函数之间传递参数,返回值</li>
+<li>满足 Scope 的要求,能够找到所有的数据结构</li>
+</ul>
+</li>
+<li><p>他们在内存中如何放置,如何管理（这里面有个专题是<strong>垃圾回收机制</strong>）</p>
+</li>
+<li>感觉这里很有意思，操作系统将内存封装成了一个数组，编译器决定了这个数组的使用方式。</li>
+</ul>
+</li>
+<li>存储管理主要有两个方面：<ul>
+<li>静态存储管理，对应的就是实验中对于 <code>.data</code> 的处理</li>
+<li>动态存储管理，这部分在编译实验中被拆成了两个部分，一个部分在 llvm 翻译的时候完成，比如说栈式符号表之类的东西就出现在此处，一部分在 mips 翻译的时候完成，比如说函数运行栈的结构。这就导致似乎没法建立一个统一的体系，只能说和理论在表面上看有些出入。</li>
+</ul>
+</li>
+<li>非分程序的结构语言：每个可独立进行编译的程序单元时一个不包含有子模块的单一模块。如 FORTRAN 语言。另外常说的 Module 这个概念，也可能是来自这个语言<img src="/posts/c699b1c8/20201114151434.png" alt="img"></li>
+<li>IR(Intermediate representation)：不同层次的 IR 代表了不同层次的抽象(类型、操作)通过分层抽象,实现最大限度的重用。</li>
+<li>错误分类：<ul>
+<li>语法错误：不符合词法和语法规则的错误。</li>
+<li>语义错误：<ul>
+<li>程序不合语义规则。比如说未定义，就使用。</li>
+<li>超越具体计算机系统的限制，比如说栈溢出，类型溢出等。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、压缩文法"><a href="#二、压缩文法" class="headerlink" title="二、压缩文法"></a>二、压缩文法</h2><p>需要压缩文法包括两种：</p>
+<ul>
+<li>有害规则，就是 $U::=U$ 这种，这种十分显然，所以就不说了。</li>
+<li>多余规则，针对语法规则的左部（左部是一个符号），又分为<ul>
+<li>不可达符号：就是这个左部没法由识别符号推出，那么就是不可达的。这种非常好识别，只需要进行一个符号的 BFS 即可。</li>
+<li>不活动符号，就是形如 $A ::= Aa $ 这样的规则，会导致一直循环，没完没了。</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/c699b1c8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -968,132 +1118,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/db9dd305/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/db9dd305/" class="post-title-link" itemprop="url">English-虚拟语气</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-24 17:03:22" itemprop="dateCreated datePublished" datetime="2023-01-24T17:03:22+08:00">2023-01-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.9k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、非真实条件句"><a href="#一、非真实条件句" class="headerlink" title="一、非真实条件句"></a>一、非真实条件句</h2><h3 id="1-1-基础和时态"><a href="#1-1-基础和时态" class="headerlink" title="1.1 基础和时态"></a>1.1 基础和时态</h3><p>时态如下所示：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>从句</th>
-<th>主句</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>与过去事实相反</td>
-<td>had done</td>
-<td>(should / would / could / might) have done</td>
-</tr>
-<tr>
-<td>与现在事实相反</td>
-<td>did / were</td>
-<td>(should / would / could / might) do</td>
-</tr>
-<tr>
-<td>与将来事实相反</td>
-<td>did / were to do / should do</td>
-<td>(should / would / could / might) do</td>
-</tr>
-</tbody>
-</table>
-</div>
-<blockquote>
-<p>之前我学习的时候，总是痴迷于<strong>时态回退</strong>这种概念，最后绕来绕去把自己绕晕，今天看了看，发现似乎直接死记硬背要更加容易一些。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/db9dd305/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1165,7 +1189,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">199</span>
+          <span class="site-state-item-count">200</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1235,7 +1259,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:20</span>
+    <span title="Reading time total">20:22</span>
 </div>
 
         

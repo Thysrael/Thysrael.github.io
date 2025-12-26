@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">199</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
 
   </li>
         <li class="menu-item menu-item-resource">
@@ -209,6 +209,112 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/7df595f9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me ?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/7df595f9/" class="post-title-link" itemprop="url">海边拾贝-FlashInfer</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-05-06 21:15:38" itemprop="dateCreated datePublished" datetime="2025-05-06T21:15:38+08:00">2025-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" itemprop="url" rel="index"><span itemprop="name">海边拾贝</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>Attention Engine 可以被理解成<strong>“Attetion 算子库 + Attention 运行时</strong>”。有以下设计：</p>
+<ul>
+<li>可拆分的 Attention 算子：提高了 GPU 内存带宽利用率</li>
+<li>新的 KV Cache 管理抽象 CBSR：兼具 PagedAttention 和 RadixAttention 的优点，更 general</li>
+<li>宏观上动态、微观上静态的调度运行时：动态的同时不损害静态抽象和收益</li>
+<li>可定制的 Attention 算子框架、JIT：一些工程特性</li>
+</ul>
+<p>FlashInfer 这篇工作在 2023 年就提出了，据作者所言，那个时候只有 FlashAttention1，还没有 FA2&amp;3，FlashDecode 等工作，但是这些工作论文发得更早。</p>
+</blockquote>
+<h2 id="一、Background"><a href="#一、Background" class="headerlink" title="一、Background"></a>一、Background</h2><h3 id="FlashAttention"><a href="#FlashAttention" class="headerlink" title="FlashAttention"></a>FlashAttention</h3><p>传统的 Attention 运算需要扫描 3 遍 GPU Memory 中的 Attention Logits 矩阵（len, len），计算密度低。</p>
+<p>FlashAttention 提出了 1-pass 的 attention 算法，提高了计算密度，缓解了 GPU Memory 到 GPU Cache 的 IO 瓶颈：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/7df595f9/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -532,7 +638,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/posts/7dc4ea13/" class="post-title-link" itemprop="url">Sys4AI-LLM</a>
+            <a href="/posts/7dc4ea13/" class="post-title-link" itemprop="url">Sys4AI-Transformer</a>
         </h2>
 
         <div class="post-meta">
@@ -549,7 +655,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
+                <time title="Modified: 2025-12-26 16:35:58" itemprop="dateModified" datetime="2025-12-26T16:35:58+08:00">2025-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -712,102 +818,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/670dae13/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me ?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/670dae13/" class="post-title-link" itemprop="url">计算机系统-虚拟化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-02 17:48:54" itemprop="dateCreated datePublished" datetime="2025-01-02T17:48:54+08:00">2025-01-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">计算机系统</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>3.7k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>3 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、CPU-虚拟化"><a href="#一、CPU-虚拟化" class="headerlink" title="一、CPU 虚拟化"></a>一、CPU 虚拟化</h2><h3 id="2-1-背景"><a href="#2-1-背景" class="headerlink" title="2.1 背景"></a>2.1 背景</h3><p>CPU 虚拟化范畴还挺多的，但是我们这里应该指的不包括不同 ISA 的虚拟化，而只是 CPU 的虚拟化，也就是虚拟出来的 CPU 和原本的 CPU 具有相同的 ISA 。</p>
-<h3 id="2-2-Trap-amp-Emulate"><a href="#2-2-Trap-amp-Emulate" class="headerlink" title="2.2 Trap &amp; Emulate"></a>2.2 Trap &amp; Emulate</h3><p>为了虚拟化出多个 CPU，我们让虚拟的 OS 跑在用户态，也就是如下结构：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/670dae13/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -879,7 +889,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">199</span>
+          <span class="site-state-item-count">200</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -949,7 +959,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:20</span>
+    <span title="Reading time total">20:22</span>
 </div>
 
         
