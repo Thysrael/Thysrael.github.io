@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Sys4AI-LLM
+title: Sys4AI-Transformer
 mathjax: true
 abbrlink: 7dc4ea13
 date: 2025-01-30 22:24:19
@@ -285,7 +285,7 @@ $$
 
 最后放一张 MLP 的图来总结一下反向传播过程中的链式求导和常见导数：
 
-![img](./Sys4AI-LLM/1jt_OvqvfWkvuSUau4BPVWQ.png)
+![img](./Sys4AI-Transformer/1jt_OvqvfWkvuSUau4BPVWQ.png)
 
 ### 2.2 FLOPS
 
@@ -424,7 +424,7 @@ $$
 
 IM2Col 的意思是 Image To Column，本质是将卷积计算转换成矩阵乘法，然后因为矩阵乘法已经被优化得很好了，所以可以加速计算。如下所示：
 
-![image-20250202175313184](Sys4AI-LLM/image-20250202175313184.png)
+![image-20250202175313184](Sys4AI-Transformer/image-20250202175313184.png)
 
 但是这种方式并不从理论上减少计算的复杂度，只是比较简单实现，并且效果较好。此外 FFT 也可以用于加速卷积计算，并且是理论上加速。
 
@@ -454,7 +454,7 @@ Transformer 最初开发出来被用于进行机器翻译，其中最有特色�
 
 我最初的理解是，机器翻译就是存着一个字典，然后一个词一个词的翻译就够了（也就是只进行依次 embedding 和逆向 embedding 的过程）。但是仔细一想就不太可能，这是因为不同语言之间并不是只需要逐词翻译，因为语法的不同，导致不同语言的上下文顺序也是不同的。所以人们最先设计出的机器翻译机制，是让每个句子对应一个向量，被称作 Context Vector，在翻译的时候，先用神经网络将句子编码成 Context Vector，然后再用神经网络解码成另一门语言的句子，如下图所示：
 
-![image-20250202211138372](Sys4AI-LLM/image-20250202211138372.png)
+![image-20250202211138372](Sys4AI-Transformer/image-20250202211138372.png)
 
 至于为什么要使用 RNN，将 token 一个个喂入神经网络，而不是一股脑将整个句子当作输入一口气喂进去。是因为翻译的难点在于理解上下文，RNN 可以更好的发现序列之间的关系。
 
@@ -488,7 +488,7 @@ $$
 
 下面举个例子，有 $d_{model} = 4, t = 6$ ，如下所示： 
 
-![](Sys4AI-LLM/attention1.drawio.png)
+![](Sys4AI-Transformer/attention1.drawio.png)
 
 这里我有一个有趣的思考，就是并不是所有的模型都可以随着规模增大而性能更好。比如说 RNN 相比于传统的多层感知机，就可以有更多的层数，这是因为 RNN 削弱因层数增多而导致的“梯度消失”现象。但是正如前所述，虽然 RNN 避免了“梯度消失”，但是过于串行化的算法和较低的状态维度（我觉得这点可能可以改进），导致我们无法进一步扩大模型规模。而基于 Attention 机制的 Transformer 模型则有更好的可拓展性，并行化程度高，所以才能在更大规模时有更加智能的表现。
 
@@ -624,7 +624,7 @@ $$
 
 我们看一下 Transformer 的架构图：
 
-![image-20250204155327984](Sys4AI-LLM/image-20250204155327984.png)
+![image-20250204155327984](Sys4AI-Transformer/image-20250204155327984.png)
 
 
 
@@ -697,19 +697,19 @@ $$
 
 示意图如下：
 
-![](Sys4AI-LLM/attention2.drawio.png)
+![](Sys4AI-Transformer/attention2.drawio.png)
 
 ### 3.6 KV Cache
 
 正如前所述，在 Self-Regression 中我们计算 $Y$ 的目的只是为了得到最后一个行向量 $Y_t$ ，在上述计算中，有很多计算是冗余的，我们在上图中用“实心”标出计算 $Y_t$ 所需要的分量：
 
-![](Sys4AI-LLM/attention3.drawio.png)
+![](Sys4AI-Transformer/attention3.drawio.png)
 
 也就是说，只需要 $Q$ 的最后一个行向量，全部的 $K, V$ 向量，就可以满足计算要求，我们并不需要全部的 $Q$ 。
 
 更进一步，因为 $K, V$ 都是逐步增长的，也就是每次增加最后一个横向量，所以前面的部分都是可以被 cache 的，避免了 $X$ 每次都需要与 $W$ 进行运算，如果对 $K,V$ 进行 cache（用“交叉线”填充），那么计算量会进一步减少：
 
-![](Sys4AI-LLM/attention4.drawio.png)
+![](Sys4AI-Transformer/attention4.drawio.png)
 
 但是因为 $KV$ 的形状都包括一个 $t$ ，所以在长上下文场景下（也就是 $t$ 很大），会导致缓存的数据很多，这样就会导致 GPU 的访存压力很大。
 
