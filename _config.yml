@@ -5,8 +5,8 @@
 # Site
 title: 钟鼓楼
 subtitle: '钟楼瘦，鼓楼胖'
-description: 'Can you hear me ?'
-keywords: 编程,系统,旅游
+description: 'Thysrael 的个人技术博客，专注于计算机科学基础与系统架构。内容涵盖操作系统(Linux/Unix)、计算机组成原理(MIPS/Verilog)、数据库(DBMS)、编译技术(LLVM)、并行计算(GPU/CUDA)及人工智能系统(Sys4AI)。同时分享算法设计、数学分析笔记以及生活随笔。'
+keywords: Thysrael,博客,Blog,计算机科学,Computer Science,操作系统,Operating System,Linux,Kernel,计算机组成,Computer Architecture,MIPS,Verilog,数据库,Database,DBMS,SQL,编译技术,Compiler,LLVM,并行计算,Parallel Computing,GPU,Sys4AI,算法,Algorithm,数据结构,Data Structure,C++,Python,数学分析,离散数学,概率统计
 author: Thysrael
 language: en
 timezone: 'Asia/Shanghai'
@@ -18,13 +18,13 @@ url: https://thysrael.github.io/
 permalink: posts/:abbrlink/
 abbrlink:
   alg: crc32
-  rep: hex 
+  rep: hex
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
   trailing_html: true # Set to false to remove trailing '.html' from permalinks
 
-# sitemap  
+# sitemap
 sitemap:
   path: sitemap.xml
 baidusitemap:
@@ -35,7 +35,7 @@ nofollow:
   enable: true
   field: site
   exclude: ''
-  
+
 # Directory
 source_dir: source
 public_dir: public
@@ -128,7 +128,7 @@ githubEmojis:
   styles:
   customEmojis:
 
-# Search 
+# Search
 search:
   path: search.xml
   field: post
@@ -174,7 +174,7 @@ feed:
 #     cdn: //cdn.jsdelivr.net/npm/pdfobject@2.1.1/pdfobject.min.js
 #     # CDNJS, provided by cloudflare, maybe the best CDN, but not works in China
 #     #cdn: //cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js
-    
+
 excerpt:
   depth: 5
   excerpt_excludes: []
@@ -188,4 +188,3 @@ deploy:
     #repo: https://github.com/livingfrontier/livingfrontier.github.io.git
     repo: git@github.com:Thysrael/Thysrael.github.io.git
     branch: main
-
