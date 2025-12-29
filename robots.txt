@@ -1,0 +1,16 @@
+# robots.txt for https://thysrael.github.io/
+
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/
+
+Sitemap: https://thysrael.github.io/sitemap.xml
+Sitemap: https://thysrael.github.io/baidusitemap.xml
+
+Disallow: /js/
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /lib/
+Disallow: /vendors/
