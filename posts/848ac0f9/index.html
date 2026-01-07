@@ -33,8 +33,9 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/848ac0f9/image-20211104155056775.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/848ac0f9/image-20250913163324918.png">
 <meta property="og:image" content="https://thysrael.github.io/posts/848ac0f9/nvidia-pascal-nvlink-power8.jpg">
+<meta property="og:image" content="https://thysrael.github.io/posts/848ac0f9/memory-spaces-on-cuda-device.png">
 <meta property="article:published_time" content="2025-09-13T01:38:10.000Z">
-<meta property="article:modified_time" content="2025-09-13T14:15:15.367Z">
+<meta property="article:modified_time" content="2026-01-06T08:29:34.768Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="Sys4AI">
@@ -252,10 +253,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2025-09-13 09:38:10 / Modified: 22:15:15" itemprop="dateCreated datePublished" datetime="2025-09-13T09:38:10+08:00">2025-09-13</time>
+              <time title="Created: 2025-09-13 09:38:10" itemprop="dateCreated datePublished" datetime="2025-09-13T09:38:10+08:00">2025-09-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-01-06 16:29:34" itemprop="dateModified" datetime="2026-01-06T16:29:34+08:00">2026-01-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -279,14 +286,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>5.7k</span>
+              <span>8.4k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>5 mins.</span>
+              <span>8 mins.</span>
             </span>
 
         </div>
@@ -326,7 +333,8 @@
 <p>可以看到，如果想要搬运数据从 CPU Memory 搬运到 GPU Memory，需要走较为缓慢的 PCIe 通路（10x GB/s），而 GPU Memory 之间的数据搬运，则可以走 NVLink（100x GB/s）。</p>
 <p>现在的 LLM 都非常庞大，而 GPU 显存只有 10x GB 大小，所以很有可能出现显存容纳不下数据的情况。而如果我们将其 offload 到 CPU Memory 上，我们就需要忍受 PCIe 的低带宽，这甚至比 HBM 的低带宽更难以接受。</p>
 <p>如果是分布式场景，我们一般会把参数都加载到显存后再开始任务，而不同 GPU 中的数据交换，通过 NVLink 交换，而不是用 CPU Memory 做中转（走 PCIe 太慢了）；而如果是边缘设备，我们就要想办法解决 PCIe 的瓶颈了，比如说稀疏注意力机制。</p>
-<h3 id="1-6-Terminology"><a href="#1-6-Terminology" class="headerlink" title="1.6 Terminology"></a>1.6 Terminology</h3><div class="table-container">
+<h3 id="1-6-Terminology"><a href="#1-6-Terminology" class="headerlink" title="1.6 Terminology"></a>1.6 Terminology</h3><p>这里整理一下 NVIDIA 和 AMD GPU 的不同术语对比：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -369,7 +377,6 @@
 </tbody>
 </table>
 </div>
-<p>这里整理一下 NVIDIA 和 AMD GPU 的不同术语对比。</p>
 <hr>
 <h2 id="二、CUDA"><a href="#二、CUDA" class="headerlink" title="二、CUDA"></a>二、CUDA</h2><h3 id="2-1-CTA"><a href="#2-1-CTA" class="headerlink" title="2.1 CTA"></a>2.1 CTA</h3><p>理解 CTA 的关键，在于理解软件编程模型与硬件之间的对应关系。</p>
 <p>是不是有了 warp 这个概念，我们剩下的事情就是在软件层面设计 warp 内的指令就够了。其实并没有，首先，warp 是局限于一个 SM 内的，而且是没有办法在不同的 SM 之间迁移的。所以如果我们希望充分利用不同的 SM，那么就要引入 CTA（Collaborative Thread Array） 的概念，一个 CTA 必须在一个特定的 SM 上，不同的 CTA 可以在不同的 SM 上，一个 SM 上可以有多个 CTA。CTA 是非常像软件 thread 的概念，一个 thread 同时仅能在一个 CPU Core 上运行，不同 thread 可以在不同的 CPU Core 上运行。有了这个概念后，我们就可以利用 <code>ctaid</code> 来在软件中使用不同的 SM，当然这种使用，有一部分是依赖于 GPU 内部的硬件调度器，这就像我们没法简单指定某个 thread 一定要与某个 CPU Core 绑定一样。</p>
@@ -387,7 +394,10 @@ mov.u32 %r2, %ntid.x;          // r2 = blockDim.x
 mov.u32 %r3, %ctaid.x;         // r3 = blockIdx.x
 mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>从这点也可以看出，SIMT 模型是从硬件层面支持的，而不是用编译器，从汇编层面支持的。</p>
+<p>我们也可以看出，我们在写 kernel 的时候，用 <code>&lt;&lt;grid, block&gt;&gt;</code> 二元组来描述并行，是非常必要的，不能只用一个一元组去描述。</p>
 <h3 id="2-2-Memory-Type"><a href="#2-2-Memory-Type" class="headerlink" title="2.2 Memory Type"></a>2.2 Memory Type</h3><p>不同于简单的 CPU 编程，只用操作一种内存。当我们使用 CUDA 的时候，可以操纵多种不同类型的内存。</p>
+<p>CUDA 中的类型如下所示：</p>
+<p><img src="/posts/848ac0f9/memory-spaces-on-cuda-device.png" alt="Memory spaces on a CUDA device"></p>
 <p>CUDA 使用 <code>__device__</code> 来声明一个全局变量，可以被所有 kernel 访问。如下所示：</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">__device__ <span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">long</span> g_total_sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>而局部变量的使用更为复杂。我们在 kernel 中声明的局部变量，优先存放在寄存器中。而如果局部变量如果过多，就会存放到 local memory 中，这种 local memory 也是 thread 独享的。那是不是很快呢？并不是，local memory 是在显存上的一片区域，考虑到 GPU 那孱弱的 cache，local memory 的访问时延非常高。</p>
@@ -397,10 +407,144 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx<span aria-hidden="true" 
     <span class="token comment">// ...</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在对共享内存进行计算之前，必须确保所有线程都已经完成了上一步的数据加载。否则，一些线程可能会读到旧的、无效的数据（竞态条件 Race Condition）。使用 <code>__syncthreads()</code> 来实现同步。</p>
+<p>总结如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Memory</th>
+<th>Location on/off chip</th>
+<th>Cached</th>
+<th>Access</th>
+<th>Scope</th>
+<th>Lifetime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Register</td>
+<td>On</td>
+<td>n/a</td>
+<td>R/W</td>
+<td>1 thread</td>
+<td>Thread</td>
+</tr>
+<tr>
+<td>Local</td>
+<td>Off</td>
+<td>Yes</td>
+<td>R/W</td>
+<td>1 thread</td>
+<td>Thread</td>
+</tr>
+<tr>
+<td>Shared</td>
+<td>On</td>
+<td>n/a</td>
+<td>R/W</td>
+<td>All threads in block</td>
+<td>Block</td>
+</tr>
+<tr>
+<td>Global</td>
+<td>Off</td>
+<td>Yes</td>
+<td>R/W</td>
+<td>All threads + host</td>
+<td>Host allocation</td>
+</tr>
+<tr>
+<td>Constant</td>
+<td>Off</td>
+<td>Yes</td>
+<td>R</td>
+<td>All threads + host</td>
+<td>Host allocation</td>
+</tr>
+<tr>
+<td>Texture</td>
+<td>Off</td>
+<td>Yes</td>
+<td>R</td>
+<td>All threads + host</td>
+<td>Host allocation</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h3 id="2-3-Sync-and-Stream"><a href="#2-3-Sync-and-Stream" class="headerlink" title="2.3 Sync and Stream"></a>2.3 Sync and Stream</h3><p>CPU 和 GPU 协作的方式是异步的，也就是说，CPU 在向 GPU 发送指令后，是不会等待指令返回的，它就会自己往下运行了，所以如果 CPU 想要获得 GPU 的运行结果，需要先执行同步操作：</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">cudaDeviceSynchronize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>不过 GPU 本身，默认是串行执行指令的，这就导致 kernel 是没有办法并行执行的，也就没有办法进行一些访存延迟隐藏之类的优化。为了改善这一点，CUDA 提出了 Stream 的概念。</p>
 <p>在你不使用 Stream 的情况下，所有 CUDA 操作（比如在 GPU 上计算、在 CPU 和 GPU 之间拷贝数据）都默认放入一个叫做 “默认流”（Default Stream） 的大队列里。我们只需要声明多个 Stream，就可以实现并发。同一个 Stream 内的指令是顺序执行的，而不同 Stream 中的指令是可以并发执行的。</p>
+<hr>
+<h2 id="三、Triton"><a href="#三、Triton" class="headerlink" title="三、Triton"></a>三、Triton</h2><h3 id="3-1-Tiled-Based"><a href="#3-1-Tiled-Based" class="headerlink" title="3.1 Tiled-Based"></a>3.1 Tiled-Based</h3><p>与 CUDA 不同，Triton 并不是 SIMT 编程模型，而是 Tiled-Based 编程模型，或者换种说法，是一种 SIMD 模型。我们没有办法像在 CUDA 编程一样，操纵每个线程（或者说每个标量），我们只能操纵一个向量或者一个张量，当然了，此时他们被叫作 Tile。</p>
+<p>在 Triton 中我们也有 grid 的概念，我们用 grid 来组织“Program Instance”，每个 Program Instance 负责一个 Tile。需要强调的是，此时的组织，不再是真的硬件映射关系了，往往只是一种算法逻辑上的分块。</p>
+<p>（如果要深究的话，一个 Triton 的 PI，对应一到多个 CTA）。</p>
+<p>当我们计算一个矩阵加法 $C = A + B$ 时，第 $(m, n)$ 个 PI，负责的就是第 $(m, n)$ 个 Tile 的计算。在启动核函数时，我们指定 grid 参数：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 定义块大小 (Tile size)</span>
+<span class="token comment"># 可以根据具体硬件和矩阵形状进行调整以获得最佳性能</span>
+BLOCK_SIZE_M <span class="token operator">=</span> <span class="token number">32</span>
+BLOCK_SIZE_N <span class="token operator">=</span> <span class="token number">32</span>
+    
+<span class="token comment"># 定义 grid，这里是关键！</span>
+<span class="token comment"># 使用 triton.cdiv (ceiling division) 来确保所有元素都被覆盖</span>
+grid_m <span class="token operator">=</span> triton<span class="token punctuation">.</span>cdiv<span class="token punctuation">(</span>M<span class="token punctuation">,</span> BLOCK_SIZE_M<span class="token punctuation">)</span>
+grid_n <span class="token operator">=</span> triton<span class="token punctuation">.</span>cdiv<span class="token punctuation">(</span>N<span class="token punctuation">,</span> BLOCK_SIZE_N<span class="token punctuation">)</span>
+<span class="token comment"># 将 grid 定义为一个二元组</span>
+grid <span class="token operator">=</span> <span class="token punctuation">(</span>grid_m<span class="token punctuation">,</span> grid_n<span class="token punctuation">)</span>
+    
+<span class="token comment"># 启动核函数</span>
+add_kernel<span class="token punctuation">[</span>grid<span class="token punctuation">]</span><span class="token punctuation">(</span>
+		a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">,</span>                       <span class="token comment"># 指针</span>
+    M<span class="token punctuation">,</span> N<span class="token punctuation">,</span>                          <span class="token comment"># 维度</span>
+    a<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> a<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>      <span class="token comment"># 矩阵 A 的步长</span>
+    b<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> b<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>      <span class="token comment"># 矩阵 B 的步长</span>
+    c<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> c<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>      <span class="token comment"># 矩阵 C 的步长</span>
+    BLOCK_SIZE_M<span class="token operator">=</span>BLOCK_SIZE_M<span class="token punctuation">,</span>     <span class="token comment"># constexpr 参数</span>
+    BLOCK_SIZE_N<span class="token operator">=</span>BLOCK_SIZE_N<span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>而在算子内部，我们使用 <code>program_id</code> 获得 grid 参数：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 1. 使用二维 program_id 获取当前程序实例负责的块的索引</span>
+<span class="token comment"># axis=0 对应 grid 的第一个维度 (行方向)</span>
+pid_m <span class="token operator">=</span> tl<span class="token punctuation">.</span>program_id<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment"># axis=1 对应 grid 的第二个维度 (列方向)</span>
+pid_n <span class="token operator">=</span> tl<span class="token punctuation">.</span>program_id<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>那么在 Tiled-Based 的编程模型下，我们是如何操作数据的呢？答案是我们使用“offsets 张量”。offset 可以理解为一个标量数据的地址，而一个 offsets 张量，就可以理解为一组数据的地址。我们用一个 numpy-like 的方法表示这组 offset，如下所示：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 2. 计算当前块的二维偏移量</span>
+<span class="token comment"># 首先，计算 M 维度 (行) 的偏移量向量</span>
+<span class="token comment"># tl.arange 生成 [0, 1, 2, ..., BLOCK_SIZE_M-1]</span>
+offs_m <span class="token operator">=</span> pid_m <span class="token operator">*</span> BLOCK_SIZE_M <span class="token operator">+</span> tl<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> BLOCK_SIZE_M<span class="token punctuation">)</span>
+<span class="token comment"># 然后，计算 N 维度 (列) 的偏移量向量</span>
+offs_n <span class="token operator">=</span> pid_n <span class="token operator">*</span> BLOCK_SIZE_N <span class="token operator">+</span> tl<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> BLOCK_SIZE_N<span class="token punctuation">)</span>
+
+<span class="token comment"># 3. 计算加载/存储数据的完整二维指针偏移量</span>
+<span class="token comment">#    利用广播机制 (broadcasting) 将一维的行、列偏移量扩展成二维</span>
+<span class="token comment">#    offs_m[:, None] -&gt; [BLOCK_SIZE_M, 1]</span>
+<span class="token comment">#    offs_n[None, :] -&gt; [1, BLOCK_SIZE_N]</span>
+<span class="token comment">#    相加后得到一个 [BLOCK_SIZE_M, BLOCK_SIZE_N] 的偏移矩阵</span>
+a_offsets <span class="token operator">=</span> a_ptr <span class="token operator">+</span> <span class="token punctuation">(</span>offs_m<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span> <span class="token operator">*</span> stride_am <span class="token operator">+</span> offs_n<span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">*</span> stride_an<span class="token punctuation">)</span>
+b_offsets <span class="token operator">=</span> b_ptr <span class="token operator">+</span> <span class="token punctuation">(</span>offs_m<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span> <span class="token operator">*</span> stride_bm <span class="token operator">+</span> offs_n<span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">*</span> stride_bn<span class="token punctuation">)</span>
+c_offsets <span class="token operator">=</span> c_ptr <span class="token operator">+</span> <span class="token punctuation">(</span>offs_m<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span> <span class="token operator">*</span> stride_cm <span class="token operator">+</span> offs_n<span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">*</span> stride_cn<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到在上面式子中，我们得到了最终我们分别得到了 a_tile, b_tile, c_tile 对应的 offsets 张量，他们的形状都是 tile 的形状，也就是 <code>[BLOCK_SIZE_M, BLOCK_SIZE_N]</code> 。</p>
+<p>当然，在编程中，我们也有一些边界情况，或者控制分支需要处理。在 CUDA 中，我们可以随意使用 <code>if-else</code> 这种条件判断，毕竟我们提供的是 SIMT 抽象，但是在 Triton 中，我们并不能进行分支判断，所以我们利用了 mask 张量，如下所示：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 4. 创建二维掩码 (mask) 以处理边界情况</span>
+<span class="token comment">#    防止因矩阵尺寸不是块大小的整数倍而导致的越界访存</span>
+mask_m <span class="token operator">=</span> offs_m <span class="token operator">&lt;</span> M
+mask_n <span class="token operator">=</span> offs_n <span class="token operator">&lt;</span> N
+<span class="token comment"># 使用广播和逻辑与操作合并成二维掩码</span>
+mask <span class="token operator">=</span> mask_m<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> mask_n<span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当我们拿到这些 offsets 张量和 mask 张量后，我们就可以在上面应用算子了，比如说 <code>load, store, dot, +</code> 等：</p>
+<pre class="line-numbers language-none"><code class="language-none"># 5. 安全地加载数据块
+#    mask=mask 确保只加载有效区域的数据
+#    other=0.0 指定在掩码为 False 的位置加载 0.0，避免计算错误
+a_tile = tl.load(a_offsets, mask=mask, other=0.0)
+b_tile = tl.load(b_offsets, mask=mask, other=0.0)
+
+# 6. 执行核心计算
+c_tile = a_tile + b_tile
+
+# 7. 将结果安全地写回
+tl.store(c_offsets, c_tile, mask=mask)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 
     </div>
@@ -494,7 +638,7 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx<span aria-hidden="true" 
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Hardware"><span class="nav-text">一、Hardware</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-SM"><span class="nav-text">1.1 SM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Schedule"><span class="nav-text">1.2 Schedule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-SIMT"><span class="nav-text">1.3 SIMT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Memory-Hierarchy"><span class="nav-text">1.4 Memory Hierarchy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Interconnect"><span class="nav-text">1.5 Interconnect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Terminology"><span class="nav-text">1.6 Terminology</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81CUDA"><span class="nav-text">二、CUDA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-CTA"><span class="nav-text">2.1 CTA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Memory-Type"><span class="nav-text">2.2 Memory Type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Sync-and-Stream"><span class="nav-text">2.3 Sync and Stream</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Hardware"><span class="nav-text">一、Hardware</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-SM"><span class="nav-text">1.1 SM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Schedule"><span class="nav-text">1.2 Schedule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-SIMT"><span class="nav-text">1.3 SIMT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Memory-Hierarchy"><span class="nav-text">1.4 Memory Hierarchy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Interconnect"><span class="nav-text">1.5 Interconnect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Terminology"><span class="nav-text">1.6 Terminology</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81CUDA"><span class="nav-text">二、CUDA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-CTA"><span class="nav-text">2.1 CTA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Memory-Type"><span class="nav-text">2.2 Memory Type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Sync-and-Stream"><span class="nav-text">2.3 Sync and Stream</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Triton"><span class="nav-text">三、Triton</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Tiled-Based"><span class="nav-text">3.1 Tiled-Based</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -566,7 +710,7 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx<span aria-hidden="true" 
 <div class="copyright">
   
   &copy; 2021.12.18 – 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -580,7 +724,7 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx<span aria-hidden="true" 
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:22</span>
+    <span title="Reading time total">20:25</span>
 </div>
 
         
