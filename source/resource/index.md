@@ -97,6 +97,7 @@ date: 2024-01-24 00:06:53
 - [In Depth Understanding of Attention Mechanism](https://medium.com/@funcry/understanding-attention-mechanism-in-depth-550f59ae1c19)
 - [Different implementations of the ubiquitous convolution](https://medium.com/@sundarramanp2000/different-implementations-of-the-ubiquitous-convolution-6a9269dbe77f)
 - [Is Furiosa’s chip architecture actually innovative? Or just a fancy systolic array?](https://furiosa.ai/blog/is-furiosas-chip-architecture-actually-innovative-or-just-a-fancy-systolic-array)
+- [为你的网站加入Google Analytics](https://www.nielsen.tw/seo/google-analytics/)
 
 # 网站
 

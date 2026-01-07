@@ -81,6 +81,8 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 
 ### 1.6 Terminology
 
+这里整理一下 NVIDIA 和 AMD GPU 的不同术语对比：
+
 | 实体               | NVIDIA                                     | AMD                                 |
 | ------------------ | ------------------------------------------ | ----------------------------------- |
 | SIMD Processor     | SM (Streaming Processor)                   | CU (Compute Unit)                   |
@@ -89,8 +91,6 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 | On-chip Scratchpad | Shared Memory                              | LDS (Local Data Share)              |
 | CTA                | Block Group                                | Work Group                          |
 | Ecosystem          | CUDA (Compute Unified Device Architecture) | ROCm (Radeon Open Compute platform) |
-
-这里整理一下 NVIDIA 和 AMD GPU 的不同术语对比。
 
 ---
 
@@ -128,9 +128,15 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx
 
 从这点也可以看出，SIMT 模型是从硬件层面支持的，而不是用编译器，从汇编层面支持的。
 
+我们也可以看出，我们在写 kernel 的时候，用 `<<grid, block>>` 二元组来描述并行，是非常必要的，不能只用一个一元组去描述。
+
 ### 2.2 Memory Type
 
 不同于简单的 CPU 编程，只用操作一种内存。当我们使用 CUDA 的时候，可以操纵多种不同类型的内存。
+
+CUDA 中的类型如下所示：
+
+![Memory spaces on a CUDA device](./Sys4AI-GPU/memory-spaces-on-cuda-device.png)
 
 CUDA 使用 `__device__` 来声明一个全局变量，可以被所有 kernel 访问。如下所示：
 
@@ -151,6 +157,17 @@ __global__ void myKernel(...) {
 
 在对共享内存进行计算之前，必须确保所有线程都已经完成了上一步的数据加载。否则，一些线程可能会读到旧的、无效的数据（竞态条件 Race Condition）。使用 `__syncthreads()` 来实现同步。
 
+总结如下：
+
+| Memory   | Location on/off chip | Cached | Access | Scope                | Lifetime        |
+| -------- | -------------------- | ------ | ------ | -------------------- | --------------- |
+| Register | On                   | n/a    | R/W    | 1 thread             | Thread          |
+| Local    | Off                  | Yes    | R/W    | 1 thread             | Thread          |
+| Shared   | On                   | n/a    | R/W    | All threads in block | Block           |
+| Global   | Off                  | Yes    | R/W    | All threads + host   | Host allocation |
+| Constant | Off                  | Yes    | R      | All threads + host   | Host allocation |
+| Texture  | Off                  | Yes    | R      | All threads + host   | Host allocation |
+
 ### 2.3 Sync and Stream
 
 CPU 和 GPU 协作的方式是异步的，也就是说，CPU 在向 GPU 发送指令后，是不会等待指令返回的，它就会自己往下运行了，所以如果 CPU 想要获得 GPU 的运行结果，需要先执行同步操作：
@@ -162,6 +179,106 @@ cudaDeviceSynchronize();
 不过 GPU 本身，默认是串行执行指令的，这就导致 kernel 是没有办法并行执行的，也就没有办法进行一些访存延迟隐藏之类的优化。为了改善这一点，CUDA 提出了 Stream 的概念。
 
 在你不使用 Stream 的情况下，所有 CUDA 操作（比如在 GPU 上计算、在 CPU 和 GPU 之间拷贝数据）都默认放入一个叫做 “默认流”（Default Stream） 的大队列里。我们只需要声明多个 Stream，就可以实现并发。同一个 Stream 内的指令是顺序执行的，而不同 Stream 中的指令是可以并发执行的。
+
+---
+
+ 
+
+## 三、Triton
+
+### 3.1 Tiled-Based
+
+与 CUDA 不同，Triton 并不是 SIMT 编程模型，而是 Tiled-Based 编程模型，或者换种说法，是一种 SIMD 模型。我们没有办法像在 CUDA 编程一样，操纵每个线程（或者说每个标量），我们只能操纵一个向量或者一个张量，当然了，此时他们被叫作 Tile。
+
+在 Triton 中我们也有 grid 的概念，我们用 grid 来组织“Program Instance”，每个 Program Instance 负责一个 Tile。需要强调的是，此时的组织，不再是真的硬件映射关系了，往往只是一种算法逻辑上的分块。
+
+（如果要深究的话，一个 Triton 的 PI，对应一到多个 CTA）。
+
+当我们计算一个矩阵加法 $C = A + B$ 时，第 $(m, n)$ 个 PI，负责的就是第 $(m, n)$ 个 Tile 的计算。在启动核函数时，我们指定 grid 参数：
+
+```python
+# 定义块大小 (Tile size)
+# 可以根据具体硬件和矩阵形状进行调整以获得最佳性能
+BLOCK_SIZE_M = 32
+BLOCK_SIZE_N = 32
+    
+# 定义 grid，这里是关键！
+# 使用 triton.cdiv (ceiling division) 来确保所有元素都被覆盖
+grid_m = triton.cdiv(M, BLOCK_SIZE_M)
+grid_n = triton.cdiv(N, BLOCK_SIZE_N)
+# 将 grid 定义为一个二元组
+grid = (grid_m, grid_n)
+    
+# 启动核函数
+add_kernel[grid](
+		a, b, c,                       # 指针
+    M, N,                          # 维度
+    a.stride(0), a.stride(1),      # 矩阵 A 的步长
+    b.stride(0), b.stride(1),      # 矩阵 B 的步长
+    c.stride(0), c.stride(1),      # 矩阵 C 的步长
+    BLOCK_SIZE_M=BLOCK_SIZE_M,     # constexpr 参数
+    BLOCK_SIZE_N=BLOCK_SIZE_N,
+)
+```
+
+而在算子内部，我们使用 `program_id` 获得 grid 参数：
+
+```python
+# 1. 使用二维 program_id 获取当前程序实例负责的块的索引
+# axis=0 对应 grid 的第一个维度 (行方向)
+pid_m = tl.program_id(axis=0)
+# axis=1 对应 grid 的第二个维度 (列方向)
+pid_n = tl.program_id(axis=1)
+```
+
+那么在 Tiled-Based 的编程模型下，我们是如何操作数据的呢？答案是我们使用“offsets 张量”。offset 可以理解为一个标量数据的地址，而一个 offsets 张量，就可以理解为一组数据的地址。我们用一个 numpy-like 的方法表示这组 offset，如下所示：
+
+```python
+# 2. 计算当前块的二维偏移量
+# 首先，计算 M 维度 (行) 的偏移量向量
+# tl.arange 生成 [0, 1, 2, ..., BLOCK_SIZE_M-1]
+offs_m = pid_m * BLOCK_SIZE_M + tl.arange(0, BLOCK_SIZE_M)
+# 然后，计算 N 维度 (列) 的偏移量向量
+offs_n = pid_n * BLOCK_SIZE_N + tl.arange(0, BLOCK_SIZE_N)
+
+# 3. 计算加载/存储数据的完整二维指针偏移量
+#    利用广播机制 (broadcasting) 将一维的行、列偏移量扩展成二维
+#    offs_m[:, None] -> [BLOCK_SIZE_M, 1]
+#    offs_n[None, :] -> [1, BLOCK_SIZE_N]
+#    相加后得到一个 [BLOCK_SIZE_M, BLOCK_SIZE_N] 的偏移矩阵
+a_offsets = a_ptr + (offs_m[:, None] * stride_am + offs_n[None, :] * stride_an)
+b_offsets = b_ptr + (offs_m[:, None] * stride_bm + offs_n[None, :] * stride_bn)
+c_offsets = c_ptr + (offs_m[:, None] * stride_cm + offs_n[None, :] * stride_cn)
+```
+
+可以看到在上面式子中，我们得到了最终我们分别得到了 a_tile, b_tile, c_tile 对应的 offsets 张量，他们的形状都是 tile 的形状，也就是 `[BLOCK_SIZE_M, BLOCK_SIZE_N]` 。
+
+当然，在编程中，我们也有一些边界情况，或者控制分支需要处理。在 CUDA 中，我们可以随意使用 `if-else` 这种条件判断，毕竟我们提供的是 SIMT 抽象，但是在 Triton 中，我们并不能进行分支判断，所以我们利用了 mask 张量，如下所示：
+
+```python
+# 4. 创建二维掩码 (mask) 以处理边界情况
+#    防止因矩阵尺寸不是块大小的整数倍而导致的越界访存
+mask_m = offs_m < M
+mask_n = offs_n < N
+# 使用广播和逻辑与操作合并成二维掩码
+mask = mask_m[:, None] & mask_n[None, :]
+```
+
+当我们拿到这些 offsets 张量和 mask 张量后，我们就可以在上面应用算子了，比如说 `load, store, dot, +` 等：
+
+```
+# 5. 安全地加载数据块
+#    mask=mask 确保只加载有效区域的数据
+#    other=0.0 指定在掩码为 False 的位置加载 0.0，避免计算错误
+a_tile = tl.load(a_offsets, mask=mask, other=0.0)
+b_tile = tl.load(b_offsets, mask=mask, other=0.0)
+
+# 6. 执行核心计算
+c_tile = a_tile + b_tile
+
+# 7. 将结果安全地写回
+tl.store(c_offsets, c_tile, mask=mask)
+```
 
 ---
 
