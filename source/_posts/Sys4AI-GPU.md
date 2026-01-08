@@ -139,9 +139,9 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx
 - inter-SM：也就是要利用每一个 SM，不能有 SM 的闲置。
 - intra-SM：也就是要用好每一个 SM，SM 不能有闲置的资源。
 
-我们要保证这两种利用率都提高，直接说结论：Grid 越大，inter-SM 的利用率越容易高，intra-SM 越大，intra-SM 的利用率越容易高。
+我们要保证这两种利用率都提高，直接说结论：Grid 越大，inter-SM 的利用率越容易高，Block 越大，intra-SM 的利用率越容易高。
 
-考虑到并行任务的数目固定，那么 Grid 越大，则 Block 越小，，inter-SM 利用率越高，intra-SM 利用率越低，反之也成立。所以我们要在 Grid 和 Block 之间做 tradeoff。
+考虑到并行任务的数目固定，那么 Grid 越大，则 Block 越小，inter-SM 利用率越高，intra-SM 利用率越低，反之也成立。所以我们要在 Grid 和 Block 之间做 tradeoff。
 
 之所以有上面的结论，是因为 Block 只能在一个 SM 上运行，并且由多个 Warp 组成。所以为了提高 intra-SM 的利用率，Block 就要提高其中的 Warp 数量，这样才能在某个 warp 阻塞等待时，及时切换其他的 Warp。而为了提高 inter-SM 的利用率，Grid 里的 Block 就要足够多，才能占据全部的 SM（一个 Block 只能固定在一个 SM 上）。
 
