@@ -128,9 +128,26 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx
 
 从这点也可以看出，SIMT 模型是从硬件层面支持的，而不是用编译器，从汇编层面支持的。
 
-我们也可以看出，我们在写 kernel 的时候，用 `<<grid, block>>` 二元组来描述并行，是非常必要的，不能只用一个一元组去描述。
+我们也可以看出，我们在写 kernel 的时候，用 `<<<grid, block>>>` 二元组来描述并行，是非常必要的，不能只用一个一元组去描述。
 
-### 2.2 Memory Type
+### 2.2 Grid and Block
+
+虽然已经在上一个 section 从线程协作的角度介绍过了 CTA，但是我还是希望在从编程实践的角度介绍一下 `grid` 和 `block`。
+
+我们可以这样理解，我们为了让 GPU 的利用率变高，我们有两种思路：
+
+- inter-SM：也就是要利用每一个 SM，不能有 SM 的闲置。
+- intra-SM：也就是要用好每一个 SM，SM 不能有闲置的资源。
+
+我们要保证这两种利用率都提高，直接说结论：Grid 越大，inter-SM 的利用率越容易高，intra-SM 越大，intra-SM 的利用率越容易高。
+
+考虑到并行任务的数目固定，那么 Grid 越大，则 Block 越小，，inter-SM 利用率越高，intra-SM 利用率越低，反之也成立。所以我们要在 Grid 和 Block 之间做 tradeoff。
+
+之所以有上面的结论，是因为 Block 只能在一个 SM 上运行，并且由多个 Warp 组成。所以为了提高 intra-SM 的利用率，Block 就要提高其中的 Warp 数量，这样才能在某个 warp 阻塞等待时，及时切换其他的 Warp。而为了提高 inter-SM 的利用率，Grid 里的 Block 就要足够多，才能占据全部的 SM（一个 Block 只能固定在一个 SM 上）。
+
+至于为什么 Grid 和 Block 都是 `(uint, uint, uint)` 的三元组，这跟利用率无关，只是为了方便编程，比如在处理向量的时候，我们可以在只使用 1 个维度，而在处理视频的时候，就需要 3 个维度了。
+
+### 2.3 Memory Type
 
 不同于简单的 CPU 编程，只用操作一种内存。当我们使用 CUDA 的时候，可以操纵多种不同类型的内存。
 
@@ -168,7 +185,7 @@ __global__ void myKernel(...) {
 | Constant | Off                  | Yes    | R      | All threads + host   | Host allocation |
 | Texture  | Off                  | Yes    | R      | All threads + host   | Host allocation |
 
-### 2.3 Sync and Stream
+### 2.4 Sync and Stream
 
 CPU 和 GPU 协作的方式是异步的，也就是说，CPU 在向 GPU 发送指令后，是不会等待指令返回的，它就会自己往下运行了，所以如果 CPU 想要获得 GPU 的运行结果，需要先执行同步操作：
 
@@ -211,7 +228,7 @@ grid = (grid_m, grid_n)
     
 # 启动核函数
 add_kernel[grid](
-		a, b, c,                       # 指针
+    a, b, c,                       # 指针
     M, N,                          # 维度
     a.stride(0), a.stride(1),      # 矩阵 A 的步长
     b.stride(0), b.stride(1),      # 矩阵 B 的步长
@@ -266,7 +283,7 @@ mask = mask_m[:, None] & mask_n[None, :]
 
 当我们拿到这些 offsets 张量和 mask 张量后，我们就可以在上面应用算子了，比如说 `load, store, dot, +` 等：
 
-```
+```python
 # 5. 安全地加载数据块
 #    mask=mask 确保只加载有效区域的数据
 #    other=0.0 指定在掩码为 False 的位置加载 0.0，避免计算错误
