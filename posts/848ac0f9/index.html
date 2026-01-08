@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://thysrael.github.io/posts/848ac0f9/nvidia-pascal-nvlink-power8.jpg">
 <meta property="og:image" content="https://thysrael.github.io/posts/848ac0f9/memory-spaces-on-cuda-device.png">
 <meta property="article:published_time" content="2025-09-13T01:38:10.000Z">
-<meta property="article:modified_time" content="2026-01-06T08:29:34.768Z">
+<meta property="article:modified_time" content="2026-01-08T11:32:24.264Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="Sys4AI">
@@ -261,7 +261,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-06 16:29:34" itemprop="dateModified" datetime="2026-01-06T16:29:34+08:00">2026-01-06</time>
+                <time title="Modified: 2026-01-08 19:32:24" itemprop="dateModified" datetime="2026-01-08T19:32:24+08:00">2026-01-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -286,7 +286,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>8.4k</span>
+              <span>9k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -394,8 +394,18 @@ mov.u32 %r2, %ntid.x;          // r2 = blockDim.x
 mov.u32 %r3, %ctaid.x;         // r3 = blockIdx.x
 mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>从这点也可以看出，SIMT 模型是从硬件层面支持的，而不是用编译器，从汇编层面支持的。</p>
-<p>我们也可以看出，我们在写 kernel 的时候，用 <code>&lt;&lt;grid, block&gt;&gt;</code> 二元组来描述并行，是非常必要的，不能只用一个一元组去描述。</p>
-<h3 id="2-2-Memory-Type"><a href="#2-2-Memory-Type" class="headerlink" title="2.2 Memory Type"></a>2.2 Memory Type</h3><p>不同于简单的 CPU 编程，只用操作一种内存。当我们使用 CUDA 的时候，可以操纵多种不同类型的内存。</p>
+<p>我们也可以看出，我们在写 kernel 的时候，用 <code>&lt;&lt;&lt;grid, block&gt;&gt;&gt;</code> 二元组来描述并行，是非常必要的，不能只用一个一元组去描述。</p>
+<h3 id="2-2-Grid-and-Block"><a href="#2-2-Grid-and-Block" class="headerlink" title="2.2 Grid and Block"></a>2.2 Grid and Block</h3><p>虽然已经在上一个 section 从线程协作的角度介绍过了 CTA，但是我还是希望在从编程实践的角度介绍一下 <code>grid</code> 和 <code>block</code>。</p>
+<p>我们可以这样理解，我们为了让 GPU 的利用率变高，我们有两种思路：</p>
+<ul>
+<li>inter-SM：也就是要利用每一个 SM，不能有 SM 的闲置。</li>
+<li>intra-SM：也就是要用好每一个 SM，SM 不能有闲置的资源。</li>
+</ul>
+<p>我们要保证这两种利用率都提高，直接说结论：Grid 越大，inter-SM 的利用率越容易高，intra-SM 越大，intra-SM 的利用率越容易高。</p>
+<p>考虑到并行任务的数目固定，那么 Grid 越大，则 Block 越小，，inter-SM 利用率越高，intra-SM 利用率越低，反之也成立。所以我们要在 Grid 和 Block 之间做 tradeoff。</p>
+<p>之所以有上面的结论，是因为 Block 只能在一个 SM 上运行，并且由多个 Warp 组成。所以为了提高 intra-SM 的利用率，Block 就要提高其中的 Warp 数量，这样才能在某个 warp 阻塞等待时，及时切换其他的 Warp。而为了提高 inter-SM 的利用率，Grid 里的 Block 就要足够多，才能占据全部的 SM（一个 Block 只能固定在一个 SM 上）。</p>
+<p>至于为什么 Grid 和 Block 都是 <code>(uint, uint, uint)</code> 的三元组，这跟利用率无关，只是为了方便编程，比如在处理向量的时候，我们可以在只使用 1 个维度，而在处理视频的时候，就需要 3 个维度了。</p>
+<h3 id="2-3-Memory-Type"><a href="#2-3-Memory-Type" class="headerlink" title="2.3 Memory Type"></a>2.3 Memory Type</h3><p>不同于简单的 CPU 编程，只用操作一种内存。当我们使用 CUDA 的时候，可以操纵多种不同类型的内存。</p>
 <p>CUDA 中的类型如下所示：</p>
 <p><img src="/posts/848ac0f9/memory-spaces-on-cuda-device.png" alt="Memory spaces on a CUDA device"></p>
 <p>CUDA 使用 <code>__device__</code> 来声明一个全局变量，可以被所有 kernel 访问。如下所示：</p>
@@ -472,7 +482,7 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx<span aria-hidden="true" 
 </tbody>
 </table>
 </div>
-<h3 id="2-3-Sync-and-Stream"><a href="#2-3-Sync-and-Stream" class="headerlink" title="2.3 Sync and Stream"></a>2.3 Sync and Stream</h3><p>CPU 和 GPU 协作的方式是异步的，也就是说，CPU 在向 GPU 发送指令后，是不会等待指令返回的，它就会自己往下运行了，所以如果 CPU 想要获得 GPU 的运行结果，需要先执行同步操作：</p>
+<h3 id="2-4-Sync-and-Stream"><a href="#2-4-Sync-and-Stream" class="headerlink" title="2.4 Sync and Stream"></a>2.4 Sync and Stream</h3><p>CPU 和 GPU 协作的方式是异步的，也就是说，CPU 在向 GPU 发送指令后，是不会等待指令返回的，它就会自己往下运行了，所以如果 CPU 想要获得 GPU 的运行结果，需要先执行同步操作：</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">cudaDeviceSynchronize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>不过 GPU 本身，默认是串行执行指令的，这就导致 kernel 是没有办法并行执行的，也就没有办法进行一些访存延迟隐藏之类的优化。为了改善这一点，CUDA 提出了 Stream 的概念。</p>
 <p>在你不使用 Stream 的情况下，所有 CUDA 操作（比如在 GPU 上计算、在 CPU 和 GPU 之间拷贝数据）都默认放入一个叫做 “默认流”（Default Stream） 的大队列里。我们只需要声明多个 Stream，就可以实现并发。同一个 Stream 内的指令是顺序执行的，而不同 Stream 中的指令是可以并发执行的。</p>
@@ -495,7 +505,7 @@ grid <span class="token operator">=</span> <span class="token punctuation">(</sp
     
 <span class="token comment"># 启动核函数</span>
 add_kernel<span class="token punctuation">[</span>grid<span class="token punctuation">]</span><span class="token punctuation">(</span>
-		a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">,</span>                       <span class="token comment"># 指针</span>
+    a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> c<span class="token punctuation">,</span>                       <span class="token comment"># 指针</span>
     M<span class="token punctuation">,</span> N<span class="token punctuation">,</span>                          <span class="token comment"># 维度</span>
     a<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> a<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>      <span class="token comment"># 矩阵 A 的步长</span>
     b<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> b<span class="token punctuation">.</span>stride<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>      <span class="token comment"># 矩阵 B 的步长</span>
@@ -534,17 +544,17 @@ mask_n <span class="token operator">=</span> offs_n <span class="token operator"
 <span class="token comment"># 使用广播和逻辑与操作合并成二维掩码</span>
 mask <span class="token operator">=</span> mask_m<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> mask_n<span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>当我们拿到这些 offsets 张量和 mask 张量后，我们就可以在上面应用算子了，比如说 <code>load, store, dot, +</code> 等：</p>
-<pre class="line-numbers language-none"><code class="language-none"># 5. 安全地加载数据块
-#    mask=mask 确保只加载有效区域的数据
-#    other=0.0 指定在掩码为 False 的位置加载 0.0，避免计算错误
-a_tile = tl.load(a_offsets, mask=mask, other=0.0)
-b_tile = tl.load(b_offsets, mask=mask, other=0.0)
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 5. 安全地加载数据块</span>
+<span class="token comment">#    mask=mask 确保只加载有效区域的数据</span>
+<span class="token comment">#    other=0.0 指定在掩码为 False 的位置加载 0.0，避免计算错误</span>
+a_tile <span class="token operator">=</span> tl<span class="token punctuation">.</span>load<span class="token punctuation">(</span>a_offsets<span class="token punctuation">,</span> mask<span class="token operator">=</span>mask<span class="token punctuation">,</span> other<span class="token operator">=</span><span class="token number">0.0</span><span class="token punctuation">)</span>
+b_tile <span class="token operator">=</span> tl<span class="token punctuation">.</span>load<span class="token punctuation">(</span>b_offsets<span class="token punctuation">,</span> mask<span class="token operator">=</span>mask<span class="token punctuation">,</span> other<span class="token operator">=</span><span class="token number">0.0</span><span class="token punctuation">)</span>
 
-# 6. 执行核心计算
-c_tile = a_tile + b_tile
+<span class="token comment"># 6. 执行核心计算</span>
+c_tile <span class="token operator">=</span> a_tile <span class="token operator">+</span> b_tile
 
-# 7. 将结果安全地写回
-tl.store(c_offsets, c_tile, mask=mask)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment"># 7. 将结果安全地写回</span>
+tl<span class="token punctuation">.</span>store<span class="token punctuation">(</span>c_offsets<span class="token punctuation">,</span> c_tile<span class="token punctuation">,</span> mask<span class="token operator">=</span>mask<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 
     </div>
@@ -638,7 +648,7 @@ tl.store(c_offsets, c_tile, mask=mask)<span aria-hidden="true" class="line-numbe
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Hardware"><span class="nav-text">一、Hardware</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-SM"><span class="nav-text">1.1 SM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Schedule"><span class="nav-text">1.2 Schedule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-SIMT"><span class="nav-text">1.3 SIMT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Memory-Hierarchy"><span class="nav-text">1.4 Memory Hierarchy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Interconnect"><span class="nav-text">1.5 Interconnect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Terminology"><span class="nav-text">1.6 Terminology</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81CUDA"><span class="nav-text">二、CUDA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-CTA"><span class="nav-text">2.1 CTA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Memory-Type"><span class="nav-text">2.2 Memory Type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Sync-and-Stream"><span class="nav-text">2.3 Sync and Stream</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Triton"><span class="nav-text">三、Triton</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Tiled-Based"><span class="nav-text">3.1 Tiled-Based</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Hardware"><span class="nav-text">一、Hardware</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-SM"><span class="nav-text">1.1 SM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Schedule"><span class="nav-text">1.2 Schedule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-SIMT"><span class="nav-text">1.3 SIMT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Memory-Hierarchy"><span class="nav-text">1.4 Memory Hierarchy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Interconnect"><span class="nav-text">1.5 Interconnect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Terminology"><span class="nav-text">1.6 Terminology</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81CUDA"><span class="nav-text">二、CUDA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-CTA"><span class="nav-text">2.1 CTA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Grid-and-Block"><span class="nav-text">2.2 Grid and Block</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Memory-Type"><span class="nav-text">2.3 Memory Type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-Sync-and-Stream"><span class="nav-text">2.4 Sync and Stream</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Triton"><span class="nav-text">三、Triton</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Tiled-Based"><span class="nav-text">3.1 Tiled-Based</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
