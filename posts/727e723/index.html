@@ -34,8 +34,8 @@
 <meta property="article:published_time" content="2022-06-11T17:17:25.000Z">
 <meta property="article:modified_time" content="2025-08-15T12:16:48.669Z">
 <meta property="article:author" content="Thysrael">
-<meta property="article:tag" content="S4复习">
 <meta property="article:tag" content="直观理解">
+<meta property="article:tag" content="S4复习">
 <meta property="article:tag" content="吃喝玩乐">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://thysrael.github.io/posts/727e723/英国政体架构.drawio.png">
@@ -325,8 +325,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/S4%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S4复习</a>
               <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
+              <a href="/tags/S4%E5%A4%8D%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> S4复习</a>
               <a href="/tags/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/" rel="tag"><i class="fa fa-tag"></i> 吃喝玩乐</a>
           </div>
 
@@ -609,7 +609,12 @@
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {

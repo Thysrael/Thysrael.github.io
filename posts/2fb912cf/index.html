@@ -32,7 +32,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://thysrael.github.io/posts/2fb912cf/image-20211110115321417-16423249454161.png">
 <meta property="article:published_time" content="2022-01-16T09:00:34.000Z">
-<meta property="article:modified_time" content="2026-01-09T14:53:30.935Z">
+<meta property="article:modified_time" content="2026-01-09T14:55:07.050Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="S3课上">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-09 22:53:30" itemprop="dateModified" datetime="2026-01-09T22:53:30+08:00">2026-01-09</time>
+                <time title="Modified: 2026-01-09 22:55:07" itemprop="dateModified" datetime="2026-01-09T22:55:07+08:00">2026-01-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -462,7 +462,7 @@ dydz & dzdx & dxdy \\
 \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
 P & Q & R
 \end{matrix} \right |</script><script type="math/tex; mode=display">
-\unicode{x222F} _S Pdydz + Qdzdx + Rdxdy = \iiint_V (\frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z})dxdydz</script><hr>
+\oiint _S Pdydz + Qdzdx + Rdxdy = \iiint_V (\frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z})dxdydz</script><hr>
 <h2 id="四、解析几何"><a href="#四、解析几何" class="headerlink" title="四、解析几何"></a>四、解析几何</h2><h3 id="4-1-切向量和法向量"><a href="#4-1-切向量和法向量" class="headerlink" title="4.1 切向量和法向量"></a>4.1 切向量和法向量</h3><p>这个章节我已经总结无数次了，但是每次都忘，实在是没有办法了。只好再次写一次了，就很无奈。</p>
 <h4 id="4-1-1-求垂直于两个向量的第三个向量"><a href="#4-1-1-求垂直于两个向量的第三个向量" class="headerlink" title="4.1.1 求垂直于两个向量的第三个向量"></a>4.1.1 求垂直于两个向量的第三个向量</h4><p>我们都知道可以用<strong>形式行列式</strong>来求解，就是这样：</p>
 <script type="math/tex; mode=display">
@@ -814,7 +814,12 @@ F(x,y,z) = C</script><p>这就是我们熟悉的曲面的一般形式。</p>
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {

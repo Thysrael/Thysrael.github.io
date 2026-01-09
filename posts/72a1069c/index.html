@@ -34,8 +34,8 @@
 <meta property="article:modified_time" content="2025-08-15T12:16:47.754Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="CPP设计">
-<meta property="article:tag" content="直观理解">
 <meta property="article:tag" content="S3假期">
+<meta property="article:tag" content="直观理解">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://thysrael.github.io/posts/72a1069c/">
@@ -812,8 +812,8 @@ smap<span class="token punctuation">[</span><span class="token string">"B"</span
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/CPP%E8%AE%BE%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> CPP设计</a>
-              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
               <a href="/tags/S3%E5%81%87%E6%9C%9F/" rel="tag"><i class="fa fa-tag"></i> S3假期</a>
+              <a href="/tags/%E7%9B%B4%E8%A7%82%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 直观理解</a>
           </div>
 
         
@@ -1095,7 +1095,12 @@ smap<span class="token punctuation">[</span><span class="token string">"B"</span
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {

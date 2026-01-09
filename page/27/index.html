@@ -449,7 +449,7 @@ E_k=mc^2-m_0c^2</script><p>其他的动能表达式失效了。只能用这个�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-09 22:52:02" itemprop="dateModified" datetime="2026-01-09T22:52:02+08:00">2026-01-09</time>
+                <time title="Modified: 2026-01-09 22:55:35" itemprop="dateModified" datetime="2026-01-09T22:55:35+08:00">2026-01-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -467,7 +467,7 @@ E_k=mc^2-m_0c^2</script><p>其他的动能表达式失效了。只能用这个�
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7.4k</span>
+              <span>7.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -1058,7 +1058,12 @@ I_n=\int_0^{\frac{\pi}{2}}\cos^n\theta=\int_0^{\frac{\pi}{2}}\sin^n\theta</scrip
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {

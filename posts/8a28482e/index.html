@@ -31,7 +31,7 @@
 <meta property="og:description" content="一、直观理解1.1 电磁场的理解场是物质的，那么怎么才能把这种物质性显现出来呢？我认为我觉得它不明显是因为从小就接受电磁波的传导是不需要介质，以太是不存在的这两个概念。但是实际呢，只不过这种介质不是那种常见的比如空气啊啥的东西，但不意味着没有。在麦克斯韦的时代，他的理论就是建立在电磁以太上的基础上的。其实想一想，没有介质就有超距作用的嫌疑了，而且对于一个比较淳朴的人来说，认为作用是不需要通过介质传">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-01-16T08:24:18.000Z">
-<meta property="article:modified_time" content="2026-01-09T14:52:02.211Z">
+<meta property="article:modified_time" content="2026-01-09T14:55:35.329Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="直观理解">
@@ -257,7 +257,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-09 22:52:02" itemprop="dateModified" datetime="2026-01-09T22:52:02+08:00">2026-01-09</time>
+                <time title="Modified: 2026-01-09 22:55:35" itemprop="dateModified" datetime="2026-01-09T22:55:35+08:00">2026-01-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -282,7 +282,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7.4k</span>
+              <span>7.3k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -327,7 +327,7 @@ E=\frac{\sigma}{2\varepsilon_0}</script><p>可以看到，均匀带电平板的�
 P=\varepsilon_0\chi_eE</script><p>其中 $\chi$ 是一个比例系数，没有单位，用来描述电介质的极化性质。</p>
 <p><strong>极化电荷</strong>，有如下积分形式公式</p>
 <script type="math/tex; mode=display">
-\unicode{x222F} P\cdot dS=-\sum q^\prime</script><p>又有如下微分形式公式</p>
+\oiint P\cdot dS=-\sum q^\prime</script><p>又有如下微分形式公式</p>
 <script type="math/tex; mode=display">
 \nabla \cdot P=-\rho^\prime</script><p>均匀极化的电介质内部极化强度为一个<strong>常量</strong>，所以电介质内部没有宏观电荷。</p>
 <p><strong>极化电荷面密度</strong> ，有如下公式</p>
@@ -338,7 +338,7 @@ P=\varepsilon_0\chi_eE</script><p>其中 $\chi$ 是一个比例系数，没有�
 <script type="math/tex; mode=display">
 \varepsilon_0E+P=D</script><p>D 被称为<strong>电位移</strong>，然后就修改高斯定理为</p>
 <script type="math/tex; mode=display">
-\unicode{x222F} D\cdot dS=\sum q_0</script><p>其中 q 是实际的电荷，不包括感应出的电荷（也很合逻辑，因为感应出的电荷我们也不关心）。</p>
+\oiint D\cdot dS=\sum q_0</script><p>其中 q 是实际的电荷，不包括感应出的电荷（也很合逻辑，因为感应出的电荷我们也不关心）。</p>
 <script type="math/tex; mode=display">
 D=\varepsilon_0E+P=\varepsilon_0(1+\chi_e)E=\varepsilon_0\varepsilon_rE</script><p>$\varepsilon_r$ 被称为<strong>相对介电常数</strong>，也称<strong>相对电容率</strong>。</p>
 <h3 id="2-4-电势、电容、静电能"><a href="#2-4-电势、电容、静电能" class="headerlink" title="2.4 电势、电容、静电能"></a>2.4 电势、电容、静电能</h3><h4 id="2-4-1-关系理解"><a href="#2-4-1-关系理解" class="headerlink" title="2.4.1 关系理解"></a>2.4.1 关系理解</h4><p>这里再介绍一些数学知识，在我看来，<strong>梯度运算</strong>可以把一个标量场转化为一个向量场，比如对电势场进行梯度运算，就可以得到电场强度场，而<strong>散度运算和旋度运算</strong>都是将一个矢量场转换为一个标量场，比如对电位移场求散度就可以得到电荷密度，对磁场强度场求旋度就可以得到磁化电流密度。</p>
@@ -359,7 +359,7 @@ W=\frac{1}{2}\int Udq</script><p>对于<strong>电容器</strong>，有</p>
 <script type="math/tex; mode=display">
 W=\frac{1}{2}\frac{Q^2}{C}=\frac{1}{2}CU^2=\frac{1}{2}QU</script><p>对于最<strong>普遍的静电场</strong>，有</p>
 <script type="math/tex; mode=display">
-W = \unicode{x2230}\frac{1}{2}D\cdot EdV</script><hr>
+W = \oiiint\frac{1}{2}D\cdot EdV</script><hr>
 <h2 id="三、静磁场"><a href="#三、静磁场" class="headerlink" title="三、静磁场"></a>三、静磁场</h2><h3 id="3-1-毕奥萨伐尔定律"><a href="#3-1-毕奥萨伐尔定律" class="headerlink" title="3.1 毕奥萨伐尔定律"></a>3.1 毕奥萨伐尔定律</h3><h4 id="3-1-1-公式形式"><a href="#3-1-1-公式形式" class="headerlink" title="3.1.1 公式形式"></a>3.1.1 公式形式</h4><script type="math/tex; mode=display">
 dB=\frac{\mu_0}{4\pi}\frac{I}{r^2}dl\times n_r</script><p>这个公式的前两项描述了磁感应强度的大小，微分形式是因为要把电流切割成电流源，这是没有办法的事情，没有办法获得一个像单位电荷一样的不借助微分形式的东西，并不是一定要写成微分形式，而是不得不写成，所以在高中没有涉及这个定律，也是因为对<strong>微元</strong>的不了解。</p>
 <p>公式的第三项是两个单位向量相乘，只是为了表明方向，不具有其他意义。</p>
@@ -396,7 +396,7 @@ B=\mu_0\mu_r H</script><p>$\mu_0$ 被称为真空磁导率，$\mu_r$ 是相对�
 <h3 id="4-2-动生电动势"><a href="#4-2-动生电动势" class="headerlink" title="4.2 动生电动势"></a>4.2 动生电动势</h3><script type="math/tex; mode=display">
 \varepsilon=\int(v\times B)\cdot dl</script><p>这个积出来是一个标量，所以是没有办法判断电动势的方向的，要结合<strong>楞次定律</strong>。</p>
 <h3 id="4-3-感生电动势"><a href="#4-3-感生电动势" class="headerlink" title="4.3 感生电动势"></a>4.3 感生电动势</h3><script type="math/tex; mode=display">
-\varepsilon=-\unicode{x222F}\frac{\partial B}{\partial t}\cdot dS</script><h3 id="4-4-自感、互感、磁能"><a href="#4-4-自感、互感、磁能" class="headerlink" title="4.4 自感、互感、磁能"></a>4.4 自感、互感、磁能</h3><h4 id="4-4-1-自感"><a href="#4-4-1-自感" class="headerlink" title="4.4.1 自感"></a>4.4.1 自感</h4><p>正如介绍<strong>静电能</strong>的时候引入了<strong>电容器</strong>，介绍<strong>磁场能</strong>的时候引入了<strong>电感</strong>。</p>
+\varepsilon=-\oiint\frac{\partial B}{\partial t}\cdot dS</script><h3 id="4-4-自感、互感、磁能"><a href="#4-4-自感、互感、磁能" class="headerlink" title="4.4 自感、互感、磁能"></a>4.4 自感、互感、磁能</h3><h4 id="4-4-1-自感"><a href="#4-4-1-自感" class="headerlink" title="4.4.1 自感"></a>4.4.1 自感</h4><p>正如介绍<strong>静电能</strong>的时候引入了<strong>电容器</strong>，介绍<strong>磁场能</strong>的时候引入了<strong>电感</strong>。</p>
 <p>设线圈中的电流为 I ，则记法的磁感应强度以及通过线圈自身的磁链均与 I 成正比：</p>
 <script type="math/tex; mode=display">
 \Psi=LI</script><p>这个式子描述的是因为线圈中的电流，线圈产生了一个磁场，线圈的磁链受到了电流的影响。这并不是<strong>感应</strong>的部分，感应的部分是</p>
@@ -410,11 +410,11 @@ M=K\sqrt{L_1L_2}</script><p>K 是耦合系数，说明<strong>漏磁</strong>的
 <h4 id="4-4-3-磁场能"><a href="#4-4-3-磁场能" class="headerlink" title="4.4.3 磁场能"></a>4.4.3 磁场能</h4><script type="math/tex; mode=display">
 W=\frac{1}{2}\sum L_iI_i^2+\frac{1}{2}\sum M_{ij}I_iI_j</script><p>有普遍的能量密度</p>
 <script type="math/tex; mode=display">
-W=\unicode{x2230} \frac{1}{2}B\cdot H dV</script><hr>
+W=\oiiint \frac{1}{2}B\cdot H dV</script><hr>
 <h2 id="五、电生磁（位移电流）"><a href="#五、电生磁（位移电流）" class="headerlink" title="五、电生磁（位移电流）"></a>五、电生磁（位移电流）</h2><h3 id="5-1-修正过的安培环路定理"><a href="#5-1-修正过的安培环路定理" class="headerlink" title="5.1 修正过的安培环路定理"></a>5.1 修正过的安培环路定理</h3><script type="math/tex; mode=display">
 \oint H\cdot dl=I_0+\frac{d\Phi_D}{dt}</script><h3 id="5-2-位移电流"><a href="#5-2-位移电流" class="headerlink" title="5.2 位移电流"></a>5.2 位移电流</h3><script type="math/tex; mode=display">
-I_D=\frac{d\Phi_D}{dt}=\frac{d}{dt}\unicode{x222F} D\cdot dS=\unicode{x222F}\frac{\partial D}{\partial t}\cdot dS\\
-=\varepsilon_0\unicode{x222F}\frac{\partial E}{\partial t}\cdot dS+\unicode{x222F}\frac{\partial P}{\partial t}\cdot dS</script><p>可以看到，<strong>位移电流</strong>会由两个部分产生，但是第一项的<strong>极化电流的变化</strong>只是暂态的过程，而<strong>变化电场</strong>才是位移电流的主要贡献项。</p>
+I_D=\frac{d\Phi_D}{dt}=\frac{d}{dt}\oiint D\cdot dS=\oiint\frac{\partial D}{\partial t}\cdot dS\\
+=\varepsilon_0\oiint\frac{\partial E}{\partial t}\cdot dS+\oiint\frac{\partial P}{\partial t}\cdot dS</script><p>可以看到，<strong>位移电流</strong>会由两个部分产生，但是第一项的<strong>极化电流的变化</strong>只是暂态的过程，而<strong>变化电场</strong>才是位移电流的主要贡献项。</p>
 <hr>
 <h2 id="六、场生力"><a href="#六、场生力" class="headerlink" title="六、场生力"></a>六、场生力</h2><h3 id="6-1-安培力公式"><a href="#6-1-安培力公式" class="headerlink" title="6.1 安培力公式"></a>6.1 安培力公式</h3><script type="math/tex; mode=display">
 dF=Idl \times B</script><h3 id="6-2-磁矩"><a href="#6-2-磁矩" class="headerlink" title="6.2 磁矩"></a>6.2 磁矩</h3><script type="math/tex; mode=display">
@@ -715,7 +715,12 @@ F=qE+qv\times B</script>
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {
