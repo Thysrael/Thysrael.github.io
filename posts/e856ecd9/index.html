@@ -671,7 +671,12 @@ Av_i = \sigma_i u_i \quad\Rightarrow\quad \sigma_i = Av_i \div u_i</script><p>å…
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {

@@ -662,7 +662,12 @@ E = \frac{\Delta_m}{N_x} = \frac{N_m}{N_x}a\%</script><p>这里需要注意的�
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {

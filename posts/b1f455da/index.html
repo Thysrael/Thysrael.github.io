@@ -715,7 +715,12 @@ y = (2A\cos\frac{2\pi}{\lambda}x)\cos\frac{2\pi}{T}t</script><p>这个式子很�
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {

@@ -31,7 +31,7 @@
 <meta property="og:description" content="一、直观理解1.1 电磁场的理解场是物质的，那么怎么才能把这种物质性显现出来呢？我认为我觉得它不明显是因为从小就接受电磁波的传导是不需要介质，以太是不存在的这两个概念。但是实际呢，只不过这种介质不是那种常见的比如空气啊啥的东西，但不意味着没有。在麦克斯韦的时代，他的理论就是建立在电磁以太上的基础上的。其实想一想，没有介质就有超距作用的嫌疑了，而且对于一个比较淳朴的人来说，认为作用是不需要通过介质传">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-01-16T08:24:18.000Z">
-<meta property="article:modified_time" content="2026-01-09T14:25:31.271Z">
+<meta property="article:modified_time" content="2026-01-09T14:42:21.588Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="直观理解">
@@ -257,7 +257,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-09 22:25:31" itemprop="dateModified" datetime="2026-01-09T22:25:31+08:00">2026-01-09</time>
+                <time title="Modified: 2026-01-09 22:42:21" itemprop="dateModified" datetime="2026-01-09T22:42:21+08:00">2026-01-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -715,7 +715,12 @@ F=qE+qv\times B</script>
       },
       tex: {
         inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
+        tags: 'ams',
+        macros: {
+          unicodeInt: ['\\mathop{\\vcenter{\\mathchoice{\\huge\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}{\\unicode{#1}}}}\\nolimits', 1],
+          oiint: '\\unicodeInt{x222F}',
+          oiiint: '\\unicodeInt{x2230}'
+        }
       },
       options: {
         renderActions: {
