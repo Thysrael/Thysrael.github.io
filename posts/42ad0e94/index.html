@@ -32,7 +32,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://thysrael.github.io/posts/42ad0e94/微信图片_20210513192620.jpg">
 <meta property="article:published_time" content="2022-01-16T09:03:19.000Z">
-<meta property="article:modified_time" content="2025-08-15T12:16:48.879Z">
+<meta property="article:modified_time" content="2026-01-09T14:24:48.210Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="知识总结">
 <meta property="article:tag" content="直观理解">
@@ -259,7 +259,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+                <time title="Modified: 2026-01-09 22:24:48" itemprop="dateModified" datetime="2026-01-09T22:24:48+08:00">2026-01-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -308,7 +308,7 @@
 <h3 id="1-3-有界"><a href="#1-3-有界" class="headerlink" title="1.3 有界"></a>1.3 有界</h3><p>就是有一个<strong>球</strong>可以把整个集合<strong>包进去</strong>，球的半径就是刚才定义过的<strong>距离</strong>。</p>
 <h3 id="1-4-极限"><a href="#1-4-极限" class="headerlink" title="1.4 极限"></a>1.4 极限</h3><p>极限也是很好定义的，就是在一个<strong>一定小的开球</strong>里，里面的值都是跟某个值的<strong>距离任意小</strong>。我列于此是想强调，极限是<strong>最弱的条件</strong>，其上是<strong>连续</strong>，说的是在一个<strong>开球附近的值</strong>距离<strong>开球圆心的值</strong>任意小，它限定了某个值必须是该点的函数值，同时提供了一种求极限的方法，就是代值进函数，因为在一元时，函数基本上都是连续的，所以求极限显得很显然，而且我们还有一大堆好使的工具，比如<strong>洛必达、泰勒、等价无穷小</strong>。反正就是大概都不会<strong>用定义来求</strong>极限，但是在<strong>多元函数中</strong>，洛必达是<strong>偏导</strong>，而不是<strong>微分</strong>，所以没法用于极限。<strong>泰勒</strong>是微分，但是各种项数过多，即使转换成多项式，也很难求极限。<strong>等价无穷小</strong>倒是在化简函数结构的时候有用，但是基本上十分显然。所以难点其实就是<strong>利用定义证明</strong>，那么<strong>放缩</strong>，<strong>利用条件</strong>就是重中之重，也是这<strong>全节的难点</strong>。</p>
 <h3 id="1-5-各种点"><a href="#1-5-各种点" class="headerlink" title="1.5 各种点"></a>1.5 各种点</h3><h4 id="1-5-1-内点"><a href="#1-5-1-内点" class="headerlink" title="1.5.1 内点"></a>1.5.1 内点</h4><p>如果有一个以某一点为球心的<strong>一定小的开球</strong>包在这个集合中，就称这个点是集合的内点。内点是一定在<strong>集合内部的</strong>，这也是它姓名的由来。我们管由内点组成的集合叫做<strong>开集</strong>，开集的<strong>补集</strong>叫做<strong>闭集</strong>。</p>
-<h4 id="1-5-2-边界点"><a href="#1-5-2-边界点" class="headerlink" title="1.5.2 边界点"></a>1.5.2 边界点</h4><p>如果有一个以某点为圆心的<strong>任意开球中</strong>都有这个集合中的点，又有不是这个集合中的点，那么就称这个点是<strong>边界点</strong>，注意边界点可能属于这个集合，也可能不属于这个集合。我们管由边界点组成的集合叫做集合 $E$ 的<strong>边界</strong>，记作 $\part E$ 。这种记法需要记忆。</p>
+<h4 id="1-5-2-边界点"><a href="#1-5-2-边界点" class="headerlink" title="1.5.2 边界点"></a>1.5.2 边界点</h4><p>如果有一个以某点为圆心的<strong>任意开球中</strong>都有这个集合中的点，又有不是这个集合中的点，那么就称这个点是<strong>边界点</strong>，注意边界点可能属于这个集合，也可能不属于这个集合。我们管由边界点组成的集合叫做集合 $E$ 的<strong>边界</strong>，记作 $\partial E$ 。这种记法需要记忆。</p>
 <h3 id="1-5-3-外点"><a href="#1-5-3-外点" class="headerlink" title="1.5.3 外点"></a>1.5.3 外点</h3><p>如果有一个以某一点为球心的<strong>一定小的开球</strong>包在这个集合的补集中，就称这个点是集合的外点。外点一定在<strong>集合外部</strong>。</p>
 <h4 id="1-5-4-聚点和孤立点"><a href="#1-5-4-聚点和孤立点" class="headerlink" title="1.5.4 聚点和孤立点"></a>1.5.4 聚点和孤立点</h4><p>如果对于一个以某点为球心的任意的空心开球中，都有集合中的点，那么就称这个点为<strong>聚点</strong>，聚点可以不在集合中，如果一个点在集合中而不是聚点，那么他就是孤立点。也就是说<strong>孤立点一定在集合中</strong>。</p>
 <h4 id="1-5-6-各种点的关系"><a href="#1-5-6-各种点的关系" class="headerlink" title="1.5.6 各种点的关系"></a>1.5.6 各种点的关系</h4><p><img src="/posts/42ad0e94/微信图片_20210513192620.jpg" alt=""></p>
