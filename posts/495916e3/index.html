@@ -31,7 +31,7 @@
 <meta property="og:description" content="一、总论虽然我已经在之前的文章中讨论过一遍张量是如何求导的了，并且附上了详细的数学推导。但是我觉得那次的讨论还是有些过于偏向于数学的严谨，而忽略了实际使用中的直观。 所以我打算再推一遍，省略一些数学细节，但是更加注重实际的使用，包括对于计算和内存开销的估算，矩阵的形状等。  二、规律">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-12-26T07:07:38.000Z">
-<meta property="article:modified_time" content="2026-01-06T07:18:07.927Z">
+<meta property="article:modified_time" content="2026-01-09T17:28:19.290Z">
 <meta property="article:author" content="Thysrael">
 <meta property="article:tag" content="直观理解">
 <meta property="article:tag" content="Sys4AI">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-06 15:18:07" itemprop="dateModified" datetime="2026-01-06T15:18:07+08:00">2026-01-06</time>
+                <time title="Modified: 2026-01-10 01:28:19" itemprop="dateModified" datetime="2026-01-10T01:28:19+08:00">2026-01-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -354,13 +354,14 @@ B_{G} = Y_{G}^T \cdot A</script></blockquote>
 <script type="math/tex; mode=display">
 Y = WX</script><p>我们已经拿到了 $Y_G$ ，带入上面的规律可知：</p>
 <script type="math/tex; mode=display">
-W_G = Y_G \cdot X^T \\
+W_G = Y_G \cdot X^T 
+\newline
 X_G = Y_G^T \cdot W</script><p>在计算 $W_G$ 的时候，需要使用到激活值 $X$，这就要求在 forward 的时候，要将这个临时的激活值进行保留。</p>
 <p>我们计算 $W_G$ 是出于更新 $W$ 的目的，那么我们为什么要计算 $X_G$，这是因为 $X$ 此时是自变量，而它同时也是因变量，所以需要计算它保证链式传播。</p>
 <h3 id="3-2-Attention"><a href="#3-2-Attention" class="headerlink" title="3.2 Attention"></a>3.2 Attention</h3><p>Attention 看起来很复杂，但是实际上经过拆解，并不难。在 forward 过程中，有：</p>
 <script type="math/tex; mode=display">
-S = Q \cdot K^T \\
-P = Softmax(S) \\
+S = Q \cdot K^T \newline
+P = Softmax(S) \newline
 O = P \cdot V</script><p>经过这么一拆解，就算不算，也知道 backward 可以表示成一个很简单的形式了。</p>
 <p>我们已经拿到了 $O_G$ ，然后有：</p>
 <script type="math/tex; mode=display">
@@ -370,7 +371,7 @@ P_G = O_G^T \cdot V</script><p>这两个计算的开销是非常大的，因为�
 <p>我们不考虑 $softmax$ 的梯度，但是总之 $S_G$ 的形状也是 $[n, n]$ 。</p>
 <p>当我们有了 $S_G$ 后，我们就可以推算 $Q_G, K_G$ 了，有：</p>
 <script type="math/tex; mode=display">
-Q_G = S_G \cdot K \\
+Q_G = S_G \cdot K \newline
 K_G = Q^T \cdot S_G</script><p>FlashAttention 之所以这么厉害，不止是因为它在 forward 的卓越贡献，能够避免 $[n, n]$ 矩阵，在 backward 中，它利用保存在 SRAM 里的 Block 形式的 $Q, K, V$ 重新算一遍 Forward，当场算出局部的 $P$，随即算出梯度，直接加和，同样不需要保存 $[n, n]$ 矩阵。</p>
 <hr>
 
