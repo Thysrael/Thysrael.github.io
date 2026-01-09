@@ -116,7 +116,8 @@ Y = WX
 $$
 我们已经拿到了 $Y_G$ ，带入上面的规律可知：
 $$
-W_G = Y_G \cdot X^T \\
+W_G = Y_G \cdot X^T 
+\newline
 X_G = Y_G^T \cdot W
 $$
 在计算 $W_G$ 的时候，需要使用到激活值 $X$，这就要求在 forward 的时候，要将这个临时的激活值进行保留。
@@ -127,8 +128,8 @@ $$
 
 Attention 看起来很复杂，但是实际上经过拆解，并不难。在 forward 过程中，有：
 $$
-S = Q \cdot K^T \\
-P = Softmax(S) \\
+S = Q \cdot K^T \newline
+P = Softmax(S) \newline
 O = P \cdot V
 $$
 经过这么一拆解，就算不算，也知道 backward 可以表示成一个很简单的形式了。
@@ -147,7 +148,7 @@ $$
 
 当我们有了 $S_G$ 后，我们就可以推算 $Q_G, K_G$ 了，有：
 $$
-Q_G = S_G \cdot K \\
+Q_G = S_G \cdot K \newline
 K_G = Q^T \cdot S_G
 $$
 FlashAttention 之所以这么厉害，不止是因为它在 forward 的卓越贡献，能够避免 $[n, n]$ 矩阵，在 backward 中，它利用保存在 SRAM 里的 Block 形式的 $Q, K, V$ 重新算一遍 Forward，当场算出局部的 $P$，随即算出梯度，直接加和，同样不需要保存 $[n, n]$ 矩阵。
