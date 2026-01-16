@@ -151,19 +151,24 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
 
   </li>
-        <li class="menu-item menu-item-resource">
+        <li class="menu-item menu-item-resources">
 
-    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>Resource</a>
+    <a href="/resource/" rel="section"><i class="fa fa-book fa-fw"></i>resources</a>
 
   </li>
-        <li class="menu-item menu-item-links">
+        <li class="menu-item menu-item-projects">
 
-    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>Links</a>
+    <a href="/projects/" rel="section"><i class="fa fa-briefcase fa-fw"></i>projects</a>
+
+  </li>
+        <li class="menu-item menu-item-friends">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>friends</a>
 
   </li>
         <li class="menu-item menu-item-roam">
 
-    <a href="/obsidian-quartz/" rel="section"><i class="fa fa-sitemap fa-fw"></i>Roam</a>
+    <a href="/obsidian-quartz/" rel="section"><i class="fa fa-sitemap fa-fw"></i>roam</a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -341,7 +346,7 @@ cin<span class="token punctuation">.</span><span class="token function">get</spa
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">getline</span><span class="token punctuation">(</span>cin<span class="token punctuation">,</span> s4<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这种方法到结束符时，会将结束符一并读入指定的 string 中，再将结束符替换为空字符。</p>
 <p>对于上面的程序，如果我输出</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">hello, world cnx<span class="token operator">!</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">hello, world cnx!<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>会输出</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">hello<span class="token punctuation">,</span> 
  world cnx<span class="token operator">!</span>
@@ -408,7 +413,7 @@ cout <span class="token operator">&lt;&lt;</span> s2 <span class="token operator
 <p>这个程序的输出是这样的</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">CAST CUSTRUCT
 CAST CUSTRUCT
-<span class="token number">12</span> <span class="token number">7</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+12 7<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="2-2-复制构造器"><a href="#2-2-复制构造器" class="headerlink" title="2.2 复制构造器"></a>2.2 复制构造器</h3><p>对于</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">string s3 <span class="token operator">=</span> s1<span class="token punctuation">;</span>
 string <span class="token function">s4</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -508,8 +513,8 @@ string <span class="token function">s6</span><span class="token punctuation">(</
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">s1 address is 0xecdf6110
 s2 address is 0xecdf6130
 s3 address is 0xecdf6150
-s1 <span class="token operator">==</span> s2
-s2 <span class="token operator">!=</span> s3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+s1 == s2
+s2 != s3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以看到，这些字符串是完全不同的独立的字符串，在 java 中，只要地址不用，那么就无法判断等于，而在 cpp 中，<code>==</code> 是逻辑上的，而不是地址比价上的。</p>
 <p>在没有定义一个自定义结构体的 <code>==</code> 时，直接让 <code>s1 == s2</code> 会报一个 <code>not match</code> 的错误（从这里可以看出，在 CPP 中并没有“<strong>一切皆对象</strong>”的效果，现在看来，这里意味着，对一个普通的类，并没有像 java 中的  <code>Object</code> 一样的 <code>equal</code> 一样的“保底”方法 ），所以如果需要有相等性的比较的时候，我们需要定义 <code>==</code> 运算符。如下所示</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;bits/stdc++.h&gt;</span></span>
