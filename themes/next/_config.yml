@@ -120,9 +120,10 @@ menu:
   categories: /categories/ || fa fa-th
   tags: /tags/ || fa fa-tags
   archives: /archives/ || fa fa-archive
-  Resource: /resource/ || fa fa-book
-  Links: /links/ || fa fa-link
-  Roam: /obsidian-quartz/ || fa fa-sitemap
+  resources: /resource/ || fa fa-book
+  projects: /projects/ || fa fa-briefcase
+  friends: /links/ || fa fa-link
+  roam: /obsidian-quartz/ || fa fa-sitemap
   about: /about/ || fa fa-user
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /baidusitemap.xml || fa fa-sitemap
@@ -1032,7 +1033,7 @@ friendslinks:
     avatar: https://mmmusel.github.io/avatar/photo.jpg
     site: https://mmmusel.github.io/
     info: 这个人就是汉堡
-    
+
   - nickname: DearAJ
     avatar: https://avatars.githubusercontent.com/u/105581880?v=4
     site: https://dearaj.github.io/
