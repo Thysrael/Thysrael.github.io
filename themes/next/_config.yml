@@ -120,10 +120,10 @@ menu:
   categories: /categories/ || fa fa-th
   tags: /tags/ || fa fa-tags
   archives: /archives/ || fa fa-archive
-  resources: /resource/ || fa fa-book
-  projects: /projects/ || fa fa-briefcase
-  friends: /links/ || fa fa-link
-  roam: /obsidian-quartz/ || fa fa-sitemap
+  Resources: /resource/ || fa fa-book
+  Projects: /projects/ || fa fa-briefcase
+  Friends: /links/ || fa fa-link
+  Roam: /obsidian-quartz/ || fa fa-sitemap
   about: /about/ || fa fa-user
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /baidusitemap.xml || fa fa-sitemap
