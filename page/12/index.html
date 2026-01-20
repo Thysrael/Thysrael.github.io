@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">201</span></a>
 
   </li>
         <li class="menu-item menu-item-resources">
@@ -222,6 +222,120 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/b3d3000d/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/b3d3000d/" class="post-title-link" itemprop="url">补充数学-行列式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-13 20:50:51" itemprop="dateCreated datePublished" datetime="2023-02-13T20:50:51+08:00">2023-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%A1%A5%E5%85%85%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">补充数学</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>3 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、直观意义"><a href="#一、直观意义" class="headerlink" title="一、直观意义"></a>一、直观意义</h2><p>行列式（<strong>determinant</strong>）可以看做在多维空间上的向量组形成“<strong>有向体积</strong>”，这种认识可以辅助我们理解一些性质：</p>
+<ul>
+<li><p>可以利用行列式求解四边形面积、六棱锥体积。</p>
+</li>
+<li><p>交换构成行列式的向量，并不会改变行列式的绝对值，而可能会改变行列式的正负。这是因为改变边的顺序不会影响体积。</p>
+</li>
+<li><p>一旦有一行或者一列为 0，或者这个方阵没有满秩，就会导致行列式为 0。某一个向量为 0，肯定会导致体积为 0，当没有满秩，就说明有两条“边”方向重合了，也会导致体积为 0。</p>
+</li>
+<li><p>将一行（列）的 $k$​ 倍加进另一行（列）里，行列式的值不变。类似于固定了底面和高，其实第三条楞只要在平行于底面的边上变化，就不会导致体积的改变</p>
+<script type="math/tex; mode=display">
+{\begin{vmatrix}\vdots &\vdots &\vdots &\vdots \\a_{i1}&a_{i2}&\dots &a_{in}\\a_{j1}&a_{j2}&\dots &a_{jn}\\\vdots &\vdots &\vdots &\vdots \\\end{vmatrix}}={\begin{vmatrix}\vdots &\vdots &\vdots &\vdots \\a_{i1}&a_{i2}&\dots &a_{in}\\a_{j1}{\color {blue}+ka_{i1}}&a_{j2}{\color {blue}+ka_{i2}}&\dots &a_{jn}{\color {blue}+ka_{in}}\\\vdots &\vdots &\vdots &\vdots \\\end{vmatrix}}</script></li>
+<li><p>在行列式中，某一行（列）有公因子 $k$，则可以提出 $k$。类似于一条边的倍数发生变化的时候，会导致体积的倍数发生相同的变化。</p>
+<script type="math/tex; mode=display">
+{\displaystyle D={\begin{vmatrix}a_{11}&a_{12}&\dots &a_{1n}\\\vdots &\vdots &\ddots &\vdots \\{\color {blue}k}a_{i1}&{\color {blue}k}a_{i2}&\dots &{\color {blue}k}a_{in}\\\vdots &\vdots &\ddots &\vdots \\a_{n1}&a_{n2}&\dots &a_{nn}\end{vmatrix}}={\color {blue}k}{\begin{vmatrix}a_{11}&a_{12}&\dots &a_{1n}\\\vdots &\vdots &\ddots &\vdots \\a_{i1}&a_{i2}&\dots &a_{in}\\\vdots &\vdots &\ddots &\vdots \\a_{n1}&a_{n2}&\dots &a_{nn}\end{vmatrix}}={\color {blue}k}D_{1}}</script></li>
+</ul>
+<ul>
+<li>在行列式中，某一行（列）的每个元素是两数之和，则此行列式可拆分为两个相加的行列式。类似于在计算高的时候，将高拆分成两个部分计算。<script type="math/tex; mode=display">
+{\displaystyle {\begin{vmatrix}a_{11}&a_{12}&\dots &a_{1n}\\\vdots &\vdots &\ddots &\vdots \\{\color {blue}a_{i1}}+{\color {OliveGreen}b_{i1}}&{\color {blue}a_{i2}}+{\color {OliveGreen}b_{i2}}&\dots &{\color {blue}a_{in}}+{\color {OliveGreen}b_{in}}\\\vdots &\vdots &\ddots &\vdots \\a_{n1}&a_{n2}&\dots &a_{nn}\end{vmatrix}}={\begin{vmatrix}a_{11}&a_{12}&\dots &a_{1n}\\\vdots &\vdots &\ddots &\vdots \\{\color {blue}a_{i1}}&{\color {blue}a_{i2}}&\dots &{\color {blue}a_{in}}\\\vdots &\vdots &\ddots &\vdots \\a_{n1}&a_{n2}&\dots &a_{nn}\end{vmatrix}}+{\begin{vmatrix}a_{11}&a_{12}&\dots &a_{1n}\\\vdots &\vdots &\ddots &\vdots \\{\color {OliveGreen}b_{i1}}&{\color {OliveGreen}b_{i2}}&\dots &{\color {OliveGreen}b_{in}}\\\vdots &\vdots &\ddots &\vdots \\a_{n1}&a_{n2}&\dots &a_{nn}\end{vmatrix}}}</script></li>
+</ul>
+<hr>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/b3d3000d/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -850,287 +964,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/f220eea5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/f220eea5/" class="post-title-link" itemprop="url">English-写作词汇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-24 21:23:52" itemprop="dateCreated datePublished" datetime="2023-01-24T21:23:52+08:00">2023-01-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:47" itemprop="dateModified" datetime="2025-08-15T20:16:47+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>4.5k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>4 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、文化教育类"><a href="#一、文化教育类" class="headerlink" title="一、文化教育类"></a>一、文化教育类</h2><ol>
-<li>硕士学位：the master’s degree</li>
-<li>博士学位：the doctor’s degree; Ph. D. (Doctor of Philosophy)</li>
-<li>学术表现：academic performance</li>
-<li>学术成就：academic performance</li>
-<li>成就；成绩：accomplishment</li>
-<li>求职者（2 个）：job hunter; job applicant</li>
-<li>简历：resume</li>
-<li>传统书籍：traditional book</li>
-<li>理论与实践：theory and practice</li>
-<li>课外活动：extracurricular activity</li>
-<li>拓宽视野：broaden one’s horizons</li>
-<li>必修课：compulsory course</li>
-<li>选修课（3 个）：selective course; optional course; elective course</li>
-<li>教学大纲：syllabus</li>
-<li>素质教育：quality-oriented education</li>
-<li>应试教育：test-oriented education</li>
-<li>学生会：Student’s Union</li>
-<li>名牌大学：prestigious university</li>
-<li>激烈竞争：fierce competition</li>
-<li>身心健康：physical and mental health</li>
-<li>树立积极榜样：set a positive example</li>
-<li>代沟：generation gap</li>
-<li>娱乐活动：recreational activity</li>
-<li>丰富知识：enrich one’s knowledge</li>
-<li>尖子生（2 个）：top student; straight-A student</li>
-<li>发挥潜能：fulfill one’s potential</li>
-<li>高校排名：university ranking</li>
-<li>高校扩招：expansion of college enrollment</li>
-<li>竞争性考试：competitive examination</li>
-<li>高考：the college entrance examination</li>
-<li>辍学：drop out of school</li>
-<li>研究所：research institution</li>
-<li>努力（3 个）：attempt; endeavor; strive; </li>
-<li>接受教育：receive education</li>
-<li>实现目标：realize the goal</li>
-<li>劳动力市场：labor market</li>
-<li>获得大学文凭：get diploma</li>
-<li>外来务工人员：migrant worker</li>
-<li>课外班：after-school class</li>
-<li>被……录取：be admitted to</li>
-<li>重要决定：significant decision</li>
-<li>报名参加（2 个）：enroll for; sign up for</li>
-<li>重点学校：key school</li>
-<li>职业学校：vocational college</li>
-<li>重视（4 个）：put emphasis on; attach importance to; emphasize; highlight</li>
-<li>教育资源：educational resources</li>
-<li>欠发达地区：underdeveloped region</li>
-<li>促进教育公平：promote equity in education</li>
-<li>改善教育设施：improve educational facilities</li>
-<li>义务教育：compulsory education</li>
-<li>乐器：instrument</li>
-<li>绘画工具：painting tool</li>
-<li>毕业生：graduates</li>
-<li>教育工作者：educators</li>
-<li>培养（3 个）：cultivate; forster; develop</li>
-<li>关键时期：crucial period</li>
-<li>养成……的习惯：develop a habit</li>
-<li>培养……的兴趣：cultivate an interest</li>
-<li>基本素质：essential quality</li>
-<li>光明前途：promising future</li>
-<li>大一学生：freshman</li>
-<li>大二学生：sophomore</li>
-<li>大三学生：junior student</li>
-<li>大四学生：senior student</li>
-<li>文科（2 个）：liberal arts; humanities</li>
-<li>理科：sciences</li>
-<li>招生录取：recruitment and enrollment</li>
-<li>食堂（2 个）：canteen; dinning hall</li>
-<li>员工：staff</li>
-<li>全体老师：faculty</li>
-<li>职业培训：vocational training</li>
-<li>就业指导：career guidance</li>
-<li>激发兴趣：stimulate interest</li>
-<li>学生减负：reduce study load</li>
-<li>研讨会：seminar</li>
-<li>考研：take the postgraduate entrance exam</li>
-<li>创业：start one’s own business</li>
-<li>出国留学：study abroad</li>
-<li>申请入学：apply for admission to</li>
-<li>专门人才：professional personnel</li>
-<li>奖学金：scholarship</li>
-<li>学分：credits</li>
-<li>本硕毕业论文：thesis</li>
-<li>博士毕业论文：dissertation</li>
-<li>学费：tuition fee</li>
-<li>教授：professor</li>
-<li>副教授：associcate professor</li>
-<li>讲师：lecturer</li>
-<li>学习氛围：learning atmosphere</li>
-<li>逃课：skip class</li>
-<li>德智体美劳全面发展：all around development of moral, intellectual, physical, aesthetic and labor education</li>
-</ol>
-<hr>
-<h2 id="二、地域环境类"><a href="#二、地域环境类" class="headerlink" title="二、地域环境类"></a>二、地域环境类</h2><ol>
-<li>环境污染：enviromental pollution</li>
-<li>空气污染：air pollution</li>
-<li>水污染：water pollution</li>
-<li>一次性塑料袋：disposable plastic bag </li>
-<li>节能环保：energy saving and enviromental protection</li>
-<li>淡水资源短缺：the shortage of fresh water</li>
-<li>沙尘暴：sandstorm</li>
-<li>动物灭绝：extinction fo animals</li>
-<li>濒危动物：endangered animals</li>
-<li>生态失衡：the disruption of the ecological balance</li>
-<li>再生资源回收：the recycling of renewable resources</li>
-<li>绿色能源：green energy</li>
-<li>过度使用农药：the over-usage of pesticide</li>
-<li>乱砍滥伐：the over-cutting of the forest</li>
-<li>频繁的水旱灾：frequent floods and droughts</li>
-<li>灾难性的：devastating</li>
-<li>咸水湖：saltwater lake</li>
-<li>淡水湖：fresh lake</li>
-<li>捕鱼业：fishing industry</li>
-<li>海拔 X 米：X meter above the sea level</li>
-<li>平方千米：square kilometer</li>
-<li>候鸟：migrant bird</li>
-<li>迁徙路线：migrant route</li>
-<li>迁徙过程：process of migration</li>
-<li>观鸟者：birdwatcher</li>
-<li>中国传统园林：traditional Chinese garden</li>
-<li>位于：be located in</li>
-<li>栖息地：habitates</li>
-<li>旅游目的地：destination</li>
-<li>文化遗产：cultcural heritage</li>
-<li>古迹：historical site</li>
-<li>珠江：the Pearl River</li>
-<li>长江：the Yangtze River</li>
-<li>黄河：the Yellow River</li>
-<li>发源地：birthplace</li>
-<li>三角洲地区：delta region</li>
-<li>注入；流入：empty into</li>
-<li>流经：flow through</li>
-<li>制造中心：manufacturing center</li>
-<li>灌溉：irrigate</li>
-<li>景点：scenic attraction</li>
-<li>沿海城市：coastal city</li>
-<li>风景独特（2 个）：unique natural scenery; distinctive scenery</li>
-<li>云海：the sea of cloud</li>
-<li>宏伟壮丽：miganificence</li>
-<li>湿润气候：humid climate</li>
-<li>大熊猫：gaint panda</li>
-<li>以竹为食：bamboo-eating</li>
-<li>被列为（3 个）：be listed as; be grouped as; be classified as;</li>
-<li>熊科：bear family</li>
-<li>面临威胁：under threat</li>
-<li>生存（2 个）：existence; survival</li>
-<li>草药：herb</li>
-<li>宜人的居住环境：pleasant living enviroment</li>
-<li>节约自然资源：conserve natural</li>
-<li>砍伐森林：deforestation</li>
-<li>沙漠化：desertification</li>
-<li>自然灾害：natural disaster</li>
-<li>垃圾分类：garbage classification</li>
-<li>低碳经济：low carbon economy</li>
-<li>全球变暖：global warning</li>
-<li>环保产品：enviroment-friendly products</li>
-<li>废水（2 个）：waste water; sewage</li>
-<li>环境恶化（2 个）：environmental degradation ; environmental deterioration</li>
-<li>开发可再生资源：develop the renewable resources</li>
-<li>污染预防：pollution prevention</li>
-<li>污染控制：pollution control</li>
-<li>控制环境污染：curb the enviromental pollution</li>
-<li>提倡：advocate</li>
-<li>号召：call on</li>
-<li>自然宝藏：natural treasure</li>
-<li>享誉盛名：earn a great reputation</li>
-<li>有 X 年历史：has a history of X years</li>
-<li>渔村：fishing village</li>
-<li>水乡：water town</li>
-<li>偏远地区：remote area</li>
-<li>日出：sunrise</li>
-<li>日落：sunset</li>
-<li>温泉：outspring</li>
-<li>瀑布：waterfall</li>
-<li>建筑：archietecture</li>
-<li>寺庙：temple</li>
-<li>摄影：photography</li>
-<li>背包旅行：backpacking</li>
-<li>背包客： backpacker</li>
-<li>络绎不绝：in an endless steam</li>
-<li>住宅：dwelling</li>
-<li>集市：markect</li>
-<li>庭院：countryard</li>
-<li>美不胜收：be too beautiful to be absorbed all at once</li>
-<li>闻名遐迩：enjoy widespread renown</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/f220eea5/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1202,7 +1035,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">200</span>
+          <span class="site-state-item-count">201</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1267,12 +1100,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">1.3m</span>
+    <span title="Symbols count total">1.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:25</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
         

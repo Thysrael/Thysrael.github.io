@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">201</span></a>
 
   </li>
         <li class="menu-item menu-item-resources">
@@ -222,6 +222,106 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/4c542040/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/4c542040/" class="post-title-link" itemprop="url">计算机组成-支持中断的CPU</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-16 00:51:23" itemprop="dateCreated datePublished" datetime="2022-01-16T00:51:23+08:00">2022-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">计算机组成</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>28k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>25 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><h3 id="1-1-关于需求"><a href="#1-1-关于需求" class="headerlink" title="1.1 关于需求"></a>1.1 关于需求</h3><p>我认为，在P7，我们设计的最终目的是实现一个<strong>看上去像单周期CPU的、具有反馈控制接口的流水线CPU</strong>。如果再将目标细化一些，那么就是两个小目标，那就是：</p>
+<ul>
+<li>从外部（也就是软件程序开发者）看，流水线CPU被<strong>封装</strong>成了单周期CPU</li>
+<li>CPU可以为外部提供反馈信息，并且可以让外部根据反馈信息进而更改CPU的运行状态（整个过程叫做反馈，实现了这个功能的CPU具有了软硬件交互<strong>接口</strong>）</li>
+</ul>
+<p>其中第一个需求，体现的是<strong>对硬件良好的封装能力</strong>，也就是极高的设计能力，设计者必须同时站在CPU内部和外部角度，从外部去检查没有流水线的任何细节漏出，从内部去实现这种伪装。对于第二个需求，体现的是对<strong>控制和接口更高层次的理解</strong>，我们的CPU的控制会变得更加复杂，会具有反馈和二次控制的功能，同时，软硬件接口交互也加大了理解的难度，因为有一部分功能交由软件负责，而我们不负责软件。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/4c542040/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -702,103 +802,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/dc316254/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/dc316254/" class="post-title-link" itemprop="url">计算机组成-存储系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-01-06 21:05:35" itemprop="dateCreated datePublished" datetime="2022-01-06T21:05:35+08:00">2022-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">计算机组成</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇总结并不是一个很好的知识体系，他只是为了考试而临时搭建的一个考试体系。</p>
-<p>通常把存放一个二进制单位的物理器件称为<strong>存储元</strong>，<strong>地址码相同的多个存储元构成一个存储单元</strong>（这个定义一针见血！）。若干个存储单元构成一个存储体（又被称为存储矩阵），其特点就是会用到<strong>地址</strong>这个概念。</p>
-<p>这个没有更新完，是因为我有看了关于虚拟机的部分内容，感觉挺有意思的，想写一个更加融汇贯通的，所以搭建文章脉络的周期会延长，考试前可能更不了了。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/dc316254/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -870,7 +873,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">200</span>
+          <span class="site-state-item-count">201</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -935,12 +938,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">1.3m</span>
+    <span title="Symbols count total">1.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:25</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
         

@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">201</span></a>
 
   </li>
         <li class="menu-item menu-item-resources">
@@ -222,6 +222,104 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/cf617ad0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/cf617ad0/" class="post-title-link" itemprop="url">并行计算-并行原语</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-09-29 16:42:45" itemprop="dateCreated datePublished" datetime="2024-09-29T16:42:45+08:00">2024-09-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">并行计算</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.4k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>在并行编程中，除了“互斥”这个原语外（一般是采用“锁”来实现），还存在“同步（synchronous）”这个原语，这个原语指的是“各个事件按照特定顺序执行”的需求。比如说在生产者消费者模型中，必须要让生产者先生产，消费者才可以进行消费，这就是一种同步行为，是没有办法仅仅依靠锁来实现的。</p>
+<p>当涉及互斥时，涉及到的术语是 <code>lock, unlock, mutex</code> ，而涉及到同步是术语是 <code>wait, signal, notify, barrier</code> 等。之前我只重视了互斥的学习，而对于同步语义，则非常忽视。</p>
+<hr>
+<h2 id="二、互斥"><a href="#二、互斥" class="headerlink" title="二、互斥"></a>二、互斥</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/cf617ad0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -732,104 +830,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/a039c29c/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/a039c29c/" class="post-title-link" itemprop="url">沟通交流-旋氏语法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-06-24 09:58:10" itemprop="dateCreated datePublished" datetime="2024-06-24T09:58:10+08:00">2024-06-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B2%9F%E9%80%9A%E4%BA%A4%E6%B5%81/" itemprop="url" rel="index"><span itemprop="name">沟通交流</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>6.3k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>6 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>这篇文章是对于<a target="_blank" rel="noopener external nofollow noreferrer" href="https://llwslc.github.io/grammar-club/">旋元佑语法俱乐部</a>的一个注释总结。行文思路基本上和这本电子书的章节保持一致。</p>
-<p>语法是对于语言的规律总结，这类似于物理是对于客观世界的规律总结。不过应当注意到，即使掌握了语法，也并不能短时间内提高英语水平，因为在语法的指导下使用语言，同样是一个需要习惯和精进的过程。这就像掌握了物理定律和物理满分之间依然存在很大差距一样。</p>
-<p>旋老师的语法和我中学学过的语法并不一样，旋老师倾向于建立一种“大一统”的理论来解释所有的语言现象，而中学语法则更加繁杂和缺少一致性。在加上我这次学习语法已经是大四，在逻辑思维上相比于中学已经有了很大的进步。所以总的来说，语法更加“讲理”了。</p>
-<p>但是旋氏语法的缺点我个人感觉有两个，一个是因为过于“统一”，导致需要引入一堆与中学语法似是而非的概念，这些概念类似于物理学上的“波粒二象性”一样，对中学语法是一种挑战；并且因为旋老师是台湾人的缘故，所以在表达习惯和方式上也与大陆存在一定的差异（也就是他写的中文有点难看懂）。另一个是旋老师在建立了“统一”的理论后，并没有充分利用这些规律推导出中学语法甚至是其他中学语法难以推导的其他语言现象。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/a039c29c/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -901,7 +901,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">200</span>
+          <span class="site-state-item-count">201</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -966,12 +966,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">1.3m</span>
+    <span title="Symbols count total">1.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:25</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
         

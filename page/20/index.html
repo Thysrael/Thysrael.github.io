@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">201</span></a>
 
   </li>
         <li class="menu-item menu-item-resources">
@@ -222,6 +222,102 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c8a10fd9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/c8a10fd9/" class="post-title-link" itemprop="url">操作系统-文件系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-07 16:16:08" itemprop="dateCreated datePublished" datetime="2022-06-07T16:16:08+08:00">2022-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>35k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>32 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><h3 id="1-1-直观感受"><a href="#1-1-直观感受" class="headerlink" title="1.1 直观感受"></a>1.1 直观感受</h3><p>这一章虽然名义上很简单，但是我个人觉得真的很难，其难度是要远超于 lab3 和 lab4 的。对于 lab3 和 lab4，其难度主要集中于复杂的函数调用关系上，如果理清了函数调用关系，会发现难度就很容易弄清了，而理清函数关系只要通过认认真真的看代码，整理就可以办到。而 lab5 的难度在于理解操作系统的设计，这种理解不是代码层次的“一个函数是调用了哪些函数，传了哪些参数？”这一类的问题，而是 MOS 是怎样设计的，为什么要这样设计的问题。这些问题在 lab4 中也出现了，比如异常处理的微内核设计。</p>
+<h3 id="1-2-文件系统微内核"><a href="#1-2-文件系统微内核" class="headerlink" title="1.2 文件系统微内核"></a>1.2 文件系统微内核</h3><p>这一章的微内核与 lab4 的异常处理的微内核是两个东西，这是最重要的一点。微内核设计都强调将原本属于操作系统的一部分功能分配出来（比如说异常处理，文件系统），分配给用户进程完成。在 lab4 中，微内核设计是把异常处理的功能分出来，让每个进程都具有异常处理的功能（以库函数的形式）。但是在 lab5 中，微内核设计确实将文件系统的实现分了出来，但是并不是配置到了每一个用户进程上，让每一个进程都有文件系统的能力，而是专门开设了一个用户进程专门提供文件系统的服务（这也是这个用户进程的大部分实现文件都被放置在了 <code>fs</code> 文件夹下，而不是 <code>user</code> 文件夹下的原因），而其他进程想要获得文件系统的服务，就要与这个特殊的用户进程进行通信，就好像之前与操作系统进行通信一样。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/c8a10fd9/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -735,108 +831,6 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/f7813372/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/f7813372/" class="post-title-link" itemprop="url">面向对象-电梯</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-30 08:52:40" itemprop="dateCreated datePublished" datetime="2022-04-30T08:52:40+08:00">2022-04-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>19k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>18 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><h3 id="1-1-直观理解"><a href="#1-1-直观理解" class="headerlink" title="1.1 直观理解"></a>1.1 直观理解</h3><p>Unit2 的问题以电梯作为题目背景出题，刚做题的时候很容易就把这个单元的任务当成了处理多线程，当我全部完成这些作业以后，发现仅仅将 U2 概括为多线程，是一个十分片面的直观理解。</p>
-<p>我觉得应该这么理解，U2 要完成的东西有（当然可以不完成）：</p>
-<ul>
-<li>多线程设计：这比原来的处理多线程要难一些，处理多线程类似于能跑就行了，但是多线程设计偏向于跑的好，除了比较基础的生产者消费者模型，如果能再次基础上应用 Furture 、Balk、Work-Thread 等模式，可以做到一个更好的优化，此外，限制线程的种类，优化资源管理，这些东西都要比“抄一个多线程模型”要难很多。</li>
-<li>面向对象设计：面向对象是一种管理代码的方式，只有代码量激增的时候，面向对象对代码的管理能力才能超越面向过程。因此这个其实是一个可选项，因为如果采用一些思路的话，代码量很少，只有采用及其牛逼的调度器策略的时候，才有代码量激增的情况。</li>
-<li>数据结构设计：这是这次新题目的新难题，因为虽然题还是那个题，但是原来只有一栋楼，现在是 15 栋楼或者是 50 个坐标，总之如何处理这些请求的位置，就成了一个难题。我个人做的就极其繁复，会把每一层每一个方向单独作为一个集合，但是其实把所有请求不加分类的放进一个一维的集合中，似乎可维护性和可拓展性都会强很多。</li>
-<li>运筹：这回的题目最大的特点就是优化是永无止境的，而且是没有方向的，我们只知道一件事：我们不知道怎么优化。电梯调度算法其实是一个研究很深的问题，在运筹学上专门有一章去讲这个，似乎叫“电梯群控理论”。我翻了一些论文，感觉不仅我不知道怎么优化，似乎写论文的人也不知道怎么优化。但是估计他们也有ddl，所以估计应付应付就交了。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/f7813372/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -908,7 +902,7 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">200</span>
+          <span class="site-state-item-count">201</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -973,12 +967,12 @@ end of execution				<span class="token comment">// 谁来释放 cnx 和 qs，没
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">1.3m</span>
+    <span title="Symbols count total">1.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:25</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
         

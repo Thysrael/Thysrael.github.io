@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">200</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">201</span></a>
 
   </li>
         <li class="menu-item menu-item-resources">
@@ -222,6 +222,108 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/f7813372/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/f7813372/" class="post-title-link" itemprop="url">面向对象-电梯</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-30 08:52:40" itemprop="dateCreated datePublished" datetime="2022-04-30T08:52:40+08:00">2022-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:49" itemprop="dateModified" datetime="2025-08-15T20:16:49+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>19k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>18 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><h3 id="1-1-直观理解"><a href="#1-1-直观理解" class="headerlink" title="1.1 直观理解"></a>1.1 直观理解</h3><p>Unit2 的问题以电梯作为题目背景出题，刚做题的时候很容易就把这个单元的任务当成了处理多线程，当我全部完成这些作业以后，发现仅仅将 U2 概括为多线程，是一个十分片面的直观理解。</p>
+<p>我觉得应该这么理解，U2 要完成的东西有（当然可以不完成）：</p>
+<ul>
+<li>多线程设计：这比原来的处理多线程要难一些，处理多线程类似于能跑就行了，但是多线程设计偏向于跑的好，除了比较基础的生产者消费者模型，如果能再次基础上应用 Furture 、Balk、Work-Thread 等模式，可以做到一个更好的优化，此外，限制线程的种类，优化资源管理，这些东西都要比“抄一个多线程模型”要难很多。</li>
+<li>面向对象设计：面向对象是一种管理代码的方式，只有代码量激增的时候，面向对象对代码的管理能力才能超越面向过程。因此这个其实是一个可选项，因为如果采用一些思路的话，代码量很少，只有采用及其牛逼的调度器策略的时候，才有代码量激增的情况。</li>
+<li>数据结构设计：这是这次新题目的新难题，因为虽然题还是那个题，但是原来只有一栋楼，现在是 15 栋楼或者是 50 个坐标，总之如何处理这些请求的位置，就成了一个难题。我个人做的就极其繁复，会把每一层每一个方向单独作为一个集合，但是其实把所有请求不加分类的放进一个一维的集合中，似乎可维护性和可拓展性都会强很多。</li>
+<li>运筹：这回的题目最大的特点就是优化是永无止境的，而且是没有方向的，我们只知道一件事：我们不知道怎么优化。电梯调度算法其实是一个研究很深的问题，在运筹学上专门有一章去讲这个，似乎叫“电梯群控理论”。我翻了一些论文，感觉不仅我不知道怎么优化，似乎写论文的人也不知道怎么优化。但是估计他们也有ddl，所以估计应付应付就交了。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/f7813372/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -712,103 +814,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/92de1690/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/92de1690/" class="post-title-link" itemprop="url">操作系统-内存管理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-05 08:42:00" itemprop="dateCreated datePublished" datetime="2022-04-05T08:42:00+08:00">2022-04-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>7.7k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>7 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><h3 id="1-1-硬件术语"><a href="#1-1-硬件术语" class="headerlink" title="1.1 硬件术语"></a>1.1 硬件术语</h3><p>为了不让读者懵逼（主要是我自己也懵逼），所以特地整理一下在后面会用到术语。</p>
-<p>我们电脑上有个东西叫做<strong>内存</strong>，他的大小比较小，像我的电脑就是 16 GB 的。它是由 ROM 和 RAM 组成的（“组成”可能不太严谨）。他也被叫做<strong>主存</strong>，我们为了访问他，所以需要给他的存储空间进行编号，这种编号被叫做<strong>物理地址</strong>。</p>
-<p>我们电脑上还有个东西叫做<strong>外存</strong>，他的大小比较大，像我的电脑是 256 GB的。它可以是磁盘，也可以是固态硬盘，还可以是 U 盘。我们访问它，也是需要对它的存储空间进行编号的，拿磁盘举例，我们一般用<strong>“分区-扇区”</strong>的系统来描述我们在访问磁盘的哪个区域。总之它是一个不在这一章重点讲的东西。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/92de1690/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -880,7 +885,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">200</span>
+          <span class="site-state-item-count">201</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -945,12 +950,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="Symbols count total">1.3m</span>
+    <span title="Symbols count total">1.4m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:25</span>
+    <span title="Reading time total">20:28</span>
 </div>
 
         
