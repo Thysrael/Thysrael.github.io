@@ -221,7 +221,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Ma Shan Zheng', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Noto Serif SC', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-weight: bold;
   line-height: 1.5;
   margin: 20px 0 15px;
@@ -1036,7 +1036,7 @@ pre .javascript .function {
   color: var(--brand-hover-color);
 }
 .site-title {
-  font-family: 'Ma Shan Zheng', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Noto Serif SC', 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 1.375em;
   font-weight: normal;
   margin: 0;
@@ -1220,7 +1220,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff7aff;
+  background: #dd28fa;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
