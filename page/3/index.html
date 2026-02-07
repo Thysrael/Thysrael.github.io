@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">202</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">203</span></a>
 
   </li>
         <li class="menu-item menu-item-resources">
@@ -222,6 +222,115 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/ce241189/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/ce241189/" class="post-title-link" itemprop="url">海边拾贝-FuseMax</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-02-13 21:32:06" itemprop="dateCreated datePublished" datetime="2025-02-13T21:32:06+08:00">2025-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-08-15 20:16:48" itemprop="dateModified" datetime="2025-08-15T20:16:48+08:00">2025-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%B7%E8%BE%B9%E6%8B%BE%E8%B4%9D/" itemprop="url" rel="index"><span itemprop="name">海边拾贝</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>5 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>这篇工作比较缝合，它引用了 3 个 idea：</p>
+<ul>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://arxiv.org/abs/2205.14135">Flash Attention</a> 和 pass 抽象</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://dl.acm.org/doi/10.1145/3613424.3623791">TeAAL</a> 和它使用的 Einsum 规范</li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://arxiv.org/abs/2404.11591">Extended Einsum</a></li>
+</ul>
+<p>TeAAL 提出用 Einsum 的形式去描述算子，并指导加速器的设计。但是 Einsum 只能描述仅包含加法和乘法的算子，对于 Flash-Attension 这种包含指数运算（softmax）和迭代运算的算子无法描述，于是作者借用了 Extended Einsum 的形式描述了 Flash Attension 算子并实现了 FuseMax 加速器，同时论证了 pass 抽象的合理性。</p>
+<p>而实际上，TeAAL 提出的用 Einsum 指导加速器设计的思路并没有因为使用了 Extended Einsum 而被拓展；FuseMax 所展现的性能优势，大部分来自于 Flash-Attension 算法本身，而不是其硬件实现。</p>
+</blockquote>
+<h2 id="一、Background"><a href="#一、Background" class="headerlink" title="一、Background"></a>一、Background</h2><h3 id="1-1-Flash-Attention-Pass"><a href="#1-1-Flash-Attention-Pass" class="headerlink" title="1.1 Flash Attention, Pass"></a>1.1 Flash Attention, Pass</h3><p>Flash-Attention 是一种 Attention 算子的实现，相比于传统的实现，它可以降低内存带宽的需求，并且使用更少的片上内存，更适合当前加速器存在的 memory bound。为了达到这个目的，我们需要：</p>
+<ul>
+<li>尽可能少的从内存中读取数据 -&gt; 算法设计的 pass 数要少</li>
+<li>尽可能少使用片上内存 -&gt; tile 后 reduce</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/ce241189/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -713,104 +822,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/9925eca3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/9925eca3/" class="post-title-link" itemprop="url">吃喝玩乐-三周年</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-12-18 17:55:40" itemprop="dateCreated datePublished" datetime="2024-12-18T17:55:40+08:00">2024-12-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-09-08 16:24:44" itemprop="dateModified" datetime="2025-09-08T16:24:44+08:00">2025-09-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%83%E5%96%9D%E7%8E%A9%E4%B9%90/" itemprop="url" rel="index"><span itemprop="name">吃喝玩乐</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>1.9k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>2 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、总论"><a href="#一、总论" class="headerlink" title="一、总论"></a>一、总论</h2><p>今天是 2024 年 12 月 18 日，距离我在北航新主楼 F534 的夜晚写下这个博客的 About 板块已经过去了 3 年时间，时间过得真是太快了。</p>
-<p>这个博客能够坚持 3 年时间，最重要的原因是有人（当然我希望小姑娘多一些）去看我的博客，博客的读者是我更新的最大动力。感谢读者们的支持和反馈，没有你们就没有“钟鼓楼”。</p>
-<p>当时我在博客里写了“我没有报六级，也没有报冬奥会志愿者，没有小姑娘需要陪”，三年后，我居然也还是“没有报六级，也没有报冬奥会志愿者，没有小姑娘需要陪”的状态，也算是不忘初心了，乐。</p>
-<h2 id="二、回顾"><a href="#二、回顾" class="headerlink" title="二、回顾"></a>二、回顾</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/9925eca3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -882,7 +893,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -952,7 +963,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:31</span>
+    <span title="Reading time total">20:32</span>
 </div>
 
         

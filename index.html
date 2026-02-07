@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">202</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">203</span></a>
 
   </li>
         <li class="menu-item menu-item-resources">
@@ -226,6 +226,104 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/c55757b3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar2.png">
+      <meta itemprop="name" content="Thysrael">
+      <meta itemprop="description" content="Can you hear me?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="钟鼓楼">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/c55757b3/" class="post-title-link" itemprop="url">办公工具-依赖地狱</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-02-06 16:14:46" itemprop="dateCreated datePublished" datetime="2026-02-06T16:14:46+08:00">2026-02-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-02-07 22:35:25" itemprop="dateModified" datetime="2026-02-07T22:35:25+08:00">2026-02-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8A%9E%E5%85%AC%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">办公工具</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一、菱形依赖"><a href="#一、菱形依赖" class="headerlink" title="一、菱形依赖"></a>一、菱形依赖</h2><p>所有的依赖问题，大抵都会与“菱形依赖”有关。也就是如图所示， <code>Web Lib</code> 和 <code>Log Lib</code> 都依赖于 <code>JSON Lib</code>（相当于菱形的下半部分）：</p>
+<p><img src="/posts/c55757b3/diamond-dependency.png" alt="菱形依赖项"></p>
+<p><code>Web Lib</code> 和 <code>Log Lib</code> 对于 <code>JSON Lib</code> 的依赖要求是不同的，<code>Web Lib</code> 要求 <code>&gt;=1.0</code> ，而 <code>Log Lib</code>要求 <code>&gt;= 2.0</code> ，最终的 <code>Log Lib</code> 需要同时满足这两种条件，也就是 <code>&gt;= 2.0</code> 。</p>
+<p>而当这写条件无法满足的时候，这个系统就崩溃了。不过如果软件都保持向后兼容性（backward compability），那么按理说应该我们总能通过“装最新版”的方式来解决依赖问题。但问题就在于，这里是现实：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/c55757b3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/29a993d6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -257,7 +355,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-02-03 01:18:42" itemprop="dateModified" datetime="2026-02-03T01:18:42+08:00">2026-02-03</time>
+                <time title="Modified: 2026-02-03 01:20:26" itemprop="dateModified" datetime="2026-02-03T01:20:26+08:00">2026-02-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -711,103 +809,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://thysrael.github.io/posts/848ac0f9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar2.png">
-      <meta itemprop="name" content="Thysrael">
-      <meta itemprop="description" content="Can you hear me?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="钟鼓楼">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/848ac0f9/" class="post-title-link" itemprop="url">Sys4AI-GPU</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-09-13 09:38:10" itemprop="dateCreated datePublished" datetime="2025-09-13T09:38:10+08:00">2025-09-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2026-01-08 19:39:07" itemprop="dateModified" datetime="2026-01-08T19:39:07+08:00">2026-01-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Sys4AI/" itemprop="url" rel="index"><span itemprop="name">Sys4AI</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="Symbols count in article">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>9k</span>
-            </span>
-            <span class="post-meta-item" title="Reading time">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">Reading time &asymp;</span>
-              <span>8 mins.</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、Hardware"><a href="#一、Hardware" class="headerlink" title="一、Hardware"></a>一、Hardware</h2><h3 id="1-1-SM"><a href="#1-1-SM" class="headerlink" title="1.1 SM"></a>1.1 SM</h3><p>采用我两年半前写下的博文开篇：“<strong>GPU 是一个由多个 SIMD 处理器组成的 MIMD 处理器</strong>。”</p>
-<p>这句话的意思是说，GPU 是一个多核系统，它这里说的“核”，指的是像多核 CPU 中的 core，它对应的不是 CUDA Core，而是 SM。而 SM 本身是一个 SIMD 处理器，也就是说，SM 是一个 SIMD 处理器。CUDA Core 其实对应的是一个 ALU 。一个 SM 中有多个 CUDA Core，所以它可以用一条指令进行多个标量的计算（送入不同的 CUDA Core）。</p>
-<p>人们常常将 CPU 比作一个无所不知的教授，GPU 比喻成成百上千个小学生。而实际上，GPU 更像是一组长着很多只不协调的手的大学生。这个比喻中，SM 对应“大学生”，而 CUDA Core 等 SM 中的计算单元对应“手”。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/848ac0f9/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -879,7 +880,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -949,7 +950,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">20:31</span>
+    <span title="Reading time total">20:32</span>
 </div>
 
         
