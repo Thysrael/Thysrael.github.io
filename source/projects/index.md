@@ -8,7 +8,7 @@ title: 个人项目
 >
 > This is a collection of my personal projects—tools that are actually practical. 
 >
-> **I'm shamelessly asking for stars** if you find them helpful! 🙏
+> Please star them if you find them helpful! 🙏
 
 ## LaTeX Beamer 主题：北航绿园
 
@@ -96,3 +96,12 @@ title: 个人项目
 
 ---
 
+
+
+# Horizon：处理新闻的 Agent Pipeline
+
+> 项目地址：[Horizon](https://github.com/Thysrael/Horizon)
+
+![image-20260410214525055](./index/image-20260410214525055.png)
+
+平时自己读新闻的时候，要从多个地方去找新闻，而且经常读到很多水文，或者看不懂的文章。Horizon 可以从自定义的新闻源上抓取新闻，并用 AI 进行筛选。对于高质量的新闻，Horizon 撰写一个总结文章，而且还会搜集社区的讨论与观点，并补充理解新闻的概念知识，最终生成一份日报。
