@@ -129,7 +129,6 @@ c/g 软硬音指的是 c/g 这两个辅音，会根据后面元音的不同有�
 | c + e/i/y | /s/  | city, cent, cycle   |
 | g + a/o/u | /g/  | gay, guy            |
 | g + e/i/y | /dʒ/ | general, giant, gym |
-|           |      |                     |
 
 ### 3.2 两个辅音只有一个发音
 
