@@ -8,7 +8,7 @@ darkmode: true
 minify: true
 
 vendors:
-  katex: https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.47/katex.min.css
+  katex: https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css
 
 favicon:
   small: /images/favicon-16x16-wall.png
