@@ -29,5 +29,5 @@ Staged images and CJK spacing are handled by the pre-commit hook.
 
 ## Deployment
 
-Push `blog`; GitHub Actions builds and deploys `public/`. GitHub Pages must use
+Push `main`; GitHub Actions builds and deploys `public/`. GitHub Pages must use
 `GitHub Actions` as its source.
