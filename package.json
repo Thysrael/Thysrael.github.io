@@ -46,7 +46,7 @@
     "hexo-server": "3.0.0",
     "hexo-symbols-count-time": "0.7.1",
     "hexo-theme-next": "8.28.0",
-    "katex": "0.16.47"
+    "katex": "0.18.1"
   },
   "devDependencies": {
     "mdast-util-from-markdown": "2.0.3",
