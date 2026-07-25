@@ -2,9 +2,8 @@
 abbrlink: f220eea5
 categories: English
 date: 2023-01-24 21:23:52
-mathjax: true
 tags: [English, S5假期, 知识总结]
-title: English-写作词汇
+title: English - 写作词汇
 ---
 
 ## 一、文化教育类
@@ -48,7 +47,7 @@ title: English-写作词汇
 37. 获得大学文凭：get diploma
 38. 外来务工人员：migrant worker
 39. 课外班：after-school class
-40. 被……录取：be admitted to
+40. 被…… 录取：be admitted to
 41. 重要决定：significant decision
 42. 报名参加（2 个）：enroll for; sign up for
 43. 重点学校：key school
@@ -65,8 +64,8 @@ title: English-写作词汇
 48. 教育工作者：educators
 48. 培养（3 个）：cultivate; forster; develop
 48. 关键时期：crucial period
-48. 养成……的习惯：develop a habit
-48. 培养……的兴趣：cultivate an interest
+48. 养成…… 的习惯：develop a habit
+48. 培养…… 的兴趣：cultivate an interest
 48. 基本素质：essential quality
 48. 光明前途：promising future
 48. 大一学生：freshman

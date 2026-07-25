@@ -2,9 +2,8 @@
 abbrlink: fe0a8753
 categories: DBMS
 date: 2023-01-05 12:19:30
-mathjax: true
 tags: [DBMS, S5课上, 直观理解]
-title: DBMS-设计报告
+title: DBMS - 设计报告
 ---
 
 # 一、需求分析
@@ -13,15 +12,15 @@ title: DBMS-设计报告
 
 ### 1.1.1 背景调研
 
-第八次全国学生体质与健康调研结果显示，大学生体质下滑的问题，仍然没有得到有效遏制。高校体育如何从世界百年未有之大变局和中华民族伟大复兴战略全局中认识新机遇、洞察新挑战、顺应新变化？高校体育如何担起培养社会主义现代化强国的建设者和接班人的伟大使命？作为为祖国培养“健康工作七十年的红色工程师”的北京航空航天大学，应当以怎样的技术和平台来支持学生体育事业。这些问题都值得我们深入思考。
+第八次全国学生体质与健康调研结果显示，大学生体质下滑的问题，仍然没有得到有效遏制。高校体育如何从世界百年未有之大变局和中华民族伟大复兴战略全局中认识新机遇、洞察新挑战、顺应新变化？高校体育如何担起培养社会主义现代化强国的建设者和接班人的伟大使命？作为为祖国培养 “健康工作七十年的红色工程师” 的北京航空航天大学，应当以怎样的技术和平台来支持学生体育事业。这些问题都值得我们深入思考。
 
-首先，应当意识到，高校体育是一个完整的生态闭环，体育课程，体育比赛，官方体育活动，社团活动等都是高校体育建设不可或缺的一部分。高校体育建设不应当仅仅局限于每周固定时长的体育课程，恰恰相反，他应当融入大学生的生活中。也就是构建“**立体化**”的高校体育体系，拓展大学体育课程体系的长度、宽度和高度。学校体育课程要为学生走向社会和未来生活做准备，让大学生掌握体育知识、运动技能并能运用于生活之中，保持健康的体魄，促进自己的全面发展，帮助大学生适应未来，引导大学生创造未来。
+首先，应当意识到，高校体育是一个完整的生态闭环，体育课程，体育比赛，官方体育活动，社团活动等都是高校体育建设不可或缺的一部分。高校体育建设不应当仅仅局限于每周固定时长的体育课程，恰恰相反，他应当融入大学生的生活中。也就是构建 “**立体化**” 的高校体育体系，拓展大学体育课程体系的长度、宽度和高度。学校体育课程要为学生走向社会和未来生活做准备，让大学生掌握体育知识、运动技能并能运用于生活之中，保持健康的体魄，促进自己的全面发展，帮助大学生适应未来，引导大学生创造未来。
 
 其次，建设高校体育离不开方法体系优化、技术手段革新。随着电子信息技术的发展，校园体育网站在北航的体育建设中发挥了举足轻重的作用，北航学生可以登录健康云查看自己的体育锻炼分数，也可以查看自己的体检报告；学校举办的运动会，也会在各个院系的公众号上宣发，同学们可以与通过与院系体育委员联系参加活动；对于体育部开展的活动，一般是以微信群的方式进行管理，比如说夜跑打卡活动和趣味运动会活动等。
 
-但是，现有的高校体育信息管理存在以下不足，首先是信息管理分散化，冗余度高。学生需要在“博雅网站、健康云、微信群、公众号”等多个平台参加体育活动，这无疑提高了操作的复杂度，打击了同学们参加活动的积极性；其次，现有的体育系统开发简陋，数据不安全，更新不及时，存在多处“脚手架”情况出现（如下图所示）；再其次，现有功能并不完全支持高校体育建设需求，大量的功能依靠人力实现，这是由于现有系统的功能边界过于逼仄造成的。
+但是，现有的高校体育信息管理存在以下不足，首先是信息管理分散化，冗余度高。学生需要在 “博雅网站、健康云、微信群、公众号” 等多个平台参加体育活动，这无疑提高了操作的复杂度，打击了同学们参加活动的积极性；其次，现有的体育系统开发简陋，数据不安全，更新不及时，存在多处 “脚手架” 情况出现（如下图所示）；再其次，现有功能并不完全支持高校体育建设需求，大量的功能依靠人力实现，这是由于现有系统的功能边界过于逼仄造成的。
 
-<img src="DBMS-设计报告/健康云.png" style="zoom: 33%;" />
+<img src="DBMS-设计报告/健康云.webp" style="zoom: 33%;" />
 
 正因如此，4H16B 团队希望开发一个需求集成，功能强大，数据安全的校园体育系统。多方位，立体化的支持北航的体育建设，这就是 Go 走马校园体育体系统的开发初衷。
 
@@ -36,13 +35,13 @@ title: DBMS-设计报告
 
 对此我们进行了初步的用户画像侧写，如下所示：
 
-<img src="DBMS-设计报告/用户侧写.png" style="zoom:80%;" />
+<img src="DBMS-设计报告/用户侧写.webp" style="zoom:80%;" />
 
 ### 1.1.3 用户调研
 
 对于学生需求，我们采用调查问卷的方式进行调查，部分调查问卷如下所示：
 
-<img src="DBMS-设计报告/调查问卷.png" style="zoom:80%;" />
+<img src="DBMS-设计报告/调查问卷.webp" style="zoom:80%;" />
 
 初步总结需求如下
 
@@ -88,25 +87,25 @@ title: DBMS-设计报告
 1. 具有管理课程的权限，可以检索，修改，增加，删除所有的课程信息。
 2. 具有管理用户的权限，可以检索，修改，增加，删除所有的用户信息。
 
-可见，Go走马 具有庞大的需求市场,具有光明的应用前景,开发该系统的价值性很高。且五种潜在用户的需求都十分明确, 开发该系统是切实可行的。
+可见，Go 走马 具有庞大的需求市场, 具有光明的应用前景, 开发该系统的价值性很高。且五种潜在用户的需求都十分明确, 开发该系统是切实可行的。
 
 ## 1.2 数据流图
 
 ### 1.2.1 总体数据流图
 
-<img src="DBMS-设计报告/总体数据流图.png" alt="image-20221223201435808" style="zoom:50%;" />
+<img src="DBMS-设计报告/总体数据流图.webp" alt="image-20221223201435808" style="zoom:50%;" />
 
 ### 1.2.2 用户管理部分数据流图
 
-![image-20221223201541868](DBMS-设计报告/image-20221223201541868.png)
+![image-20221223201541868](DBMS-设计报告/image-20221223201541868.webp)
 
 ### 1.2.3 课程部分数据流图
 
-![课程数据流图](DBMS-设计报告/课程数据流图.png)
+![课程数据流图](DBMS-设计报告/课程数据流图.webp)
 
 ### 1.2.4 活动部分数据流图
 
-![image-20221223201655389](DBMS-设计报告/image-20221223201655389.png)
+![image-20221223201655389](DBMS-设计报告/image-20221223201655389.webp)
 
 ## 1.3 数据元素表
 
@@ -116,19 +115,19 @@ title: DBMS-设计报告
 
 | 字段名称   | 数据类型    | 可否为空 | 说明     |
 | ---------- | ----------- | -------- | -------- |
-| email      | varchar(30) | NO       | 邮箱     |
-| name       | varchar(10) | NO       | 姓名     |
-| password   | varchar(20) | NO       | 密码     |
-| student_id | varchar(8)  | NO       | 学生编号 |
+| email      | varchar (30) | NO       | 邮箱     |
+| name       | varchar (10) | NO       | 姓名     |
+| password   | varchar (20) | NO       | 密码     |
+| student_id | varchar (8)  | NO       | 学生编号 |
 | grade      | int         | NO       | 入学年份 |
 
 **教师表**
 
 | 字段名称 | 数据类型    | 可否为空 | 说明 |
 | -------- | ----------- | -------- | ---- |
-| email    | varchar(30) | NO       | 邮箱 |
-| name     | varchar(10) | NO       | 姓名 |
-| password | varchar(20) | NO       | 密码 |
+| email    | varchar (30) | NO       | 邮箱 |
+| name     | varchar (10) | NO       | 姓名 |
+| password | varchar (20) | NO       | 密码 |
 
 
 ### 1.3.2 课程管理部分
@@ -138,11 +137,11 @@ title: DBMS-设计报告
 | 字段名称         | 数据类型    | 可否为空 | 说明                  |
 | ---------------- | ----------- | -------- | --------------------- |
 | id               | bigint      | NO       | 课程编号              |
-| name             | varchar(40) | NO       | 课程名称              |
-| time             | varchar(30) | NO       | 上课时间              |
-| location         | varchar(30) | NO       | 上课地点              |
-| manager_email_id | varchar(30) | NO       | 课程负责人邮箱        |
-| semester         | int         | NO       | 课程开设学期（春/秋） |
+| name             | varchar (40) | NO       | 课程名称              |
+| time             | varchar (30) | NO       | 上课时间              |
+| location         | varchar (30) | NO       | 上课地点              |
+| manager_email_id | varchar (30) | NO       | 课程负责人邮箱        |
+| semester         | int         | NO       | 课程开设学期（春 / 秋） |
 | year             | int         | NO       | 课程开设学年          |
 
 **学生选课表**
@@ -151,49 +150,49 @@ title: DBMS-设计报告
 | 字段名称   | 数据类型    | 可否为空 | 说明     |
 | ---------- | ----------- | -------- | -------- |
 | c_id_id    | bigint      | NO       | 课程编号 |
-| s_email_id | varchar(30) | NO       | 学生编号 |
+| s_email_id | varchar (30) | NO       | 学生编号 |
 | grade      | int         | YES      | 成绩     |
 
-**教师-课程表**
+**教师 - 课程表**
 
 
 | 字段名称   | 数据类型    | 可否为空 | 说明     |
 | ---------- | ----------- | -------- | -------- |
 | c_id_id    | bigint      | NO       | 课程编号 |
-| t_email_id | varchar(30) | NO       | 老师编号 |
+| t_email_id | varchar (30) | NO       | 老师编号 |
 
 **作业表**
 
 | 字段名称        | 数据类型     | 可否为空 | 说明           |
 | --------------- | ------------ | -------- | -------------- |
 | id              | bigint       | NO       | 作业编号       |
-| ddl             | datetime(6)  | NO       | 作业截止日期   |
-| content         | varchar(300) | NO       | 作业内容       |
-| author_email_id | varchar(30)  | NO       | 作业发布者     |
+| ddl             | datetime (6)  | NO       | 作业截止日期   |
+| content         | varchar (300) | NO       | 作业内容       |
+| author_email_id | varchar (30)  | NO       | 作业发布者     |
 | course_id_id    | bigint       | NO       | 作业对应的课程 |
-| time            | datetime(6)  | NO       | 作业创建时间   |
-| title           | varchar(30)  | NO       | 作业标题       |
+| time            | datetime (6)  | NO       | 作业创建时间   |
+| title           | varchar (30)  | NO       | 作业标题       |
 
 **作业提交表**
 
 
 | 字段名称          | 数据类型     | 可否为空 | 说明         |
 | ----------------- | ------------ | -------- | ------------ |
-| time              | datetime(6)  | NO       | 作业提交时间 |
-| fileTitle         | varchar(100) | NO       | 文件名称     |
-| fileContent       | varchar(100) | NO       | 文件所在地址 |
+| time              | datetime (6)  | NO       | 作业提交时间 |
+| fileTitle         | varchar (100) | NO       | 文件名称     |
+| fileContent       | varchar (100) | NO       | 文件所在地址 |
 | homeworkId_id     | bigint       | NO       | 作业编号     |
-| submitterEmail_id | varchar(30)  | NO       | 提交者邮箱   |
+| submitterEmail_id | varchar (30)  | NO       | 提交者邮箱   |
 
 **通知表**
 
 | 字段名称        | 数据类型      | 可否为空 | 说明           |
 | --------------- | ------------- | -------- | -------------- |
 | id              | bigint        | NO       | 通知编号       |
-| time            | datetime(6)   | NO       | 通知时间       |
-| content         | varchar(1000) | NO       | 通知内容       |
-| title           | varchar(30)   | NO       | 通知标题       |
-| author_email_id | varchar(30)   | NO       | 通知发布者     |
+| time            | datetime (6)   | NO       | 通知时间       |
+| content         | varchar (1000) | NO       | 通知内容       |
+| title           | varchar (30)   | NO       | 通知标题       |
+| author_email_id | varchar (30)   | NO       | 通知发布者     |
 | course_id_id    | bigint        | NO       | 通知对应的课程 |
 
 ### 1.3.3 活动管理部分
@@ -203,31 +202,31 @@ title: DBMS-设计报告
 | 字段名称     | 数据类型      | 可否为空 | 说明             |
 | ------------ | ------------- | -------- | ---------------- |
 | id           | bigint        | NO       | 活动编号         |
-| content      | varchar(1000) | NO       | 活动内容         |
-| title        | varchar(30)   | NO       | 活动标题         |
-| position     | varchar(30)   | NO       | 活动地点         |
-| create_time  | datetime(6)   | NO       | 活动创建时间     |
-| start_time   | datetime(6)   | NO       | 活动开始时间     |
-| end_time     | datetime(6)   | NO       | 活动结束时间     |
-| author_email | varchar(30)   | NO       | 活动创建者邮箱   |
-| tag          | varchar(30)   | NO       | 活动标签         |
-| TD           | int           | NO       | 活动加的TD数量   |
+| content      | varchar (1000) | NO       | 活动内容         |
+| title        | varchar (30)   | NO       | 活动标题         |
+| position     | varchar (30)   | NO       | 活动地点         |
+| create_time  | datetime (6)   | NO       | 活动创建时间     |
+| start_time   | datetime (6)   | NO       | 活动开始时间     |
+| end_time     | datetime (6)   | NO       | 活动结束时间     |
+| author_email | varchar (30)   | NO       | 活动创建者邮箱   |
+| tag          | varchar (30)   | NO       | 活动标签         |
+| TD           | int           | NO       | 活动加的 TD 数量   |
 | img_id       | bigint        | YES      | 活动图片         |
 | BY           | int           | NO       | 活动加的博雅数量 |
 
-**学生-活动表**
+**学生 - 活动表**
 
 | 字段名称    | 数据类型    | 可否为空 | 说明                             |
 | ----------- | ----------- | -------- | -------------------------------- |
-| time        | datetime(6) | NO       | 活动参与时间                     |
-| status      | varchar(2)  | NO       | 参与状态（未开始/已完成/已过期） |
+| time        | datetime (6) | NO       | 活动参与时间                     |
+| status      | varchar (2)  | NO       | 参与状态（未开始/已完成/已过期） |
 | activity_id | bigint      | NO       | 活动编号                         |
-| student_id  | varchar(30) | NO       | 学生编号                         |
+| student_id  | varchar (30) | NO       | 学生编号                         |
 
 
 ### 1.3.4 个人信息部分
 
-**学生-体测成绩表**
+**学生 - 体测成绩表**
 
 
 | 字段名称      | 数据类型     | 可否为空 | 说明         |
@@ -235,8 +234,8 @@ title: DBMS-设计报告
 | year          | int          | NO       | 学年         |
 | tdSpring      | int          | YES      | 春季 td      |
 | tdAutumn      | int          | YES      | 秋季 td      |
-| examineResult | varchar(200) | NO       | 体测结果     |
-| student_id    | varchar(30)  | NO       | 学生         |
+| examineResult | varchar (200) | NO       | 体测结果     |
+| student_id    | varchar (30)  | NO       | 学生         |
 | byAutumn      | int          | YES      | 秋季博雅     |
 | bySpring      | int          | YES      | 春季博雅     |
 | height        | double       | YES      | 学生身高     |
@@ -252,29 +251,29 @@ title: DBMS-设计报告
 
 ### 2.1.1 实体 ER 图
 
-<img src="DBMS-设计报告/实体 ER 图.png" style="zoom:30%;" />
+<img src="DBMS-设计报告/实体 ER 图.webp" style="zoom:30%;" />
 
 ### 2.1.2 关系 ER 图
 
 下图分别为课程管理模块、活动模块、成绩查询模块对应的 ER 图。
 
-![](DBMS-设计报告/关系 ER 图.drawio.png)
+![](DBMS - 设计报告 / 关系 ER 图.drawio.webp)
 
 ## 2.2 系统基本 ER 图
 
-分析系统初步 E-R 图，我们发现可以消除以下 1:1 联系：
+分析系统初步 E - R 图，我们发现可以消除以下 1:1 联系：
 
 * 活动与活动图片是 1:1 的关系，因此在实现的时候没有必要将活动图片作为一个单独的实体，将其作为活动的个一个属性即可。
 
 合并并消除冗余之后得到的系统基本 ER 图有 7 个实体，如下图所示：
 
-![](DBMS-设计报告/系统基本 ER 图.png)
+![](DBMS - 设计报告 / 系统基本 ER 图.webp)
 
 # 三、数据库逻辑模式设计
 
 ## 3.1 数据库关系模式
 
-关系模式可以形式化表示为`R(U, D, DOM, F)`。U 为组成该关系的属性名，D为 U 中属性所来自的域，DOM 指的是属性与域的映射，F 指的是属性间的依赖关系集合。以下约定 N 表示正整数，FLOAT 表示浮点数，S 为任意字符组成的字符 S，T 表示时间，B 表示布尔值。码以下划线标识。
+关系模式可以形式化表示为 `R(U, D, DOM, F)`。U 为组成该关系的属性名，D 为 U 中属性所来自的域，DOM 指的是属性与域的映射，F 指的是属性间的依赖关系集合。以下约定 N 表示正整数，FLOAT 表示浮点数，S 为任意字符组成的字符 S，T 表示时间，B 表示布尔值。码以下划线标识。
 
 以下是由 ER 图得到的关系模式。
 
@@ -286,7 +285,7 @@ title: DBMS-设计报告
 
    D = {STR, N}
 
-   DOM = {DOM(年级) = N, DOM(邮箱) = DOM(密码) = DOM(姓名) = DOM(学号) = STR}
+   DOM = {DOM (年级) = N, DOM (邮箱) = DOM (密码) = DOM (姓名) = DOM (学号) = STR}
 
    F = {邮箱→其他属性, 学号→密码, 学号→姓名, 学号→邮箱, 学号→年级} 
 
@@ -296,7 +295,7 @@ title: DBMS-设计报告
 
    D = {STR, N}
 
-   DOM = {DOM(邮箱) = DOM(密码) = DOM(姓名) = STR}
+   DOM = {DOM (邮箱) = DOM (密码) = DOM (姓名) = STR}
 
    F = {邮箱→密码, 邮箱→姓名} 
 
@@ -306,7 +305,7 @@ title: DBMS-设计报告
 
    D = {STR, N}
 
-   DOM = {DOM(ID) = DOM(开设年份) = DOM(开设学期) = N, DOM(名称) = DOM(上课地点) = DOM(上课时间) = STR}
+   DOM = {DOM (ID) = DOM (开设年份) = DOM (开设学期) = N, DOM (名称) = DOM (上课地点) = DOM (上课时间) = STR}
 
    F = {ID→其他属性}
 
@@ -316,7 +315,7 @@ title: DBMS-设计报告
 
    D = {STR, N, T}
 
-   DOM = {DOM(ID) = DOM(TD) = DOM(博雅) = N, DOM(活动主题) = DOM(具体内容) = DOM(标签) = STR,  DOM(开始时间) = DOM(结束时间) = T}
+   DOM = {DOM (ID) = DOM (TD) = DOM (博雅) = N, DOM (活动主题) = DOM (具体内容) = DOM (标签) = STR,  DOM (开始时间) = DOM (结束时间) = T}
 
    F = {ID→其他属性}
 
@@ -326,7 +325,7 @@ title: DBMS-设计报告
 
    D = {STR, N, T}
 
-   DOM = {DOM(ID) = N, DOM(标题) = DOM(内容) = STR,  DOM(截止时间) = T}
+   DOM = {DOM (ID) = N, DOM (标题) = DOM (内容) = STR,  DOM (截止时间) = T}
 
    F = {ID→其他属性}
 
@@ -336,19 +335,19 @@ title: DBMS-设计报告
 
    D = {STR, N, T}
 
-   DOM = {DOM(ID) = N, DOM(标题) = DOM(内容) = STR,  DOM(发布时间) = T}
+   DOM = {DOM (ID) = N, DOM (标题) = DOM (内容) = STR,  DOM (发布时间) = T}
 
    F = {ID→其他属性}
 
-7. **体测成绩与TD**
+7. **体测成绩与 TD**
 
-   examineResultAndTd({<u>学生email, 学年</u>, 累计 TD 数量, 体重, 身高, 体育项目结果}, D, DOM, F)
+   examineResultAndTd({<u>学生 email, 学年</u>, 累计 TD 数量, 体重, 身高, 体育项目结果}, D, DOM, F)
 
    D = {STR, N, F}
 
-   DOM = {DOM(学年) = DOM(累计 TD 数量) = N, DOM(学生 email) = DOM(体育项目结果) = STR, DOM(身高) = DOM(体重) = F}
+   DOM = {DOM (学年) = DOM (累计 TD 数量) = N, DOM (学生 email) = DOM (体育项目结果) = STR, DOM (身高) = DOM (体重) = F}
 
-   F = {(学生email, 学年)→其他属性}
+   F = {(学生 email, 学年)→其他属性}
 
 ### 3.1.2 联系
 
@@ -356,7 +355,7 @@ title: DBMS-设计报告
 
 #### 3.1.2.1 多对多联系
 
-1. **学生-课程**
+1. **学生 - 课程**
 
    studentCourse({<u>student, course</u>, grade}, D, DOM, F)
 
@@ -366,7 +365,7 @@ title: DBMS-设计报告
 
    ***外码***：student 对应学生表的主码 student.email, course 对应课程表的主码 course.ID
 
-2. **老师-课程**
+2. **老师 - 课程**
 
    teacherCourse({<u>teacher, course</u>}, D, DOM, F)
 
@@ -376,7 +375,7 @@ title: DBMS-设计报告
 
    ***外码***: teacher 对应老师表的主码 teacher.email, course 对应课程表的主码 course.ID
 
-3. **学生-活动**
+3. **学生 - 活动**
 
    studentActivity({<u>student, activity</u>, time}, D, DOM, F)
 
@@ -409,16 +408,16 @@ title: DBMS-设计报告
 
    ***外码***：activity 对应活动表的主码 activity.ID, student 对应学生表的主码 student.email
 
-2. **学生-体测成绩和TD 对应表**
+2. **学生 - 体测成绩和 TD 对应表**
    studentExamineResultAndTd({<u>examineResultAndTd</u>, student}, D, DOM, F)
 
    D = {STR, N}
 
    DOM = {DOM(student) = STR, DOM(examineResultAndTd) = N}
 
-   ***外码***：student 对应学生表的主码 student.email, examineResultAndTd 对应体测成绩和TD 表的主码 examineResultAndTd.ID
+   ***外码***：student 对应学生表的主码 student.email, examineResultAndTd 对应体测成绩和 TD 表的主码 examineResultAndTd.ID
 
-3. **课程-通知表**
+3. **课程 - 通知表**
    courseNotice({<u>notice</u>, course}, D, DOM, F)
 
    D = {N}
@@ -427,7 +426,7 @@ title: DBMS-设计报告
 
     ***外码***：course 对应课程表的主码 course.ID, notice 对应通知表的主码 notice.ID
 
-4. **教师-通知表**
+4. **教师 - 通知表**
    teacherNotice({<u>notice</u>, teacher}, D, DOM, F)
 
     D = {STR, N}
@@ -436,7 +435,7 @@ title: DBMS-设计报告
 
     ***外码***：teacher 对应教师表的主码 teacher.email, notice 对应通知表的主码 notice.ID
 
-5. **教师-负责的课程表**
+5. **教师 - 负责的课程表**
    managerCourse({<u>course</u>, teacher}, D, DOM, F)
 
     D = {STR, N}
@@ -445,7 +444,7 @@ title: DBMS-设计报告
 
     ***外码***：teacher 对应教师表的主码 teacher.email, course 对应课程表的主码 course.ID
 
-6. **课程-作业表**
+6. **课程 - 作业表**
    courseHomework({<u>homework</u>, course}, D, DOM, F)
 
     D = {N}
@@ -454,7 +453,7 @@ title: DBMS-设计报告
 
     ***外码***：course 对应课程表的主码 course.ID, homework 对应作业表的主码 homework.ID
 
-7. **教师-作业表**
+7. **教师 - 作业表**
    teacherHomework({<u>homework</u>, teacher}, D, DOM, F)
 
     D = {STR, N}
@@ -518,11 +517,11 @@ title: DBMS-设计报告
 
    对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。
 
-7. **体测成绩与TD**
+7. **体测成绩与 TD**
 
-   examineResultAndTd({<u>学生email, 学年</u>, 累计 TD 数量, 体重, 身高, 体育项目结果}, D, DOM, F)
+   examineResultAndTd({<u>学生 email, 学年</u>, 累计 TD 数量, 体重, 身高, 体育项目结果}, D, DOM, F)
 
-   F = {(学生email, 学年)→其他属性}
+   F = {(学生 email, 学年)→其他属性}
 
    对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。
 
@@ -532,7 +531,7 @@ title: DBMS-设计报告
 
 #### 3.2.2.1 多对多联系
 
-1. **学生-课程**
+1. **学生 - 课程**
 
    studentCourse({<u>student, course</u>, grade}, D, DOM, F)
 
@@ -540,13 +539,13 @@ title: DBMS-设计报告
 
    对于该表，所有函数依赖左端都是主码，所以属于 BCNF，因此也属于 3NF。
 
-2. **老师-课程**
+2. **老师 - 课程**
 
    teacherCourse({<u>teacher, course</u>}, D, DOM, F)
 
    所有属性都是主码，因此属于 3NF，主属性之间不存在函数依赖，因此属于 BCNF。
 
-3. **学生-活动**
+3. **学生 - 活动**
 
    studentActivity({<u>student, activity</u>, time}, D, DOM, F)
 
@@ -572,42 +571,42 @@ title: DBMS-设计报告
 
    函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。
 
-2. **学生-体测成绩和TD 对应表**
+2. **学生 - 体测成绩和 TD 对应表**
    studentExamineResultAndTd({<u>examineResultAndTd</u>, student}, D, DOM, F)
 
    F = {examineResultAndTd→student}
 
    函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。
 
-3. **课程-通知表**
+3. **课程 - 通知表**
    courseNotice({<u>notice</u>, course}, D, DOM, F)
 
    F = {notice→course}
 
    函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。
 
-4. **教师-通知表**
+4. **教师 - 通知表**
    teacherNotice({<u>notice</u>, teacher}, D, DOM, F)
 
    F = {notice→teacher}
 
    函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。
 
-5. **教师-负责的课程表**
+5. **教师 - 负责的课程表**
    managerCourse({<u>course</u>, teacher}, D, DOM, F)
 
    F = {course→teacher}
 
    函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。
 
-6. **课程-作业表**
+6. **课程 - 作业表**
    courseHomework({<u>homework</u>, course}, D, DOM, F)
 
    F = {homework→course}
 
    函数依赖左端仅包含主码，不存在传递函数依赖和部分函数依赖，因此属于 BCNF，也属于 3NF。
 
-7. **教师-作业表**
+7. **教师 - 作业表**
    teacherHomework({<u>homework</u>, teacher}, D, DOM, F)
 
    F = {homework→teacher}
@@ -626,7 +625,7 @@ title: DBMS-设计报告
  create unique index student_id on tb_students(student_id); 
 ```
 
-   对于关系表，同样以其主码为索引，同时对于经常需要查询的字段，也建立了索引。例如对于学生-活动表，我们用以下语句分别建立了 (学生, 活动)索引，学生索引，活动索引，以便于查询学生参加的活动，活动的参加学生，以及学生是否参加了某个活动。
+   对于关系表，同样以其主码为索引，同时对于经常需要查询的字段，也建立了索引。例如对于学生 - 活动表，我们用以下语句分别建立了 (学生, 活动) 索引，学生索引，活动索引，以便于查询学生参加的活动，活动的参加学生，以及学生是否参加了某个活动。
 
 ```sql
 create unique index SA on tb_student_activity(student_id, activity_id); 

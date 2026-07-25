@@ -2,9 +2,8 @@
 abbrlink: 70e6c140
 categories: 并行计算
 date: 2022-10-26 17:43:59
-mathjax: true
 tags: [并行计算, S5课上, 直观理解]
-title: 并行计算-hw1
+title: 并行计算 - hw1
 ---
 
 # hw1: Ring 实验报告
@@ -35,7 +34,7 @@ title: 并行计算-hw1
 
 ### 3.1 多种语言
 
-采用 CPP 和 C 实现。采用两种语言分别实现的原因是验证**“是一个跨语言的通讯协议”**的观点。最终两种程序都可以在本地和实验平台进行运行。
+采用 CPP 和 C 实现。采用两种语言分别实现的原因是验证 **“是一个跨语言的通讯协议”** 的观点。最终两种程序都可以在本地和实验平台进行运行。
 
 在本地的时候，我采用的是 `mpicc, mpic++` 两款编译器，具体的编译指令如下
 
@@ -69,7 +68,7 @@ mpirun -np 6 python hello.py
 
 结果如图所示
 
-![image-20221024225632543](并行计算-hw1/image-20221024225632543.png)
+![image-20221024225632543](并行计算-hw1/image-20221024225632543.webp)
 
 ### 3.2 计时的实现
 
@@ -245,13 +244,13 @@ printf("error is %x\n", status.MPI_ERROR);		// 获得错误码
 
 其中 `SOURCE` 正常工作，但是 `ERROR` 作为错误码，即使正常运行，但是也会出现随机数（可能也不那么随机），如下所示
 
-![image-20221024233057658](并行计算-hw1/image-20221024233057658.png)
+![image-20221024233057658](并行计算-hw1/image-20221024233057658.webp)
 
 我找不到具体原因，只找到相关文献说 `STATUS_ERROR` 在阻塞通信中没有意义
 
 > [MPI_ERROR](https://rookiehpc.github.io/mpi/docs/mpi_error/index.html) is the member of the [MPI_Status](https://rookiehpc.github.io/mpi/docs/mpi_status/index.html) structure that contains the error code of the corresponding receive operation. Although in practice it has no use for a blocking receive ([MPI_Recv](https://rookiehpc.github.io/mpi/docs/mpi_recv/index.html)) since the error code is returned directly by the routine, it does have uses for its non-blocking counterpart ([MPI_Irecv](https://rookiehpc.github.io/mpi/docs/mpi_irecv/index.html)) where the [MPI_Status](https://rookiehpc.github.io/mpi/docs/mpi_status/index.html) cannot be obtained until the [MPI_Request](https://rookiehpc.github.io/mpi/docs/mpi_request/index.html) collected is waited on ([MPI_Wait](https://rookiehpc.github.io/mpi/docs/mpi_wait/index.html), [MPI_Waitall](https://rookiehpc.github.io/mpi/docs/mpi_waitall/index.html), [MPI_Waitany](https://rookiehpc.github.io/mpi/docs/mpi_waitany/index.html), [MPI_Waitsome](https://rookiehpc.github.io/mpi/docs/mpi_waitsome/index.html)) or tested ([MPI_Test](https://rookiehpc.github.io/mpi/docs/mpi_test/index.html), [MPI_Testall](https://rookiehpc.github.io/mpi/docs/mpi_testall/index.html), [MPI_Testany](https://rookiehpc.github.io/mpi/docs/mpi_testany/index.html), [MPI_Testsome](https://rookiehpc.github.io/mpi/docs/mpi_testsome/index.html)).
 
-然后在 `mpi4py` 中实践，发现成功错误码python是 `0`
+然后在 `mpi4py` 中实践，发现成功错误码 python 是 `0`
 
 ```python
 >>> from mpi4py import MPI
@@ -260,7 +259,7 @@ printf("error is %x\n", status.MPI_ERROR);		// 获得错误码
 ```
 后记，在我不知道改了啥之后，似乎 `error_code` 在成功情况下又变成了 `0`
 
-![image-20221026152347436](并行计算-hw1/image-20221026152347436.png)
+![image-20221026152347436](并行计算-hw1/image-20221026152347436.webp)
 
 ## 四、实验成果
 
@@ -276,7 +275,7 @@ printf("error is %x\n", status.MPI_ERROR);		// 获得错误码
 
 运行截图：
 
-![](并行计算-hw1/实验结果.png)
+![](并行计算-hw1/实验结果.webp)
 
 ### 4.2 冷启动和溢出猜想
 
@@ -287,19 +286,19 @@ printf("error is %x\n", status.MPI_ERROR);		// 获得错误码
 
 如图所示：
 
-![延迟](并行计算-hw1/延迟.png)
+![延迟](并行计算-hw1/延迟.webp)
 
 从上图可以看出前几个周期明显要长很多。
 
-![](并行计算-hw1/延迟4.png)
+![](并行计算-hw1/延迟4.webp)
 
-从这里可以看出会出现一个“尖刺”。如果绘图（感谢陈凝香的图表）：
+从这里可以看出会出现一个 “尖刺”。如果绘图（感谢陈凝香的图表）：
 
-![](并行计算-hw1/微信图片_20221026150507.png)
+![](并行计算-hw1/微信图片_20221026150507.webp)
 
 可以更加明显的观测到这种现象。
 
-在于小组同学商讨后，我个人倾向于这样的一种解释：这可能与某种“高速缓存机制（cache）”有关，对于一开始，位于路由中或者其他关键节点的高速缓存存在常见的“冷启动”现象，需要填充缓存来达到增加命中率的目的，而这个过程会伴随这缺失的代价，这就导致一开始的时候的缓慢，而之后的周期性缓慢，可能是 cache 中某一缓存行被换出的过程，当一个缓存行被换出，需要发生一次缺失，才能更新 cache，这就导致了一次长的周期。
+在于小组同学商讨后，我个人倾向于这样的一种解释：这可能与某种 “高速缓存机制（cache）” 有关，对于一开始，位于路由中或者其他关键节点的高速缓存存在常见的 “冷启动” 现象，需要填充缓存来达到增加命中率的目的，而这个过程会伴随这缺失的代价，这就导致一开始的时候的缓慢，而之后的周期性缓慢，可能是 cache 中某一缓存行被换出的过程，当一个缓存行被换出，需要发生一次缺失，才能更新 cache，这就导致了一次长的周期。
 
 当然也可能就是普通的网速问题，具组内某同学说，这个一点也不周期，我就是在强行解释，嗯嗯，有道理。
 

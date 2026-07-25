@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 海边拾贝-VeriSMo
+title: 海边拾贝 - VeriSMo
 tags:
   - 海边拾贝
   - S8假期
@@ -10,9 +10,9 @@ abbrlink: 71c079c7
 date: 2024-07-29 09:25:40
 ---
 
-![A RaiPlay learning il Verismo e i suoi autori - RAI Ufficio Stampa](./海边拾贝-VeriSMo/1600x900_1591431860952_2048x1152_logo.jpg)
+![A RaiPlay learning il Verismo e i suoi autori - RAI Ufficio Stampa](./海边拾贝-VeriSMo/1600x900_1591431860952_2048x1152_logo.webp)
 
-VeriSMo 的可信基只包括硬件和它自己（VM），剔除了对于 Hypervisor 的信任。传统的 VM 的安全服务是由 Hypervisor 负责的，如果认为 Hypervisor 是不可信的，那么就不能由它来提供安全服务。AMD 提供了新的安全架构 SEV-SNP，它为在 VM 中独立实现安全服务提供了支持，VeriSMO 就利用了这个硬件特性。
+VeriSMo 的可信基只包括硬件和它自己（VM），剔除了对于 Hypervisor 的信任。传统的 VM 的安全服务是由 Hypervisor 负责的，如果认为 Hypervisor 是不可信的，那么就不能由它来提供安全服务。AMD 提供了新的安全架构 SEV - SNP，它为在 VM 中独立实现安全服务提供了支持，VeriSMO 就利用了这个硬件特性。
 
 除了利用新的硬件安全特性外，VeriSMo 在开发时完成了形式化验证来确保安全性。VeriSMo 的开发语言是 Rust，已经确保了部分的内存安全性（也就是 Rust Checker 承担了部分形式化验证的任务），距离完全的形式化验证还有两个挑战：
 
@@ -31,11 +31,11 @@ VeriSMo 的可信基只包括硬件和它自己（VM），剔除了对于 Hyperv
 
 reference：
 
-[程序验证技术——霍尔逻辑 - 撸代码 - LuCode.net](https://blog.lucode.net/theory/PV-HoareLogic.html)
+[程序验证技术 —— 霍尔逻辑 - 撸代码 - LuCode.net](https://blog.lucode.net/theory/PV-HoareLogic.html)
 
 #### 1.1.1 验证逻辑
 
-在验证逻辑方面并没有“显式”使用，只需要明确它们都涉及了 Rust Borrower Checker 和 Verus 的基础理论。其中尤其是线性逻辑，是可以支持并行程序内部的验证的，所以 VeriSMo 作为一个并行程序，形式化验证并没有理论上的难度，只是在实现上存在难度。
+在验证逻辑方面并没有 “显式” 使用，只需要明确它们都涉及了 Rust Borrower Checker 和 Verus 的基础理论。其中尤其是线性逻辑，是可以支持并行程序内部的验证的，所以 VeriSMo 作为一个并行程序，形式化验证并没有理论上的难度，只是在实现上存在难度。
 
 #### 1.1.2 验证等级
 
@@ -49,7 +49,7 @@ reference：
 
 [Hardware VM Isolation in the Cloud](https://dl.acm.org/doi/fullHtml/10.1145/3623392)
 
-[【TEE】【AMD SEV内存加密】 白皮书-CSDN博客](https://blog.csdn.net/qq_43543209/article/details/135652011)
+[【TEE】【AMD SEV 内存加密】 白皮书 - CSDN 博客](https://blog.csdn.net/qq_43543209/article/details/135652011)
 
 硬件特性有很多，其核心在于将原本由 Hypervisor 负责的安全功能全部提供给 VM 。
 
@@ -57,9 +57,9 @@ reference：
 
 SME（Secure Memory Encrypted）：写入内存时利用硬件生成的 VM-specific key 对数据加密，读取内存是对数据解密。VM 可以通过 PTE 中的 `C-bit` 对物理页进行选择性加密。
 
-![pic1](./海边拾贝-VeriSMo/pic1.PNG)
+![pic1](./海边拾贝-VeriSMo/pic1.webp)
 
-SEV-SNP 引入了反向映射表（RMP，Reverse Map Table）。之所以称之为反向映射表，是因为在传统的 VM 地址翻译中，映射方向是：
+SEV - SNP 引入了反向映射表（RMP，Reverse Map Table）。之所以称之为反向映射表，是因为在传统的 VM 地址翻译中，映射方向是：
 
 > gVA => gPA（guest 物理地址） => sPA（系统物理地址）
 
@@ -71,9 +71,9 @@ SEV-SNP 引入了反向映射表（RMP，Reverse Map Table）。之所以称之�
 
 RMP 的设计主要是为了使得物理内存真的分配给了特定的 VM，恶意的 Hypervisor 无法欺骗 VM 。当 Hypervisor 给 VM 分配内存时，需要使用特定的 `rmpupdate` 指令，VM 需要使用 `rmpvalid` 指令确认此次分配符合自己的要求。一旦分配完成后，Hypervisor 就无法再写入该内存页面了。后续 VM 可以使用 `rmpupdate` 来调整权限或者映射关系。
 
-采用反向映射的方式，在地址翻译的时候增添一次映射来核对 GPA （GPA 是否真的对应特定的 SPA）和 ASID （VM 是否真的是特定的 VM）来确保“恶意 Hypervisor 无法尝试将页面映射到 Guest 地址空间中的错误位置”。
+采用反向映射的方式，在地址翻译的时候增添一次映射来核对 GPA （GPA 是否真的对应特定的 SPA）和 ASID （VM 是否真的是特定的 VM）来确保 “恶意 Hypervisor 无法尝试将页面映射到 Guest 地址空间中的错误位置”。
 
-![pic2](./海边拾贝-VeriSMo/pic2.png)
+![pic2](./海边拾贝-VeriSMo/pic2.webp)
 
 #### 1.2.2 上下文加密
 
@@ -91,9 +91,9 @@ VeriSMo 启用了 restricted-mode，减少了 Hypervisor 中断注入攻击的�
 
 在经历了内存加密和寄存器加密后，其实特权等级模型已经发生了变换。传统的特权等级模型下，高特权级可以随意访问低特权级的资源，随意影响低特权级软件的程序流（中断）；但是在 AMD SEV 中，即使是高特权级也无法访问一些低特权级的资源。
 
-![pic3](./海边拾贝-VeriSMo/pic3.png)
+![pic3](./海边拾贝-VeriSMo/pic3.webp)
 
-更进一步，SEV-SNP 提供了 VMPL（虚拟机特权级别）的功能。该功能允许进行额外的安全控制，以保护 guest 内部的内存免受同一 guest 中其他代码的影响。每个 guest 最多可以有四个 VMPL，其中 VMPL0 权限最高，VMPL3 权限最低。分配给 guest 的每个内存页面可能具有基于 VMPL 的不同权限。 VMPL0 始终具有对 guest 地址空间中每个页面的完全访问权限，但它可能会将某些页面配置为不可在 VMPL1 上访问，或者可能允许只读访问。
+更进一步，SEV - SNP 提供了 VMPL（虚拟机特权级别）的功能。该功能允许进行额外的安全控制，以保护 guest 内部的内存免受同一 guest 中其他代码的影响。每个 guest 最多可以有四个 VMPL，其中 VMPL0 权限最高，VMPL3 权限最低。分配给 guest 的每个内存页面可能具有基于 VMPL 的不同权限。 VMPL0 始终具有对 guest 地址空间中每个页面的完全访问权限，但它可能会将某些页面配置为不可在 VMPL1 上访问，或者可能允许只读访问。
 
 VeriSMo 就是一个运行在 VMPL0 上的软件，而 Guest OS 运行在 VMPL3（只要不是 VMPL0 就行）上，这样可以避免不受信任的 Guest OS 的攻击。VMPL0 除了可以管理
 
@@ -131,7 +131,7 @@ fn main() {
 } // verus!
 ```
 
-可以注意到相比于普通的 Rust，多加了 `requires, ensures, invarient` 等关键词，这些是形式化验证的“方法”。本项目不仅实现了一个经过验证的模块，还将验证方法都用 rust 或者说 verus 实现了。
+可以注意到相比于普通的 Rust，多加了 `requires, ensures, invarient` 等关键词，这些是形式化验证的 “方法”。本项目不仅实现了一个经过验证的模块，还将验证方法都用 rust 或者说 verus 实现了。
 
 ---
 
@@ -143,11 +143,11 @@ fn main() {
 
 VeriSMo 的可信基只包括硬件和它自己（运行在 VMPL0 上的 VeriSMo），它既不信任 Hypervisor，也不信任运行在 VMPL3 的 Guest OS。
 
-![pic4](./海边拾贝-VeriSMo/pic4.png)
+![pic4](./海边拾贝-VeriSMo/pic4.webp)
 
 VeriSMo 在这样的模型下，要完成唤醒 CPU，管理 Guest 内存，确保 Guest OS 的完整性，运行时测量等功能。
 
-![](./海边拾贝-VeriSMo/pic5.png)
+![](./海边拾贝-VeriSMo/pic5.webp)
 
 ### 2.2 验证目标
 
@@ -163,14 +163,14 @@ VeriSMo 在这样的模型下，要完成唤醒 CPU，管理 Guest 内存，确�
 
 Hypervisor 会打断 VM 对资源形成并发操作，然而因为不信任 Hypervisor 的原因，我们无法直接验证 Hypervisor ，所以我们将验证分成了两层。第一层是 Machine Model Layer，采用建立一个硬件抽象机的方式进行模型级的验证，确保在给定 Hypervisor 约束后，它不会影响 VM 的机密性和完整性。第二层是 VeriSMo 内部实现的验证。
 
-![img](./海边拾贝-VeriSMo/1722216940888-14.png)
+![img](./海边拾贝-VeriSMo/1722216940888-14.webp)
 
 我个人感觉形式化验证是可以验证并发程序的，此项目分成两层进行验证，有可能不是因为 Hypervisor 的并发很难验证，而是因为 Hypervisor 不在信任基内，导致我们没法直接验证，所以我们才采用了建模的方式进行抽象验证。
 
 我个人感觉其实是将验证分为了两步：
 
-- Machine-Model Layer：验证 AMD SEV-SNP 这套硬件机制没有问题
-- Implement Layer：验证 VeriSMo 对 AMD SEV-SNP 的使用没有问题
+- Machine-Model Layer：验证 AMD SEV - SNP 这套硬件机制没有问题
+- Implement Layer：验证 VeriSMo 对 AMD SEV - SNP 的使用没有问题
 
 ---
 
@@ -187,7 +187,7 @@ Machine Model 具有两个目标：
 
 更进一步地说，我们希望验证这个图片所展示的事实，即 HV 和 VM 具有一定的独立性：
 
-![img](./海边拾贝-VeriSMo/1722216970526-17.png)
+![img](./海边拾贝-VeriSMo/1722216970526-17.webp)
 
 VERISMO 并没有一个 guest OS 那么庞大，所以 VERISMO 只对关键的内存和 cache 操作进行建模。
 
@@ -226,7 +226,7 @@ VERISMO 并没有一个 guest OS 那么庞大，所以 VERISMO 只对关键的�
 
 - 任何 Ψ 下，CVM 的 gVA 到 sPA 的映射是双射。
 
-因为 gPA 到 sPA 的映射是双射，只需要证明 gVA 到 gPA 是双射。具体的证明方法类似于“一开始是双射，而且每次操作都必须保证是双射的，所以最后是双射”的数学归纳法。
+因为 gPA 到 sPA 的映射是双射，只需要证明 gVA 到 gPA 是双射。具体的证明方法类似于 “一开始是双射，而且每次操作都必须保证是双射的，所以最后是双射” 的数学归纳法。
 
 在有了这五条引理后，就可以交给形式化证明机来完成证明了。
 
@@ -234,9 +234,9 @@ VERISMO 并没有一个 guest OS 那么庞大，所以 VERISMO 只对关键的�
 
 在实现层，验证上主要采用如下技术来实现形式化验证：
 
-![img](./海边拾贝-VeriSMo/1722216970526-18.png)
+![img](./海边拾贝-VeriSMo/1722216970526-18.webp)
 
-其中 Rust 负责基础的所有权和读写检查，SNP Pointer 是一个用于验证的胖指针，里面对 SEV-SNP 机制进行了建模，胖指针的样子是这样的
+其中 Rust 负责基础的所有权和读写检查，SNP Pointer 是一个用于验证的胖指针，里面对 SEV - SNP 机制进行了建模，胖指针的样子是这样的
 
 ```Rust
 pub ghost struct SnpMemAttr
@@ -305,7 +305,7 @@ pub fn rmpadjust(
 
 其中 SNP Pointer 和与之配套的验证约束合称 Memory Permisson，因为这种 Permission 有时是需要共享的（因为内存需要共享），所以又引入了 Lock Permisson 来确保并发程序的正确性。
 
-![img](./海边拾贝-VeriSMo/1722216970526-19.png)
+![img](./海边拾贝-VeriSMo/1722216970526-19.webp)
 
 VeriSMo 内存并发安全模型为：
 
@@ -321,11 +321,11 @@ VeriSMo 内存并发安全模型为：
 
 左图中，机密变量 high 被通过数据流泄露到公开变量 low。右图中，机密变量 high 通过控制流侧信道被泄露。
 
-![img](./海边拾贝-VeriSMo/1722216998108-26.png)
+![img](./海边拾贝-VeriSMo/1722216998108-26.webp)
 
 具体的，本工作记录 VeriSMo 中每个变量的猜测空间（guess space, valset），猜测空间为全集的变量为机密变量，猜测空间为单元素集合的变量为公开变量，猜测空间随着计算操作传播。
 
-![img](./海边拾贝-VeriSMo/1722216998109-27.png)
+![img](./海边拾贝-VeriSMo/1722216998109-27.webp)
 
 验证器确保：
 
@@ -345,6 +345,6 @@ VeriSMo 内存并发安全模型为：
 
 而与其他的 Secure Module 相比（用 C 实现的 SMo 或者修改后 Linux 作为一个 SMo），在性能开销方面差别不大（Index 越高性能越好）
 
-![img](./海边拾贝-VeriSMo/1722217009985-32.png)
+![img](./海边拾贝-VeriSMo/1722217009985-32.webp)
 
 从验证层面看，验证速度很快，大约 6 分钟就可以验证完两层模型。

@@ -2,9 +2,8 @@
 abbrlink: e9ef90fa
 categories: 并行计算
 date: 2022-11-05 10:56:25
-mathjax: true
 tags: [并行计算, S5课上, 知识总结]
-title: 并行计算-hw2
+title: 并行计算 - hw2
 ---
 
 ## 一、个人信息
@@ -72,7 +71,7 @@ This is the match result on node 3
 
 该泳道图过长，如果在 PDF 中不方便查看，还可以看文件中附带的图片
 
-![](并行计算-hw2/kmp泳道图.png)
+![](并行计算-hw2/kmp泳道图.webp)
 
 在绘制泳道图的时候，需要注意 `MPI_Send, MPI_Recv, MPI_Bcast` 都是阻塞通信。
 
@@ -80,7 +79,7 @@ This is the match result on node 3
 
 段间比配指的是，可能存在主串中的模式串横跨两个进程的段的情况，所以需要每个进程都需要向后一进程传递 `prefixlen` 信息，并利用前一进程传递的 `prefixlen` 信息进行段间匹配。也就是这样的图
 
-![](并行计算-hw2/段间匹配.png)
+![](并行计算-hw2/段间匹配.webp)
 
 ### 3.3 还原 nextvalue
 
@@ -214,7 +213,7 @@ The programmed has run 0.020678s
 
 对于主串，采用 16777200 长度，8 周期。
 
-并行1：4 node, 16 core
+并行 1：4 node, 16 core
 
 ```
 processor num = 16 
@@ -232,7 +231,7 @@ patlen= 32
 The programmed has run 1.999268s
 ```
 
-并行2：1 node, 8 core
+并行 2：1 node, 8 core
 
 ```
 processor num = 8 
@@ -241,7 +240,7 @@ patlen= 32
 The programmed has run 0.451285s
 ```
 
-并行3：4 node, 32 core
+并行 3：4 node, 32 core
 
 ```
 processor num = 32 
@@ -250,7 +249,7 @@ patlen= 32
 The programmed has run 6.018055s
 ```
 
-并行4：4 node, 8 core
+并行 4：4 node, 8 core
 
 ```
 processor num = 8 
@@ -259,7 +258,7 @@ patlen= 32
 The programmed has run 3.350692s
 ```
 
-并行5：1 node, 16 core
+并行 5：1 node, 16 core
 
 ```
 processor num = 16 

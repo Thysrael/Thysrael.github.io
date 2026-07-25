@@ -14,7 +14,7 @@ title: 个人项目
 
 > 项目地址：[GreenParkBeamerTheme](https://github.com/Thysrael/GreenParkBeamerTheme)
 
-![img](./index/head.png)
+![img](./index/head.webp)
 
 这真的是我最后一封北航情书……
 
@@ -30,7 +30,7 @@ title: 个人项目
 
 > 项目地址：[PandocWordTemplate](https://github.com/Thysrael/PandocWordTemplate)
 
-![overview](./index/overview.png)
+![overview](./index/overview.webp)
 
 虽然 Pandoc 提供了 markdown 等文本文件转成 Word 的默认模板。但是默认模板有诸多缺点（不太适应中文、没有标题序号、没有代码块高亮和没有表头强调等）。而在网上找的模板有些过于炫技甚至浮夸，而有些则难以涵盖我的所有需求。
 
@@ -51,7 +51,7 @@ title: 个人项目
 
 > 项目地址：[Dotfiles](https://github.com/Thysrael/dotfiles)
 
-![image-20260116211817894](./index/image-20260116211817894.png)
+![image-20260116211817894](./index/image-20260116211817894.webp)
 
 在实验室的服务器上写代码，如果没有一个好的 shell 环境，总是感觉不是那么舒服。但是考虑到不同服务器网络状况和依赖，这点总是很难实现。
 
@@ -69,7 +69,7 @@ title: 个人项目
 
 > 项目地址：[SJTUExamLaTeX](https://github.com/Thysrael/SJTUExamLaTeX)
 
-![overview](./index/overview-20260116213330154.png)
+![overview](./index/overview-20260116213330154.webp)
 
 到底是什么受虐癖才会用 Word 出卷啊？缺乏协作手段，缺乏版本控制能力，格式与内容完全耦合在一起，代码和公式都没有办法轻松敲出来，动不动就出现不一致的情况。
 
@@ -88,7 +88,7 @@ title: 个人项目
 
 > 项目地址：[Pytorch-DDP-Manim](https://github.com/Thysrael/Pytorch-DDP-Manim)
 
-![overview](./index/overview-20260116214148243.png)
+![overview](./index/overview-20260116214148243.webp)
 
 课程大作业，两天时间内极限手搓。可以用于演示 Pytorch 的 DDP 的策略实现。
 
@@ -98,10 +98,10 @@ title: 个人项目
 
 
 
-# Horizon：处理新闻的 Agent Pipeline
+## Horizon：处理新闻的 Agent Pipeline
 
 > 项目地址：[Horizon](https://github.com/Thysrael/Horizon)
 
-![image-20260410214525055](./index/image-20260410214525055.png)
+![image-20260410214525055](./index/image-20260410214525055.webp)
 
 平时自己读新闻的时候，要从多个地方去找新闻，而且经常读到很多水文，或者看不懂的文章。Horizon 可以从自定义的新闻源上抓取新闻，并用 AI 进行筛选。对于高质量的新闻，Horizon 撰写一个总结文章，而且还会搜集社区的讨论与观点，并补充理解新闻的概念知识，最终生成一份日报。

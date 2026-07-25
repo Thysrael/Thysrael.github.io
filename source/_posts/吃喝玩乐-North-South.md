@@ -2,24 +2,23 @@
 abbrlink: e40046e6
 categories: 吃喝玩乐
 date: 2022-03-14 16:28:55
-mathjax: true
 tags: [吃喝玩乐, 25格, S4课上]
-title: 吃喝玩乐-英剧鉴赏
+title: 吃喝玩乐 - 英剧鉴赏
 ---
 
 # North & South
 
 ## 1. 刻板印象
 
-我看的是 2004 年的英剧，这个迷你剧是伊丽莎白·盖斯凯尔的原著小说改编的。豆瓣上评价她是一直被低估，但从未被超越的英国古典文学作家。（当然，基本的装逼说法）。
+我看的是 2004 年的英剧，这个迷你剧是伊丽莎白・盖斯凯尔的原著小说改编的。豆瓣上评价她是一直被低估，但从未被超越的英国古典文学作家。（当然，基本的装逼说法）。
 
 故事是发生在工业革命初期（剧里面有），然后女主来自赫尔斯通，是南方人，大致可以理解为他来自一个很田园，和农业化的地方
 
-![image-20220314164256811](吃喝玩乐-North-South/image-20220314164256811.png)
+![image-20220314164256811](吃喝玩乐-North-South/image-20220314164256811.webp)
 
 男主来自北方，米尔顿（也有人就是曼彻斯特的化名），是一个新兴的工业城市，故事大部分都在这个地方展开，就各种纺织工厂，男主就是一个厂长（也是剧迷对男主的爱称）。
 
-![image-20220314163036499](吃喝玩乐-North-South/image-20220314163036499.png)
+![image-20220314163036499](吃喝玩乐-North-South/image-20220314163036499.webp)
 
 当然这种介绍不痛不痒，让我们来一点刺激的（好尴尬，差点找不到了）：
 
@@ -27,9 +26,9 @@ title: 吃喝玩乐-英剧鉴赏
 >
 >包括私立学校、豪华商场、赛马、赛艇以及陆军海军俱乐部。
 
-![image-20220314212307397](吃喝玩乐-North-South/image-20220314212307397.png)
+![image-20220314212307397](吃喝玩乐-North-South/image-20220314212307397.webp)
 
-![image-20220314212317453](吃喝玩乐-North-South/image-20220314212317453.png)
+![image-20220314212317453](吃喝玩乐-North-South/image-20220314212317453.webp)
 
 感觉似乎北方重工业落寞的感觉，就是很荒废啊，毕竟官僚是最会享受的。
 
@@ -63,11 +62,11 @@ title: 吃喝玩乐-英剧鉴赏
 
 >我跟她之间的距离只有 0.01 公分，57 个小时之后，我爱上了这个女人。
 
-哪怕是0.01公分的距离，爱上一个人还需要57个小时。所谓的“人心隔肚皮，知人知面不知心”。真的很悲凉。
+哪怕是 0.01 公分的距离，爱上一个人还需要 57 个小时。所谓的 “人心隔肚皮，知人知面不知心”。真的很悲凉。
 
 不过最让人感动的是，尽管人有种种傲慢与偏见，但是自从人类诞生之初，总会有勇者尝试跨越这看似无解的鸿沟，勇敢的向着岸的那一边的人招手，这才是真正的伟大，正如剧中玛格丽特离去时，桑顿先生的呢喃：
 
-![img](吃喝玩乐-North-South/v2-15e1f711449bb7ba2288363adc5c1d2b_1440w.jpg)
+![img](吃喝玩乐-North-South/v2-15e1f711449bb7ba2288363adc5c1d2b_1440w.webp)
 
 ---
 
@@ -110,7 +109,7 @@ title: 吃喝玩乐-英剧鉴赏
 
 # 我们需要谈谈凯文
 
-这周我们看的电影是《我们需要谈谈凯文》，这个电影讲述的是一个具有反社会人格的16岁少年屠杀同学的故事。虽然被定义为惊悚片，但是与普通的惊悚片不同，影片没有聚焦于屠杀的血腥，而是花费了大量的笔墨去刻画凯文的成长环境。可以看出，导演是希望通过这样的一部影片来与观众讨论家庭教育问题的，这就是“我们需要谈谈凯文”的谈话内容。
+这周我们看的电影是《我们需要谈谈凯文》，这个电影讲述的是一个具有反社会人格的 16 岁少年屠杀同学的故事。虽然被定义为惊悚片，但是与普通的惊悚片不同，影片没有聚焦于屠杀的血腥，而是花费了大量的笔墨去刻画凯文的成长环境。可以看出，导演是希望通过这样的一部影片来与观众讨论家庭教育问题的，这就是 “我们需要谈谈凯文” 的谈话内容。
 
 > The movie we watched this week was "We Need to Talk About Kevin," a film about a 16-year-old with a sociopathic personality who slaughters his classmates. Although it is defined as a thriller, but unlike ordinary thrillers, the film does not focus on the massacre, but spends a lot of time to portray Kevin's environment growing up. It is clear that the director wants to discuss education with the audience through such a film, which is the "we need to talk about Kevin" conversation.
 
@@ -158,7 +157,7 @@ title: 吃喝玩乐-英剧鉴赏
 
 # 诺丁山
 
-在观看《诺丁山》这部电影的时候，我除了醉心于浪漫感人的爱情故事，我还对于剧中出现的诺丁山的取景很赶兴趣。因为在我的印象里，英国的城市给人一种经典的雾都形象--灰蒙蒙的、陈旧、古典，就像《神探夏洛克》中的伦敦一样。
+在观看《诺丁山》这部电影的时候，我除了醉心于浪漫感人的爱情故事，我还对于剧中出现的诺丁山的取景很赶兴趣。因为在我的印象里，英国的城市给人一种经典的雾都形象 -- 灰蒙蒙的、陈旧、古典，就像《神探夏洛克》中的伦敦一样。
 
 > When I watched the film Notting Hill, apart from being enthralled by the romantic and touching love story, I was also interested in the location of Notting Hill, which appears in the play. Because I had the impression that British cities gave a classic image of a foggy city - grey, old-fashioned and classical, like London in Sherlock.
 
@@ -170,7 +169,7 @@ title: 吃喝玩乐-英剧鉴赏
 
 > What surprised me most was that the story told in Notting Hill was not the only love story in the area. It is said that during the Victorian era in the 18th century, London's princes and dancers used to build private nests and keep lovers in the Notting Hill area. So this place is traditionally romantic.
 
-诺丁山不仅有浪漫的传统，其民风也不像伦敦大都市一样刻板陈旧。在二十世纪五六十年代，它是是加勒比海一带移民刚到英国时落脚的地方，这里是一个移民聚居区。这里的移民有拉美人、美国人、印度人、巴基斯坦人。所以这里的文化呈现出一种兼容并包的特点。不同的文化在这里共存、碰撞、交融，产生了独特的“诺丁山文化”。每年诺丁山都会举办民族风格鲜明的狂欢节。这个狂欢节每年都有百万人参加，已成为欧洲规模最大的狂欢节。
+诺丁山不仅有浪漫的传统，其民风也不像伦敦大都市一样刻板陈旧。在二十世纪五六十年代，它是是加勒比海一带移民刚到英国时落脚的地方，这里是一个移民聚居区。这里的移民有拉美人、美国人、印度人、巴基斯坦人。所以这里的文化呈现出一种兼容并包的特点。不同的文化在这里共存、碰撞、交融，产生了独特的 “诺丁山文化”。每年诺丁山都会举办民族风格鲜明的狂欢节。这个狂欢节每年都有百万人参加，已成为欧洲规模最大的狂欢节。
 
 > Not only does Notting Hill have a romantic tradition, but its folklore is not as stereotypical as that of metropolitan London. In the 1950s and 1960s, it was a settlement for immigrants from the Caribbean who had just arrived in Britain. The immigrants here were Latin Americans, Americans, Indians and Pakistanis. So the culture here is characterised by an eclectic mix. Different cultures have coexisted, collided and mingled to create the unique Notting Hill culture. Every year, Notting Hill hosts an ethnic carnival. With millions of people attending each year, it has become the largest carnival in Europe.
 
@@ -180,15 +179,15 @@ title: 吃喝玩乐-英剧鉴赏
 
 # BJ 单身日记
 
-今天我们要聊的电影是《BJ 单身日记》，这是一部英国的爱情喜剧。这部剧讲述了一个大龄的单身女性 Bridget Jones 追寻爱情的故事。这部剧是一个很好的分析“英国剩女”现象的契机，从中可以进一步探讨英国的婚恋观念等文化现象。
+今天我们要聊的电影是《BJ 单身日记》，这是一部英国的爱情喜剧。这部剧讲述了一个大龄的单身女性 Bridget Jones 追寻爱情的故事。这部剧是一个很好的分析 “英国剩女” 现象的契机，从中可以进一步探讨英国的婚恋观念等文化现象。
 
 > The film we are talking about today is BJ's Singles Diary, a British romantic comedy. It tells the story of Bridget Jones, an older single woman in search of love. The play is a great opportunity to analyse the phenomenon of the 'leftover British woman' and to explore the cultural phenomenon of marriage in the UK.
 
-但是我决定并不沿着这个思路去讨论，而是希望更进一步去讨论一个更加普遍的、超越国度的文化现象，就是怎么追求到爱情？也就是俗称的"脱单技巧"。我将从三个方面去讨论。
+但是我决定并不沿着这个思路去讨论，而是希望更进一步去讨论一个更加普遍的、超越国度的文化现象，就是怎么追求到爱情？也就是俗称的 "脱单技巧"。我将从三个方面去讨论。
 
 > But I decided not to go along with this line of thought, and instead wanted to go further and discuss a more general, transcendent cultural phenomenon, which is how to pursue love. This is also known as the 'breakout technique'. I will discuss this in three ways.
 
-首先是关于外貌方面，想要脱单，美丽，苗条的身材并不是必选项，因为剧中的 BJ 就是一个丰满、笨憨憨的女孩。但是干净、得体的打扮和自信的姿态是一定要有的。剧中的 BJ 一开始要么在平时打扮的很沉闷，要么就会打扮得像一个“花地毯”一样。后来的她打扮的时候开始注重细节，并且通过健身来获得一种健康的美感。正是因为有了这些改变，才能让 BJ 的气质在外貌没有明显改变的前提下，有了极大的提升。
+首先是关于外貌方面，想要脱单，美丽，苗条的身材并不是必选项，因为剧中的 BJ 就是一个丰满、笨憨憨的女孩。但是干净、得体的打扮和自信的姿态是一定要有的。剧中的 BJ 一开始要么在平时打扮的很沉闷，要么就会打扮得像一个 “花地毯” 一样。后来的她打扮的时候开始注重细节，并且通过健身来获得一种健康的美感。正是因为有了这些改变，才能让 BJ 的气质在外貌没有明显改变的前提下，有了极大的提升。
 
 > Firstly, in terms of appearance, being beautiful and slim is not a must if you want to get laid, as BJ in the play is a plump, dumb  girl. But clean, well-groomed and confident posture is a must. BJ starts out either dressed in a dull way or dressed like a 'flower rug'. Later on she started dressing with attention to detail and working out to gain a healthy aesthetic. It was these changes that allowed BJ to improve her look without significantly changing her appearance.
 
@@ -196,7 +195,7 @@ title: 吃喝玩乐-英剧鉴赏
 
 > The second thing is to have enough self-respect. In the play, BJ initially falls in love with her boss, but later finds out that her boss is an extremely philandering person who keeps an affair with several women at the same time, so BJ breaks up decisively and does not lose herself. Who wouldn't want to love a self-respecting girl who finds a job in television after leaving her scumbag boss?
 
-最后，就是在一段感情中要有真情实感，就像剧中 BJ 那样，在达西不小心看到了 BJ 之前的日记而对 BJ 产生误解，BJ就在雪花飘飘的大冬天只穿内裤追回他解释。所以说“遇到误会就主动解释，遇到真爱就主动出击”是恋爱的秘籍。
+最后，就是在一段感情中要有真情实感，就像剧中 BJ 那样，在达西不小心看到了 BJ 之前的日记而对 BJ 产生误解，BJ 就在雪花飘飘的大冬天只穿内裤追回他解释。所以说 “遇到误会就主动解释，遇到真爱就主动出击” 是恋爱的秘籍。
 
 > Lastly, it's important to be truthful in a relationship, just like BJ in the play, when Darcy accidentally reads BJ's previous diary and misunderstands him, BJ chases him back in her underwear in the middle of a snowy winter to explain. This is the secret of love: "When you have a misunderstanding, take the initiative to explain; when you have true love, take the initiative".
 

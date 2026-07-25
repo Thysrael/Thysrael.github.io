@@ -2,9 +2,8 @@
 abbrlink: d9d8ff0a
 categories: 数学建模
 date: 2022-10-14 14:15:30
-mathjax: true
 tags: [数学建模, S5课上, 工具总结]
-title: 数学建模-Python相关库
+title: 数学建模 - Python 相关库
 ---
 
 ## 一、NumPy
@@ -187,7 +186,7 @@ output:
 
 ### 2.2 常量
 
-为了保护常量的“纯洁性”，我们可以用 `sympy.S()` 来声明常量，比如说
+为了保护常量的 “纯洁性”，我们可以用 `sympy.S()` 来声明常量，比如说
 
 ```python
 print(1 / 13)				# 0.07692307692307693
@@ -369,7 +368,7 @@ print(t.func)       # f
 print(t.args)       # (x, y)
 ```
 
-有一个很有意思的事情，就是自定义函数并没有我们常以为的“表示某种特定的符号和运算符的组合”的效果，因为这个定义其实是
+有一个很有意思的事情，就是自定义函数并没有我们常以为的 “表示某种特定的符号和运算符的组合” 的效果，因为这个定义其实是
 
 ```python
 sp.Derivative(x**2 + y**2, x)
@@ -576,9 +575,11 @@ limit(sin(x)/x, x, oo)
 
 首先谈一下对于线性规划的理解
 $$
+\begin{aligned}
 \tt{object:}  z = max\space c\cdot x \\
 \tt{constaint:} A\cdot x = b \\ 
-\tt{bound(constaint):} x \ge 0 
+\tt{bound(constaint):} x \ge 0
+\end{aligned}
 $$
 
 
@@ -590,6 +591,7 @@ linprog(c, A_ub, b_ub, A_eq, b_eq, bounds)
 
 多说无益，举个复杂的例子
 $$
+\begin{aligned}
 min \quad z = -2x_1 - 3x_2 + 5x_3\\
 st. 
 \begin{cases}
@@ -598,6 +600,7 @@ x_1 + x_2 + x_3 = 7\\
 x_1 + 3x_2 + x_3 \le 12
 x_1, x_2, x_3 \ge 0
 \end{cases}
+\end{aligned}
 $$
 其求解代码如下
 
@@ -671,6 +674,7 @@ popt = optimize.curve_fit(my_func1, x_train, y_train, maxfev=500000)[0] # 因为
 
  `cvxpy` 是在学线性规划的时候介绍的，在我的理解中，线性规划问题可以用 `SciPy` 库去求解，`cvxpy` 似乎是为了让线性规划的描述更加自然而开发的包，比如说在 3.1 具的例子，如果用 `cvxpy` 来写的话，可以写成这样
 $$
+\begin{aligned}
 min \quad z = -2x_1 - 3x_2 + 5x_3\\
 st. 
 \begin{cases}
@@ -679,6 +683,7 @@ x_1 + x_2 + x_3 = 7\\
 x_1 + 3x_2 + x_3 \le 12
 x_1, x_2, x_3 \ge 0
 \end{cases}
+\end{aligned}
 $$
 
 ```python
@@ -759,7 +764,7 @@ plt.show()
 
 其效果如下，可以看到很灵活
 
-![image-20221117192850324](数学建模-Python相关库/image-20221117192850324.png)
+![image-20221117192850324](数学建模-Python相关库/image-20221117192850324.webp)
 
 另外我们一般只用 `pyplot`，虽然我不知道为啥，但是写成这样就可以了
 
@@ -845,7 +850,7 @@ plt.show()
 
 其效果如下：
 
-![image-20221117192735809](数学建模-Python相关库/image-20221117192735809.png)
+![image-20221117192735809](数学建模-Python相关库/image-20221117192735809.webp)
 
 #### 5.2.4 **多种不一样的图**
 
@@ -891,7 +896,7 @@ plt.show()
 
 效果如下：
 
-![image-20221117200007302](数学建模-Python相关库/image-20221117200007302.png)
+![image-20221117200007302](数学建模-Python相关库/image-20221117200007302.webp)
 
 #### 5.2.5 **保存图像**
 
@@ -924,7 +929,7 @@ plt.show()
 
 效果
 
-![image-20221118104318761](数学建模-Python相关库/image-20221118104318761.png)
+![image-20221118104318761](数学建模-Python相关库/image-20221118104318761.webp)
 
 ### 5.3 解决乱码问题
 
@@ -943,5 +948,5 @@ matplotlib.rcParams['axes.unicode_minus'] = False
 
 但是如果是 `manjaro` 需要拷贝字体：
 
-- 将 windwos 中 `fonts` 目录下的 **simhei.ttf** 拷贝到 `/.../lib/python2.7/site-packages/matplotlib/mpl-data/fonts/ttf` (文件路径根据实际情况修改)目录中。
+- 将 windwos 中 `fonts` 目录下的 **simhei.ttf** 拷贝到 `/.../lib/python2.7/site-packages/matplotlib/mpl-data/fonts/ttf` (文件路径根据实际情况修改) 目录中。
 - 删除 `~/.cache/matplotlib` 的缓冲目录

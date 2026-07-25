@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Sys4AI-Transformer
-mathjax: true
 abbrlink: 7dc4ea13
 date: 2025-01-30 22:24:19
 categories: Sys4AI
@@ -14,8 +13,8 @@ tags: ["S9假期", "Sys4AI", "直观理解"]
 
 不过以我目前浅薄的认知，我倒觉得 Transformer 并不是 LLM 的核心特征，因为 LLM 的算法变化很快，Transformer 从 2017 年到现在有了多种变体，也有完全不采用 Transformer 架构的 AI。我个人感觉 LLM 的核心有两点：
 
-- 模型参数极大：我们认为模型参数越多，模型就越智能。这是“涌现”的一种具体体现。
-- 采用“预训练-微调-推理”范式：这种范式使得模型的通用性得到了增强，划分了不同的生态位。
+- 模型参数极大：我们认为模型参数越多，模型就越智能。这是 “涌现” 的一种具体体现。
+- 采用 “预训练 - 微调 - 推理” 范式：这种范式使得模型的通用性得到了增强，划分了不同的生态位。
 
 我希望在下文中记录一下关于 LLM 或者 Foundation Model 的基础知识，以避免被这个时代抛下太久。
 
@@ -57,7 +56,8 @@ $$
 $$
 这个分量形式也可以被整理成更加规整的矩阵乘法形式（毕竟上面就是乘加运算），也就是如下所示：
 $$
-\frac{\partial z}{\partial \mathbf{X}} = \frac{\partial z}{\partial \mathbf{Y}} \frac{\partial Y}{\partial \mathbf{X}}
+\begin {aligned}
+\frac {\partial z}{\partial \mathbf {X}} = \frac {\partial z}{\partial \mathbf {Y}} \frac {\partial Y}{\partial \mathbf {X}}
 
 \\
 = \begin{bmatrix}
@@ -67,16 +67,17 @@ $$
 \frac{\partial z}{\partial y_n}
 \end{bmatrix}
 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_{1}} & \frac{\partial y_1}{\partial x_{2}} & \cdots & \frac{\partial y_1}{\partial x_{m}} \\
-\frac{\partial y_2}{\partial x_{1}} & \frac{\partial y_2}{\partial x_{2}} & \cdots & \frac{\partial y_2}{\partial x_{m}} \\
+\begin {bmatrix}
+\frac {\partial y_1}{\partial x_{1}} & \frac {\partial y_1}{\partial x_{2}} & \cdots & \frac {\partial y_1}{\partial x_{m}} \\
+\frac {\partial y_2}{\partial x_{1}} & \frac {\partial y_2}{\partial x_{2}} & \cdots & \frac {\partial y_2}{\partial x_{m}} \\
 \vdots & \vdots & \ddots & \vdots \\
-\frac{\partial y_n}{\partial x_{1}} & \frac{\partial y_n}{\partial x_{2}} & \cdots & \frac{\partial y_n}{\partial x_{m}}
-\end{bmatrix}
+\frac {\partial y_n}{\partial x_{1}} & \frac {\partial y_n}{\partial x_{2}} & \cdots & \frac {\partial y_n}{\partial x_{m}}
+\end {bmatrix}
+\end {aligned}
 $$
 右边的那个方阵，就是传说中的雅各比矩阵。
 
-我们在“规律”这一节探讨的求导矩阵的形状问题，其实核心就在于求导矩阵的形状，可以在链式法则中直接应用，而不需要经过大量的 reshape。
+我们在 “规律” 这一节探讨的求导矩阵的形状问题，其实核心就在于求导矩阵的形状，可以在链式法则中直接应用，而不需要经过大量的 reshape。
 
 那如果 $X$ 和 $Y$ 有任一方是一个矩阵怎么办？可以想见，此时的雅各比矩阵就不再是二维的了，而是三维张量或者四维张量了。此时就很难整理成矩阵乘法的形式了，但是分量求和公式依然成立。
 
@@ -84,14 +85,14 @@ $$
 
 我们来举个例子，以 ML 中常见的全连接层 $Y = WX$ 为例（省略了偏置量 $B$），其中 $X$ 是 $N$ 维向量，$Y$ 是 $M$ 维向量，$W$ 是 $M \times N$ 维矩阵。那么在反向传播中，就有：
 $$
-\frac{\partial Y}{\partial W} = 
-\begin{bmatrix}
-\begin{bmatrix}
-\frac{\partial y_1}{\partial w_{11}} & \frac{\partial y_1}{\partial w_{12}} & \cdots & \frac{\partial y_1}{\partial w_{1n}} \\
-\frac{\partial y_1}{\partial w_{21}} & \frac{\partial y_1}{\partial w_{22}} & \cdots & \frac{\partial y_1}{\partial w_{2n}} \\
+\frac {\partial Y}{\partial W} = 
+\begin {bmatrix}
+\begin {bmatrix}
+\frac {\partial y_1}{\partial w_{11}} & \frac {\partial y_1}{\partial w_{12}} & \cdots & \frac {\partial y_1}{\partial w_{1n}} \\
+\frac {\partial y_1}{\partial w_{21}} & \frac {\partial y_1}{\partial w_{22}} & \cdots & \frac {\partial y_1}{\partial w_{2n}} \\
 \vdots & \vdots & \ddots & \vdots \\
-\frac{\partial y_1}{\partial w_{m1}} & \frac{\partial y_1}{\partial w_{m2}} & \cdots & \frac{\partial y_1}{\partial w_{mn}}
-\end{bmatrix} 
+\frac {\partial y_1}{\partial w_{m1}} & \frac {\partial y_1}{\partial w_{m2}} & \cdots & \frac {\partial y_1}{\partial w_{mn}}
+\end {bmatrix} 
 
 \\
 
@@ -199,13 +200,13 @@ $$
 $$
 有了这样的化简后，就可以被整理成新的向量乘法，如下所示：
 $$
-\frac{\partial l}{\partial W} = \frac{\partial l}{\partial Y} X^T
+\frac {\partial l}{\partial W} = \frac {\partial l}{\partial Y} X^T
 $$
 再次变得简洁优雅。
 
 这件事情很启发我，我之前学习反向传播时，太关注复杂的神经网络的梯度的张量表示了，动不动就会出现三维或者四维的张量，然后陷入停滞。而实际上，就算在数学上产生了这些拦路虎，我们也并不在意，因为这些高维张量本来就不是我们的目的，它只是链式求和公式的一种形式。我们会重新回到链式求和公式，来构建更加简单的矩阵乘法，而不是固守高维张量。
 
-#### 2.1.3 标量-张量
+#### 2.1.3 标量 - 张量
 
 标量对张量进行求导时，生成的导数矩阵和张量（无论张量是标量、向量还是矩阵）的形状完全相同。比如说对于一个 $N$ 维列向量 $X$ ，其导数矩阵如下所示：
 $$
@@ -228,11 +229,11 @@ $$
 \end{bmatrix}
 $$
 
-#### 2.1.4 张量-张量
+#### 2.1.4 张量 - 张量
 
-当因变量是张量的时候，就是对于因变量张量的每一个分量都应用一遍上文介绍的“标量-张量”方法。因变量分量会组成导数张量的外层维度，每个元素都是一个“标量-张量”导数矩阵。我们举个例子，有 $2 \times 3$ 维的向量 $X$ 和 $3 \times 2$ 维的 $Y$ 相乘得到 $2 \times 2$ 维的 $Z$ ，对于 $\frac{\partial Z}{\partial X}$ 有：
+当因变量是张量的时候，就是对于因变量张量的每一个分量都应用一遍上文介绍的 “标量 - 张量” 方法。因变量分量会组成导数张量的外层维度，每个元素都是一个 “标量 - 张量” 导数矩阵。我们举个例子，有 $2 \times 3$ 维的向量 $X$ 和 $3 \times 2$ 维的 $Y$ 相乘得到 $2 \times 2$ 维的 $Z$ ，对于 $\frac{\partial Z}{\partial X}$ 有：
 $$
-\frac{\partial Z}{\partial X} =
+\frac {\partial Z}{\partial X} =
 
 \begin{bmatrix}
 \frac{\partial z_{11}}{\partial X} & \frac{\partial z_{12}}{\partial X} \\
@@ -254,20 +255,20 @@ $$
 
 \\
 
-\begin{bmatrix}
-\frac{\partial z_{21}}{\partial x_{11}} & \frac{\partial z_{21}}{\partial x_{12}} & \frac{\partial z_{21}}{\partial x_{13}} \\
-\frac{\partial z_{21}}{\partial x_{21}} & \frac{\partial z_{21}}{\partial x_{22}} & \frac{\partial z_{21}}{\partial x_{23}} \\
-\end{bmatrix}
+\begin {bmatrix}
+\frac {\partial z_{21}}{\partial x_{11}} & \frac {\partial z_{21}}{\partial x_{12}} & \frac {\partial z_{21}}{\partial x_{13}} \\
+\frac {\partial z_{21}}{\partial x_{21}} & \frac {\partial z_{21}}{\partial x_{22}} & \frac {\partial z_{21}}{\partial x_{23}} \\
+\end {bmatrix}
 & 
-\begin{bmatrix}
-\frac{\partial z_{22}}{\partial x_{11}} & \frac{\partial z_{22}}{\partial x_{12}} & \frac{\partial z_{22}}{\partial x_{13}} \\
-\frac{\partial z_{22}}{\partial x_{21}} & \frac{\partial z_{22}}{\partial x_{22}} & \frac{\partial z_{22}}{\partial x_{23}} \\
-\end{bmatrix}
-\end{bmatrix}
+\begin {bmatrix}
+\frac {\partial z_{22}}{\partial x_{11}} & \frac {\partial z_{22}}{\partial x_{12}} & \frac {\partial z_{22}}{\partial x_{13}} \\
+\frac {\partial z_{22}}{\partial x_{21}} & \frac {\partial z_{22}}{\partial x_{22}} & \frac {\partial z_{22}}{\partial x_{23}} \\
+\end {bmatrix}
+\end {bmatrix}
 $$
 可以看到最后形成了四维 $2 \times 2 \times 2 \times 3$ 的导数矩阵。
 
-如果我们考虑“向量-向量”这种特殊形式的求导，就会生成著名的雅可比矩阵（Jacobian Matrix）。考虑 $M$ 维 $Y$ 向量对 $N$ 维 $X$ 向量求导，有：
+如果我们考虑 “向量 - 向量” 这种特殊形式的求导，就会生成著名的雅可比矩阵（Jacobian Matrix）。考虑 $M$ 维 $Y$ 向量对 $N$ 维 $X$ 向量求导，有：
 $$
 J = \frac{\partial \mathbf{Y}}{\partial \mathbf{X}} =
 \begin{bmatrix}
@@ -279,13 +280,13 @@ J = \frac{\partial \mathbf{Y}}{\partial \mathbf{X}} =
 $$
 这里列出的方阵，横轴是 $x$ 分量，而纵轴是 $y$ 分量。我个人觉得只要保证链式法则的基本要求，似乎转置一下也没有大关系，矩阵形状和矩阵乘法，只不过是一种简写的方式。
 
-在 ML 中因为向量值函数很常见，所以经常可能会出现高维度张量，它们似乎就无法被擅长矩阵这种低维张量计算的 GPU 或者加速器中处理了，而实际上，正如“链式法则”这一章节中提到的，我们很少真正计算高维度张量。
+在 ML 中因为向量值函数很常见，所以经常可能会出现高维度张量，它们似乎就无法被擅长矩阵这种低维张量计算的 GPU 或者加速器中处理了，而实际上，正如 “链式法则” 这一章节中提到的，我们很少真正计算高维度张量。
 
 #### 2.1.5 实例
 
 最后放一张 MLP 的图来总结一下反向传播过程中的链式求导和常见导数：
 
-![img](./Sys4AI-Transformer/1jt_OvqvfWkvuSUau4BPVWQ.png)
+![img](./Sys4AI-Transformer/1jt_OvqvfWkvuSUau4BPVWQ.webp)
 
 ### 2.2 FLOPS
 
@@ -355,7 +356,7 @@ $$
 $$
 \frac{\partial l}{\partial W} = \frac{\partial l}{\partial Y} \frac{\partial Y}{\partial W}
 $$
-按理说 $\frac{\partial Y}{\partial W}$ 是一个三维张量，比较难处理，但是又因为线性变换的特性（在“链式规则”处证明），有：
+按理说 $\frac{\partial Y}{\partial W}$ 是一个三维张量，比较难处理，但是又因为线性变换的特性（在 “链式规则” 处证明），有：
 $$
 \frac{\partial l}{\partial W} = \frac{\partial l}{\partial Y} I^T
 $$
@@ -415,8 +416,10 @@ S = \frac{QK^T}{\sqrt{d_k}}
 $$
 有：
 $$
+\begin{aligned}
 \frac{\partial l}{\partial Q} = \frac{\partial l}{\partial S} \frac{\partial S}{\partial Q} = \frac{1}{\sqrt{d_k}} \frac{\partial l}{\partial S} K \\
 \frac{\partial l}{\partial K} = \frac{\partial l}{\partial S} \frac{\partial S}{\partial K} = \frac{1}{\sqrt{d_k}} \frac{\partial l}{\partial S} Q
+\end{aligned}
 $$
 因此依然是矩阵与向量乘法的 FLOPS，FLOPS 是 $Q,K$ 维度的乘积，也就是 $seq\_len \times d_{k}$ 。
 
@@ -424,7 +427,7 @@ $$
 
 IM2Col 的意思是 Image To Column，本质是将卷积计算转换成矩阵乘法，然后因为矩阵乘法已经被优化得很好了，所以可以加速计算。如下所示：
 
-![image-20250202175313184](Sys4AI-Transformer/image-20250202175313184.png)
+![image-20250202175313184](Sys4AI-Transformer/image-20250202175313184.webp)
 
 但是这种方式并不从理论上减少计算的复杂度，只是比较简单实现，并且效果较好。此外 FFT 也可以用于加速卷积计算，并且是理论上加速。
 
@@ -438,11 +441,11 @@ IM2Col 的意思是 Image To Column，本质是将卷积计算转换成矩阵乘
 
 我们都知道人工神经网络中每一层的神经网络都可以对前一层输入进行一次矩阵运算（如果刨除激活不算的话），从线性代数的知识可知，这其实是在做一次空间映射，如果矩阵是 $M \times N$ 的，那么每经过一层，就是将一个原本在 $M$ 维空间向量映射到一个 $N$ 维的空间中。
 
-人工神经网络的原理是将一段数据先 tokenize ，也就是将原本的字符串之类（比如我们和 chatgpt 说的话）的东西转换成一组一维的向量，每个标量被称为一个 token ，然后将他们映射到一个向量空间中，这个过程叫做“嵌入”（embedding），然后就是对于这个向量的一次次映射。
+人工神经网络的原理是将一段数据先 tokenize ，也就是将原本的字符串之类（比如我们和 chatgpt 说的话）的东西转换成一组一维的向量，每个标量被称为一个 token ，然后将他们映射到一个向量空间中，这个过程叫做 “嵌入”（embedding），然后就是对于这个向量的一次次映射。
 
-那么我们这样做的直观理解是什么，我觉得是这样的，人工神经网络是在描述语义。说白了，就是通过构建一个语义空间的方式去掌握各个 token 的语义，语义空间就是一个多维向量空间。那么为什么一个多维向量空间就可以描述语义呢？因为多维向量空间中存在距离，我们可以用距离的方式来描述两个 token 的相似性，而这就构成了语义。比如在一个空间中，当我们观测到“苹果，梨，香蕉”的距离很近，那么可能就是因为她们都具有水果的语义。
+那么我们这样做的直观理解是什么，我觉得是这样的，人工神经网络是在描述语义。说白了，就是通过构建一个语义空间的方式去掌握各个 token 的语义，语义空间就是一个多维向量空间。那么为什么一个多维向量空间就可以描述语义呢？因为多维向量空间中存在距离，我们可以用距离的方式来描述两个 token 的相似性，而这就构成了语义。比如在一个空间中，当我们观测到 “苹果，梨，香蕉” 的距离很近，那么可能就是因为她们都具有水果的语义。
 
-语义空间的设计有两个极端，一个是一维标量，另一个是独热码。如果用一维标量的话，有些复杂的语义没有办法表示，比如说“苹果”，它既有“水果”的意思，又有“电子品牌”的意思，那么它应该既和“香蕉”离得近，又和“三星”离得近，但是“香蕉”和“三星”不应该离那么近。而独热码则是尽可能的扩大自己的维度，并只使用一个维度，那么我们很难表示出相近的含义，因为独热码的所有点的距离都是相同的。
+语义空间的设计有两个极端，一个是一维标量，另一个是独热码。如果用一维标量的话，有些复杂的语义没有办法表示，比如说 “苹果”，它既有 “水果” 的意思，又有 “电子品牌” 的意思，那么它应该既和 “香蕉” 离得近，又和 “三星” 离得近，但是 “香蕉” 和 “三星” 不应该离那么近。而独热码则是尽可能的扩大自己的维度，并只使用一个维度，那么我们很难表示出相近的含义，因为独热码的所有点的距离都是相同的。
 
 Embedding 的维度通常被称为 $d_{model}$ 。
 
@@ -454,7 +457,7 @@ Transformer 最初开发出来被用于进行机器翻译，其中最有特色�
 
 我最初的理解是，机器翻译就是存着一个字典，然后一个词一个词的翻译就够了（也就是只进行依次 embedding 和逆向 embedding 的过程）。但是仔细一想就不太可能，这是因为不同语言之间并不是只需要逐词翻译，因为语法的不同，导致不同语言的上下文顺序也是不同的。所以人们最先设计出的机器翻译机制，是让每个句子对应一个向量，被称作 Context Vector，在翻译的时候，先用神经网络将句子编码成 Context Vector，然后再用神经网络解码成另一门语言的句子，如下图所示：
 
-![image-20250202211138372](Sys4AI-Transformer/image-20250202211138372.png)
+![image-20250202211138372](Sys4AI-Transformer/image-20250202211138372.webp)
 
 至于为什么要使用 RNN，将 token 一个个喂入神经网络，而不是一股脑将整个句子当作输入一口气喂进去。是因为翻译的难点在于理解上下文，RNN 可以更好的发现序列之间的关系。
 
@@ -488,13 +491,13 @@ $$
 
 下面举个例子，有 $d_{model} = 4, t = 6$ ，如下所示： 
 
-![](Sys4AI-Transformer/attention1.drawio.png)
+![](Sys4AI-Transformer/attention1.drawio.webp)
 
-这里我有一个有趣的思考，就是并不是所有的模型都可以随着规模增大而性能更好。比如说 RNN 相比于传统的多层感知机，就可以有更多的层数，这是因为 RNN 削弱因层数增多而导致的“梯度消失”现象。但是正如前所述，虽然 RNN 避免了“梯度消失”，但是过于串行化的算法和较低的状态维度（我觉得这点可能可以改进），导致我们无法进一步扩大模型规模。而基于 Attention 机制的 Transformer 模型则有更好的可拓展性，并行化程度高，所以才能在更大规模时有更加智能的表现。
+这里我有一个有趣的思考，就是并不是所有的模型都可以随着规模增大而性能更好。比如说 RNN 相比于传统的多层感知机，就可以有更多的层数，这是因为 RNN 削弱因层数增多而导致的 “梯度消失” 现象。但是正如前所述，虽然 RNN 避免了 “梯度消失”，但是过于串行化的算法和较低的状态维度（我觉得这点可能可以改进），导致我们无法进一步扩大模型规模。而基于 Attention 机制的 Transformer 模型则有更好的可拓展性，并行化程度高，所以才能在更大规模时有更加智能的表现。
 
 ### 3.3 Cross-Attention
 
-上文介绍的 Attention 机制和”Attention is All you Need“这篇论文中的并不太一样，这是因为我在上面只是介绍了最为基础的 Attention 原理，在下文中我会进一步拓展这个机制。
+上文介绍的 Attention 机制和” Attention is All you Need“这篇论文中的并不太一样，这是因为我在上面只是介绍了最为基础的 Attention 原理，在下文中我会进一步拓展这个机制。
 
 首先我们注意到，上文中计算 $Y$ 的公式，只有一个输入 $X$ ，如下所示：
 $$
@@ -521,7 +524,7 @@ $$
 
 - $A$：Attention Score，依然是相关性分数，它的形状是 $t\_{sen} \times t\_{all}$ 。
   - 分量 $a_{ij}$ 表示待翻译的中文语句中的第 $i$ 个 token 和语料库中的第 $j$ 个语料的相关性。这很合理，我们查字典的过程，不就是根据待翻译的中文语句中的字，来查询对应的英文吗？
-  - Attention 对应的就是”查字典“这个过程，只不过”查字典“可以查到准确的单词，而在复杂的翻译过程中，只能查询到与 token 语义相近的语料。
+  - Attention 对应的就是” 查字典 “这个过程，只不过” 查字典 “可以查到准确的单词，而在复杂的翻译过程中，只能查询到与 token 语义相近的语料。
 
 - $V$：Value，即中译英字典（语料库）的内容，它的形状是 $t\_{all} \times d\_{out}$ 。
   - $d_{out}$ 是表示一个英文 token 语义所需的分量个数。
@@ -531,9 +534,9 @@ $$
   - 它是 $A$ 和 $V$ 的乘积，也就是每个英文的 token，都是中译英语料库中以相关性为权重形成的加权和。
 
 
-上面这个中译英的例子可能还不是那么直观，具体的例子很难举，因为语言和数字的对应还是有些难度的。我们举另一个例子，我们进行一个”成绩-能力“的翻译。也就是我们有上一届同学的考试成绩，还有他们的学习能力，我们希望根据当前这届同学的成绩，来推测他们的学习能力是怎样的，完成一个从”成绩“到”能力“的翻译。
+上面这个中译英的例子可能还不是那么直观，具体的例子很难举，因为语言和数字的对应还是有些难度的。我们举另一个例子，我们进行一个” 成绩 - 能力 “的翻译。也就是我们有上一届同学的考试成绩，还有他们的学习能力，我们希望根据当前这届同学的成绩，来推测他们的学习能力是怎样的，完成一个从” 成绩 “到” 能力 “的翻译。
 
-考试一共有”数学“和”语文“ 2 个科目，成绩是 5 分制。学习能力一共有”记忆“、”创新“和”勤奋“ 3 种。数据都是我瞎编的，勿杠。
+考试一共有” 数学 “和” 语文 “ 2 个科目，成绩是 5 分制。学习能力一共有” 记忆 “、” 创新 “和” 勤奋 “ 3 种。数据都是我瞎编的，勿杠。
 
 当前这届同学的成绩就构成了 $K$ 矩阵，其中：
 
@@ -572,7 +575,7 @@ $K$ 如下所示：
 | s4   | 3    | 12   | 5    |
 | s5   | 9    | 9    | 6    |
 
-在我编的这个情景下，”记忆“越好，”语文“成绩就越高；”创新“越好，”数学“成绩就越高；”勤劳“越好，总成绩就越高。可以看到基本上都是合理的，比如 s3 擅长语文，它的”记忆“能力就比”创新“能力好。
+在我编的这个情景下，” 记忆 “越好，” 语文 “成绩就越高；” 创新 “越好，” 数学 “成绩就越高；” 勤劳 “越好，总成绩就越高。可以看到基本上都是合理的，比如 s3 擅长语文，它的” 记忆 “能力就比” 创新 “能力好。
 
 然后我们用 $Y = AV$ 来看看当前这届同学的能力，有：
 
@@ -581,18 +584,18 @@ $K$ 如下所示：
 | s1   | 555  | 573  | 376  |
 | s2   | 612  | 450  | 354  |
 
-可以看到基本上还是合理的（当然我们也不能指望着只有 3 个数据的数据集有多准确）。s1 的数学成绩很高而语文成绩很差，按理说他的“创新”能力应该是高于“记忆”能力的；s2 的语文成绩很高而数学成绩很差，按理说他的“记忆”能力是高于“创新”能力的。这些推理都被 $Y$ 体现了。
+可以看到基本上还是合理的（当然我们也不能指望着只有 3 个数据的数据集有多准确）。s1 的数学成绩很高而语文成绩很差，按理说他的 “创新” 能力应该是高于 “记忆” 能力的；s2 的语文成绩很高而数学成绩很差，按理说他的 “记忆” 能力是高于 “创新” 能力的。这些推理都被 $Y$ 体现了。
 
 当然 $Y$ 也存在两个问题：
 
 - 能力绝对值过大了，在 $V$ 矩阵中能力值都是两位数，而在 $Y$ 中都是 3 位数，很夸张。
-- 能力相对值不明显，以 s1 同学为例，明明“数学”成绩比“语文”成绩高 3 分，但是“记忆”能力和“创新”能力却相差不大。
+- 能力相对值不明显，以 s1 同学为例，明明 “数学” 成绩比 “语文” 成绩高 3 分，但是 “记忆” 能力和 “创新” 能力却相差不大。
 
-第一个问题主要是因为 $A$ 矩阵没有按行归一化导致的，按理说加权和里的权重应该是一个“百分比”，而我们没有归一化，所以绝对值会偏大。而第二个问题是因为在数据集中，只有 s4 一个同学和 s1 一样是“数学比语文高”，而且 s4 还不如 s1 成绩好，所以 s1 的能力很容易被 s3 和 s5 的数据干扰，如果有办法让与 s1 更相似的同学（也就是 s4）相比于不相似的同学更突出。
+第一个问题主要是因为 $A$ 矩阵没有按行归一化导致的，按理说加权和里的权重应该是一个 “百分比”，而我们没有归一化，所以绝对值会偏大。而第二个问题是因为在数据集中，只有 s4 一个同学和 s1 一样是 “数学比语文高”，而且 s4 还不如 s1 成绩好，所以 s1 的能力很容易被 s3 和 s5 的数据干扰，如果有办法让与 s1 更相似的同学（也就是 s4）相比于不相似的同学更突出。
 
 上述两个问题都可以使用 $softmax$ 来改善，这是一个作用于向量的向量函数，如下所示：
 $$
-\sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^{n} e^{z_j}}
+\sigma (\mathbf {z})_i = \frac{e^{z_i}}{\sum_{j = 1}^{n} e^{z_j}}
 $$
 可以看到这是一个归一化函数，所以解决了第一个问题。而 $softmax$ 中使用的指数函数，使得相关性高的分量变得更加明显，所以解决了第二个问题。
 
@@ -624,31 +627,33 @@ $$
 
 我们看一下 Transformer 的架构图：
 
-![image-20250204155327984](Sys4AI-Transformer/image-20250204155327984.png)
+![image-20250204155327984](Sys4AI-Transformer/image-20250204155327984.webp)
 
 
 
-我们以“中译英”来距离， `inputs` 就是要中译英的语料库，`outputs` 刚开始就是要翻译的中文 ，`output probabilities` 是翻译好的英文（之所以叫作 probalities，应该是因为这里采用了 Self-Regression 架构）。在右上角的橙色 Attention 块中，`inputs` 负责提供 $K, V$ ，而 `outputs` 提供 $Q$。
+我们以 “中译英” 来距离， `inputs` 就是要中译英的语料库，`outputs` 刚开始就是要翻译的中文 ，`output probabilities` 是翻译好的英文（之所以叫作 probalities，应该是因为这里采用了 Self-Regression 架构）。在右上角的橙色 Attention 块中，`inputs` 负责提供 $K, V$ ，而 `outputs` 提供 $Q$。
 
 那么如果在 Self-Attention 中，还有必要区分 $Q, K, V$ 吗？还是说只要像最开始那样，直接使用 $X$ 就好了呢？其实还是有必要区分 $Q, K, V$ 的，在上面的介绍中可以看出， $Q, K, V$ 是各司其职，所以即使在 Self-Attention 中，也是有这样的分工。我们可以使用三个权重矩阵，来使得来源相同的 $Q, K, V$ 有不同的作用，如下所示：
 $$
+\begin{aligned}
 Q = X W_Q 
 \\
 K = X W_K 
 \\
 V = X W_V
+\end{aligned}
 $$
 这样做，还可以改变 $Q, K, V$ 的形状，他们不再必须和 $X$ 保持相同的形状 $t \times d_{model}$ ，而是可以变成 $t \times d_k$ 和  $t \times d_v$ 。之所以没有 $d_q$ ，是因为 $d_q$ 和 $d_k$ 是相等的。
 
 ### 3.4 Self-Regression
 
-正如前文所述，Attention 机制最初用于机器翻译，所以其核心部分是 Cross-Attention。而如今大火的生成式（Generative）大模型，则对原始模型的一个改进。也就是“自回归”（Self-Regression）。
+正如前文所述，Attention 机制最初用于机器翻译，所以其核心部分是 Cross-Attention。而如今大火的生成式（Generative）大模型，则对原始模型的一个改进。也就是 “自回归”（Self-Regression）。
 
 自回归的意思是，将输出重新作为输入，用于产生新的输出，周而复始。这个概念还比较好理解，问题在于它和 Attention 机制并不搭配，如下所示：
 $$
 Y = softmax(\frac{QK^T}{\sqrt{d_{in}}})V
 $$
-最后生成的是一个 $t \times d_{v}$ 的矩阵 $Y$ ，在机器翻译中，这就是那个翻译好的英文句子。但是在生成式中呢？难道就是把 prompt 翻译了吗？显然不是的，实际上 self-regression 的设计非常“浪费”，它只会选取 $Y$ 的最后一个行向量，作为生成出来的 token 输出，并将这个 token 连接 $X$ 的最后面，其伪代码如下：
+最后生成的是一个 $t \times d_{v}$ 的矩阵 $Y$ ，在机器翻译中，这就是那个翻译好的英文句子。但是在生成式中呢？难道就是把 prompt 翻译了吗？显然不是的，实际上 self-regression 的设计非常 “浪费”，它只会选取 $Y$ 的最后一个行向量，作为生成出来的 token 输出，并将这个 token 连接 $X$ 的最后面，其伪代码如下：
 
 ```python
 def generative(prompt):
@@ -666,15 +671,15 @@ def generative(prompt):
     return R
 ```
 
-这种“浪费”会被下文的 KV-Cache 缓解。
+这种 “浪费” 会被下文的 KV-Cache 缓解。
 
 ### 3.5 Encoder Decoder
 
 我们从上面的 Transformer 架构中注意到，上面一共有 3 种 Attention，我们详细介绍过的是位于右上角的 cross attention 块。在左下和右下还有两个 self-attention 快，分别是 encode-attention 和 decode-attention。
 
-这两种 attention 实现的都不是翻译任务，而是一种“让 token 关注上下文语义”的任务。通过 attention，原本独立的 token 语义会在上下文的影响下发生变化，这对之后的 cross-attention 是一种帮助。
+这两种 attention 实现的都不是翻译任务，而是一种 “让 token 关注上下文语义” 的任务。通过 attention，原本独立的 token 语义会在上下文的影响下发生变化，这对之后的 cross-attention 是一种帮助。
 
-但是为什么 decoder-attention 相比于 encode-attention，多了一个 Sequence Mask 机制，它说得是对于 $A$ 矩阵中的 $a_{ij}$ ，如果有 $j > i$ ，那么就会被 $softmax$ 忽略。这样的目的是确保模型在生成当前词时，只能使用当前词及其之前的词，而不能“偷看”未来的词。而 encoder 就没有这个问题，为了获得语料库中的所有语义，Encoder 是允许使用全部上下文的。
+但是为什么 decoder-attention 相比于 encode-attention，多了一个 Sequence Mask 机制，它说得是对于 $A$ 矩阵中的 $a_{ij}$ ，如果有 $j > i$ ，那么就会被 $softmax$ 忽略。这样的目的是确保模型在生成当前词时，只能使用当前词及其之前的词，而不能 “偷看” 未来的词。而 encoder 就没有这个问题，为了获得语料库中的所有语义，Encoder 是允许使用全部上下文的。
 
 这里有个问题，就是在 Self-Regression 中，本来就是逐词生成的，在当前词没有生成的时候，未来的词也肯定没有生成，那么就算模型想偷看，也偷看不成。为了解释清楚，我们就需要理解逐词生成是推理的行为，而在训练的时候，模型是并行处理整个目标序列的，所以才需要掩码。
 
@@ -682,7 +687,7 @@ def generative(prompt):
 
 除了计算资源的浪费之外，我们还注意到 Self-Attention 的并行度又变差了。本来在机器翻译中，Attention 机制改进了 RNN 每个 token 逐个翻译的缺点，可以并行生成一整个输出语句（也就是 token 集合 $Y$）。但是在这个算法中，并行生成的 $Y$ 只用最后一个 token 的行向量 $y$ ，就又变成串行生成了。
 
-但是这种“串行生成”是 self-regression 的精髓，所以我个人感觉很难改变。但是我们依然有办法加速，那就是每次 attention 的时候通过减少 $$d_k, d_v$$ 来提高速度。这种缩减 $$d_k, d_v$$ 的行为，可以理解为在原本 $$d_{model}$$ 的空间里提取特征。
+但是这种 “串行生成” 是 self-regression 的精髓，所以我个人感觉很难改变。但是我们依然有办法加速，那就是每次 attention 的时候通过减少 $d_k, d_v$ 来提高速度。这种缩减 $d_k, d_v$ 的行为，可以理解为在原本 $d_{model}$ 的空间里提取特征。
 
 那么仅提供一个特征，就容易导致精度丧失，所以我们可以使用多个 attention，提取多个不同的特征，最后再将结果拼接在一起，这样提高了并行度和延迟，又不损失精度。我们设模型的 head 数为 $h$ ，通常有：
 $$
@@ -697,19 +702,19 @@ $$
 
 示意图如下：
 
-![](Sys4AI-Transformer/attention2.drawio.png)
+![](Sys4AI-Transformer/attention2.drawio.webp)
 
 ### 3.6 KV Cache
 
-正如前所述，在 Self-Regression 中我们计算 $Y$ 的目的只是为了得到最后一个行向量 $Y_t$ ，在上述计算中，有很多计算是冗余的，我们在上图中用“实心”标出计算 $Y_t$ 所需要的分量：
+正如前所述，在 Self-Regression 中我们计算 $Y$ 的目的只是为了得到最后一个行向量 $Y_t$ ，在上述计算中，有很多计算是冗余的，我们在上图中用 “实心” 标出计算 $Y_t$ 所需要的分量：
 
-![](Sys4AI-Transformer/attention3.drawio.png)
+![](Sys4AI-Transformer/attention3.drawio.webp)
 
 也就是说，只需要 $Q$ 的最后一个行向量，全部的 $K, V$ 向量，就可以满足计算要求，我们并不需要全部的 $Q$ 。
 
-更进一步，因为 $K, V$ 都是逐步增长的，也就是每次增加最后一个横向量，所以前面的部分都是可以被 cache 的，避免了 $X$ 每次都需要与 $W$ 进行运算，如果对 $K,V$ 进行 cache（用“交叉线”填充），那么计算量会进一步减少：
+更进一步，因为 $K, V$ 都是逐步增长的，也就是每次增加最后一个横向量，所以前面的部分都是可以被 cache 的，避免了 $X$ 每次都需要与 $W$ 进行运算，如果对 $K,V$ 进行 cache（用 “交叉线” 填充），那么计算量会进一步减少：
 
-![](Sys4AI-Transformer/attention4.drawio.png)
+![](Sys4AI-Transformer/attention4.drawio.webp)
 
 但是因为 $KV$ 的形状都包括一个 $t$ ，所以在长上下文场景下（也就是 $t$ 很大），会导致缓存的数据很多，这样就会导致 GPU 的访存压力很大。
 

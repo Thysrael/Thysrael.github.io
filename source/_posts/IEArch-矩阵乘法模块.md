@@ -2,9 +2,8 @@
 abbrlink: d7aec70a
 categories: IEArch
 date: 2022-10-26 17:43:46
-mathjax: true
 tags: [IEArch, S5课上, 直观理解]
-title: IEArch-矩阵乘法模块
+title: IEArch - 矩阵乘法模块
 ---
 
 ## 一、思考题
@@ -69,7 +68,7 @@ assign sf_data = $signed({8'b0, f_data});				// 修改前
 
 那么就可以有 `test.py` 中的输出结果，如图所示
 
-![image-20221026185805539](IEArch-矩阵乘法模块/image-20221026185805539.png)
+![image-20221026185805539](IEArch-矩阵乘法模块/image-20221026185805539.webp)
 
 ### 1.1 问题 2
 
@@ -207,35 +206,35 @@ $$
 
 **Cycle 0**
 
-![](IEArch-矩阵乘法模块/cycle0.png)
+![](IEArch-矩阵乘法模块/cycle0.webp)
 
 首先数据呈现这这种形式
 
 **Cycle 1**
 
-![](IEArch-矩阵乘法模块/cycle1.png)
+![](IEArch-矩阵乘法模块/cycle1.webp)
 
 
 
 **Cycle 2**
 
-![](IEArch-矩阵乘法模块/cycle2.png)
+![](IEArch-矩阵乘法模块/cycle2.webp)
 
 **Cycle 3**
 
-![](IEArch-矩阵乘法模块/cycle3.png)
+![](IEArch-矩阵乘法模块/cycle3.webp)
 
 **Cycle 4**
 
-![](IEArch-矩阵乘法模块/cycle4.png)
+![](IEArch-矩阵乘法模块/cycle4.webp)
 
 **Cycle 5**
 
-![](IEArch-矩阵乘法模块/cycle5.png)
+![](IEArch-矩阵乘法模块/cycle5.webp)
 
 **Cycle 6**
 
-![](IEArch-矩阵乘法模块/cycle6.png)
+![](IEArch-矩阵乘法模块/cycle6.webp)
 
 对于这样的一个计算，需要花 
 $$
@@ -253,7 +252,7 @@ $$
 
 那么又没有什么更快的改进方法呢，其实是有的，比如说下面这种方法，就可以缩短传入的时间
 
-![](IEArch-矩阵乘法模块/微信图片_20221026212853.jpg)
+![](IEArch-矩阵乘法模块/微信图片_20221026212853.webp)
 
 但是要付出更多的布线还有驱动的代价，所以综合考虑，还是利用了第一种。
 
@@ -292,7 +291,7 @@ end
 
 MAC 不仅需要传输自己的运算结果，而且需要传输其下面的 MAC 传输的结果，是通过一个 MUX 实现的，如下所示
 
-![image-20221026213308193](IEArch-矩阵乘法模块/image-20221026213308193.png)
+![image-20221026213308193](IEArch-矩阵乘法模块/image-20221026213308193.webp)
 
 这个结构的对应代码如下
 

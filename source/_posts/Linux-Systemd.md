@@ -2,7 +2,6 @@
 abbrlink: 16dd6674
 categories: Linux
 date: 2023-09-30 18:40:34
-mathjax: true
 tags: [知识总结, S7课上, Linux]
 title: Linux-Systemd
 ---
@@ -15,9 +14,9 @@ title: Linux-Systemd
 
 首先是关于启动最初，bios，MBR 和 grub 的区别
 
-<img src="./Linux-Systemd/boot.png" style="zoom:80%;" />
+<img src="./Linux-Systemd/boot.webp" style="zoom:80%;" />
 
-他仨除了有一个“引导和被引导”的关系，其实在逻辑上还可以区分的更好。
+他仨除了有一个 “引导和被引导” 的关系，其实在逻辑上还可以区分的更好。
 
 BIOS 是在 ROM 中保存的，它的读取和执行时一种硬件行为，上电以后会自动读取，所以它是第一个，并不会被引导，只会引导别人。BIOS 可以选择不同的外存设备加载到内存进行启动，也就是选择不同的 MBR。BIOS 在逻辑上被称为固件，同类产品还有 UEFI。BIOS 执行的过程可能叫做 stage1。
 
@@ -124,13 +123,13 @@ initramfs
 
 ## 二、启动后
 
-之前的启动似乎一般侧重于介绍控制权是如何递交到操作系统上就结束了，但是实际上操作系统依然需要启动一些程序，然后才可以将控制权移交给用户。这些程序在 windows 中被称为“服务”（service），在 linux 中被称为“守护进程”（daemon）。
+之前的启动似乎一般侧重于介绍控制权是如何递交到操作系统上就结束了，但是实际上操作系统依然需要启动一些程序，然后才可以将控制权移交给用户。这些程序在 windows 中被称为 “服务”（service），在 linux 中被称为 “守护进程”（daemon）。
 
 systemd 就是一个管理这些守护进程的程序，提供对守护进程的管理，评测，日志等功能。之前还有 system V 发挥着和他类似的功能。
 
 systemd 的整体架构如下
 
-![img](./Linux-Systemd/systemd.png)
+![img](./Linux-Systemd/systemd.webp)
 
 ---
 
@@ -182,7 +181,7 @@ sudo localectl set-locale LANG=en_GB.utf8 # 设置本地化参数
 
 ### 3.2 unit
 
-Systemd 可以管理所有系统资源。不同的资源统称为 Unit（单位）。Unit 一共分成12种。
+Systemd 可以管理所有系统资源。不同的资源统称为 Unit（单位）。Unit 一共分成 12 种。
 
 - Service unit：系统服务
 - Target unit：多个 Unit 构成的一个组
@@ -271,12 +270,12 @@ sudo systemctl set-property httpd.service CPUShares=500
 
 Systemd 默认从目录`/etc/systemd/system/`读取配置文件。但是，里面存放的大部分文件都是符号链接，指向目录`/usr/lib/systemd/system/`，真正的配置文件存放在那个目录。
 
-`systemctl enable`命令用于在上面两个目录之间，建立符号链接关系。
+`systemctl enable` 命令用于在上面两个目录之间，建立符号链接关系。
 
 ### 3.3 target
 
 启动计算机的时候，需要启动大量的 Unit。如果每一次启动，都要一一写明本次启动需要哪些 Unit，显然非常不方便。Systemd 的解决方案就是 Target。
 
-简单说，Target 就是一个 Unit 组，包含许多相关的 Unit 。启动某个 Target 的时候，Systemd 就会启动里面所有的 Unit。从这个意义上说，Target 这个概念类似于"状态点"，启动某个 Target 就好比启动到某种状态。
+简单说，Target 就是一个 Unit 组，包含许多相关的 Unit 。启动某个 Target 的时候，Systemd 就会启动里面所有的 Unit。从这个意义上说，Target 这个概念类似于 "状态点"，启动某个 Target 就好比启动到某种状态。
 
-传统的`init`启动模式里面，有 RunLevel 的概念，跟 Target 的作用很类似。不同的是，RunLevel 是互斥的，不可能多个 RunLevel 同时启动，但是多个 Target 可以同时启动。
+传统的 `init` 启动模式里面，有 RunLevel 的概念，跟 Target 的作用很类似。不同的是，RunLevel 是互斥的，不可能多个 RunLevel 同时启动，但是多个 Target 可以同时启动。
