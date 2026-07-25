@@ -55,6 +55,8 @@ GPU 又在 SIMD 的基础上，实现了更为灵活的 SIMT 的抽象，这同�
 
 而如果到了软件范畴，其实 SIMT 的范围扩大了，我们使用 `(ctaid, tid)` 来完成对于 thread 的索引，当 CTA（Cooperative Thread Array）数目和 CTA 内 thread 数目增多时，SIMT 的范围就会扩大。而在底层硬件上，这些扩大的范围，最终还是会被分割成多个 warp SIMT 去执行。
 
+我相信在一开始的时候， warp 这个概念只是属于承载“schedule 和 SIMT 语义”的微体系结构细节，但是随着 GPU 越来越变得像 NPU ，warp 这个概念逐渐被软件开发者所熟知，比如说 warp specialization 技术，就是在软件层要求软件开发者去感知“访存 warp”、“计算 warp”和“通信 warp”。此时我们再回看 warp 这个概念，会惊奇的发现，它变成了一种 SM 内特定硬件单元的代称，上述 3 种 warp 就分别对应访存单元、TensorCore 和通信单元。这个时候 warp 的语义是扩大了的。
+
 ### 1.4 Memory Hierarchy
 
 GPU 的 Memory Hiearchy 如下所示：
@@ -83,14 +85,26 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 
 这里整理一下 NVIDIA 和 AMD GPU 的不同术语对比：
 
-| 实体               | NVIDIA                                     | AMD                                 |
-| ------------------ | ------------------------------------------ | ----------------------------------- |
-| SIMD Processor     | SM (Streaming Processor)                   | CU (Compute Unit)                   |
-| Group of Threads   | Warp                                       | Wavefront (Wave)                    |
-| ALU                | CUDA Core                                  | SP (Stream Processor)               |
-| On-chip Scratchpad | Shared Memory                              | LDS (Local Data Share)              |
-| CTA                | Block Group                                | Work Group                          |
-| Ecosystem          | CUDA (Compute Unified Device Architecture) | ROCm (Radeon Open Compute platform) |
+|实体                |NVIDIA                                    |AMD                                |
+|------------------|------------------------------------------|-----------------------------------|
+|SIMD Processor    |SM (Streaming Processor)                  |CU (Compute Unit)                  |
+|Group of Threads  |Warp                                      |Wavefront (Wave)                   |
+|ALU               |CUDA Core                                 |SP (Stream Processor)              |
+|On-chip Scratchpad|Shared Memory                             |LDS (Local Data Share)             |
+|CTA               |Block Group                               |Work Group                         |
+|Ecosystem         |CUDA (Compute Unified Device Architecture)|ROCm (Radeon Open Compute platform)|
+
+### 1.7 从 GPU 到 NPU
+
+最近有一种说法，就是说 GPU 越来越像 NPU 了，那么到底像在哪里了？
+
+我觉得其实是像在编程模型上了。原始的 GPU 是 SIMT 模型，也就是承诺，一个 thread 的指令是按照顺序执行的，前一条指令的执行结果决定了后一条指令的地址。这种方式非常容易构建复杂的指令控制流（control flow），也是 SIMT 优于 SIMD 的地方。这很 GPU 。
+
+而 NPU 的编程模型不是这样的。NPU 的编程模型更类似于 DAG 图，或者说数据流图（data flow）。其重点在于数据的依赖关系和流向。有哪些数据处理过程可以并行？数据要流过处理单元，这是 NPU 要考虑的事情。
+
+那么 GPU 是怎么越来越向 NPU 靠拢的呢？我觉得就是通过异步指令实现的。异步指令是一种不遵循控制流的指令，它完全异步于传统的顺序执行模型。正因如此，我们才可以实现类似于 dataflow 中自然的并行效果。
+
+此外 warp speicalization 也是一种站在数据处理单元，而非 thread 视角去思考问题的编程模型。
 
 ---
 
@@ -98,20 +112,34 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 
 ## 二、CUDA
 
-### 2.1 CTA
+### 2.1 CTA/Block/Tile
 
-理解 CTA 的关键，在于理解软件编程模型与硬件之间的对应关系。
+CUDA 编程种最重要的就是 `CTA/Block/Tile` 的概念了。这三个概念可以理解成是完全的同义词。注意，是完完全全，一模一样的同义词，而不是近义词。
 
-是不是有了 warp 这个概念，我们剩下的事情就是在软件层面设计 warp 内的指令就够了。其实并没有，首先，warp 是局限于一个 SM 内的，而且是没有办法在不同的 SM 之间迁移的。所以如果我们希望充分利用不同的 SM，那么就要引入 CTA（Collaborative Thread Array） 的概念，一个 CTA 必须在一个特定的 SM 上，不同的 CTA 可以在不同的 SM 上，一个 SM 上可以有多个 CTA。CTA 是非常像软件 thread 的概念，一个 thread 同时仅能在一个 CPU Core 上运行，不同 thread 可以在不同的 CPU Core 上运行。有了这个概念后，我们就可以利用 `ctaid` 来在软件中使用不同的 SM，当然这种使用，有一部分是依赖于 GPU 内部的硬件调度器，这就像我们没法简单指定某个 thread 一定要与某个 CPU Core 绑定一样。
+首先我们来介绍 CTA (Collaborative Thread Array) 的概念。首先它是一个软件概念，它表示一个 kernel 中的一部分任务。Kernel 可以看作是一组 CTA 任务。一个 CTA 任务最终会交给一个 SM 来执行，在执行过程中并不会在 SM 之间迁移。不过 1 个 SM 上面倒是可以有很多个 CTA 。CTA 是有点像软件 thread 的概念，一个 thread 同时仅能在一个 CPU Core 上运行，不同 thread 可以在不同的 CPU Core 上运行。
 
-那是不是 CTA 这个“软件线程”就直接用 warp 这个“硬件线程”来一一对应就好了呢？并不是，这是因为 warp 内的 thread 数目是静态的 32 ，是不可调整的。而在软件编程中，我们希望在一个 SM 中启动的 thread 数目（也就是 CTA 中 thread 的数目）是动态的。这是因为一个 SM 内的许多资源，都不是 warp 独占，而是 warp 共享的，比如说 shared memory，两个不同的 warp 是可以利用同一片资源的。也就是说，如果 CTA 内可以包含多个 warp，那么同一个 CTA 中的不同 warp 就是可以协作的。因此，CTA 中 thread 的数目往往是 32 的倍数。
+又因为 SM 上的资源的调度又是以 warp 为单位进行的，所以 CTA 也可以看作是一组 warp 。
 
-正如前所述，还有 CTA 名字中的 Collaborative 的暗示，在同一个 CTA 中的 thread 具有很好的协作性，这主要体现在两点：
+那么又有一个问题，那就是为什么在有了 warp 的基础上，还有引入 CTA 的概念。我们就不能直接让 CTA 等于 warp ，也就是一个 CTA 中就包含一个 warp ，也就是 32 个 thread 吗？感觉这样编程都更简洁了呢？
 
-- 共享内存：如前所述，同一个 CTA 中的 thread 可以读取相同的 shared memory。
-- 同步：同一个 CTA 内的线程可以通过 `__syncthreads()` 这样的同步指令（Barrier）来协调彼此的执行进度。不过这点有些多余，因为不同 CTA 往往是在不同 SM 上，资源竞争的可能性小了很多。
+传统的答案会说，warp 的语义实在是离硬件太近了，`32` 这个数字是 SM 内部的微体系结构细节，可能一个 SM 就是 32 个 CUDA Core ，所以一个 warp 刚好可以把所有的 CUDA Core 吃满。而到了软件层次，强制认为一个可以进行 inter-SM parallelism 的任务，一定刚好可以被 `32` 个 thead 所完成，有些没有道理。
 
-在 CUDA 中，CTA 也被称作 Block，而 CTA 组被称为 Grid。如果我们希望定位到一个 thread，我们可以使用如下代码：
+但这种说法也不站得住脚，因为完全可以在不引入 CTA 的前提下，分割任务。无非是，原来是将一个任务分给一个 CTA ，这个 CTA 里面有 4 个 warp 。现在是直接将这个任务分给 4 个 warp ，何苦非得要 CTA 呢？这时候就有人又会说，那是因为 CTA 在算法层次上面可以让更多的 thread 进行协同，比如说：
+
+- 共享内存：同一个 CTA 中的 thread 可以读取相同的 shared memory。
+- 同步：同一个 CTA 内的线程可以通过 `__syncthreads()` 这样的同步指令（Barrier）来协调彼此的执行进度。
+
+如果是 warp ，那么上述“有用”的语义就只能局限在 32 个 thread 之内了。
+
+这点倒是不错，但是我觉得没有回答到本质上。我们仔细一想就会发现，我们为什么要在一个 CTA 共享内存，为什么要同步指令，为什么要交换数据？人们会说，软件就是这么设计的，将一个大型的计算任务，分解成多个可以在 inter-SM 并行的 CTA，这些 CTA 内的线程在计算的算法表示中，就是需要读取共享内存呀，就是需要同步指令呀。
+
+而我们只要了解 LLM workloads 就会发现，里面的矩阵运算是非常容易并行的，你甚至可以 1 个 1 个 vector 的去算，也可以整个矩阵一起去算。当然两者的同步方式和对于共享内存的利用方式是不同的，但是总归是可以算的。也就是说，其实从软件根本不能提供“一个 CTA 究竟里面应该包含多少个 warp”的任何提示！也就根本无从谈起，到底有多少 thread 需要共享内存，需要同步线程等协作。
+
+那么 CTA 的大小究竟是谁决定的呢？其实是 GPU 的“计算/访存”特性决定的。GPU 的计算带宽要远超访存带宽，这就导致我们将数据从显存中搬运到 SM 上，其实是希望尽可能重用（reuse）它算很多次，然后再写回显存中。但是这种 reuse 并不是无节制的，在 reuse 过程中，会产生很多的中间结果，也会产生很多的 reduction 中间值，这些额外产生的数据需要驻留在 SM 上，而 SM 上的 shm，register 和 cache 的空间有限，这就导致 reuse 不能一致扩大，也就是这本质上是“数据重用次数 vs 片上驻留数据”的 tradeoff ，是它决定了 CTA 的大小。
+
+### 2.2 Grid
+
+在 CUDA 中， CTA 组被称为 Grid。如果我们希望定位到一个 thread，我们可以使用如下代码：
 
 ```c++
 int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -129,22 +157,6 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx
 从这点也可以看出，SIMT 模型是从硬件层面支持的，而不是用编译器，从汇编层面支持的。
 
 我们也可以看出，我们在写 kernel 的时候，用 `<<<grid, block>>>` 二元组来描述并行，是非常必要的，不能只用一个一元组去描述。
-
-### 2.2 Grid and Block
-
-虽然已经在上一个 section 从线程协作的角度介绍过了 CTA，但是我还是希望在从编程实践的角度介绍一下 `grid` 和 `block`。
-
-我们可以这样理解，我们为了让 GPU 的利用率变高，我们有两种思路：
-
-- inter-SM：也就是要利用每一个 SM，不能有 SM 的闲置。
-- intra-SM：也就是要用好每一个 SM，SM 不能有闲置的资源。
-
-我们要保证这两种利用率都提高，直接说结论：Grid 越大，inter-SM 的利用率越容易高，Block 越大，intra-SM 的利用率越容易高。
-
-考虑到并行任务的数目固定，那么 Grid 越大，则 Block 越小，inter-SM 利用率越高，intra-SM 利用率越低，反之也成立。所以我们要在 Grid 和 Block 之间做 tradeoff。
-
-之所以有上面的结论，是因为 Block 只能在一个 SM 上运行，并且由多个 Warp 组成。所以为了提高 intra-SM 的利用率，Block 就要提高其中的 Warp 数量，这样才能在某个 warp 阻塞等待时，及时切换其他的 Warp。而为了提高 inter-SM 的利用率，Grid 里的 Block 就要足够多，才能占据全部的 SM（一个 Block 只能固定在一个 SM 上）。
-
 至于为什么 Grid 和 Block 都是 `(uint, uint, uint)` 的三元组，这跟利用率无关，只是为了方便编程，比如在处理向量的时候，我们可以在只使用 1 个维度，而在处理视频的时候，就需要 3 个维度了。
 
 ### 2.3 Memory Type
@@ -176,14 +188,14 @@ __global__ void myKernel(...) {
 
 总结如下：
 
-| Memory   | Location on/off chip | Cached | Access | Scope                | Lifetime        |
-| -------- | -------------------- | ------ | ------ | -------------------- | --------------- |
-| Register | On                   | n/a    | R/W    | 1 thread             | Thread          |
-| Local    | Off                  | Yes    | R/W    | 1 thread             | Thread          |
-| Shared   | On                   | n/a    | R/W    | All threads in block | Block           |
-| Global   | Off                  | Yes    | R/W    | All threads + host   | Host allocation |
-| Constant | Off                  | Yes    | R      | All threads + host   | Host allocation |
-| Texture  | Off                  | Yes    | R      | All threads + host   | Host allocation |
+|Memory  |Location on/off chip|Cached|Access|Scope               |Lifetime       |
+|--------|--------------------|------|------|--------------------|---------------|
+|Register|On                  |n/a   |R/W   |1 thread            |Thread         |
+|Local   |Off                 |Yes   |R/W   |1 thread            |Thread         |
+|Shared  |On                  |n/a   |R/W   |All threads in block|Block          |
+|Global  |Off                 |Yes   |R/W   |All threads + host  |Host allocation|
+|Constant|Off                 |Yes   |R     |All threads + host  |Host allocation|
+|Texture |Off                 |Yes   |R     |All threads + host  |Host allocation|
 
 ### 2.4 Sync and Stream
 
@@ -197,19 +209,50 @@ cudaDeviceSynchronize();
 
 在你不使用 Stream 的情况下，所有 CUDA 操作（比如在 GPU 上计算、在 CPU 和 GPU 之间拷贝数据）都默认放入一个叫做 “默认流”（Default Stream） 的大队列里。我们只需要声明多个 Stream，就可以实现并发。同一个 Stream 内的指令是顺序执行的，而不同 Stream 中的指令是可以并发执行的。
 
+### 2.5 Layout
+
+Layout 是 CUDA 编程中的一种专有概念，它指的是如何把一种抽象的张量坐标（tensor coordinate）映射到一个一维空间上面，这个一维空间往往是：
+
+- 地址空间
+- 同一时刻的 thread index
+- 同一 thread 不同的时刻
+
+正是这在 CUDA 编程中常见的三种 layout ：
+
+- memory layout
+- thread layout
+- value layout
+
+layout 本质是一种二元组：
+
+```python
+layout = (shape, stride)
+```
+
+其中 `stride` 决定张量坐标中每个分量对于最终线性坐标的贡献，而 `shape` 决定了分量的范围（我想起来一个函数需要有映射关系和自变量范围）。
+
+
+layout 之所以重要，正是因为可以说 CUDA 编程的一个很重要的设计部分，就是设计将算法中的张量中的元素，映射到地址空间和 SM 上的计算单元中。而这个部分其实非常 dirty ，所以作为抽象封装起来供编程者使用，是一个非常明智的决定。
+
 ---
 
  
 
 ## 三、Triton
 
-### 3.1 Tiled-Based
+### 3.1 SPMD
 
-与 CUDA 不同，Triton 并不是 SIMT 编程模型，而是 Tiled-Based 编程模型，或者换种说法，是一种 SIMD 模型。我们没有办法像在 CUDA 编程一样，操纵每个线程（或者说每个标量），我们只能操纵一个向量或者一个张量，当然了，此时他们被叫作 Tile。
+与 CUDA 不同，Triton 并不是 SIMT 编程模型，而是 SPMD (Single Program Multiple Data) 编程模型。也就是说，CUDA 代码是给每个 thread 看的，而 triton 代码是给每个 Program Instance 看的。Program Instance 基本上可以理解成是 CTA 的同义词。
 
-在 Triton 中我们也有 grid 的概念，我们用 grid 来组织“Program Instance”，每个 Program Instance 负责一个 Tile。需要强调的是，此时的组织，不再是真的硬件映射关系了，往往只是一种算法逻辑上的分块。
+如果要深究的话，一个 Triton 的 PI，对应一到多个 CTA。至于到底对应多少个 CTA ，那其实是 triton 编译器自动化决策的部分。
 
-（如果要深究的话，一个 Triton 的 PI，对应一到多个 CTA）。
+因此，在 Triton 中我们只有 grid 的概念，我们用 grid 来组织“Program Instance”，每个 Program Instance 负责一个 Tile。而我们不再有 BlockDim 的概念了。
+
+这种方式的好处在于，我们忽略了 thread layout 和 value layout 的细节，也就是说，基本上我们不需要考虑如何把张量映射到硬件执行单元上面。
+
+此外 Triton 似乎也不能显式的管理共享内存。
+
+### 3.2 Grid and Program id
 
 当我们计算一个矩阵加法 $C = A + B$ 时，第 $(m, n)$ 个 PI，负责的就是第 $(m, n)$ 个 Tile 的计算。在启动核函数时，我们指定 grid 参数：
 
@@ -248,7 +291,9 @@ pid_m = tl.program_id(axis=0)
 pid_n = tl.program_id(axis=1)
 ```
 
-那么在 Tiled-Based 的编程模型下，我们是如何操作数据的呢？答案是我们使用“offsets 张量”。offset 可以理解为一个标量数据的地址，而一个 offsets 张量，就可以理解为一组数据的地址。我们用一个 numpy-like 的方法表示这组 offset，如下所示：
+### 3.3 Offsets
+
+那么在 SPMD 的编程模型下，我们是如何操作数据的呢？答案是我们使用“offsets 张量”。offset 可以理解为一个标量数据的地址，而一个 offsets 张量，就可以理解为一组数据的地址。我们用一个 numpy-like 的方法表示这组 offset，如下所示：
 
 ```python
 # 2. 计算当前块的二维偏移量
@@ -299,3 +344,13 @@ tl.store(c_offsets, c_tile, mask=mask)
 
 ---
 
+
+## 四、TileLang
+
+### 4.1 Layout Inference
+
+我理解 TileLang 是一种比 Triton 更简洁和本质的 DSL 。这很大程度上归功于 Layout Inference 。
+
+正如前面所说，Triton 其实也不需要指定 thread layout 和 value layouot ，但是 offsets 的设计，使得它依然需要由编程人员指定 memory layout 的映射关系。
+
+而 TileLang 就完全不会有这个问题，它也是 Tile-Based ，它只需要在算法上描述这个 Tile 是如何计算的，完全不需要涉及任何的 layout 细节。
