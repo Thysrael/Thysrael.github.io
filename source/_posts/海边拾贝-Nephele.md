@@ -1,6 +1,5 @@
 ---
-title: 海边拾贝-Nephele
-mathjax: true
+title: 海边拾贝 - Nephele
 tags: [海边拾贝,S7课上,知识总结]
 categories: 海边拾贝
 abbrlink: ab21fab4
@@ -13,7 +12,7 @@ date: 2024-01-15 12:09:00
 
 项目开源地址：https://github.com/nephele-vm
 
-<img src="./海边拾贝-Nephele/nephele.png" alt="img" style="zoom:35%;"/>
+<img src="./海边拾贝-Nephele/nephele.webp" alt="img" style="zoom:35%;"/>
 
 本文在 hypervisor 上为 unikernel 提供了 clone 能力。
 
@@ -31,19 +30,19 @@ Unikernel 是一种特殊的虚拟机，将单个应用程序与支持它运行�
 
 与传统操作系统相比，Unikernel 的体积和内存占用都大大减少，从而降低了云计算成本。
 
-![img](海边拾贝-Nephele/-17052920154173.png)
+![img](海边拾贝-Nephele/-17052920154173.webp)
 
 相比于普通的虚拟机，因为 Unikernel 为了节省资源和高效运行，移除了很多抽象，但这也导致了一些语义的缺失，比如说无法进行 Process Fork。
 
 ![img](海边拾贝-Nephele/-17052920174885.webp)
 
-Unikernel 在云计算方面也被誉为“container 2.0”，Unikernel 在资源节约，安全性，平台独立性方面都比 docker 有优势。
+Unikernel 在云计算方面也被誉为 “container 2.0”，Unikernel 在资源节约，安全性，平台独立性方面都比 docker 有优势。
 
-![img](海边拾贝-Nephele/-17052920197247.png)
+![img](海边拾贝-Nephele/-17052920197247.webp)
 
 ### 2.2 Fork
 
-Unikernel 的重要设计就是通过移除“多地址空间”的抽象，来避免陷入内核和切换进程的开销，而 fork 要求存在多个地址空间。两者在语义上是冲突的。
+Unikernel 的重要设计就是通过移除 “多地址空间” 的抽象，来避免陷入内核和切换进程的开销，而 fork 要求存在多个地址空间。两者在语义上是冲突的。
 
 在云计算方面，fork 的功能又是十分有优势的，比如说 NGINX 利用 fork 来 Clone 出多个进程，实现自动扩容，增大吞吐量；Redis 利用 fork 产生相同的内存副本，方便数据镜像的保存。
 
@@ -53,9 +52,9 @@ Unikernel 的重要设计就是通过移除“多地址空间”的抽象，来�
 
 Xen 是一款半虚拟化的 hypervisor 框架。
 
-![img](海边拾贝-Nephele/-17052920233949.png)
+![img](海边拾贝-Nephele/-17052920233949.webp)
 
-Xen 提供了一个抽象的硬件层，称为域 0 或管理域（Dom0），它运行一个特殊的操作系统（通常是Linux）。Dom0 负责管理其他虚拟机，也被称为控制域。在 Dom0 里运行 toolstack（xl），他会显式创建和管理其他的 VM。
+Xen 提供了一个抽象的硬件层，称为域 0 或管理域（Dom0），它运行一个特殊的操作系统（通常是 Linux）。Dom0 负责管理其他虚拟机，也被称为控制域。在 Dom0 里运行 toolstack（xl），他会显式创建和管理其他的 VM。
 
 虚拟监控程序（hypervisor）仅管理最小的关键资源集，包括 CPU、内存、定时器和中断，而对其他硬件设备的访问则由 Dom0 控制，Dom0 已经包含了支持这些设备所需的设备驱动程序。
 
@@ -94,7 +93,7 @@ Nephele 通过修改 Xen （Hypervisor 框架）为 unikernel 提供了 clone �
     - 文件系统 9pfs
     - 设备
 
-![img](海边拾贝-Nephele/-170529203515111.png)
+![img](海边拾贝-Nephele/-170529203515111.webp)
 
 ### 3.3 细节
 
@@ -121,7 +120,7 @@ Nephele 在 clone 的基础上做出了一些性能优化：
 - 在克隆过程中，设备前后端协商过程被跳过，两端从一开始就被创建为连接状态。
 - XenStore 的元数据会被缓存在 Xencloned，可以加速多次 clone 操作
 
-许多优化都是基于“clone 相比于重新启动，可以利用许多现有的状态信息”的优势。
+许多优化都是基于 “clone 相比于重新启动，可以利用许多现有的状态信息” 的优势。
 
 ---
 
@@ -136,7 +135,7 @@ Nephele 在 clone 的基础上做出了一些性能优化：
 - 实例化时间更短：clone 需要 20~30ms，boot 需要 160~300ms，速度提高 8 倍。这得益于 fork 的设计和相关优化
 - 内存消耗更小：在相同内存情况下，使用 boot，获得 2800 个实例，而使用 clone，获得 8900 个实例，提高 3 倍，得益于 COW 机制
 
-![img](海边拾贝-Nephele/-170529205548013.png)
+![img](海边拾贝-Nephele/-170529205548013.webp)
 
 ### 4.2 VM Clone vs Process Fork
 
@@ -144,19 +143,19 @@ Nephele 在 clone 的基础上做出了一些性能优化：
 
 - 用户内存空间对于 clone/fork 时长的影响，当内存空间增大的时候，两者的差距会缩小到 21%（最差是 5757%）。这是因为 clone 用的内存页面比 fork 用得更大，所以在大内存时有较好表现，而且因为缓存策略，所以在第二次 clone 的时候，差距会进一步缩小
 
-![img](海边拾贝-Nephele/-170529206124115.png)
+![img](海边拾贝-Nephele/-170529206124115.webp)
 
 - NGINX 吞吐量对比：clone 策略更优：这是因为 IDC 实现要优于 IPC 实现，Unikernel 不用陷入内核态
 
-![img](海边拾贝-Nephele/-170529206416017.png)
+![img](海边拾贝-Nephele/-170529206416017.webp)
 
 - 在 Redis 场景下，总体来说这种新式 fork 是没有办法和 Linux 原生 fork 相比的，但是随着数据库的扩大，差距会缩小
 
-![img](海边拾贝-Nephele/-170529206762319.png)
+![img](海边拾贝-Nephele/-170529206762319.webp)
 
 - Fuzz 测试：fuzz 测试会引发 COW。clone 支持将平均吞吐量提高到 470 次/秒，仅比 Linux 进程的平均 590 次/秒低 18.6%。
 
-![img](海边拾贝-Nephele/-170529207050521.png)
+![img](海边拾贝-Nephele/-170529207050521.webp)
 
 ### 4.3 Unikernel vs Container
 
@@ -164,11 +163,11 @@ Nephele 在 clone 的基础上做出了一些性能优化：
 
 - Nephele 内存消耗更小，这得益于共享内存机制
 
-![img](海边拾贝-Nephele/-170529207427223.png)
+![img](海边拾贝-Nephele/-170529207427223.webp)
 
 - Nephele 延迟更低，这是因为 Unikernel 移除了许多抽象层，倒不是 VM Clone 的原因
 
-![img](海边拾贝-Nephele/-170529207607025.png)
+![img](海边拾贝-Nephele/-170529207607025.webp)
 
 ---
 

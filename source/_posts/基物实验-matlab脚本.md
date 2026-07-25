@@ -2,9 +2,8 @@
 abbrlink: 60099a32
 categories: 基物实验
 date: 2022-06-11 17:23:20
-mathjax: true
 tags: [基物实验, S4复习, 工具总结]
-title: 基物实验-matlab脚本
+title: 基物实验 - matlab 脚本
 ---
 
 这里列举一下在基物实验数据处理中用到很多次的脚本，

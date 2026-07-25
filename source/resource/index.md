@@ -42,7 +42,7 @@ date: 2024-01-24 00:06:53
 - [Armv8-A 指令简易手册](https://tenloy.github.io/2021/04/17/Arm64-Handbook.html#%E5%9B%9B%E3%80%81%E5%8A%A0%E8%BD%BD-%E5%AD%98%E5%82%A8%E6%8C%87%E4%BB%A4)
 - [Linux 字体配置](https://catcat.cc/post/2020-10-31)
 - [深入理解 C11/C++11 内存模型](https://zhuanlan.zhihu.com/p/405084277?utm_campaign=shareopn&utm_medium=social&utm_psn=1760524411289997312&utm_source=wechat_session)
-- [linux 内核的内存屏障-译](https://maple-leaf-0219.github.io/2020/linux%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C-%E8%AF%91/)
+- [linux 内核的内存屏障 - 译](https://maple-leaf-0219.github.io/2020/linux%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C-%E8%AF%91/)
 - [编辑的时候我在想什么](https://evaparish.com/blog/how-i-edit)
 - [Lisp 之根源](http://daiyuwen.freeshell.org/gb/rol/roots_of_lisp.html)
 - [那些害死 Haskell 的，也会害死 Rust](https://www.sohu.com/a/421726521_355140)
@@ -55,9 +55,9 @@ date: 2024-01-24 00:06:53
 - [如何渲染一个文字](https://blog.yangteng.me/articles/2019/typography-how-fonts-are-rendered/)
 - [字体渲染背后不得不说的故事](https://www.jianshu.com/p/8414b96549e3)
 - [细节拉满，80 张图带你一步一步推演 slab 内存池的设计与实现](https://www.cnblogs.com/binlovetech/p/17288990.html)
-- [程序验证计数--霍尔逻辑](https://blog.lucode.net/theory/PV-HoareLogic.html)
+- [程序验证计数 -- 霍尔逻辑](https://blog.lucode.net/theory/PV-HoareLogic.html)
 - [CPU 内存加密技术介绍](https://blog.lucode.net/theory/PV-HoareLogic.html)
-- [AMD SEV 内存加密--白皮书](https://blog.csdn.net/qq_43543209/article/details/135652011)
+- [AMD SEV 内存加密 -- 白皮书](https://blog.csdn.net/qq_43543209/article/details/135652011)
 - [Enabling confidential computing with AMD SEV-SNP technology](https://dl.acm.org/doi/fullHtml/10.1145/3623392)
 - [The Various X86 Modes](https://slideplayer.com/slide/4945236/)
 - [Setting up an X86 CPU](https://thasso.xyz/2024/07/13/setting-up-an-x86-cpu.html)
@@ -97,7 +97,7 @@ date: 2024-01-24 00:06:53
 - [In Depth Understanding of Attention Mechanism](https://medium.com/@funcry/understanding-attention-mechanism-in-depth-550f59ae1c19)
 - [Different implementations of the ubiquitous convolution](https://medium.com/@sundarramanp2000/different-implementations-of-the-ubiquitous-convolution-6a9269dbe77f)
 - [Is Furiosa’s chip architecture actually innovative? Or just a fancy systolic array?](https://furiosa.ai/blog/is-furiosas-chip-architecture-actually-innovative-or-just-a-fancy-systolic-array)
-- [为你的网站加入Google Analytics](https://www.nielsen.tw/seo/google-analytics/)
+- [为你的网站加入 Google Analytics](https://www.nielsen.tw/seo/google-analytics/)
 
 # 网站
 

@@ -1,0 +1,132 @@
+# Site-owned NexT configuration. Keep theme source in node_modules untouched.
+custom_file_path:
+  variable: source/_data/variables.styl
+  style: source/_data/styles.styl
+
+scheme: Muse
+darkmode: true
+minify: true
+
+vendors:
+  katex: https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.47/katex.min.css
+
+favicon:
+  small: /images/favicon-16x16-wall.png
+  medium: /images/favicon-32x32-wall.png
+  apple_touch_icon: /images/apple-touch-icon-next.png
+  safari_pinned_tab: /images/logo.svg
+
+footer:
+  since: 2021.12.18
+  icon:
+    name: fa fa-heart
+    animated: false
+    color: "#ff0000"
+  powered: false
+
+menu:
+  home: / || fa fa-home
+  categories: /categories/ || fa fa-th
+  tags: /tags/ || fa fa-tags
+  archives: /archives/ || fa fa-archive
+  Resources: /resource/ || fa fa-book
+  Projects: /projects/ || fa fa-briefcase
+  Friends: /links/ || fa fa-link
+  Roam: /obsidian-quartz/ || fa fa-sitemap
+  about: /about/ || fa fa-user
+
+menu_settings:
+  icons: true
+  badges: true
+
+sidebar:
+  display: always
+  padding: 18
+  offset: 12
+
+avatar:
+  url: /images/avatar2.webp
+  rounded: true
+  rotated: true
+
+social:
+  GitHub: https://github.com/thysrael || fab fa-github
+  E-Mail: mailto:thysrael@163.com || fa fa-envelope
+  RSS: /atom.xml || fa fa-rss
+
+toc:
+  enable: true
+  number: false
+  wrap: true
+  expand_all: true
+  max_depth: 6
+
+codeblock:
+  copy_button:
+    enable: true
+    style: flat
+
+font:
+  enable: true
+  host: https://fonts.loli.net
+  global:
+    external: true
+    family: Noto Serif SC
+  title:
+    external: true
+    family: Ma Shan Zheng
+  headings:
+    external: true
+    family: Noto Serif SC
+  posts:
+    external: true
+    family: Noto Serif SC
+  codes:
+    external: true
+    family: JetBrains Mono
+
+baidu_site_verification: code-jsxllPgZAX
+
+math:
+  every_page: false
+  katex:
+    enable: true
+    copy_tex: false
+
+lazyload: false
+
+pace:
+  enable: true
+  color: blue
+  theme: minimal
+
+comments:
+  style: tabs
+  active: utterances
+  storage: true
+  lazyload: false
+
+utterances:
+  enable: true
+  repo: Thysrael/blog-comment
+  issue_term: title
+  theme: github-light
+
+google_analytics:
+  tracking_id: G-1K2CH25PS7
+  only_pageview: false
+
+busuanzi_count:
+  enable: true
+  total_visitors: true
+  total_visitors_icon: fa fa-user
+  total_views: true
+  total_views_icon: fa fa-eye
+  post_views: true
+  post_views_icon: fa fa-eye
+
+local_search:
+  enable: true
+  top_n_per_article: 1
+  unescape: false
+  preload: false

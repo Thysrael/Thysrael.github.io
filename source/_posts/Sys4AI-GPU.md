@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Sys4AI-GPU
-mathjax: true
 categories: Sys4AI
 tags:
   - Sys4AI
@@ -17,29 +16,29 @@ date: 2025-09-13 09:38:10
 
 采用我两年半前写下的博文开篇：“**GPU 是一个由多个 SIMD 处理器组成的 MIMD 处理器**。”
 
-这句话的意思是说，GPU 是一个多核系统，它这里说的“核”，指的是像多核 CPU 中的 core，它对应的不是 CUDA Core，而是 SM。而 SM 本身是一个 SIMD 处理器，也就是说，SM 是一个 SIMD 处理器。CUDA Core 其实对应的是一个 ALU 。一个 SM 中有多个 CUDA Core，所以它可以用一条指令进行多个标量的计算（送入不同的 CUDA Core）。
+这句话的意思是说，GPU 是一个多核系统，它这里说的 “核”，指的是像多核 CPU 中的 core，它对应的不是 CUDA Core，而是 SM。而 SM 本身是一个 SIMD 处理器，也就是说，SM 是一个 SIMD 处理器。CUDA Core 其实对应的是一个 ALU 。一个 SM 中有多个 CUDA Core，所以它可以用一条指令进行多个标量的计算（送入不同的 CUDA Core）。
 
-人们常常将 CPU 比作一个无所不知的教授，GPU 比喻成成百上千个小学生。而实际上，GPU 更像是一组长着很多只不协调的手的大学生。这个比喻中，SM 对应“大学生”，而 CUDA Core 等 SM 中的计算单元对应“手”。
+人们常常将 CPU 比作一个无所不知的教授，GPU 比喻成成百上千个小学生。而实际上，GPU 更像是一组长着很多只不协调的手的大学生。这个比喻中，SM 对应 “大学生”，而 CUDA Core 等 SM 中的计算单元对应 “手”。
 
 SM 才是指令的执行者，而不是 CUDA Core 是指令的执行者。我之所以会产生 CUDA Core 才是执行者的错觉，我猜测是因为在 SIMT 模型中，thread 对应的往往是 CUDA Core 这样的计算单元（其实也不是一一对应），而在 CPU 体系中，thread 和与之对应的 CPU Core 是指令的执行者，这就很容易让人产生，CUDA Core 才是指令的执行者的误解。
 
-![image-20211104155056775](./Sys4AI-GPU/image-20211104155056775.png)
+![image-20211104155056775](./Sys4AI-GPU/image-20211104155056775.webp)
 
 每个 SM 核都有自己独立的寄存器文件，L1 Cache/Shared Memory，指令调度单元等。
 
 ### 1.2 Schedule
 
-现在 CPU 也有两种趋势，一个是尽可能的增加 CPU Core 的数目，另一个是尽可能的增加 CPU 的向量指令集的能力。这就导致在某种意义上来说，CPU 系统就变成了“一组长着很多只手的教授们”，和 GPU 就非常类似了。那么到底 GPU 有什么其他独特的能力呢？
+现在 CPU 也有两种趋势，一个是尽可能的增加 CPU Core 的数目，另一个是尽可能的增加 CPU 的向量指令集的能力。这就导致在某种意义上来说，CPU 系统就变成了 “一组长着很多只手的教授们”，和 GPU 就非常类似了。那么到底 GPU 有什么其他独特的能力呢？
 
-我觉得有一个方面就是两者在面对 `ld/st` 访存指令导致的延迟的处理思路不同。CPU 通过构建多级 cache，来尽量降低访存指令的延迟（其实还有乱序发射）。而 GPU 并没有构建多级 cache（我猜测是因为多个核心的 cache 的硬件开销过大了），一旦遇到访存指令阻塞的情况，GPU 会立刻切换“另一个指令”来执行，充分利用那些闲置的计算资源（也就是 schedule）。这种设计思路，是一种不降低指令延迟的前提下，提高系统吞吐的方法。
+我觉得有一个方面就是两者在面对 `ld/st` 访存指令导致的延迟的处理思路不同。CPU 通过构建多级 cache，来尽量降低访存指令的延迟（其实还有乱序发射）。而 GPU 并没有构建多级 cache（我猜测是因为多个核心的 cache 的硬件开销过大了），一旦遇到访存指令阻塞的情况，GPU 会立刻切换 “另一个指令” 来执行，充分利用那些闲置的计算资源（也就是 schedule）。这种设计思路，是一种不降低指令延迟的前提下，提高系统吞吐的方法。
 
-那么 GPU 是如何找到那条在访存阻塞时，可以被调度填充的指令呢？如果是 CPU，CPU 会在当前线程中的后续指令里，找一条与当前指令不存在数据依赖的指令，这依赖于 scoreboard 结构。我不确定 GPU 中能不能也实现相似的功能，毕竟 scoreboard 比较复杂。但是无论如何，CPU 和 GPU 都要面对，找不到一条不存在数据依赖的指令的情况，CPU 一般就选择阻塞等待了，反正在有多级 cache 的情况下，等待时间也不会太久。而 GPU 则不行，在没有 cache 的情况下，一旦等待，那时间可就长了。所以 GPU 选择切换“线程”，从另一个“线程”中找一条指令来执行。显然两条来自不同线程的指令，之间一定是不存在数据依赖的。在 GPU 中，我们称“线程”为 warp 。
+那么 GPU 是如何找到那条在访存阻塞时，可以被调度填充的指令呢？如果是 CPU，CPU 会在当前线程中的后续指令里，找一条与当前指令不存在数据依赖的指令，这依赖于 scoreboard 结构。我不确定 GPU 中能不能也实现相似的功能，毕竟 scoreboard 比较复杂。但是无论如何，CPU 和 GPU 都要面对，找不到一条不存在数据依赖的指令的情况，CPU 一般就选择阻塞等待了，反正在有多级 cache 的情况下，等待时间也不会太久。而 GPU 则不行，在没有 cache 的情况下，一旦等待，那时间可就长了。所以 GPU 选择切换 “线程”，从另一个 “线程” 中找一条指令来执行。显然两条来自不同线程的指令，之间一定是不存在数据依赖的。在 GPU 中，我们称 “线程” 为 warp 。
 
 这就又引入了一大堆问题。首先，难道切换 warp 本身是没有开销的吗？在 CPU 中，切换线程虽然不用更改地址空间，但是寄存器、PC 这些上下文状态还是要借助内存来保存和恢复的，那这样开销就大了（即使对于 CPU 来说，开销也很大）。那而 GPU 的 warp 切换按理说开销也不会小，甚至更大。这是因为 SM 是一个 SIMD 处理器，涉及到的寄存器数目非常庞大，而且 GPU 的访存延迟更高。
 
 但是实际上，warp 切换基本上是零开销的。这是因为 GPU 根本不借助内存去保存和恢复上下文；而是为每个 warp 准备单独的寄存器文件，无论这个 warp 是否活跃。所以切换 warp，就是单纯的改一下指针就好了。也就是说，虽然 GPU 的 cache 资源非常少，但是寄存器资源非常多。
 
-这种设计更理论的来说，被称作硬件多线程（Hardware Multithreading），每个 warp 相当于是一个 SM 的硬件线程。其实这种设计在 CPU 中也有出现，被称为同步多线程（Simultaneous Multithreading, SMT），在 Intel 中被称为超线程（Hyper-Threading, HT），也就是在一个 CPU Core 中，有多份独立的寄存器文件和 PC，但是只有一份 ALU 等执行单元。HT 的表现就是“逻辑核心”数目大于“物理核心”数目。
+这种设计更理论的来说，被称作硬件多线程（Hardware Multithreading），每个 warp 相当于是一个 SM 的硬件线程。其实这种设计在 CPU 中也有出现，被称为同步多线程（Simultaneous Multithreading, SMT），在 Intel 中被称为超线程（Hyper-Threading, HT），也就是在一个 CPU Core 中，有多份独立的寄存器文件和 PC，但是只有一份 ALU 等执行单元。HT 的表现就是 “逻辑核心” 数目大于 “物理核心” 数目。
 
 最后再介绍一下 SM 中的 Warp Scheduler 和 Dispatch Unit。其中 Warp Scheduler 负责挑选出特定 warp 的特定指令，而 Dispatch Unit 负责将这条指令，发送（issue）给执行单元执行，这主要有两个部分，一个是选择合适的执行单元（比如整数计算就发给 CUDA Core，访存就发给访存单元），另一个是对 warp 进行一定的拆分，这是因为 warp 的数目一般是 32 ，而有些计算资源只有 8 个，那么就需要分 4 次发射。
 
@@ -55,13 +54,13 @@ GPU 又在 SIMD 的基础上，实现了更为灵活的 SIMT 的抽象，这同�
 
 而如果到了软件范畴，其实 SIMT 的范围扩大了，我们使用 `(ctaid, tid)` 来完成对于 thread 的索引，当 CTA（Cooperative Thread Array）数目和 CTA 内 thread 数目增多时，SIMT 的范围就会扩大。而在底层硬件上，这些扩大的范围，最终还是会被分割成多个 warp SIMT 去执行。
 
-我相信在一开始的时候， warp 这个概念只是属于承载“schedule 和 SIMT 语义”的微体系结构细节，但是随着 GPU 越来越变得像 NPU ，warp 这个概念逐渐被软件开发者所熟知，比如说 warp specialization 技术，就是在软件层要求软件开发者去感知“访存 warp”、“计算 warp”和“通信 warp”。此时我们再回看 warp 这个概念，会惊奇的发现，它变成了一种 SM 内特定硬件单元的代称，上述 3 种 warp 就分别对应访存单元、TensorCore 和通信单元。这个时候 warp 的语义是扩大了的。
+我相信在一开始的时候， warp 这个概念只是属于承载 “schedule 和 SIMT 语义” 的微体系结构细节，但是随着 GPU 越来越变得像 NPU ，warp 这个概念逐渐被软件开发者所熟知，比如说 warp specialization 技术，就是在软件层要求软件开发者去感知 “访存 warp”、“计算 warp” 和 “通信 warp”。此时我们再回看 warp 这个概念，会惊奇的发现，它变成了一种 SM 内特定硬件单元的代称，上述 3 种 warp 就分别对应访存单元、TensorCore 和通信单元。这个时候 warp 的语义是扩大了的。
 
 ### 1.4 Memory Hierarchy
 
 GPU 的 Memory Hiearchy 如下所示：
 
-![image-20250913163324918](./Sys4AI-GPU/image-20250913163324918.png)
+![image-20250913163324918](./Sys4AI-GPU/image-20250913163324918.webp)
 
 GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享，而显存则在 GPU 片下（围绕 GPU 芯片的一堆小正方形芯片）。
 
@@ -73,7 +72,7 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 
 一个完整的 GPU 计算节点的互联图如下所示：
 
-![nvidia-pascal-nvlink-power8](./Sys4AI-GPU/nvidia-pascal-nvlink-power8.jpg)
+![nvidia-pascal-nvlink-power8](./Sys4AI-GPU/nvidia-pascal-nvlink-power8.webp)
 
 可以看到，如果想要搬运数据从 CPU Memory 搬运到 GPU Memory，需要走较为缓慢的 PCIe 通路（10x GB/s），而 GPU Memory 之间的数据搬运，则可以走 NVLink（100x GB/s）。
 
@@ -129,13 +128,13 @@ CUDA 编程种最重要的就是 `CTA/Block/Tile` 的概念了。这三个概念
 - 共享内存：同一个 CTA 中的 thread 可以读取相同的 shared memory。
 - 同步：同一个 CTA 内的线程可以通过 `__syncthreads()` 这样的同步指令（Barrier）来协调彼此的执行进度。
 
-如果是 warp ，那么上述“有用”的语义就只能局限在 32 个 thread 之内了。
+如果是 warp ，那么上述 “有用” 的语义就只能局限在 32 个 thread 之内了。
 
 这点倒是不错，但是我觉得没有回答到本质上。我们仔细一想就会发现，我们为什么要在一个 CTA 共享内存，为什么要同步指令，为什么要交换数据？人们会说，软件就是这么设计的，将一个大型的计算任务，分解成多个可以在 inter-SM 并行的 CTA，这些 CTA 内的线程在计算的算法表示中，就是需要读取共享内存呀，就是需要同步指令呀。
 
-而我们只要了解 LLM workloads 就会发现，里面的矩阵运算是非常容易并行的，你甚至可以 1 个 1 个 vector 的去算，也可以整个矩阵一起去算。当然两者的同步方式和对于共享内存的利用方式是不同的，但是总归是可以算的。也就是说，其实从软件根本不能提供“一个 CTA 究竟里面应该包含多少个 warp”的任何提示！也就根本无从谈起，到底有多少 thread 需要共享内存，需要同步线程等协作。
+而我们只要了解 LLM workloads 就会发现，里面的矩阵运算是非常容易并行的，你甚至可以 1 个 1 个 vector 的去算，也可以整个矩阵一起去算。当然两者的同步方式和对于共享内存的利用方式是不同的，但是总归是可以算的。也就是说，其实从软件根本不能提供 “一个 CTA 究竟里面应该包含多少个 warp” 的任何提示！也就根本无从谈起，到底有多少 thread 需要共享内存，需要同步线程等协作。
 
-那么 CTA 的大小究竟是谁决定的呢？其实是 GPU 的“计算/访存”特性决定的。GPU 的计算带宽要远超访存带宽，这就导致我们将数据从显存中搬运到 SM 上，其实是希望尽可能重用（reuse）它算很多次，然后再写回显存中。但是这种 reuse 并不是无节制的，在 reuse 过程中，会产生很多的中间结果，也会产生很多的 reduction 中间值，这些额外产生的数据需要驻留在 SM 上，而 SM 上的 shm，register 和 cache 的空间有限，这就导致 reuse 不能一致扩大，也就是这本质上是“数据重用次数 vs 片上驻留数据”的 tradeoff ，是它决定了 CTA 的大小。
+那么 CTA 的大小究竟是谁决定的呢？其实是 GPU 的 “计算 / 访存” 特性决定的。GPU 的计算带宽要远超访存带宽，这就导致我们将数据从显存中搬运到 SM 上，其实是希望尽可能重用（reuse）它算很多次，然后再写回显存中。但是这种 reuse 并不是无节制的，在 reuse 过程中，会产生很多的中间结果，也会产生很多的 reduction 中间值，这些额外产生的数据需要驻留在 SM 上，而 SM 上的 shm，register 和 cache 的空间有限，这就导致 reuse 不能一致扩大，也就是这本质上是 “数据重用次数 vs 片上驻留数据” 的 tradeoff ，是它决定了 CTA 的大小。
 
 ### 2.2 Grid
 
@@ -165,7 +164,7 @@ mad.lo.s32 %idx, %r3, %r2, %idx; // idx = r3 * r2 + idx
 
 CUDA 中的类型如下所示：
 
-![Memory spaces on a CUDA device](./Sys4AI-GPU/memory-spaces-on-cuda-device.png)
+![Memory spaces on a CUDA device](./Sys4AI-GPU/memory-spaces-on-cuda-device.webp)
 
 CUDA 使用 `__device__` 来声明一个全局变量，可以被所有 kernel 访问。如下所示：
 
@@ -246,7 +245,7 @@ layout 之所以重要，正是因为可以说 CUDA 编程的一个很重要的�
 
 如果要深究的话，一个 Triton 的 PI，对应一到多个 CTA。至于到底对应多少个 CTA ，那其实是 triton 编译器自动化决策的部分。
 
-因此，在 Triton 中我们只有 grid 的概念，我们用 grid 来组织“Program Instance”，每个 Program Instance 负责一个 Tile。而我们不再有 BlockDim 的概念了。
+因此，在 Triton 中我们只有 grid 的概念，我们用 grid 来组织 “Program Instance”，每个 Program Instance 负责一个 Tile。而我们不再有 BlockDim 的概念了。
 
 这种方式的好处在于，我们忽略了 thread layout 和 value layout 的细节，也就是说，基本上我们不需要考虑如何把张量映射到硬件执行单元上面。
 
@@ -293,7 +292,7 @@ pid_n = tl.program_id(axis=1)
 
 ### 3.3 Offsets
 
-那么在 SPMD 的编程模型下，我们是如何操作数据的呢？答案是我们使用“offsets 张量”。offset 可以理解为一个标量数据的地址，而一个 offsets 张量，就可以理解为一组数据的地址。我们用一个 numpy-like 的方法表示这组 offset，如下所示：
+那么在 SPMD 的编程模型下，我们是如何操作数据的呢？答案是我们使用 “offsets 张量”。offset 可以理解为一个标量数据的地址，而一个 offsets 张量，就可以理解为一组数据的地址。我们用一个 numpy-like 的方法表示这组 offset，如下所示：
 
 ```python
 # 2. 计算当前块的二维偏移量

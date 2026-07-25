@@ -2,9 +2,8 @@
 abbrlink: ea36b7db
 categories: Ruby设计
 date: 2023-01-05 12:10:36
-mathjax: true
 tags: [Ruby设计, S5课上, 直观理解]
-title: Ruby设计-开发日志
+title: Ruby 设计 - 开发日志
 ---
 
 # Log
@@ -166,7 +165,7 @@ rails s
 
 ### 1.4 seeds
 
-如果数据库不是同一个（一般本地开发多个，云端一个），那么测试数据就成了“个人私有”的，显然是低效的，我们可以给数据库一组“初始值“（也就是种子，seeds），这组初始值我们可以在 `db/seeds.rb` 中给出，如下所示
+如果数据库不是同一个（一般本地开发多个，云端一个），那么测试数据就成了 “个人私有” 的，显然是低效的，我们可以给数据库一组 “初始值 “（也就是种子，seeds），这组初始值我们可以在 `db/seeds.rb` 中给出，如下所示
 
 ```ruby
 Product.delete_all
@@ -261,11 +260,11 @@ bundle install
 
 这是因为
 
-> rake是Ruby语言的构建工具，它的配置文件是Rakefile。
+> rake 是 Ruby 语言的构建工具，它的配置文件是 Rakefile。
 >
-> gem是Ruby语言的包管理工具，它的配置文件后缀是.gemspec。
+> gem 是 Ruby 语言的包管理工具，它的配置文件后缀是.gemspec。
 >
-> bundler是Ruby语言的外部依赖管理工具，它有一个别名叫”bundle”，它的配置文件是Gemfile。
+> bundler 是 Ruby 语言的外部依赖管理工具，它有一个别名叫 ”bundle”，它的配置文件是 Gemfile。
 
 然后在 `views/layouts/application.html.erb` 中需要进行修改，加上每个类对应不同的 `scss` 。
 
@@ -343,7 +342,7 @@ validate [属性名], [验证内容]
 
 ### 1.7 路由设置
 
-为了更好的展示产品（而不是需要通过 `get` 路由访问产品列表），我们可以另外再从用户的角度完善一个页面，这需要借助一个一个新的控制器（在后面的开发中，它被定义为“付费购买用户所使用的控制器”），在终端输入
+为了更好的展示产品（而不是需要通过 `get` 路由访问产品列表），我们可以另外再从用户的角度完善一个页面，这需要借助一个一个新的控制器（在后面的开发中，它被定义为 “付费购买用户所使用的控制器”），在终端输入
 
 ```shell
 rails generate controller Store index
@@ -363,7 +362,7 @@ root 'store#index', as: 'store_index'
 get '/test/:id', to: 'test#test', as 'test_test'
 ```
 
-这个意思是，用户用 `get` 的方式访问 `test/:id` 这个 ulr 的时候，实际访问的是 `Test` 控制器对应的 `test` 动作对应的 `view` 。当我们有了 `as` 之后，我们可以通过 `test_test_path` 来指代 `xxxx/test/:id` ，用 `test_test_url` 指代 `http:/xxxx/test/:id`。也就是说path 类方法是对应的路径，不带协议部分。url 生成的带 http。两者差别在此。
+这个意思是，用户用 `get` 的方式访问 `test/:id` 这个 ulr 的时候，实际访问的是 `Test` 控制器对应的 `test` 动作对应的 `view` 。当我们有了 `as` 之后，我们可以通过 `test_test_path` 来指代 `xxxx/test/:id` ，用 `test_test_url` 指代 `http:/xxxx/test/:id`。也就是说 path 类方法是对应的路径，不带协议部分。url 生成的带 http。两者差别在此。
 
 这样看上面的 `root` ，只是某种意义的简写。
 
@@ -387,7 +386,7 @@ resoureces: products
 
 其中 `PATCH, PUT, POST` 都会被转换成 `POST`
 
-- PATCH： 实体中包含一个表，表中说明与该URI所表示的原内容的区别
+- PATCH： 实体中包含一个表，表中说明与该 URI 所表示的原内容的区别
 - PUT：上传资源
 - DELETE：删除资源
 
@@ -617,7 +616,7 @@ rake db:migrate
 
 ### 2.2 LineItem 商品模型
 
-我们称在购物车中东西为“商品”，与之对应的还有“产品 Product”，两者的区别是 Product 具有某种静态的属性，没有办法说“两种香皂”，但是很容易形容“两个香皂”。`LineItem` 依附 `Product` 存在，同时也依附 `Cart`。
+我们称在购物车中东西为 “商品”，与之对应的还有 “产品 Product”，两者的区别是 Product 具有某种静态的属性，没有办法说 “两种香皂”，但是很容易形容 “两个香皂”。`LineItem` 依附 `Product` 存在，同时也依附 `Cart`。
 
 所以我们这样定义它
 
@@ -767,7 +766,7 @@ class LineItemsController < ApplicationController
 
 ### 2.5 加入数量
 
-对于一个商品来说，之前的设计是有问题的，比如说我们买了两个香皂，那么不应该是“香皂，香皂”的显示两遍，而是应该“2 x 香皂”这样的显示，所以对于 `LineItem` 来说，数量是极其必要的。
+对于一个商品来说，之前的设计是有问题的，比如说我们买了两个香皂，那么不应该是 “香皂，香皂” 的显示两遍，而是应该 “2 x 香皂” 这样的显示，所以对于 `LineItem` 来说，数量是极其必要的。
 
 所以创建迁移
 
@@ -786,7 +785,7 @@ class AddQuantityToLineItems < ActiveRecord::Migration[7.0]
 end
 ```
 
-然后需要修改 `add_cart` 的行为，并不是每次“加入购物车”，都是会产生一个新的 `LineItem` 的。首先在 `app/models/cart.rb` 中加入方法
+然后需要修改 `add_cart` 的行为，并不是每次 “加入购物车”，都是会产生一个新的 `LineItem` 的。首先在 `app/models/cart.rb` 中加入方法
 
 ```ruby
 def add_product(product)
@@ -817,7 +816,7 @@ end
 rails generate migration combine_items_in_cart
 ```
 
-这个迁移没法按照“约定”自动产生 `change`，所以需要自己手写 `up, down`（这两个方法似乎也是某种约定）
+这个迁移没法按照 “约定” 自动产生 `change`，所以需要自己手写 `up, down`（这两个方法似乎也是某种约定）
 
 ```ruby
 class CombineItemsInCart < ActiveRecord::Migration[7.0]
@@ -857,7 +856,7 @@ end
 
 ### 2.6 清空购物车
 
-清空购物车的本质是将当前的购物车删除，所以先加入“清空按钮”在 `show.html` 中
+清空购物车的本质是将当前的购物车删除，所以先加入 “清空按钮” 在 `show.html` 中
 
 ```html
 <p id="notice"><%= notice %></p>
@@ -1028,7 +1027,7 @@ bundle install
 
 至于为啥是这个，并不知道为啥。这样之后我们就可以使用 `jquery-ui` 了。
 
-然后考虑如何对“刚刚点击过”的 `LineItem` 做一个突出显示，可以考虑在 `create` 中维护一个 `@current_item`
+然后考虑如何对 “刚刚点击过” 的 `LineItem` 做一个突出显示，可以考虑在 `create` 中维护一个 `@current_item`
 
 ```ruby
 format.js { @current_item = @line_item }
@@ -1408,7 +1407,7 @@ rails generate scaffold User name:string password:digest role:integer
 rails db:migrate
 ```
 
-对于密码部分，可以借助插件完成“确认密码的功能”
+对于密码部分，可以借助插件完成 “确认密码的功能”
 
 ```ruby
 class User < ApplicationRecord
@@ -1659,7 +1658,7 @@ end
 
 ### 5.2 FavorItem 收藏品模型
 
-收藏品模型描述的是 `Product` 和 `Favourite` 之间的“多对多关系”，所以需要这样建立模型
+收藏品模型描述的是 `Product` 和 `Favourite` 之间的 “多对多关系”，所以需要这样建立模型
 
 ```
 rails generate scaffold FavorItem product:references user:belongs_to
@@ -1687,7 +1686,7 @@ has_many :favor_items, dependent: :destroy
 
 ### 5.3 加入收藏夹
 
-在 `store` 界面上，除了有“加入购物车”之外，应当有“加入收藏夹”的功能，可以如此修改 `store` 界面
+在 `store` 界面上，除了有 “加入购物车” 之外，应当有 “加入收藏夹” 的功能，可以如此修改 `store` 界面
 
 ```html
 <!-- 加入收藏夹 -->
@@ -1788,7 +1787,7 @@ rake db:migrate
 
 ### 6.2 Prompt 促销项模型
 
-促销项都是外键，用于关联 `Product` 产品和 `Activity` 活动，形成“活动-产品” 的多对多关系。
+促销项都是外键，用于关联 `Product` 产品和 `Activity` 活动，形成 “活动 - 产品” 的多对多关系。
 
 ```shell
 rails generate scaffold Prompt  product:references activity:belongs_to

@@ -2,7 +2,6 @@
 abbrlink: f0dad564
 categories: IEArch
 date: 2022-11-24 12:59:39
-mathjax: true
 tags: [IEArch, S5课上, 知识总结]
 title: IEArch-NaiveTPU
 ---
@@ -15,11 +14,11 @@ title: IEArch-NaiveTPU
 
 相比于 lab4 只有 Bram 是在板子上，而 PL 采用软件模拟的，这次 PL 侧我们利用 FPGA 实现了，也就是真正完成了一个简单的乘法运算加速器。
 
-![](IEArch-NaiveTPU/示意图.png)
+![](IEArch-NaiveTPU/示意图.webp)
 
 PL 侧架构如图所示:
 
-![image-20221124103808249](IEArch-NaiveTPU/image-20221124103808249.png)
+![image-20221124103808249](IEArch-NaiveTPU/image-20221124103808249.webp)
 
 可以看到，依然是利用 bram 进行通信。用到了在 lab3 中开发的 MAC 模块。
 
@@ -31,7 +30,7 @@ PL 侧架构如图所示:
 
 但是我们实际的需求是计算  $A_{M \times N} \cdot B_{N \times P}$  ，所以需要对这两个矩阵分块，分块的方法就是 $A$ 矩阵横着分（适应 $8 \times N$ ）$B$ 矩阵竖着分（适应 $N \times 16$ ）。如图所示：
 
-![](IEArch-NaiveTPU/矩阵乘法.png)
+![](IEArch-NaiveTPU/矩阵乘法.webp)
 
 对于不足 8 和 16 的输入矩阵，需要补齐。
 
@@ -115,7 +114,7 @@ data right
 
 生成 bit 流后上板，需要用到 lab4 的 `Matmul.py` ，最后效果如图
 
-![](IEArch-NaiveTPU/微信图片_20221124120955.png)
+![](IEArch-NaiveTPU/微信图片_20221124120955.webp)
 
 ---
 
@@ -127,26 +126,28 @@ data right
 
 有如下约束
 $$
+\begin{aligned}
 M \times N \leq 8 \times 4096 = 32768\\
 N \times P \leq 16 \times 8192 = 131072
+\end{aligned}
 $$
-取等条件是 `M % 8 == 0, P % 16 == 0` 。软件 padding 是根据脉冲矩阵的大小进行的，所以是 4 补零，硬件补零是按照 $8 \times 16 $ 的乘法单元进行补零的，为了取等，不能补零，所以是上面的条件。
+取等条件是 `M % 8 == 0, P % 16 == 0` 。软件 padding 是根据脉冲矩阵的大小进行的，所以是 4 补零，硬件补零是按照 $8 \times 16$ 的乘法单元进行补零的，为了取等，不能补零，所以是上面的条件。
 
 这是因为 BRAM 的配置如下：
 
-![image-20221120162448350](IEArch-NaiveTPU/image-20221120162448350.png)
+![image-20221120162448350](IEArch-NaiveTPU/image-20221120162448350.webp)
 
 
 
-![image-20221120163639486](IEArch-NaiveTPU/image-20221120163639486.png)
+![image-20221120163639486](IEArch-NaiveTPU/image-20221120163639486.webp)
 
 
 
-![image-20221120164757236](IEArch-NaiveTPU/image-20221120164757236.png)
+![image-20221120164757236](IEArch-NaiveTPU/image-20221120164757236.webp)
 
 
 
-![image-20221120164859454](IEArch-NaiveTPU/image-20221120164859454.png)
+![image-20221120164859454](IEArch-NaiveTPU/image-20221120164859454.webp)
 
 > 关于补零：
 >
@@ -164,12 +165,14 @@ $$
 
 均是足够的。
 
-![image-20221120164108304](IEArch-NaiveTPU/image-20221120164108304.png)
+![image-20221120164108304](IEArch-NaiveTPU/image-20221120164108304.webp)
 
 由计算可得 Feature 和 Weight 矩阵中的最大元素个数分别是（需要按照 4 补零，但是恰好是对齐的）：
 $$
+\begin{aligned}
 feature\_max = 784 \times 25 = 19600\\
 weigth\_max = 784 \times 100 = 78400
+\end{aligned}
 $$
 BRAM_FM32 可以容纳的最大元素个数
 $$
@@ -347,7 +350,7 @@ def send_data(self, data, block_name, offset='default'):
 
 然后烧录 PL 侧，运行即可得到正确结果：
 
- ![image-20221121114552767](IEArch-NaiveTPU/image-20221121114552767.png)
+ ![image-20221121114552767](IEArch-NaiveTPU/image-20221121114552767.webp)
 
 ---
 
@@ -355,11 +358,11 @@ def send_data(self, data, block_name, offset='default'):
 
 ## 5
 
-补零是不必要的，因为补零的位置虽然会被运算，但是并不会作为“有效答案”。
+补零是不必要的，因为补零的位置虽然会被运算，但是并不会作为 “有效答案”。
 
 如果不进行补 0，无效位置保留默认值，不会影响矩阵运算结果，这是因为我们通过控制信号，会忽略原先补零位置计算出的答案。
 
-我们可以将“补零”操作改为“补一”操作验证上面的观点，修改 `Matmul.py`  中的 `send_data` 方法
+我们可以将 “补零” 操作改为 “补一” 操作验证上面的观点，修改 `Matmul.py`  中的 `send_data` 方法
 
 ```python
 # 原为 padd = np.zeros((self.paddedm, n), dtype=np.uint8)
@@ -368,7 +371,7 @@ padd = np.ones((self.paddedm, n), dtype=np.uint8)
 
 然后运行工程，会发现依然是可以正常工作的，效果如图
 
- ![image-20221121114552767](IEArch-NaiveTPU/image-20221121114552767.png)
+ ![image-20221121114552767](IEArch-NaiveTPU/image-20221121114552767.webp)
 
 ----
 
@@ -376,7 +379,7 @@ padd = np.ones((self.paddedm, n), dtype=np.uint8)
 
 ## 6
 
-如果需要“跳地址”，那么就需要人为控制写入的偏移量，可以通过修改 `bram.py` 文件，来为偏移量增设这个功能。然后修改 `Matmul.py` 文件，使得我们可以在传输数据的时候实现“跳地址”的功能。
+如果需要 “跳地址”，那么就需要人为控制写入的偏移量，可以通过修改 `bram.py` 文件，来为偏移量增设这个功能。然后修改 `Matmul.py` 文件，使得我们可以在传输数据的时候实现 “跳地址” 的功能。
 
 ```python
 ### bram.py
@@ -437,13 +440,13 @@ def send_data(self, data, block_name, offset='default'):
     # pass
 ```
 
-需要注意的是，可能是由于前面出现了“转置”操作，所以如果直接书写代码，会报错
+需要注意的是，可能是由于前面出现了 “转置” 操作，所以如果直接书写代码，会报错
 
 ```shell
 not C-contiguous
 ```
 
-意思是 `ndarray` 在内存中的存储方式不是行优先（C-order）的。而Fortrant-order（列优先顺序）不适合 `mmap` 的写入。所以我们需要将数组重新变成行优先序，即如下代码：
+意思是 `ndarray` 在内存中的存储方式不是行优先（C-order）的。而 Fortrant-order（列优先顺序）不适合 `mmap` 的写入。所以我们需要将数组重新变成行优先序，即如下代码：
 
 ```python
 toWrite = toWrite.copy(order='C')
@@ -457,7 +460,7 @@ toWrite = toWrite.copy(order='C')
 
 是 $\tt{125.000000 MHz}$ 。
 
-![image-20221121164913176](IEArch-NaiveTPU/image-20221121164913176.png)
+![image-20221121164913176](IEArch-NaiveTPU/image-20221121164913176.webp)
 
 
 
@@ -524,7 +527,7 @@ end
 
 状态图：
 
-![](IEArch-NaiveTPU/multi_ctrl.png)
+![](IEArch-NaiveTPU/multi_ctrl.webp)
 
 
 
@@ -545,7 +548,7 @@ end
 
 Align_fifo 模块内结构如图所示
 
-![](IEArch-NaiveTPU/fifo.png)
+![](IEArch-NaiveTPU/fifo.webp)
 
 也就是说，Align_fifo 内部有 8 个 FIFO IP 核，用于存储 Multi_8x8 的输出。
 
@@ -577,7 +580,7 @@ assign fifo_din[7] = data_get7;
 
 仿真如图
 
-![](IEArch-NaiveTPU/输入图.png)
+![](IEArch-NaiveTPU/输入图.webp)
 
 ### 9.2 写过程
 
@@ -688,7 +691,7 @@ end
 
 读出的时候，是一个队列一个队列的读出，最终完成串行化。
 
-![](IEArch-NaiveTPU/输出图.png)
+![](IEArch-NaiveTPU/输出图.webp)
 
 ---
 
@@ -700,7 +703,7 @@ end
 
 原工程中为了确定有效数据，提供了很多的信号位（`w_valid` 和 `f_valid` 信号，对于全局还有一个 `num_valid`）来进行确定，但是各个信号之间的功能是有重叠部分的，也就是有冗余现象的出现。
 
-可以考虑只使用一个 `num_valid` 信号完成对于“有效”的控制，它充当一个类似 reset 信号的功能，重置乘加器内部的寄存器，设置内部的num_r寄存器为输入的num_r值。当输入数据有效时，再拉低num_valid信号，乘加器自动开始计数，在指定周期内完成乘法的运算要求。
+可以考虑只使用一个 `num_valid` 信号完成对于 “有效” 的控制，它充当一个类似 reset 信号的功能，重置乘加器内部的寄存器，设置内部的 num_r 寄存器为输入的 num_r 值。当输入数据有效时，再拉低 num_valid 信号，乘加器自动开始计数，在指定周期内完成乘法的运算要求。
 
     在整个矩阵乘法整列中，将外部的 `num_valid` 信号只接入左上角的第一个乘加模块，后续模块的 `num_valid` 信号接入左侧或者上方乘加模块的 `num_valid_r` 输出，且保证最终所有模块在同一个连接图内，即可。这样可以节约乘法器的四组输入与三组输出，有利于减少最终使用的资源。由于这样的整列会重复 64 次，这些细节的节约，对最终是会有比较大的影响的。
 
@@ -711,4 +714,3 @@ end
 ### 10.3 具体实现
 
 具体实现和详细文档请看 $yofingert$ 的作业。
-

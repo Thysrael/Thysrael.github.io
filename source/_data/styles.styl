@@ -1,23 +1,73 @@
-body {
-    background-image: url(/images/background2.jpg); 
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100% 100%;
+.friend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 40px;
+  margin-top: 1rem;
 }
 
-.post-block {
-  opacity: 0.9;
+.friend-card {
+  display: flex;
+  min-width: 0;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  transition-duration: .15s;
 }
-//侧边框的透明度设置
-.sidebar {
-  background-color: transparent;
-  opacity: 0.9;
+
+.friend-card:hover {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
+  transform: scale(1.1);
 }
-//菜单栏的透明度设置
-.header-inner {
-  background: rgba(255,255,255,0.9);
+
+.friend-avatar {
+  width: 3rem !important;
+  height: 3rem !important;
+  margin: 0 1em 0 0 !important;
+  border-radius: 4px;
+  object-fit: cover;
 }
-//搜索框（local-search）的透明度设置
-.popup {
-  opacity: 0.9;
+
+.friend-details {
+  min-width: 0;
+  overflow: hidden;
+  font-style: italic;
+}
+
+.friend-details a {
+  border: 0;
+  color: #000;
+  font-weight: 600;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.friend-details a:hover {
+  color: #d480aa;
+  text-decoration: none;
+}
+
+.friend-details p {
+  margin: 4px 0 0;
+  overflow: hidden;
+  color: #a3a3a3;
+  font-size: 14px;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .friend-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.footer .copyright,
+.footer .wordcount {
+  display: inline;
+}
+
+.footer .busuanzi-count {
+  display: block;
 }

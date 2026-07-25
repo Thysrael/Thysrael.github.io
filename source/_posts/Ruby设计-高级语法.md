@@ -2,9 +2,8 @@
 abbrlink: 5af22558
 categories: Ruby设计
 date: 2022-09-04 15:25:19
-mathjax: true
 tags: [知识总结, S5课上, Ruby设计]
-title: Ruby设计-高级语法
+title: Ruby 设计 - 高级语法
 ---
 
 ## 一、面向对象基础
@@ -71,7 +70,7 @@ end
 attr_accessor :x, :y
 ```
 
-所谓的“元编程”就是利用代码创造代码，这里就不详细说了。`attr_accessor`  是一个 `Module` 的方法，`Class` 是 `Module` 的子类，可能 `Point` 也是 `Module` 的子类，所以可以使用这个方法。
+所谓的 “元编程” 就是利用代码创造代码，这里就不详细说了。`attr_accessor`  是一个 `Module` 的方法，`Class` 是 `Module` 的子类，可能 `Point` 也是 `Module` 的子类，所以可以使用这个方法。
 
 #### 1.2.3 operator
 
@@ -319,7 +318,7 @@ module SomeModule
 end
 ```
 
-除了第一次有**定义**的意思，只有都是有“给原有的东西添砖加瓦的意思”。每次的“打开”，都意味着一种 `self` 指针的变换和作用域的变化。
+除了第一次有**定义**的意思，只有都是有 “给原有的东西添砖加瓦的意思”。每次的 “打开”，都意味着一种 `self` 指针的变换和作用域的变化。
 
 ### 3.3 泛化关系
 
@@ -339,7 +338,7 @@ D = Class.new(C){include M} # some C subclass called D, which include M
 
 ### 3.5 关系
 
-![image-20220919111518809](Ruby设计-高级语法/image-20220919111518809.png)
+![image-20220919111518809](Ruby设计-高级语法/image-20220919111518809.webp)
 
 ---
 

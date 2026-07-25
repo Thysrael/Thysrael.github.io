@@ -27,8 +27,6 @@ pretty_urls:
 # sitemap
 sitemap:
   path: sitemap.xml
-baidusitemap:
-  path: baidusitemap.xml
 
 # nofollow 标签
 nofollow:
@@ -72,6 +70,25 @@ prismjs:
   line_number: true
   tab_replace: ''
 
+markdown:
+  preset: default
+  render:
+    html: true
+    xhtmlOut: false
+    breaks: false
+    linkify: true
+    typographer: false
+  plugins:
+    - name: '@renbaoshuo/markdown-it-katex'
+      options:
+        throwOnError: true
+        strict: ignore
+        output: htmlAndMathml
+  images:
+    lazyload: false
+    prepend_root: true
+    post_asset: true
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
@@ -97,7 +114,7 @@ meta_generator: true
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## updated_option supports 'mtime', 'date', 'empty'
-updated_option: 'mtime'
+updated_option: 'date'
 
 # Pagination
 ## Set per_page to 0 to disable pagination
@@ -180,11 +197,3 @@ excerpt:
   excerpt_excludes: []
   more_excludes: []
   hideWholePostExcerpts: true
-
-# Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
-deploy:
-  - type: git
-    #repo: https://github.com/livingfrontier/livingfrontier.github.io.git
-    repo: git@github.com:Thysrael/Thysrael.github.io.git
-    branch: main

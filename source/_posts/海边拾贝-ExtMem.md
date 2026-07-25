@@ -1,7 +1,6 @@
 ---
 layout: post
-title: 海边拾贝-ExtMem
-mathjax: true
+title: 海边拾贝 - ExtMem
 categories: 海边拾贝
 tags:
   - 海边拾贝
@@ -38,7 +37,7 @@ date: 2024-08-26 20:31:23
 
 ### 1.3 用户内存管理框架
 
-“特化内存管理策略的有效性、不普适性和内核态内存策略的高昂开销”都在呼唤一个用户态的内存管理框架，也就是可以为多种内存管理策略提供支持的基础设施。
+“特化内存管理策略的有效性、不普适性和内核态内存策略的高昂开销” 都在呼唤一个用户态的内存管理框架，也就是可以为多种内存管理策略提供支持的基础设施。
 
 Linux 提供了 userfaultfd 机制来作为管理框架，用户基于此来实现用户态内存管理策略。框架的实现可以看作在进程中存在一个 manager thread，当一个 thread 发生 page fault 的时候，会通过基于 fd 的 IPC 方式（类似管道）给 manager thread 发信息报告自己缺失的地址等信息，manager thread 会根据相关信息进行处理。
 
@@ -58,19 +57,19 @@ Upcall 指的是从内核调用用户函数，可以看作是一种反向 syscal
 
 一方面，线程的调度和切换开销很大，userfaultfd 下的 fault thread 和 MM thread 之间可能会插入多个其他无关线程（灰色虚线部分）：
 
-![userfaultsd.drawio](./海边拾贝-ExtMem/userfaultsd.drawio.png)
+![userfaultsd.drawio](./海边拾贝-ExtMem/userfaultsd.drawio.webp)
 
 而 upcall 可以由内核指定 MM thread 运行，并不需要调度：
 
-![extmem.drawio](./海边拾贝-ExtMem/extmem.drawio.png)
+![extmem.drawio](./海边拾贝-ExtMem/extmem.drawio.webp)
 
 另一方面，userfaultfd 的 MM thread 会串行处理 page fault，当多个线程都发生 page fault 的时候，会有排队现象：
 
-![userfaultfd1.drawio](./海边拾贝-ExtMem/userfaultfd1.drawio.png)
+![userfaultfd1.drawio](./海边拾贝-ExtMem/userfaultfd1.drawio.webp)
 
 但是利用 upcall 可以构造出 self-paging 机制，即 page fault handler 的本质是一个每个进程都有的库函数，发生 page fault 后内核会 upcall 进程自己的 handler 函数，这样多个 page fault handle 就可以并行了：
 
-![extmem2.drawio](./海边拾贝-ExtMem/extmem2.drawio.png)
+![extmem2.drawio](./海边拾贝-ExtMem/extmem2.drawio.webp)
 
 ### 2.2 io_uring
 
@@ -82,11 +81,11 @@ ExtMem 对于后端只要求 Direct I/O（也就是绕过 Linux 系统的 page c
 
 总得来说，io_uring 是 Linux 提供的一个先进的，异步的，非常适合批处理的 IO 接口：
 
-![img](./海边拾贝-ExtMem/io_uring.png)
+![img](./海边拾贝-ExtMem/io_uring.webp)
 
 Linux 内部的 IO 使用的是中断驱动模式（应该是，不保真），而 io_uring 可以使用轮询模式。在高性能设备上，IO 的开销是小于上下文切换的开销的，所以轮询模式更优。
 
-![img](./海边拾贝-ExtMem/benchmark-1-1724747043453-9.png)
+![img](./海边拾贝-ExtMem/benchmark-1-1724747043453-9.webp)
 
 ---
 
@@ -99,7 +98,7 @@ Linux 内部的 IO 使用的是中断驱动模式（应该是，不保真），�
 在设计上，该框架分为 3 层：
 
 - core：和内核交互，实现监视虚拟地址，完成映射，IO 等基础功能
-- observability：提供对内存“冷热”等属性的信息
+- observability：提供对内存 “冷热” 等属性的信息
 - policy：提供实现具体策略所需要的 API。
 
 ### 3.2 链接与拦截
@@ -136,7 +135,7 @@ upcall 并不是 Linux 的原生机制，所以需要修改 Linux 内核支持 u
 
 处理单个 page fault 的延迟如下：
 
-![image-20240827164626572](./海边拾贝-ExtMem/image-20240827164626572.png)
+![image-20240827164626572](./海边拾贝-ExtMem/image-20240827164626572.webp)
 
 其中 Upcall 指的是进行过性能优化的 SIGBUS 方法。
 
@@ -144,13 +143,13 @@ upcall 并不是 Linux 的原生机制，所以需要修改 Linux 内核支持 u
 
 ### 4.3 相同策略吞吐
 
-他们在 ExtMem 上实现了和 Linux 相同的 2Q-LRU 逐出策略并进行测试。
+他们在 ExtMem 上实现了和 Linux 相同的 2Q - LRU 逐出策略并进行测试。
 
 使用 `mmap`  microbenchmark 去测试吞吐量，将 RAM 限制到 8G 来触发 page fault。
 
 它测试了随机访存和顺序访存两种 pattern 下的吞吐
 
-![image-20240827165459110](./海边拾贝-ExtMem/image-20240827165459110.png)
+![image-20240827165459110](./海边拾贝-ExtMem/image-20240827165459110.webp)
 
 可以看到 ExtMem 都是优于 Linux，它论文中解释原因为 evict 的代码更简洁：
 
@@ -160,15 +159,15 @@ upcall 并不是 Linux 的原生机制，所以需要修改 Linux 内核支持 u
 
 在使用了预取策略后，我们评估 ExtMem 保留工作集的能力：
 
-![image-20240827170114740](./海边拾贝-ExtMem/image-20240827170114740.png)
+![image-20240827170114740](./海边拾贝-ExtMem/image-20240827170114740.webp)
 
 ### 4.5 CSR
 
-压缩稀疏行（Compressed Sparse Row，CSR）是一种广泛用于内存图分析的数据结构。为使用 CSR 的应用开发一种新的内存管理策略：”将关键数据尽可能保存在内存中，并且利用一个滑动窗口的思想来指导数据的读入和逐出“，被称为 ”PR“。
+压缩稀疏行（Compressed Sparse Row，CSR）是一种广泛用于内存图分析的数据结构。为使用 CSR 的应用开发一种新的内存管理策略：” 将关键数据尽可能保存在内存中，并且利用一个滑动窗口的思想来指导数据的读入和逐出 “，被称为 ” PR“。
 
 运行 Twitter dataset using GAP benchmark suite 效果对比如下：
 
-![image-20240827170458158](./海边拾贝-ExtMem/image-20240827170458158.png)
+![image-20240827170458158](./海边拾贝-ExtMem/image-20240827170458158.webp)
 
 ---
 

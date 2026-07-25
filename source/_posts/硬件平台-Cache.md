@@ -1,6 +1,5 @@
 ---
-title: 硬件平台-Cache
-mathjax: true
+title: 硬件平台 - Cache
 tags:
   - 硬件平台
   - 直观理解
@@ -14,7 +13,7 @@ date: 2024-05-03 21:21:29
 
 因为一直分不清 Cache 的结构名字，所以特地画了一个比较满意的图来标注各种结构。
 
-![](硬件平台-Cache/cache.drawio.png)
+![](硬件平台-Cache/cache.drawio.webp)
 
 这个示意图的参数在右上角。Cache 中的基本单位是 Cache Line，它又被叫作 Block，它是由多个 Word 组成的。多个 Cache Line 会组成一个 Cache Set，一个 Cache Set 内包含的 Cache Line 数量被成为 Way。比如图中就是 2-Way 的 Cache，那么每个 Cache Set 就有 2 个 Cache Line。相同 Cache Set 中的 Cache Line 的关系被称为 associative（相联），它们不能依靠 set index 进行区分，只能通过 tag 区分。 
 
@@ -38,9 +37,9 @@ date: 2024-05-03 21:21:29
 
 CPU 会给 Cache 发送一个地址，这个地址有可能是虚拟地址，也可能是物理地址，这取决于具体的架构实现方式。这个地址还有一个特点是**按照 Word 对齐的**。虽然这个示意图中 Word 只有一个字节，没有对齐的必要，但是在常见的 Word 为 4 个字节的 32 位架构中，这个地址的 `[1:0]` 一定是 `0` 。
 
-交给 Cache 的地址会被分成 3 个部分，即上图的 Tag（蓝色），Index（绿色） 和 Offset（橙色）。检索 Word 的过程是一个“Index-Check-Index”的过程。
+交给 Cache 的地址会被分成 3 个部分，即上图的 Tag（蓝色），Index（绿色） 和 Offset（橙色）。检索 Word 的过程是一个 “Index-Check-Index” 的过程。
 
-首先我们根据**绿色部分 index** 找到对应的 Cache Set（这是一个像随机地址访问的过程，称之为 Index），因为 Index 是 1，所以我们找到左下角的 Cache Set 1。然后就会发现里面有一堆的 Cache Line，对于这些 Cache Line，我们没有办法直接确定哪一个是我们要找到的 Cache Line，我们需要用地址上的**蓝色部分 Tag** 和 Cache 中的 Tag 进行比对，只有完全相同才是我们要找的 Cache Line，所以我们在此图中选择了第二个 Cache Line（这个过程需要比对所有的 Tag 的所有位，称之为 Check）。在选定 Cache Line 后，我们需要根据**橙色部分 Offset **选择 Cache Line 中具体的 Word，图中 Offset 是 2，所以我们选择第 2 个 Word 交给 CPU（这个过程和绿色部分一样，也是 Index）。
+首先我们根据**绿色部分 index** 找到对应的 Cache Set（这是一个像随机地址访问的过程，称之为 Index），因为 Index 是 1，所以我们找到左下角的 Cache Set 1。然后就会发现里面有一堆的 Cache Line，对于这些 Cache Line，我们没有办法直接确定哪一个是我们要找到的 Cache Line，我们需要用地址上的**蓝色部分 Tag** 和 Cache 中的 Tag 进行比对，只有完全相同才是我们要找的 Cache Line，所以我们在此图中选择了第二个 Cache Line（这个过程需要比对所有的 Tag 的所有位，称之为 Check）。在选定 Cache Line 后，我们需要根据 **橙色部分 Offset** 选择 Cache Line 中具体的 Word，图中 Offset 是 2，所以我们选择第 2 个 Word 交给 CPU（这个过程和绿色部分一样，也是 Index）。
 
 如果用伪代码描述，是如下过程：
 
@@ -65,7 +64,7 @@ Word find(Tag tag, Index index, Offset offset)
 }
 ```
 
-上述过程基本上描述了“一个 Word 是怎样从 Cache 中根据地址被检索出来”的过程，省略的部分主要是对于 Cache Line valid 和 dirty 等属性的检验。
+上述过程基本上描述了 “一个 Word 是怎样从 Cache 中根据地址被检索出来” 的过程，省略的部分主要是对于 Cache Line valid 和 dirty 等属性的检验。
 
 对于检索成功的情况，我们称之为 hit（命中），而对于检索失败的情况，我们称之为 miss（缺失）。
 
@@ -107,7 +106,7 @@ VIPT 指的是使用 Physical 的 Tag 和 Virtual 的 Index 。这样的好处�
 
 而对于别名问题，则要分类讨论，因为 Index 依然是虚拟的，那么使用 PPN 作为 Tag 能否矫正 VI 的影响呢？这要看 PPN 的宽度（反过来也可以说看 Index 的宽度），如下所示：
 
-![](硬件平台-Cache/VIPT.drawio.png)
+![](硬件平台-Cache/VIPT.drawio.webp)
 
 如果是第一种情况，VI 和 PI 存在差异，所以就会有别名现象，而第二种情况，VI 和 PI 不存在差异，就不会有别名现象。
 
@@ -127,7 +126,7 @@ VIPT 指的是使用 Physical 的 Tag 和 Virtual 的 Index 。这样的好处�
 
 从逐出角度考虑，当 Way 增大的时候，CacheLine 的选择会更加灵活，逐出会更少。
 
-从宏观角度看，逐出的存在是因为 Cache 比 Memory 小。如果 Index 的宽度是地址宽度减去 Offset 宽度，那么就不存在逐出了，很可惜事实并不是这样。相同 Index 的 CacheLine 会被分配到同一个 set 中，而 Way 只是提供了一种逐出的“缓冲”。
+从宏观角度看，逐出的存在是因为 Cache 比 Memory 小。如果 Index 的宽度是地址宽度减去 Offset 宽度，那么就不存在逐出了，很可惜事实并不是这样。相同 Index 的 CacheLine 会被分配到同一个 set 中，而 Way 只是提供了一种逐出的 “缓冲”。
 
 ### 3.2 Index Position 分析
 
@@ -145,10 +144,10 @@ Cache 对读写的加速副作用是不一样的，Cache 加速写操作，如�
 
 ### 3.4 更新策略
 
-更新策略（update policy）指的是，当**写操作（Store）**命中 Cache 时，Cache 应当如何更新其中的数据。有写直通（write through）和写回（write back）两种策略。
+更新策略（update policy）指的是，当 **写操作（Store）** 命中 Cache 时，Cache 应当如何更新其中的数据。有写直通（write through）和写回（write back）两种策略。
 
-写直通指的是当 CPU 执行 store 指令并在 cache 命中时，我们更新 cache 中的数据并且更新 Memory 中的数据。**cache和 Memory 的数据始终保持一致**。
+写直通指的是当 CPU 执行 store 指令并在 cache 命中时，我们更新 cache 中的数据并且更新 Memory 中的数据。**cache 和 Memory 的数据始终保持一致**。
 
-当 CPU 执行 store 指令并在 cache 命中时，我们只更新 cache 中的数据。并且每个 cache line 中会有一个 bit 位记录数据是否被修改过，称之为dirty bit。Memory 中的数据只会在 cache line 被逐出或者显式的 clean 操作时更新。因此，**cache 和 Memory 的数据可能不一致**。
+当 CPU 执行 store 指令并在 cache 命中时，我们只更新 cache 中的数据。并且每个 cache line 中会有一个 bit 位记录数据是否被修改过，称之为 dirty bit。Memory 中的数据只会在 cache line 被逐出或者显式的 clean 操作时更新。因此，**cache 和 Memory 的数据可能不一致**。
 
 ----

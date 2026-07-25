@@ -2,16 +2,15 @@
 abbrlink: 945fe948
 categories: 语言高阶
 date: 2023-01-20 23:57:24
-mathjax: true
 tags: [语言高阶, S5假期, 直观理解]
-title: 语言高阶-Py_import
+title: 语言高阶 - Py_import
 ---
 
 ## 一、符号查找
 
-在编译课中我们学过，符号是编译中的重点，我们必须确保我们的每个符号都是“指向它应当指的地方”。但是在实际工程中，符号分散在多个文件中，可能会出现“符号相同”和“符号查找不到”两种经典的情况，所以每门语言都在尽力解决多个符号的问题，python 也不例外。
+在编译课中我们学过，符号是编译中的重点，我们必须确保我们的每个符号都是 “指向它应当指的地方”。但是在实际工程中，符号分散在多个文件中，可能会出现 “符号相同” 和 “符号查找不到” 两种经典的情况，所以每门语言都在尽力解决多个符号的问题，python 也不例外。
 
-一般解决这种问题，都是通过一种加 **namespace** 的方式解决的，当我们有两个 `name` 的时候，可以考虑给他们分别一个 `namespaceA.name` 和 `namespaceB.name` 去进行区分。**namespace** 是一个很自然的事情，尤其是一个大工程，可以认为 `namespace` 本来就是一种很自然的嵌套的结构（尤其是与文件和目录结合在一起的时候），比如说“编译器的错误检测部分的错误类型中的未定义符号错误”，就是 `compiler.check.ErrorType.UNDEFINE_SYMBOL` 。我们在实际使用的时候，其实是不是担心我们没法把相同的符号区分开，而是担心“没法用较短的字符串表示我们想要的符号”，毕竟不是每个人都愿意在工程的任何一个地方，使用 `compiler.check.ErrorType.UNDEFINE_SYMBOL` 来描述一个枚举常量。我们更喜欢只用 `UNDEFINE_SYMBOL` 去表示。
+一般解决这种问题，都是通过一种加 **namespace** 的方式解决的，当我们有两个 `name` 的时候，可以考虑给他们分别一个 `namespaceA.name` 和 `namespaceB.name` 去进行区分。**namespace** 是一个很自然的事情，尤其是一个大工程，可以认为 `namespace` 本来就是一种很自然的嵌套的结构（尤其是与文件和目录结合在一起的时候），比如说 “编译器的错误检测部分的错误类型中的未定义符号错误”，就是 `compiler.check.ErrorType.UNDEFINE_SYMBOL` 。我们在实际使用的时候，其实是不是担心我们没法把相同的符号区分开，而是担心 “没法用较短的字符串表示我们想要的符号”，毕竟不是每个人都愿意在工程的任何一个地方，使用 `compiler.check.ErrorType.UNDEFINE_SYMBOL` 来描述一个枚举常量。我们更喜欢只用 `UNDEFINE_SYMBOL` 去表示。
 
 ---
 
@@ -60,11 +59,11 @@ public static void main(String[] args) {
 
 ## 三、Python import
 
-在 python 中，对于命名空间，也是和 java 一样，并不显式的使用，而是利用文件和文件夹进行构造。python 认为一个名称空间为一个 module，这个 module 可以表现为一个文件夹，一个 `py` 文件，一个 `so` 动态库，什么都行。对于文件夹形式的 `module` 我们也称它为“包 `package` ”。所以我们想要指明“包 package1 下的包 package2 的模块 module1 的函数 f” ，就可以写作 `package1.package2.module1.f`。
+在 python 中，对于命名空间，也是和 java 一样，并不显式的使用，而是利用文件和文件夹进行构造。python 认为一个名称空间为一个 module，这个 module 可以表现为一个文件夹，一个 `py` 文件，一个 `so` 动态库，什么都行。对于文件夹形式的 `module` 我们也称它为 “包 `package` ”。所以我们想要指明 “包 package1 下的包 package2 的模块 module1 的函数 f” ，就可以写作 `package1.package2.module1.f`。
 
 下面我们用例子来描述一下 `import` 的使用，我们的文件结构如下所示
 
-![image-20230121011113152](语言高阶-Py-import/image-20230121011113152.png)
+![image-20230121011113152](语言高阶-Py-import/image-20230121011113152.webp)
 
 当我们想在 `main.py` 中使用 `module3.py` 中的函数的时候，可以这样
 
@@ -89,7 +88,7 @@ m4.print_info()
 
 这样就可以比较方便的使用这个模块了。
 
-但是依然不够简单，因为**`import` 后的内容只可以是 `module` **。也就是下面的语句是不对的：
+但是依然不够简单，因为 **`import` 后的内容只可以是 `module` **。也就是下面的语句是不对的：
 
 ```python
 import pack1.pack3.module7.print_info
@@ -104,7 +103,7 @@ module5.print_info()
 print_info()
 ```
 
- 可以看到，`from` 会让“前缀变短”，而且最短可以短到没有前缀（也就是没有 `module` 修饰）的函数和变量，这无疑是很方便的。需要注意的是，此时的 `import` 后是不可以出现 `.` 的，也就是下面这种是错误的。
+ 可以看到，`from` 会让 “前缀变短”，而且最短可以短到没有前缀（也就是没有 `module` 修饰）的函数和变量，这无疑是很方便的。需要注意的是，此时的 `import` 后是不可以出现 `.` 的，也就是下面这种是错误的。
 
 ```python
 from pack1 import pack2.module6

@@ -2,7 +2,6 @@
 abbrlink: 7994749d
 categories: English
 date: 2022-09-11 21:12:08
-mathjax: true
 tags: [English, S5课上, 知识总结]
 title: English-CET6
 ---
@@ -85,7 +84,7 @@ accorde, indicated, show, illustrated, compares, see, change
 - As can be seen  from the diagram, great changes have taken place in ...
 - The tables show the changes in the number of ... over the period from .. to ...
 
-#### 1.1.4 图画/表总结
+#### 1.1.4 图画 / 表总结
 
 - Simple as the picture is, the meaning is as deep as ocean.
 - But is this what the author tries to tell us? Certainly not.
@@ -116,23 +115,23 @@ accorde, indicated, show, illustrated, compares, see, change
 ### 3.1 形容词
 
 - [x] banner 旗帜
-- [ ] band-aid 创可贴
-- [ ] broadband 宽带
+- [] band-aid 创可贴
+- [] broadband 宽带
 - [ ] acumen 
-- [ ] punctual 准时的
-- [ ] invade 入侵
+- [] punctual 准时的
+- [] invade 入侵
 - [ ] evade
-- [ ] pervade 弥漫
+- [] pervade 弥漫
 - [ ] blurred
 - [ ] ambulant
-- [ ] emerge 浮现
-- [ ] emergence 情况
-- [ ] authentic 权利
+- [] emerge 浮现
+- [] emergence 情况
+- [] authentic 权利
 - [ ] barren
-- [ ] chronic 长期的
-- [ ] synchronus 同步的
-- [ ] commetary 评论
-- [ ] compact 精巧的
+- [] chronic 长期的
+- [] synchronus 同步的
+- [] commetary 评论
+- [] compact 精巧的
 - [ ] compel
 - [ ] expel
 - [ ] impel
@@ -141,84 +140,84 @@ accorde, indicated, show, illustrated, compares, see, change
 - [ ] repel
 - [ ] impulse
 - [ ] persist 
-- [ ] resist 抵抗
-- [ ] conspicuous 怀疑
+- [] resist 抵抗
+- [] conspicuous 怀疑
 - [ ] crux
-- [ ] curriculum 课程
+- [] curriculum 课程
 - [ ] concur
 - [ ] cursory
 - [ ] excursion
 - [ ] precursor
-- [ ] delicate 精巧的
-- [ ] destructive 毁灭的
-- [ ] equivalent 等价的
-- [ ] external 外部的
-- [ ] exclusive 独立的
+- [] delicate 精巧的
+- [] destructive 毁灭的
+- [] equivalent 等价的
+- [] external 外部的
+- [] exclusive 独立的
 - [ ] extinct
 - [ ] instinct
 - [ ] feasible
 - [ ] feeble
-- [ ] gloomy 微光
+- [] gloomy 微光
 - [ ] greasy
-- [ ] vulnerable 易碎的
-- [ ] identical 相同的
-- [ ] inadequate 不充足的
-- [ ] indifferent 平平无奇的
-- [ ] impassive 没有热情的
+- [] vulnerable 易碎的
+- [] identical 相同的
+- [] inadequate 不充足的
+- [] indifferent 平平无奇的
+- [] impassive 没有热情的
 - [ ] immortal
 - [ ] immune
 - [ ] inhale
 - [ ] inferior
-- [ ] inherent 继承的
-- [ ] cohere 联合的
+- [] inherent 继承的
+- [] cohere 联合的
 - [ ] coherent
-- [ ] expire 到期
+- [] expire 到期
 - [ ] intent
 - [ ] intricate
 - [ ] intrinsic
 - [ ] negligible
 - [ ] notorious
 - [ ] obedient
-- [ ] pathetic 痛苦的
+- [] pathetic 痛苦的
 - [ ] perspire
 - [ ] prevalent
-- [ ] primitive 原始的
+- [] primitive 原始的
 - [ ] proficient
 - [ ] deficient
 - [ ] profound
 - [ ] prominent
 - [ ] procreate
-- [ ] prompt 立即的
+- [] prompt 立即的
 - [ ] sentiment
 - [ ] sheer
-- [ ] shrewd 胆怯的
-- [ ] stationary 固定的
-- [ ] obstacle 障碍
+- [] shrewd 胆怯的
+- [] stationary 固定的
+- [] obstacle 障碍
 - [ ] stake
 - [ ] staid
 - [ ] stagnant
 - [ ] subordinate
-- [ ] subtle 精巧的，小巧的
+- [] subtle 精巧的，小巧的
 - [ ] superficial
 - [ ] tedious
-- [ ] trivial 细碎的
+- [] trivial 细碎的
 - [ ] turbulent
 - [ ] turb
 
 ### 3.2 副词
 
-- [ ] deliberately 故意的
-- [ ] defame 败坏名声
-- [ ] exclusively 仅仅
-- [ ] explicitly 脆弱的
-- [ ] formerly 之前地
-- [ ] inevitably 不可避免地
-- [ ] intentionally 故意地
-- [ ] outwardly 外在地
-- [ ] outskirts 郊区
-- [ ] inwardly 内在地
+- [] deliberately 故意的
+- [] defame 败坏名声
+- [] exclusively 仅仅
+- [] explicitly 脆弱的
+- [] formerly 之前地
+- [] inevitably 不可避免地
+- [] intentionally 故意地
+- [] outwardly 外在地
+- [] outskirts 郊区
+- [] inwardly 内在地
 - [ ] simultaneously
-- [ ] somewhat 稍微
+- [] somewhat 稍微
 - [ ] spontaneously
 - [ ] startlingly
 - [ ] triumphantly
@@ -228,54 +227,54 @@ accorde, indicated, show, illustrated, compares, see, change
 
 - [ ] analogy
 - [ ] analogous
-- [ ] anticipation 期望
-- [ ] antique 古董
+- [] anticipation 期望
+- [] antique 古董
 - [ ] blundler
 - [ ] essence
-- [ ] estimate 估计
+- [] estimate 估计
 - [ ] expenditure
 - [ ] compensate
 - [ ] ponder
 - [ ] ponderous
-- [ ] extinction 灭绝
-- [ ] flaw 裂纹
-- [ ] frailty 脆弱
+- [] extinction 灭绝
+- [] flaw 裂纹
+- [] frailty 脆弱
 - [ ] fuse
 - [ ] hostile
 - [ ] illusion
-- [ ] insight 见解
-- [ ] integrity 完整，正直
-- [ ] intuition 灵感
+- [] insight 见解
+- [] integrity 完整，正直
+- [] intuition 灵感
 - [ ] lease
-- [ ] legislation 法规
-- [ ] manifestation 形式
+- [] legislation 法规
+- [] manifestation 形式
 - [ ] inscrible
-- [ ] postcript 附录
+- [] postcript 附录
 - [ ] manipulate
 - [ ] proficient
-- [ ] deficient 不足
+- [] deficient 不足
 - [ ] misdoing
 - [ ] misrule
-- [ ] morality 道德
+- [] morality 道德
 - [ ] ornament
-- [ ] pastime 闲暇时间
+- [] pastime 闲暇时间
 - [ ] pledge
 - [ ] premise
 - [ ] dispose
 - [ ] prestige
 - [ ] prospect
-- [ ] ration 口粮
+- [] ration 口粮
 - [ ] reccession
-- [ ] rival 对手
-- [ ] routine 路线
-- [ ] scence 场景，圈子
-- [ ] scorn 轻蔑
-- [ ] temperament 资质
-- [ ] threshold 开端，入口
+- [] rival 对手
+- [] routine 路线
+- [] scence 场景，圈子
+- [] scorn 轻蔑
+- [] temperament 资质
+- [] threshold 开端，入口
 - [ ] transaction
-- [ ] transition 过渡，转变
-- [ ] variation 变化，变动
-- [ ] warehouse 货仓
+- [] transition 过渡，转变
+- [] variation 变化，变动
+- [] warehouse 货仓
 
 ### 3.4 动词
 
@@ -327,9 +326,9 @@ accorde, indicated, show, illustrated, compares, see, change
 - [ ] indulge
 - [ ] jeopardize
 - [ ] linger
-- [ ] magnify 放大，夸大
-- [ ] mingle 混合起来
-- [ ] oppress 压迫
+- [] magnify 放大，夸大
+- [] mingle 混合起来
+- [] oppress 压迫
 - [ ] overlap
 - [ ] overwhelm
 - [ ] parade
