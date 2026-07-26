@@ -22,7 +22,7 @@ date: 2025-09-13 09:38:10
 
 SM 才是指令的执行者，而不是 CUDA Core 是指令的执行者。我之所以会产生 CUDA Core 才是执行者的错觉，我猜测是因为在 SIMT 模型中，thread 对应的往往是 CUDA Core 这样的计算单元（其实也不是一一对应），而在 CPU 体系中，thread 和与之对应的 CPU Core 是指令的执行者，这就很容易让人产生，CUDA Core 才是指令的执行者的误解。
 
-![image-20211104155056775](./Sys4AI-GPU/image-20211104155056775.webp)
+![The CUDA programming model view of CPU and GPU components and connection](./Sys4AI-GPU/gpu-cpu-system-diagram.webp)
 
 每个 SM 核都有自己独立的寄存器文件，L1 Cache/Shared Memory，指令调度单元等。
 
@@ -93,7 +93,7 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 |CTA               |Block Group                               |Work Group                         |
 |Ecosystem         |CUDA (Compute Unified Device Architecture)|ROCm (Radeon Open Compute platform)|
 
-### 1.7 从 GPU 到 NPU
+### 1.7 From GPU to NPU
 
 最近有一种说法，就是说 GPU 越来越像 NPU 了，那么到底像在哪里了？
 
@@ -105,11 +105,13 @@ GPU 的 L1 Cache 在 SM 内，L2 Cache 在 GPU 片上，由所有 SM 所共享�
 
 此外 warp speicalization 也是一种站在数据处理单元，而非 thread 视角去思考问题的编程模型。
 
+说白了，从 SIMT Model 到 SIMD Model（在 CUDA 中也叫做 Tile Model），也是一种从 GPU 到 NPU 编程模型的提现。它相当于是放弃了一个 Block 内不同 thread 的 control flow divergence。
+
 ---
 
 
 
-## 二、CUDA
+## 二、CUDA Programing Model
 
 ### 2.1 CTA/Block/Tile
 
@@ -138,7 +140,11 @@ CUDA 编程种最重要的就是 `CTA/Block/Tile` 的概念了。这三个概念
 
 ### 2.2 Grid
 
-在 CUDA 中， CTA 组被称为 Grid。如果我们希望定位到一个 thread，我们可以使用如下代码：
+在 CUDA 中， CTA 组被称为 Grid。
+
+![image-20260726151516497](./Sys4AI-GPU/image-20260726151516497.webp)
+
+如果我们希望定位到一个 thread，我们可以使用如下代码：
 
 ```c++
 int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -239,11 +245,13 @@ layout 之所以重要，正是因为可以说 CUDA 编程的一个很重要的�
 
  
 
-## 三、Triton
+## 三、Triton Programming Model
 
 ### 3.1 SPMD
 
-与 CUDA 不同，Triton 并不是 SIMT 编程模型，而是 SPMD (Single Program Multiple Data) 编程模型。也就是说，CUDA 代码是给每个 thread 看的，而 triton 代码是给每个 Program Instance 看的。Program Instance 基本上可以理解成是 CTA 的同义词。
+与 CUDA 不同，Triton 并不是 SIMT 编程模型，而是 SPMD (Single Program Multiple Data) 编程模型。也就是说，CUDA 代码是给每个 thread 看的，而 triton 代码是给每个 Program Instance 看的。Program Instance 基本上可以理解成是 CTA/Tile/Block 的同义词。
+
+![Programmer's view in the SIMT and tile programming models](./Sys4AI-GPU/tile-simt.webp)
 
 如果要深究的话，一个 Triton 的 PI，对应一到多个 CTA。至于到底对应多少个 CTA ，那其实是 triton 编译器自动化决策的部分。
 
@@ -345,8 +353,7 @@ tl.store(c_offsets, c_tile, mask=mask)
 
 ---
 
-
-## 四、TileLang
+## 四、TileLang Programing Model
 
 ### 4.1 Layout Inference
 
