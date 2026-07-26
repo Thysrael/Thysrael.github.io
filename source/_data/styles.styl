@@ -74,11 +74,15 @@
   }
 }
 
-.footer .copyright,
-.footer .wordcount {
-  display: inline;
+.footer .footer-inner {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  column-gap: .6em;
 }
 
-.footer .busuanzi-count {
-  display: block;
+.footer .languages,
+.footer .beian,
+.footer .copyright,
+.footer .powered-by {
+  grid-column: 1 / -1;
 }
