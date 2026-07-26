@@ -44,7 +44,11 @@ async function convertImage(file, output) {
   if (extension === '.png') {
     pipeline.webp({ lossless: true, effort: 6 });
   } else {
-    pipeline.webp({ quality: 85, effort: 6, smartSubsample: true });
+    pipeline.keepIccProfile().webp({
+      quality: 95,
+      effort: 6,
+      smartSubsample: true
+    });
   }
   await pipeline.toFile(output);
 

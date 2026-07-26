@@ -94,6 +94,7 @@ math:
     copy_tex: false
 
 lazyload: false
+fancybox: true
 
 pace:
   enable: true
