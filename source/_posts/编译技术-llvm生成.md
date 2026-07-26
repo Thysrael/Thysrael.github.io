@@ -9,9 +9,7 @@ abbrlink: '66584e99'
 date: 2022-12-28 23:05:20
 ---
 
-# LLVM IR 生成
-
-## 一、内存 SSA 
+## 一、内存 SSA
 
 llvm 是 SSA 形式的，但是在没有经过 mem2reg 的时候，SSA 是内存形式的，也就是说，对于每个变量，只要在定义他的时候，为他在内存中划分空间存入，在使用他的时候在取出来，这样就可以达到 SSA 的效果。这是因为 SSA 只要求我们不能改变一个已经定义的值，改变内存的内容显然并不违法 SSA。
 
@@ -244,4 +242,3 @@ irBuilder.buildBr(curBlock, loopNextBlockDown.peek());
 ```java
 irBuilder.buildBr(curBlock, loopCondBlockDown.peek());
 ```
-

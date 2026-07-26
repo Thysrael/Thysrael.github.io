@@ -6,8 +6,6 @@ tags: [并行计算, S5课上, 直观理解]
 title: 并行计算 - hw1
 ---
 
-# hw1: Ring 实验报告
-
 ## 一、个人信息
 
 | 条目 | 信息     |
@@ -677,4 +675,3 @@ os.system('less ' + './' + batch_name + '.out')
 if clear_machinefile:
         os.system("rm ./machinefile.*")
 ```
-

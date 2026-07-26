@@ -1,5 +1,6 @@
 # Site-owned NexT configuration. Keep theme source in node_modules untouched.
 custom_file_path:
+  bodyEnd: source/_data/body-end.njk
   variable: source/_data/variables.styl
   style: source/_data/styles.styl
 

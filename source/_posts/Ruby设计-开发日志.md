@@ -6,8 +6,6 @@ tags: [Ruby设计, S5课上, 直观理解]
 title: Ruby 设计 - 开发日志
 ---
 
-# Log
-
 ## 1 产品 Product
 
 ### 1.1 创建 Product

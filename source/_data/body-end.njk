@@ -1,0 +1,18 @@
+<script>
+  document.addEventListener('page:loaded', () => {
+    setTimeout(() => {
+      if (typeof Fancybox === 'undefined') return;
+
+      Fancybox.unbind('[data-fancybox]');
+      Fancybox.bind('[data-fancybox]', {
+        contentClick: 'iterateZoom',
+        wheel: 'zoom',
+        Images: {
+          Panzoom: {
+            maxScale: 4
+          }
+        }
+      });
+    });
+  });
+</script>

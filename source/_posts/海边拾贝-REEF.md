@@ -6,8 +6,6 @@ tags: [海边拾贝, S6假期, 知识总结]
 title: 海边拾贝 - REEF
 ---
 
-# REEF：为并行 DNN 推断设计的抢占调度
-
 [论文链接](https://www.usenix.org/conference/osdi22/presentation/han)
 
 [源码链接](https://github.com/SJTU-IPADS/reef-artifacts)
@@ -310,4 +308,3 @@ Device Queue：因为处于 CPU 和 GPU 的交互地带，所以并不能简单�
 优化主要设计全局函数指针和代理函数两个部分，其效果都是十分显著的：
 
 ![image-20230714165844085](海边拾贝-REEF/image-20230714165844085.webp)
-

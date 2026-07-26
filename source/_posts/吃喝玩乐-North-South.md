@@ -6,9 +6,9 @@ tags: [吃喝玩乐, 25格, S4课上]
 title: 吃喝玩乐 - 英剧鉴赏
 ---
 
-# North & South
+## North & South
 
-## 1. 刻板印象
+### 1. 刻板印象
 
 我看的是 2004 年的英剧，这个迷你剧是伊丽莎白・盖斯凯尔的原著小说改编的。豆瓣上评价她是一直被低估，但从未被超越的英国古典文学作家。（当然，基本的装逼说法）。
 
@@ -36,7 +36,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 
 
-## 2. 文化分析
+### 2. 文化分析
 
 这部剧发生的年代是在工业革命初期，剧中出现了万国工业博览会（1851）的情节，所以时间就是在这个节点附近。在影片中最具有戏剧张力的点就是男女主的之间的地域文化差异。尽管故事大部分都是在讲工厂中资本家和工人的斗争的故事，但是作品只是采用了一种阶级调和的观点，并没有讨论并且升华这种矛盾，这应该是具有作者的生活年代的局限性。
 
@@ -54,7 +54,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 
 
-## 3. 最后总结
+### 3. 最后总结
 
 地域差异一定是一个一个普遍的话题，这个问题不仅会发生在工业革命时期，也会发生在我们这个已经由互联网连缀起来的世界。这个问题不仅会发生在英国，也同样会发生在我们生活的中国。如果米尔顿真的是曼彻斯特的话，其实男女主的故乡只是成都到重庆的距离（没有细致求证过）。但是即使这样的距离，依然足以让两个互相吸引的灵魂彼此错过。
 
@@ -72,7 +72,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 
 
-## 4. 作业
+### 4. 作业
 
 > The film our group watched was South and North, a love story that takes place at the beginning of the industrial revolution. The heroine from the South moves to the North for some reasons, and therefore befriends the hero, who is from the North.
 >
@@ -89,7 +89,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 
 
-# 西蒙的选择
+## 西蒙的选择
 
 如果我真的有了那种情况的话，我不会去做安乐死。生命本来就是一个慢慢繁荣，又慢慢衰败的过程。刻意回避衰败的部分，就好像在鲜花快要枯萎的时候就把他掐断。我认为不同的生命阶段具有不同生命体验。我所理解的强大，就是从容地吃完命运摆在我面前的每一道餐品。
 
@@ -107,7 +107,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 
 
-# 我们需要谈谈凯文
+## 我们需要谈谈凯文
 
 这周我们看的电影是《我们需要谈谈凯文》，这个电影讲述的是一个具有反社会人格的 16 岁少年屠杀同学的故事。虽然被定义为惊悚片，但是与普通的惊悚片不同，影片没有聚焦于屠杀的血腥，而是花费了大量的笔墨去刻画凯文的成长环境。可以看出，导演是希望通过这样的一部影片来与观众讨论家庭教育问题的，这就是 “我们需要谈谈凯文” 的谈话内容。
 
@@ -131,7 +131,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 
 
-# 锅匠，裁缝，士兵，间谍
+## 锅匠，裁缝，士兵，间谍
 
 > Love is whatever you can still betray. Betrayal can only happen if you love.
 
@@ -155,7 +155,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 >I thought Yan's review was very good, not only in her presentation of the content of the film, but also in its expression of her own opinion. I noticed that Yan discussed the Chinese counterpart of the situation in the play at the end. I think it is a good idea to compare the differences between British culture and Chinese culture in terms of home education.
 
-# 诺丁山
+## 诺丁山
 
 在观看《诺丁山》这部电影的时候，我除了醉心于浪漫感人的爱情故事，我还对于剧中出现的诺丁山的取景很赶兴趣。因为在我的印象里，英国的城市给人一种经典的雾都形象 -- 灰蒙蒙的、陈旧、古典，就像《神探夏洛克》中的伦敦一样。
 
@@ -177,7 +177,7 @@ title: 吃喝玩乐 - 英剧鉴赏
 
 
 
-# BJ 单身日记
+## BJ 单身日记
 
 今天我们要聊的电影是《BJ 单身日记》，这是一部英国的爱情喜剧。这部剧讲述了一个大龄的单身女性 Bridget Jones 追寻爱情的故事。这部剧是一个很好的分析 “英国剩女” 现象的契机，从中可以进一步探讨英国的婚恋观念等文化现象。
 
