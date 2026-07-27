@@ -77,7 +77,6 @@
 .footer .footer-inner {
   display: grid;
   grid-template-columns: max-content max-content;
-  column-gap: .6em;
 }
 
 .footer .languages,
@@ -85,4 +84,9 @@
 .footer .copyright,
 .footer .powered-by {
   grid-column: 1 / -1;
+}
+
+.footer .busuanzi-count::before {
+  content: '|';
+  margin: 0 .5em;
 }
