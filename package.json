@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "mdast-util-from-markdown": "2.0.3",
-    "pangu": "8.0.0",
+    "pangu": "9.0.0",
     "sharp": "0.35.3",
     "simple-git-hooks": "2.13.1"
   }
