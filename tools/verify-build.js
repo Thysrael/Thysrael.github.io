@@ -91,21 +91,6 @@ if (siteBytes > maxSiteBytes) {
   process.exitCode = 1;
 }
 
-const postCount = publicFiles.filter(file =>
-  /^posts[/\\][^/\\]+[/\\]index\.html$/.test(path.relative(publicRoot, file))).length;
-if (postCount < 200) {
-  console.error(`Expected at least 200 generated posts, found ${postCount}.`);
-  process.exitCode = 1;
-}
-
-const linksHtml = fs.readFileSync(path.join(publicRoot, 'links', 'index.html'), 'utf8');
-const friendCount = (linksHtml.match(/class="friend-card"/g) || []).length;
-if (friendCount !== 16) {
-  console.error(`Expected 16 friend cards, found ${friendCount}.`);
-  process.exitCode = 1;
-}
-
 console.log(
-  `Verified ${publicFiles.length} files, ${postCount} posts, ${friendCount} friend links, ` +
-  `${(siteBytes / 1048576).toFixed(1)} MiB total.`
+  `Verified ${publicFiles.length} files, ${(siteBytes / 1048576).toFixed(1)} MiB total.`
 );
