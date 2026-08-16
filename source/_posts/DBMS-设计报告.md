@@ -251,13 +251,13 @@ title: DBMS - 设计报告
 
 #### 2.1.1 实体 ER 图
 
-<img src="DBMS-设计报告/实体 ER 图.webp" style="zoom:30%;" />
+<img src="DBMS-设计报告/实体-ER-图.webp" style="zoom:30%;" />
 
 #### 2.1.2 关系 ER 图
 
 下图分别为课程管理模块、活动模块、成绩查询模块对应的 ER 图。
 
-![](DBMS - 设计报告 / 关系 ER 图.drawio.webp)
+![](DBMS-设计报告/关系-ER-图.drawio.webp)
 
 ### 2.2 系统基本 ER 图
 
@@ -267,7 +267,7 @@ title: DBMS - 设计报告
 
 合并并消除冗余之后得到的系统基本 ER 图有 7 个实体，如下图所示：
 
-![](DBMS - 设计报告 / 系统基本 ER 图.webp)
+![](DBMS-设计报告/系统基本-ER-图.webp)
 
 ## 三、数据库逻辑模式设计
 
