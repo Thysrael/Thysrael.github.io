@@ -45,13 +45,13 @@
     "hexo-renderer-stylus": "3.0.1",
     "hexo-server": "3.0.0",
     "hexo-symbols-count-time": "0.7.1",
-    "hexo-theme-next": "8.28.0",
-    "katex": "0.18.1"
+    "hexo-theme-next": "8.29.0",
+    "katex": "0.18.4"
   },
   "devDependencies": {
     "mdast-util-from-markdown": "2.0.3",
-    "pangu": "8.0.0",
-    "sharp": "0.35.3",
-    "simple-git-hooks": "2.13.1"
+    "pangu": "9.1.0",
+    "sharp": "0.35.4",
+    "simple-git-hooks": "2.14.0"
   }
 }
