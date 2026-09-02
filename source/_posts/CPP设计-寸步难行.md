@@ -277,7 +277,7 @@ int *pb = pa;
 
 ### 3.4 常量的显式限制
 
-·`const` 真的是一个很强的限制，其中最容易疏忽的限制就发生在函数传递的时候，比如说下面的代码
+`const` 真的是一个很强的限制，其中最容易疏忽的限制就发生在函数传递的时候，比如说下面的代码
 
 ```cpp
 #include <iostream>
@@ -387,17 +387,17 @@ struct ArrayWrapper
 	int array[3];
 };
 
-int main() 
+int main()
 {
 	ArrayWrapper a;
 	a.array[0] = 5;
 	a.array[1] = 1;
 	a.array[2] = 4;
 	ArrayWrapper b = a;
-	
+
 	// 514
 	cout << b.array[0] << b.array[1] << b.array[2] << endl;
-	
+
 	// change the b.array
 	b.array[0] = 4;
 
@@ -405,6 +405,7 @@ int main()
 	cout << a.array[0] << a.array[1] << a.array[2] << endl;
 	// 414, b.array is different from a.array
 	cout << b.array[0] << b.array[1] << b.array[2] << endl;
+	// exit
 	return 0;
 }
 ```
