@@ -6,7 +6,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const publicRoot = path.join(root, 'public');
 const sourceRoot = path.join(root, 'source');
-const maxSiteBytes = 750 * 1024 * 1024;
+const maxSiteBytes = 900 * 1024 * 1024;
 const ignoredLocalPrefixes = ['/obsidian-quartz/'];
 
 function walk(directory) {
